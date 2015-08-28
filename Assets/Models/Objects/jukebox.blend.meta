@@ -1,0 +1,108 @@
+fileFormatVersion: 2
+guid: 8cafb66b34e7d4b89a196b5bcc8a31f0
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: JBFrontChips
+    100002: JBFrontDecoration
+    100004: JBFrontDecoration-star
+    100006: JBFrontPanels
+    100008: JBInnards
+    100010: JBSongTtiles
+    100012: JBwings
+    100014: JukeBox
+    100016: //RootNode
+    100018: Sphere
+    400000: JBFrontChips
+    400002: JBFrontDecoration
+    400004: JBFrontDecoration-star
+    400006: JBFrontPanels
+    400008: JBInnards
+    400010: JBSongTtiles
+    400012: JBwings
+    400014: JukeBox
+    400016: //RootNode
+    400018: Sphere
+    2300000: JBFrontChips
+    2300002: JBFrontDecoration
+    2300004: JBFrontDecoration-star
+    2300006: JBFrontPanels
+    2300008: JBInnards
+    2300010: JBSongTtiles
+    2300012: JBwings
+    2300014: JukeBox
+    2300016: Sphere
+    3300000: JBFrontChips
+    3300002: JBFrontDecoration
+    3300004: JBFrontDecoration-star
+    3300006: JBFrontPanels
+    3300008: JBInnards
+    3300010: JBSongTtiles
+    3300012: JBwings
+    3300014: JukeBox
+    3300016: Sphere
+    4300000: JBSongTtiles
+    4300002: Sphere
+    4300004: JukeBox
+    4300006: JBFrontChips
+    4300008: JBFrontDecoration-star
+    4300010: JBFrontDecoration
+    4300012: JBFrontPanels
+    4300014: JBInnards
+    4300016: JBwings
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 

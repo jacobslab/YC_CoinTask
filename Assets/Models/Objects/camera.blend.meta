@@ -1,0 +1,153 @@
+fileFormatVersion: 2
+guid: 164c4cdce74124edf9b790eb90566d3e
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: CameraBody_MeshPart0
+    100004: CameraBody_MeshPart1
+    100006: CameraBody_MeshPart2
+    100008: CameraPlate
+    100010: CameraTVBox
+    100012: StandBase
+    100014: StandConnection
+    100016: StandFocusControl
+    100018: StandHandle
+    100020: StandHandle1
+    100022: StandHandle2
+    100024: StandHanDRail
+    100026: StandHead
+    100028: StandMainBody
+    100030: StandPlate
+    100032: StandTubeInner
+    100034: StandTubeOuter
+    100036: StandTubeTop
+    400000: //RootNode
+    400002: CameraBody_MeshPart0
+    400004: CameraBody_MeshPart1
+    400006: CameraBody_MeshPart2
+    400008: CameraPlate
+    400010: CameraTVBox
+    400012: StandBase
+    400014: StandConnection
+    400016: StandFocusControl
+    400018: StandHandle
+    400020: StandHandle1
+    400022: StandHandle2
+    400024: StandHanDRail
+    400026: StandHead
+    400028: StandMainBody
+    400030: StandPlate
+    400032: StandTubeInner
+    400034: StandTubeOuter
+    400036: StandTubeTop
+    2300000: CameraBody_MeshPart0
+    2300002: CameraBody_MeshPart1
+    2300004: CameraBody_MeshPart2
+    2300006: CameraPlate
+    2300008: CameraTVBox
+    2300010: StandBase
+    2300012: StandConnection
+    2300014: StandFocusControl
+    2300016: StandHandle
+    2300018: StandHandle1
+    2300020: StandHandle2
+    2300022: StandHanDRail
+    2300024: StandHead
+    2300026: StandMainBody
+    2300028: StandPlate
+    2300030: StandTubeInner
+    2300032: StandTubeOuter
+    2300034: StandTubeTop
+    3300000: CameraBody_MeshPart0
+    3300002: CameraBody_MeshPart1
+    3300004: CameraBody_MeshPart2
+    3300006: CameraPlate
+    3300008: CameraTVBox
+    3300010: StandBase
+    3300012: StandConnection
+    3300014: StandFocusControl
+    3300016: StandHandle
+    3300018: StandHandle1
+    3300020: StandHandle2
+    3300022: StandHanDRail
+    3300024: StandHead
+    3300026: StandMainBody
+    3300028: StandPlate
+    3300030: StandTubeInner
+    3300032: StandTubeOuter
+    3300034: StandTubeTop
+    4300000: CameraBody_MeshPart0
+    4300002: CameraBody_MeshPart1
+    4300004: CameraBody_MeshPart2
+    4300006: CameraPlate
+    4300008: CameraTVBox
+    4300010: StandBase
+    4300012: StandConnection
+    4300014: StandFocusControl
+    4300016: StandHanDRail
+    4300018: StandHandle
+    4300020: StandHandle1
+    4300022: StandHandle2
+    4300024: StandHead
+    4300026: StandMainBody
+    4300028: StandPlate
+    4300030: StandTubeInner
+    4300032: StandTubeOuter
+    4300034: StandTubeTop
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
