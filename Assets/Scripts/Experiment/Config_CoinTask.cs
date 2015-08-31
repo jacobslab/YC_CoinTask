@@ -70,19 +70,17 @@ public class Config_CoinTask : MonoBehaviour {
 	public static int numSpecialObjectsMedium = 4;
 	public static int numSpecialObjectsHard = 5;
 
-
-
-
-
-
-
-
-
-
-
-	public static string initialInstructions = "In this game, you will learn the location of an object in a grassy field. Your job is to drive to the location of the object and press the joystick button." + 
-		"\n" + "\nAt first the object is visible, but later it is hidden, so you must remember its location." + 
+	public static string initialInstructions = "In this game, you will pick up coins in a field. In a few locations, the coin will turn into a surprise object!" + 
+		"\n" + "\nAfter you have collected all of the coins, you will be asked to select the location in the field of the surprise objects." + 
 			"\n" + "\nWe will now show you what the environment looks like. Press the button to continue."; 
+
+
+
+
+
+
+
+	
 
 	public static float minInitialInstructionsTime = 5.0f;
 	public static float learningTrialInstructionTime = 1.0f; //time each learning trial instruction should be displayed for

@@ -69,7 +69,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 		}
 		_instance = this;
 
-		/*if (ExperimentSettings_CoinTask.isLogging) {
+		if (ExperimentSettings_CoinTask.isLogging) {
 			subjectLogfile = "TextFiles/" + ExperimentSettings_CoinTask.currentSubject.name + "Log.txt";
 			eegLogfile = "TextFiles/" + ExperimentSettings_CoinTask.currentSubject.name + "EEGLog.txt";
 
@@ -80,7 +80,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 		else if(ExperimentSettings_CoinTask.isReplay) {
 			instructionsController.TurnOffInstructions();
 			cameraController.SetInGame(); //don't use oculus for replay mode
-		}*/
+		}
 
 	}
 
@@ -93,7 +93,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//Proceed with experiment if we're not in REPLAY mode
-		/*if (!ExperimentSettings_CoinTask.isReplay) { //REPLAY IS HANDLED IN REPLAY.CS VIA LOG FILE PARSING
+		if (!ExperimentSettings_CoinTask.isReplay) { //REPLAY IS HANDLED IN REPLAY.CS VIA LOG FILE PARSING
 
 			if (currentState == ExperimentState.instructionsState && !isRunningInstructions) {
 				Debug.Log("running instructions");
@@ -106,7 +106,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 				StartCoroutine(BeginExperiment());
 			}
 
-		}*/
+		}
 	}
 
 	public IEnumerator RunOutOfTrials(){
@@ -154,11 +154,6 @@ public class Experiment_CoinTask : MonoBehaviour {
 		yield return StartCoroutine (WaitForActionButton ()); //explore the environment until this button press
 
 		yield return StartCoroutine(trialController.RunExperiment());
-
-		//TODO: should take this out. check that player doesn't get stuck moving forward when experiment ends.
-		/*while (true) {
-			yield return 0;
-		}*/
 		
 		yield return StartCoroutine(RunOutOfTrials()); //calls EndExperiment()
 
