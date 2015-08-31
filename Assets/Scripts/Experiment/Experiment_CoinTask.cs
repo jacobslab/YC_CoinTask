@@ -86,7 +86,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Config_CoinTask.Init();
+		//Config_CoinTask.Init();
 		//inGameInstructionsController.DisplayText("");
 	}
 

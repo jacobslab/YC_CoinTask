@@ -9,7 +9,8 @@ public class TrialController : MonoBehaviour {
 
 	bool isPracticeTrial = false;
 	int numRealTrials = 0; //used for logging trial ID's
-	
+
+	int numDefaultObjectsCollected = 0;
 
 	private class Block{
 		public Trial trial1;
@@ -123,6 +124,10 @@ public class TrialController : MonoBehaviour {
 		
 	}
 
+	public void IncrementNumDefaultObjectsCollected(){
+		numDefaultObjectsCollected++;
+	}
+
 	//INDIVIDUAL TRIALS -- implement for repeating the same thing over and over again
 	//could also create other IEnumerators for other types of trials
 	IEnumerator RunTrial(Trial trial){
@@ -140,11 +145,62 @@ public class TrialController : MonoBehaviour {
 		Debug.Log ("IS STIM: " + trial.isStim);
 
 		//move player to first location & rotation
-		exp.avatar.transform.position = trial.avatarPosition001;
-		exp.avatar.transform.rotation = trial.avatarRotation001;
+		exp.avatar.transform.position = trial.avatarStartPos;
+		exp.avatar.transform.rotation = trial.avatarStartRot;
+
+		exp.environmentController.myGrid.Clear ();
+
+		exp.environmentController.myGrid.SetConfiguration (trial.DefaultObjectGridIndices, trial.SpecialObjectIndices);
+		exp.objectController.SpawnDefaultObjects (trial.DefaultObjectGridIndices);
+
+		//TODO: start a game timer
+
+		//unlock avatar controls, wait for player to collect all coins
+		exp.avatar.ShouldLockControls = false;
+		int numDefaultObjectsToCollect = trial.DefaultObjectGridIndices.Count;
+		while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
+			yield return 0;
+		}
+
+		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
+			//show instructions for location selection
+			yield return StartCoroutine (exp.ShowSingleInstruction ("You will now be shown the environment as a grid. Use the joystick to select the location of the requested object.", true, true, Config_CoinTask.minDefaultInstructionTime));
+		}
+
+		//TODO: bring player to tower, lock movement
+		exp.avatar.ShouldLockControls = true;
+
+		//ask player to locate each object individually on the grid
+		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
+			//show instructions for location selection -- TODO: use the image of the object instead?
+
+			//turn on grid visibility
+			exp.environmentController.myGrid.TurnOnTileVisibility(true);
+
+			yield return StartCoroutine (exp.ShowSingleInstruction ("Select the location of the" + exp.objectController.CurrentTrialSpecialObjects [i] + ".", true, true, Config_CoinTask.minDefaultInstructionTime));
+			//TODO: after object location has been chosen, show them how close they were
+			yield return StartCoroutine(Experiment_CoinTask.Instance.WaitForActionButton());
+		}
+
+		//turn off grid visibility
+		exp.environmentController.myGrid.TurnOnTileVisibility(false);
+
+		//TODO: once all objects have been located, tell them their official score based on memory and time bonus
+
+		//clear object controller's list of special objects
+		exp.objectController.CurrentTrialSpecialObjects.Clear ();
+
+		yield return 0;
+		
+		//increment subject's trial count
+		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
 
 
-		GameObject newObject = exp.objectController.SpawnRandomObjectXY (trial.objectPosition);
+
+
+
+
+/*		GameObject newObject = exp.objectController.SpawnRandomObjectXY (trial.objectPosition);
 		SpawnableObject newSpawnedObject = newObject.GetComponent<SpawnableObject> ();
 		string newObjectName = newObject.GetComponent<SpawnableObject>().GetName();
 
@@ -226,9 +282,9 @@ public class TrialController : MonoBehaviour {
 		//turn off the environment map
 		exp.environmentMap.TurnOff();
 		
-		GameObject.Destroy(newObject);
+		GameObject.Destroy(newObject); 
 
-		//increment subject's trial count
-		ExperimentSettings_CoinTask.currentSubject.IncrementTrial (); 
+		 //increment subject's trial count
+		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();*/
 	}
 }

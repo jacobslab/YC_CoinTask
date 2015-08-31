@@ -1,48 +1,57 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 //FOR USE IN TRIALCONTROLLER
 public class Trial {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
+	EnvironmentGrid envGrid { get { return Experiment_CoinTask.Instance.environmentController.myGrid; } }
+
 
 	public bool isStim = false;
 
-	public Vector3 objectPosition;	//object position stays the same throughout the trial
-	public Vector3 avatarPosition001;	//learning 1
-	public Vector3 avatarPosition002;	//learning 2
-	public Vector3 avatarPosition003;	//testing
-	public Quaternion avatarRotation001;	//learning 1
-	public Quaternion avatarRotation002;	//learning 2
-	public Quaternion avatarRotation003;	//testing
+	public Vector3 avatarStartPos;
+	public Quaternion avatarStartRot;
+	public List<Vector2> DefaultObjectGridIndices;
+	public List<Vector2> SpecialObjectIndices;
+	
 
 	public Trial(){
-
+		DefaultObjectGridIndices = new List<Vector2> ();
+		SpecialObjectIndices = new List<Vector2> ();
 	}
 
 	public Trial(bool shouldBeStim){
-		Vector3 initAvatarPos = exp.avatar.transform.position;
-		Quaternion initAvatarRot = exp.avatar.transform.rotation;
-
-
 		isStim = shouldBeStim;
 
-		//set object position within the walls of the environment
-		objectPosition = exp.environmentController.GetRandomPositionWithinWallsXZ (Config_CoinTask.bufferBetweenObjectsAndWall);
+		avatarStartPos = new Vector3 (Config_CoinTask.AvatarStartX, exp.avatar.transform.position.y, Config_CoinTask.AvatarStartZ);
+		avatarStartRot = Quaternion.Euler (0, Config_CoinTask.AvatarStartRotY, 0);
 
-		avatarPosition001 = exp.avatar.SetLearningLocation001 (objectPosition);
-		avatarRotation001 = exp.avatar.SetYRotationAwayFrom (objectPosition, Config_CoinTask.headingOffsetMin, Config_CoinTask.headingOffsetMax);
+		int numDefaultObjects = 0;
+		int numSpecialObjects = 0;
 
-		avatarPosition002 = exp.avatar.SetLearningLocation002 (objectPosition, avatarPosition001);
-		avatarRotation002 = exp.avatar.SetYRotationAwayFrom (objectPosition, Config_CoinTask.headingOffsetMin, Config_CoinTask.headingOffsetMax);
+		if (Config_CoinTask.difficultySetting == Config_CoinTask.DifficultySetting.easy) {
+			numDefaultObjects = Config_CoinTask.numDefaultObjectsEasy;
+			numSpecialObjects = Config_CoinTask.numSpecialObjectsEasy;
+		} 
+		else if (Config_CoinTask.difficultySetting == Config_CoinTask.DifficultySetting.medium) {
+			numDefaultObjects = Config_CoinTask.numDefaultObjectsMedium;
+			numSpecialObjects = Config_CoinTask.numSpecialObjectsMedium;
+		} 
+		else if (Config_CoinTask.difficultySetting == Config_CoinTask.DifficultySetting.hard) {
+			numDefaultObjects = Config_CoinTask.numDefaultObjectsHard;
+			numSpecialObjects = Config_CoinTask.numSpecialObjectsHard;
+		}
+
+		//init default and special locations
+		DefaultObjectGridIndices = new List<Vector2> ();
+		SpecialObjectIndices = new List<Vector2> ();
+
+		DefaultObjectGridIndices = envGrid.GenerateDefaultObjectConfiguraiton (numDefaultObjects);
+
+		SpecialObjectIndices = envGrid.GenerateSpecialObjectConfiguration (DefaultObjectGridIndices, numSpecialObjects);
 
 
-		avatarPosition003 = exp.environmentController.GetRandomPositionWithinWallsXZ (Config_CoinTask.bufferBetweenObjectsAndWall); //random position!
-		avatarPosition003 = new Vector3 (avatarPosition003.x, exp.avatar.transform.position.y, avatarPosition003.z);
-		avatarRotation003 = exp.avatar.SetRandomRotationY ();
-
-
-		exp.avatar.transform.position = initAvatarPos;
-		exp.avatar.transform.rotation = initAvatarRot;
 	}
 	
 	//get reflected rotation
@@ -73,15 +82,31 @@ public class Trial {
 
 		counterTrial.isStim = !isStim;
 
-		counterTrial.objectPosition = GetReflectedPositionXZ(objectPosition);
-		
-		counterTrial.avatarPosition001 = GetReflectedPositionXZ (avatarPosition001);
-		counterTrial.avatarPosition002 = GetReflectedPositionXZ (avatarPosition002);
-		counterTrial.avatarPosition003 = GetReflectedPositionXZ (avatarPosition003);
-		
-		counterTrial.avatarRotation001 = GetReflectedRotation (avatarRotation001);
-		counterTrial.avatarRotation002 = GetReflectedRotation (avatarRotation002);
-		counterTrial.avatarRotation003 = GetReflectedRotation (avatarRotation003);
+
+		//counter the avatar
+		counterTrial.avatarStartPos = GetReflectedPositionXZ (avatarStartPos);
+		counterTrial.avatarStartRot = GetReflectedRotation (avatarStartRot);
+
+		//counter the object positions
+		for (int i = 0; i < DefaultObjectGridIndices.Count; i++) {
+			Vector2 swappedIndices = DefaultObjectGridIndices[i];
+			//swap the indices
+			float tempIndex = swappedIndices.x; //(all of these are ints though, because they're indices...)
+			swappedIndices.x = swappedIndices.y;
+			swappedIndices.y = tempIndex;
+
+			counterTrial.DefaultObjectGridIndices.Add ( swappedIndices );
+		}
+
+		for (int i = 0; i < SpecialObjectIndices.Count; i++) {
+			Vector2 swappedIndices = SpecialObjectIndices[i];
+			//swap the indices
+			float tempIndex = swappedIndices.x; //(all of these are ints though, because they're indices...)
+			swappedIndices.x = swappedIndices.y;
+			swappedIndices.y = tempIndex;
+			
+			counterTrial.SpecialObjectIndices.Add ( swappedIndices );
+		}
 		
 		return counterTrial;
 	}

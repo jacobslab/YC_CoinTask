@@ -5,7 +5,8 @@ public class TileHighlighter : MonoBehaviour {
 
 	[HideInInspector] public bool isHighlighted = false;
 	[HideInInspector]  Material myMaterial;
-	float highlightAlpha = 1.0f;
+	float highlightAlphaLow = 0.5f;
+	float highlightAlphaHigh = 1.0f;
 	float origMatAlpha;
 
 	void Awake(){
@@ -23,8 +24,13 @@ public class TileHighlighter : MonoBehaviour {
 	
 	}
 
-	public void Highlight(){
-		myMaterial.color = new Color(myMaterial.color.r, myMaterial.color.g, myMaterial.color.b, highlightAlpha);
+	public void HighlightHigh(){
+		myMaterial.color = new Color(myMaterial.color.r, myMaterial.color.g, myMaterial.color.b, highlightAlphaHigh);
+		isHighlighted = true;
+	}
+
+	public void HighlightLow(){
+		myMaterial.color = new Color(myMaterial.color.r, myMaterial.color.g, myMaterial.color.b, highlightAlphaLow);
 		isHighlighted = true;
 	}
 

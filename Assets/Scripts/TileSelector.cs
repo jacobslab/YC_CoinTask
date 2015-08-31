@@ -36,7 +36,7 @@ public class TileSelector : MonoBehaviour {
 			selectedTile.myHighlighter.UnHighlight();
 		}
 		selectedTile = grid.GetGridTile( selectedRow, selectedCol );
-		selectedTile.myHighlighter.Highlight();
+		selectedTile.myHighlighter.HighlightHigh();
 
 		myArc.GenerateArc(selectedTile.transform.position);
 	}

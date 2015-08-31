@@ -18,11 +18,17 @@ public class GridItem : MonoBehaviour {
 	
 	}
 
+	void OnTriggerEnter(Collider collider){
+		if (collider.gameObject.tag == "Player") {
+			Experiment_CoinTask.Instance.trialController.IncrementNumDefaultObjectsCollected();
+		}
+	}
+
 	void OnDestroy(){
 		if (envGrid.GetGridSpotType (rowIndex, colIndex) == EnvironmentGrid.GridSpotType.specialGridItem && tag == "DefaultGridItem") {
 			//if it was a special spot and thsi is the default object...
 			//...we should spawn the special object!
-			Experiment_CoinTask.Instance.objectController.SpawnRandomObjectXY(transform.position);
+			Experiment_CoinTask.Instance.objectController.SpawnSpecialObjectXY(transform.position);
 		}
 		else {
 			envGrid.RemoveGridItem (rowIndex, colIndex);

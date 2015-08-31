@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class ObjectController : MonoBehaviour {
 
-	//ground plane -- used as spawn reference point
-	public GameObject GroundPlane;
+	public GameObject DefaultObject;
+	public List<SpawnableObject> CurrentTrialSpecialObjects;
 
 
 	//experiment singleton
@@ -15,16 +15,13 @@ public class ObjectController : MonoBehaviour {
 	List<GameObject> gameObjectList_Spawnable;
 	//List<GameObject> gameObjectList_Spawned; //a list to keep track of the objects currently in the scene
 
-	//TODO: incorporate into random spawning so that two objects don't spawn in super similar locations consecutively
-	Vector3 lastSpawnPos;
 
 
 	// Use this for initialization
 	void Start () {
 		gameObjectList_Spawnable = new List<GameObject> ();
-
+		CurrentTrialSpecialObjects = new List<SpawnableObject> ();
 		CreateObjectList (gameObjectList_Spawnable);
-		lastSpawnPos = experiment.avatar.transform.position;
 	}
 	
 	// Update is called once per frame
@@ -86,17 +83,26 @@ public class ObjectController : MonoBehaviour {
 		return randomRotY;
 	}
 
+	//for use in trial with configuration setup of the grid
+	public void SpawnDefaultObjects(List<Vector2> GridIndices){
+		for(int i = 0; i < GridIndices.Count; i++){
+			Vector2 currIndices = GridIndices[i];
+			Vector3 objPos = experiment.environmentController.myGrid.GetGridPosition( (int)currIndices.x, (int)currIndices.y );
+			objPos = new Vector3(objPos.x, DefaultObject.transform.position.y, objPos.z);
+			Instantiate(DefaultObject, objPos, DefaultObject.transform.rotation);
+		}
+	}
+
 
 	//for more generic object spawning -- such as in Replay!
 	public GameObject SpawnObject( GameObject objToSpawn, Vector3 spawnPos ){
-		lastSpawnPos = spawnPos;
 		GameObject spawnedObj = Instantiate(objToSpawn, spawnPos, objToSpawn.transform.rotation) as GameObject;
 
 		return spawnedObj;
 	}
 
 	//spawn random object at a specified location
-	public GameObject SpawnRandomObjectXY (Vector3 spawnPosition){
+	public GameObject SpawnSpecialObjectXY (Vector3 spawnPosition){
 		GameObject objToSpawn = ChooseRandomObject ();
 		if (objToSpawn != null) {
 			float spawnPosY = objToSpawn.transform.position.y; //use the prefab's height
@@ -105,11 +111,11 @@ public class ObjectController : MonoBehaviour {
 
 			GameObject newObject = Instantiate(objToSpawn, spawnPosition, objToSpawn.transform.rotation) as GameObject;
 
-			lastSpawnPos = newObject.transform.position;
-
 			float randomRot = GenerateRandomRotationY();
 			newObject.transform.RotateAround(newObject.transform.position, Vector3.up, randomRot);
-			
+
+			CurrentTrialSpecialObjects.Add(newObject.GetComponent<SpawnableObject>());
+
 			return newObject;
 		}
 		else{
@@ -118,7 +124,7 @@ public class ObjectController : MonoBehaviour {
 	}
 
 	//for spawning a random object at a random location
-	public GameObject SpawnRandomObjectXY(){
+	/*public GameObject SpawnRandomObjectXY(){
 		GameObject objToSpawn = ChooseRandomObject ();
 		if (objToSpawn != null) {
 
@@ -128,8 +134,6 @@ public class ObjectController : MonoBehaviour {
 
 			GameObject newObject = Instantiate(objToSpawn, spawnPos, objToSpawn.transform.rotation) as GameObject;
 
-			lastSpawnPos = newObject.transform.position;
-
 			float randomRot = GenerateRandomRotationY();
 			newObject.transform.RotateAround(newObject.transform.position, Vector3.up, randomRot);
 
@@ -138,25 +142,6 @@ public class ObjectController : MonoBehaviour {
 		else{
 			return null;
 		}
-	}
-
-	//NO LONGER USED. TODO: evaluate if it seems useful for other things in the future...
-	void MakeObjectFacePlayer(GameObject obj){
-		if (obj.transform.position == experiment.avatar.transform.position) { //make sure the object is not directly on top of the avatar.
-			Debug.Log("Object is directly on top of the avatar! Cannot face avatar.");
-			return;
-		}
-
-		//make object face the player
-		Vector3 directionToAvatar = experiment.avatar.transform.position - obj.transform.position;
-		
-		float dotProd = Vector3.Dot(directionToAvatar, obj.transform.forward);
-		float theta = Mathf.Acos( dotProd / ( directionToAvatar.magnitude*obj.transform.forward.magnitude ) );
-		obj.transform.RotateAround(obj.transform.position, Vector3.up, theta);
-		
-		if(obj.transform.forward.normalized != directionToAvatar.normalized){
-			obj.transform.RotateAround(obj.transform.position, Vector3.up, 180.0f);
-		}
-	}
+	}*/
 
 }
