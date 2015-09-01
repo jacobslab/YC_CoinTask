@@ -3,7 +3,11 @@ using System.Collections;
 
 public class GridItem : MonoBehaviour {
 
-	AudioSource collisionSound;
+	public ParticleSystem DefaultParticles;
+	public ParticleSystem SpecialParticles;
+	
+	public AudioSource defaultCollisionSound;
+	public AudioSource specialCollisionSound;
 	bool shouldDie = false;
 
 	public int rowIndex;
@@ -13,13 +17,13 @@ public class GridItem : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		collisionSound = GetComponent<AudioSource> ();
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(shouldDie && collisionSound.isPlaying == false){
-			Destroy(gameObject); //once sound has finished playing, destroy the coin
+		if(shouldDie && (defaultCollisionSound.isPlaying == false && specialCollisionSound.isPlaying == false)){
+			Destroy(gameObject); //once audio has finished playing, destroy the item!
 		}
 	}
 
@@ -30,15 +34,20 @@ public class GridItem : MonoBehaviour {
 			//turn invisible, play sound
 			GetComponent<Renderer>().enabled = false;
 			GetComponent<Collider>().enabled = false;
-			collisionSound.Play();
 			shouldDie = true;
 
 			EnvironmentGrid.GridSpotType mySpotType = envGrid.GetGridSpotType (rowIndex, colIndex);
 			Debug.Log(mySpotType.ToString());
 			if (mySpotType == EnvironmentGrid.GridSpotType.specialGridItem && tag == "DefaultGridItem") {
-				//if it was a special spot and thsi is the default object...
+				//if it was a special spot and this is the default object...
 				//...we should spawn the special object!
 				Experiment_CoinTask.Instance.objectController.SpawnSpecialObjectXY(transform.position);
+				SpecialParticles.Play();
+				specialCollisionSound.Play ();
+			}
+			else{
+				DefaultParticles.Play();
+				defaultCollisionSound.Play();
 			}
 		}
 	}
