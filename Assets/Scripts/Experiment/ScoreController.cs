@@ -23,7 +23,7 @@ public class ScoreController : MonoBehaviour {
 	}
 
 	public int CalculatePoints(GameObject desiredObject){
-		Vector2 avatarXYPos = new Vector2( exp.avatar.transform.position.x, exp.avatar.transform.position.z);
+		Vector2 avatarXYPos = new Vector2( exp.player.transform.position.x, exp.player.transform.position.z);
 		Vector2 objectXYPos = new Vector2( desiredObject.transform.position.x, desiredObject.transform.position.z);
 
 		float distanceFromObject = (avatarXYPos - objectXYPos).magnitude;

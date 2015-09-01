@@ -86,8 +86,9 @@ public class EnvironmentGrid : MonoBehaviour {
 		}
 	}
 
-	//spawns default objects and returns a list of default object indices in the grid
-	public List<Vector2> GenerateDefaultObjectConfiguraiton(int numDefaultObjects){
+	//sets the grid & returns a list of default object indices in the grid
+	public List<Vector2> GenerateDefaultObjectConfiguration(int numDefaultObjects){
+		Clear ();
 		List<Vector2> IndicesList = new List<Vector2> ();
 
 		for (int i = 0; i < numDefaultObjects; i++) {
@@ -100,7 +101,7 @@ public class EnvironmentGrid : MonoBehaviour {
 				break;
 			}
 			
-			while( myGrid[randomRow, randomCol] == GridSpotType.homeBase){ //if we hit home base, generate again...
+			while( myGrid[randomRow, randomCol] != GridSpotType.empty){ //if the spot is already taken
 				randomRow = Random.Range (0, numRows);
 				randomCol = Random.Range (0, numCols);
 			}
@@ -113,22 +114,32 @@ public class EnvironmentGrid : MonoBehaviour {
 	//spawns special objects (based on a default object configuration) and returns a list of their indices in the grid
 	public List<Vector2> GenerateSpecialObjectConfiguration(List<Vector2> defaultObjectIndices, int numSpecialObjects){
 		List<Vector2> specialIndices = new List<Vector2> ();
+		List<Vector2> defaultIndicesCopy = new List<Vector2> ();
+
+		//copy the list so we can delete from it...
+		for (int i = 0; i < defaultObjectIndices.Count; i++) {
+			Vector2 currIndices = defaultObjectIndices[i];
+			Vector2 indicesCopy = new Vector2(currIndices.x, currIndices.y);
+			defaultIndicesCopy.Add(indicesCopy);
+		}
 
 		for (int i = 0; i < numSpecialObjects; i++) {
-			int randomIndex = Random.Range(0, defaultObjectIndices.Count);
+			int randomIndex = Random.Range(0, defaultIndicesCopy.Count);
 
 			//if number of special objects exceeds the number of free spots, we'll get stuck.
 			//...so exit the loop instead.
-			if(i > defaultObjectIndices.Count){
+			if(i > defaultIndicesCopy.Count){
 				break;
 			}
 
-			Vector2 currIndices = defaultObjectIndices[i];
+			Vector2 currIndices = defaultIndicesCopy[i];
 
 			myGrid [(int)currIndices.x, (int)currIndices.y] = GridSpotType.specialGridItem;
 			specialIndices.Add (currIndices);
 
-			Debug.Log("special item grid location: row" + currIndices.x + ",col" + currIndices.y);
+			//remove it from the parameter list so that no two special objects are in the same spot.
+			//this will not change the original list, as the list was passed by copy.
+			defaultIndicesCopy.RemoveAt(randomIndex);
 		}
 
 		return specialIndices;

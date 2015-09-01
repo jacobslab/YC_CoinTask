@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class AvatarControls : MonoBehaviour{
+public class PlayerControls : MonoBehaviour{
 
 	Experiment_CoinTask exp  { get { return Experiment_CoinTask.Instance; } }
 
@@ -10,6 +10,7 @@ public class AvatarControls : MonoBehaviour{
 
 
 	public Transform TiltableTransform;
+	public Transform towerPositionTransform;
 
 	float RotationSpeed = 0.75f;
 	Quaternion lastRotation;
@@ -107,54 +108,11 @@ public class AvatarControls : MonoBehaviour{
 		transform.RotateAround (transform.position, Vector3.up, amount );
 	}
 
-	bool CheckXZPositionsCloseEnough(Vector3 position1, Vector3 position2, float epsilon){
-		float xDiff = Mathf.Abs (position1.x - position2.x);
-		float zDiff = Mathf.Abs (position1.z - position2.z);
-
-		if (xDiff < epsilon && zDiff < epsilon) {
-			return true;
-		}
-		else {
-			return false;
-		}
+	public void MoveToTower(){
+		transform.position = towerPositionTransform.position;
+		transform.rotation = towerPositionTransform.rotation;
 	}
 
-	public void RotateTowards(Vector3 position){
-		position = new Vector3(position.x, transform.position.y, position.z); //set the y coordinate to the avatar's -- should still look straight ahead!
-		
-		transform.LookAt(position);
-	}
 
-	//assumes the avatar is in the correct location currently
-	public Quaternion SetYRotationAwayFrom(Vector3 objectPosition, float minDegree, float maxDegree){
-		float randomYRotation = Random.Range (minDegree, maxDegree);
-		RotateTowards (objectPosition);
-
-		int shouldBeNegative = Random.Range (0, 2); //will pick 1 or 0
-		if (shouldBeNegative == 1) {
-			randomYRotation *= -1;
-		}
-
-		transform.RotateAround (transform.position, Vector3.up, randomYRotation);
-
-		//Debug.Log("Random Avatar rotation: " + randomYRotation);
-
-		return transform.rotation;
-	}
-
-	public float GenerateRandomRotationY(){
-		float randomYRotation = Random.Range (0.0f, 360.0f);
-		
-		return randomYRotation;
-	}
-	
-	//only in y axis
-	public Quaternion SetRandomRotationY(){
-		float randomYRotation = GenerateRandomRotationY ();
-		
-		transform.RotateAround(transform.position, Vector3.up, randomYRotation);
-		
-		return transform.rotation;
-	}
 	
 }

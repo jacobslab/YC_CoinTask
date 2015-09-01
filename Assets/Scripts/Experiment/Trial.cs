@@ -24,7 +24,7 @@ public class Trial {
 	public Trial(bool shouldBeStim){
 		isStim = shouldBeStim;
 
-		avatarStartPos = new Vector3 (Config_CoinTask.AvatarStartX, exp.avatar.transform.position.y, Config_CoinTask.AvatarStartZ);
+		avatarStartPos = new Vector3 (Config_CoinTask.AvatarStartX, exp.player.transform.position.y, Config_CoinTask.AvatarStartZ);
 		avatarStartRot = Quaternion.Euler (0, Config_CoinTask.AvatarStartRotY, 0);
 
 		int numDefaultObjects = 0;
@@ -47,7 +47,7 @@ public class Trial {
 		DefaultObjectGridIndices = new List<Vector2> ();
 		SpecialObjectIndices = new List<Vector2> ();
 
-		DefaultObjectGridIndices = envGrid.GenerateDefaultObjectConfiguraiton (numDefaultObjects);
+		DefaultObjectGridIndices = envGrid.GenerateDefaultObjectConfiguration (numDefaultObjects);
 
 		SpecialObjectIndices = envGrid.GenerateSpecialObjectConfiguration (DefaultObjectGridIndices, numSpecialObjects);
 
@@ -83,9 +83,9 @@ public class Trial {
 		counterTrial.isStim = !isStim;
 
 
-		//counter the avatar
-		counterTrial.avatarStartPos = GetReflectedPositionXZ (avatarStartPos);
-		counterTrial.avatarStartRot = GetReflectedRotation (avatarStartRot);
+		//TODO: counter the avatar? or always start at the home base?
+		//counterTrial.avatarStartPos = GetReflectedPositionXZ (avatarStartPos);
+		//counterTrial.avatarStartRot = GetReflectedRotation (avatarStartRot);
 
 		//counter the object positions
 		for (int i = 0; i < DefaultObjectGridIndices.Count; i++) {

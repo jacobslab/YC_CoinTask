@@ -77,24 +77,25 @@ public class Config_CoinTask : MonoBehaviour {
 
 	//DEFAULT OBJECTS
 	public static int numDefaultObjectsEasy = 10;
-	public static int numDefaultObjectsMedium = 15;
-	public static int numDefaultObjectsHard = 20;
+	public static int numDefaultObjectsMedium = 10;
+	public static int numDefaultObjectsHard = 10;
 
 	//THERE MUST ALWAYS BE FEWER SPECIAL OBJECTS THAN DEFAULT OBJECTS
-	public static int numSpecialObjectsEasy = 3;
+	public static int numSpecialObjectsEasy = 2;
 	public static int numSpecialObjectsMedium = 4;
-	public static int numSpecialObjectsHard = 5;
+	public static int numSpecialObjectsHard = 6;
 
 	public static string initialInstructions = "In this game, you will pick up coins in a field. In a few locations, the coin will turn into a surprise object!" + 
 		"\n" + "\nAfter you have collected all of the coins, you will be asked to select the location in the field of the surprise objects." + 
+			"\n" + "\nYou will get points for how well you remember the object locations and how quickly you complete the level." +
 			"\n" + "\nWe will now show you what the environment looks like. Press the button to continue."; 
 
-	public static float AvatarStartX = 22.73f;
-	public static float AvatarStartZ = -13.92f;
+	public static float AvatarStartX = -93.5f;
+	public static float AvatarStartZ = -85.5f;
 	public static float AvatarStartRotY = 45.0f;
 
 
-	public static float minInitialInstructionsTime = 5.0f;
+	public static float minInitialInstructionsTime = 1.0f; //TODO: change back to 5.0f
 	public static float minDefaultInstructionTime = 1.0f; //time each learning trial instruction should be displayed for
 	public static float minScoreMapTime = 0.0f;
 

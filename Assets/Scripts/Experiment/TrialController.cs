@@ -145,40 +145,57 @@ public class TrialController : MonoBehaviour {
 		Debug.Log ("IS STIM: " + trial.isStim);
 
 		//move player to first location & rotation
-		exp.avatar.transform.position = trial.avatarStartPos;
-		exp.avatar.transform.rotation = trial.avatarStartRot;
+		exp.player.transform.position = trial.avatarStartPos;
+		exp.player.transform.rotation = trial.avatarStartRot;
 
 		exp.environmentController.myGrid.Clear ();
 
 		exp.environmentController.myGrid.SetConfiguration (trial.DefaultObjectGridIndices, trial.SpecialObjectIndices);
 		exp.objectController.SpawnDefaultObjects (trial.DefaultObjectGridIndices);
 
+		//turn off grid visibility
+		exp.environmentController.myGrid.TurnOnTileVisibility(false);
+		//disable grid selection
+		exp.player.tileSelector.Enable (false);
+
+		yield return StartCoroutine (exp.ShowSingleInstruction ("Drive around and collect all of the coins. Pay attention to the surprise object locations!"+
+		                                                        "\n\nFinish quickly enough and you will receive a time bonus on your score!", true, true, Config_CoinTask.minDefaultInstructionTime));
 		//TODO: start a game timer
 
+
 		//unlock avatar controls, wait for player to collect all coins
-		exp.avatar.ShouldLockControls = false;
+		exp.player.controls.ShouldLockControls = false;
 		int numDefaultObjectsToCollect = trial.DefaultObjectGridIndices.Count;
 		while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
 			yield return 0;
 		}
 
-		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
-			//show instructions for location selection
-			yield return StartCoroutine (exp.ShowSingleInstruction ("You will now be shown the environment as a grid. Use the joystick to select the location of the requested object.", true, true, Config_CoinTask.minDefaultInstructionTime));
-		}
+		//reset num coins collected
+		numDefaultObjectsCollected = 0;
 
-		//TODO: bring player to tower, lock movement
-		exp.avatar.ShouldLockControls = true;
+		//show instructions for location selection
+		yield return StartCoroutine (exp.ShowSingleInstruction ("You will now be shown the environment as a grid. Use the joystick to select the location of the requested object.", true, true, Config_CoinTask.minDefaultInstructionTime));
+
+
+		//bring player to tower, lock movement
+		exp.player.controls.ShouldLockControls = true;
+		exp.player.controls.MoveToTower ();
 
 		//ask player to locate each object individually on the grid
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
-			//show instructions for location selection -- TODO: use the image of the object instead?
-
 			//turn on grid visibility
 			exp.environmentController.myGrid.TurnOnTileVisibility(true);
+			//enable grid selection
+			exp.player.tileSelector.Enable (true);
 
-			yield return StartCoroutine (exp.ShowSingleInstruction ("Select the location of the" + exp.objectController.CurrentTrialSpecialObjects [i] + ".", true, true, Config_CoinTask.minDefaultInstructionTime));
-			//TODO: after object location has been chosen, show them how close they were
+			//show instructions for location selection -- TODO: use the image of the object instead?
+			string specialItemName = exp.objectController.CurrentTrialSpecialObjects [i].GetComponent<SpawnableObject>().GetName();
+			yield return StartCoroutine (exp.ShowSingleInstruction ("Select the location of the " + specialItemName + ".", true, true, Config_CoinTask.minDefaultInstructionTime));
+
+			//wait for them to chose a location
+			yield return StartCoroutine(Experiment_CoinTask.Instance.WaitForActionButton());
+
+			//TODO: after object location has been chosen, show them how close they were / give them points
 			yield return StartCoroutine(Experiment_CoinTask.Instance.WaitForActionButton());
 		}
 
@@ -186,6 +203,7 @@ public class TrialController : MonoBehaviour {
 		exp.environmentController.myGrid.TurnOnTileVisibility(false);
 
 		//TODO: once all objects have been located, tell them their official score based on memory and time bonus
+		yield return StartCoroutine (exp.ShowSingleInstruction ("You scored some points! Continue to the next trial.", true, true, Config_CoinTask.minDefaultInstructionTime));
 
 		//clear object controller's list of special objects
 		exp.objectController.CurrentTrialSpecialObjects.Clear ();

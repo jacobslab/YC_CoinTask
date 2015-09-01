@@ -36,6 +36,7 @@ public class ArcGenerator : MonoBehaviour {
 
 			GameObject newArcComponent = Instantiate(ArcComponent, componentPosition, Quaternion.identity) as GameObject;
 			ArcComponents.Add(newArcComponent);
+			newArcComponent.transform.parent = transform;
 		}
 	}
 

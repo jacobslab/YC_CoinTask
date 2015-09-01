@@ -89,7 +89,11 @@ public class ObjectController : MonoBehaviour {
 			Vector2 currIndices = GridIndices[i];
 			Vector3 objPos = experiment.environmentController.myGrid.GetGridPosition( (int)currIndices.x, (int)currIndices.y );
 			objPos = new Vector3(objPos.x, DefaultObject.transform.position.y, objPos.z);
-			Instantiate(DefaultObject, objPos, DefaultObject.transform.rotation);
+			GameObject newObj = Instantiate(DefaultObject, objPos, DefaultObject.transform.rotation) as GameObject;
+
+			GridItem newGridItem = newObj.GetComponent<GridItem>();
+			newGridItem.rowIndex = (int)currIndices.x;
+			newGridItem.colIndex = (int)currIndices.y;
 		}
 	}
 

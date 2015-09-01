@@ -33,7 +33,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	public EnvironmentMap environmentMap;
 
 	//avatar
-	public AvatarControls avatar;
+	public Player player;
 
 	//public bool isOculus = false;
 

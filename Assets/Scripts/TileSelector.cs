@@ -3,8 +3,6 @@ using System.Collections;
 
 public class TileSelector : MonoBehaviour {
 
-	public GameObject[] floorGridSingular;
-
 	public ArcGenerator myArc;
 	EnvironmentGrid grid { get { return Experiment_CoinTask.Instance.environmentController.myGrid; } }
 	int selectedRow = 0;
@@ -14,31 +12,57 @@ public class TileSelector : MonoBehaviour {
 	int numRows { get { return Experiment_CoinTask.Instance.environmentController.myGrid.Rows; } }
 	int numCols { get { return Experiment_CoinTask.Instance.environmentController.myGrid.Columns; } }
 
+	bool shouldSelect = false;
+
 	// Use this for initialization
 	void Start () {
-
-		if(numRows > 0 && numCols > 0){
-			SelectTile();
-		}
+		SelectDefault ();
+		Enable (shouldSelect);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(GetChangedRowColInput()){
+		if (shouldSelect) {
+			if (GetChangedRowColInput ()) {
+				SelectTile ();
+			}
+		}
+	}
+
+	void SelectDefault(){
+		selectedRow = 0;
+		selectedCol = 0;
+		if(numRows > 0 && numCols > 0){
 			SelectTile();
+		}
+	}
+
+	//enable or disable selection
+	public void Enable(bool isEnabled){
+		if (isEnabled) {
+			shouldSelect = true;
+			myArc.gameObject.SetActive(true);
+			SelectDefault ();
+		} 
+		else {
+			myArc.gameObject.SetActive(false);
+			shouldSelect = false;
+			if(selectedTile != null){
+				selectedTile.myHighlighter.UnHighlight();
+			}
 		}
 	}
 
 	void SelectTile(){
 
-
 		if(selectedTile != null){
-			selectedTile.myHighlighter.UnHighlight();
+			selectedTile.myHighlighter.HighlightLow();
 		}
 		selectedTile = grid.GetGridTile( selectedRow, selectedCol );
 		selectedTile.myHighlighter.HighlightHigh();
 
 		myArc.GenerateArc(selectedTile.transform.position);
+
 	}
 
 	bool GetChangedRowColInput(){
