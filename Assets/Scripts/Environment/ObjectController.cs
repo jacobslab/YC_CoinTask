@@ -106,7 +106,7 @@ public class ObjectController : MonoBehaviour {
 	}
 
 	//spawn random object at a specified location
-	public GameObject SpawnSpecialObjectXY (Vector3 spawnPosition){
+	public GameObject SpawnSpecialObjectXY (Vector2 gridIndices, Vector3 spawnPosition){
 		GameObject objToSpawn = ChooseRandomObject ();
 		if (objToSpawn != null) {
 			float spawnPosY = objToSpawn.transform.position.y; //use the prefab's height
@@ -119,6 +119,9 @@ public class ObjectController : MonoBehaviour {
 			newObject.transform.RotateAround(newObject.transform.position, Vector3.up, randomRot);
 
 			CurrentTrialSpecialObjects.Add(newObject.GetComponent<SpawnableObject>());
+
+			newObject.GetComponent<GridItem>().rowIndex = (int)gridIndices.x;
+			newObject.GetComponent<GridItem>().colIndex = (int)gridIndices.y;
 
 			return newObject;
 		}

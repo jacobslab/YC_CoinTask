@@ -85,6 +85,10 @@ public class Config_CoinTask : MonoBehaviour {
 	public static int numSpecialObjectsMedium = 4;
 	public static int numSpecialObjectsHard = 6;
 
+
+	public static float pauseAtSpecialObjectTime = 1.0f;
+
+
 	public static string initialInstructions = "In this game, you will pick up coins in a field. In a few locations, the coin will turn into a surprise object!" + 
 		"\n" + "\nAfter you have collected all of the coins, you will be asked to select the location in the field of the surprise objects." + 
 			"\n" + "\nYou will get points for how well you remember the object locations and how quickly you complete the level." +

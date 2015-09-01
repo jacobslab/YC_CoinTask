@@ -29,7 +29,6 @@ public class GridItem : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collider){
 		if (collider.gameObject.tag == "Player" && tag == "DefaultGridItem") {
-			Experiment_CoinTask.Instance.trialController.IncrementNumDefaultObjectsCollected();
 
 			//turn invisible, play sound
 			GetComponent<Renderer>().enabled = false;
@@ -41,13 +40,18 @@ public class GridItem : MonoBehaviour {
 			if (mySpotType == EnvironmentGrid.GridSpotType.specialGridItem && tag == "DefaultGridItem") {
 				//if it was a special spot and this is the default object...
 				//...we should spawn the special object!
-				Experiment_CoinTask.Instance.objectController.SpawnSpecialObjectXY(transform.position);
+				//TODO: spawn with default coins, show on collision???
+				GameObject specialObject = Experiment_CoinTask.Instance.objectController.SpawnSpecialObjectXY(new Vector2(rowIndex, colIndex), transform.position);
 				SpecialParticles.Play();
 				specialCollisionSound.Play ();
+
+				//tell the trial controller to wait for the animation
+				StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForSpecialAnimation(specialObject));
 			}
 			else{
 				DefaultParticles.Play();
 				defaultCollisionSound.Play();
+				Experiment_CoinTask.Instance.trialController.IncrementNumDefaultObjectsCollected();
 			}
 		}
 	}

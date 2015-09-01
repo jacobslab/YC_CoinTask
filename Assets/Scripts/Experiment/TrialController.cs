@@ -166,6 +166,7 @@ public class TrialController : MonoBehaviour {
 		//unlock avatar controls, wait for player to collect all coins
 		exp.player.controls.ShouldLockControls = false;
 		int numDefaultObjectsToCollect = trial.DefaultObjectGridIndices.Count;
+
 		while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
 			yield return 0;
 		}
@@ -189,14 +190,21 @@ public class TrialController : MonoBehaviour {
 			exp.player.tileSelector.Enable (true);
 
 			//show instructions for location selection -- TODO: use the image of the object instead?
-			string specialItemName = exp.objectController.CurrentTrialSpecialObjects [i].GetComponent<SpawnableObject>().GetName();
+			SpawnableObject specialObj = exp.objectController.CurrentTrialSpecialObjects [i];
+			string specialItemName = specialObj.GetName();
 			yield return StartCoroutine (exp.ShowSingleInstruction ("Select the location of the " + specialItemName + ".", true, true, Config_CoinTask.minDefaultInstructionTime));
 
 			//wait for them to chose a location
 			yield return StartCoroutine(Experiment_CoinTask.Instance.WaitForActionButton());
 
+			Tile correctTile = exp.environmentController.myGrid.GetGridTile(specialObj.GetComponent<GridItem>().rowIndex, specialObj.GetComponent<GridItem>().colIndex);
+			correctTile.myHighlighter.HighlightHigh();
+			correctTile.myHighlighter.SetSpecialColor(Color.green);
+
 			//TODO: after object location has been chosen, show them how close they were / give them points
 			yield return StartCoroutine(Experiment_CoinTask.Instance.WaitForActionButton());
+			correctTile.myHighlighter.HighlightLow();
+			correctTile.myHighlighter.ResetColor();
 		}
 
 		//turn off grid visibility
@@ -205,8 +213,11 @@ public class TrialController : MonoBehaviour {
 		//TODO: once all objects have been located, tell them their official score based on memory and time bonus
 		yield return StartCoroutine (exp.ShowSingleInstruction ("You scored some points! Continue to the next trial.", true, true, Config_CoinTask.minDefaultInstructionTime));
 
-		//clear object controller's list of special objects
-		exp.objectController.CurrentTrialSpecialObjects.Clear ();
+		//clear the special objects
+		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
+			Destroy(exp.objectController.CurrentTrialSpecialObjects[i]); //destroy the special objects
+		}
+		exp.objectController.CurrentTrialSpecialObjects.Clear (); //clear the object controller's list of special objects
 
 		yield return 0;
 		
@@ -304,5 +315,23 @@ public class TrialController : MonoBehaviour {
 
 		 //increment subject's trial count
 		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();*/
+	}
+
+	public IEnumerator WaitForSpecialAnimation(GameObject specialObject){
+		//lock the avatar controls
+		exp.player.controls.ShouldLockControls = true;
+		exp.player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+		yield return new WaitForSeconds (Config_CoinTask.pauseAtSpecialObjectTime);
+		
+		//unlock the avatar controls
+		Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;
+
+		//turn the special object invisible
+		specialObject.GetComponent<SpawnableObject> ().TurnVisible (false);
+
+
+		//only after the pause should we increment the number of coins collected...
+		//...because the trial controller waits for this to move on to the next part of the trial.
+		Experiment_CoinTask.Instance.trialController.IncrementNumDefaultObjectsCollected();
 	}
 }

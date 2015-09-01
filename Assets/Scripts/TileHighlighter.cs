@@ -9,9 +9,12 @@ public class TileHighlighter : MonoBehaviour {
 	float highlightAlphaHigh = 1.0f;
 	float origMatAlpha;
 
+	Color origColor;
+
 	void Awake(){
 		myMaterial = GetComponent<Renderer>().material;
 		origMatAlpha = myMaterial.color.a;
+		origColor = myMaterial.color;
 	}
 
 	// Use this for initialization
@@ -22,6 +25,14 @@ public class TileHighlighter : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public void SetSpecialColor(Color newColor){
+		myMaterial.color = newColor;
+	}
+
+	public void ResetColor(){
+		myMaterial.color = origColor;
 	}
 
 	public void HighlightHigh(){
