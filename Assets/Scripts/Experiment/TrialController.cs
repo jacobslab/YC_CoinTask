@@ -4,8 +4,11 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 
 public class TrialController : MonoBehaviour {
-
+	
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
+
+	public SimpleTimer trialTimer;
+
 
 	bool isPracticeTrial = false;
 	int numRealTrials = 0; //used for logging trial ID's
@@ -162,7 +165,8 @@ public class TrialController : MonoBehaviour {
 		yield return StartCoroutine (exp.ShowSingleInstruction ("Drive around and collect all of the coins. Pay attention to the surprise object locations!"+
 		                                                        "\n\nFinish quickly enough and you will receive a time bonus on your score!", true, true, Config_CoinTask.minDefaultInstructionTime));
 		//TODO: start a game timer
-		int timePassed = 0;
+		trialTimer.ResetTimer ();
+		trialTimer.StartTimer ();
 
 		//unlock avatar controls, wait for player to collect all coins
 		exp.player.controls.ShouldLockControls = false;
@@ -173,7 +177,8 @@ public class TrialController : MonoBehaviour {
 		}
 
 		//Add time bonus
-		int timeBonus = exp.scoreController.CalculateTimeBonus (timePassed);
+		trialTimer.StopTimer ();
+		int timeBonus = exp.scoreController.CalculateTimeBonus (trialTimer.GetSeconds());
 		//TODO: do nice animation for adding time bonus...
 
 		//reset num coins collected

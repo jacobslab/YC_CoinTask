@@ -58,10 +58,6 @@ public class PlayerControls : MonoBehaviour{
 	void SetTilt(){
 		float rotationDifference = transform.rotation.eulerAngles.y - lastRotation.eulerAngles.y;
 
-		if (rotationDifference != 0) {
-			int a = 0;
-		}
-
 		float percentTilt = rotationDifference / Config_CoinTask.maxAngleDifference;
 		float tiltAngle = percentTilt * Config_CoinTask.maxTiltAngle;
 		if (percentTilt > 1.0f) {
