@@ -24,8 +24,8 @@ public class Trial {
 	public Trial(bool shouldBeStim){
 		isStim = shouldBeStim;
 
-		avatarStartPos = new Vector3 (Config_CoinTask.AvatarStartX, exp.player.transform.position.y, Config_CoinTask.AvatarStartZ);
-		avatarStartRot = Quaternion.Euler (0, Config_CoinTask.AvatarStartRotY, 0);
+		avatarStartPos = new Vector3 (exp.player.StartX, exp.player.transform.position.y, exp.player.StartZ);
+		avatarStartRot = Quaternion.Euler (0, exp.player.StartRotY, 0);
 
 		int numDefaultObjects = 0;
 		int numSpecialObjects = 0;

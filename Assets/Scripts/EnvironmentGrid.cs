@@ -15,9 +15,6 @@ public class EnvironmentGrid : MonoBehaviour {
 	GridSpotType[,] myGrid;
 	Tile[,] tileGrid;
 
-	int homeBaseRow = 0;
-	int homeBaseCol = 0;
-
 	//TODO: move to GridItem.cs?
 	public enum GridSpotType{
 		empty,
@@ -33,21 +30,15 @@ public class EnvironmentGrid : MonoBehaviour {
 
 	void InitGrids(){
 		myGrid = new GridSpotType[numRows, numCols];
-		myGrid [homeBaseRow, homeBaseCol] = GridSpotType.homeBase;
 
 		GameObject[] gridItems = GameObject.FindGameObjectsWithTag ("DefaultGridItem");
 
 		for (int i = 0; i < gridItems.Length; i++) {
 			GridItem currItem = gridItems [i].GetComponent<GridItem> ();
 
-			//destroy the item if it's in the home base spot
-			if (GetGridSpotType(currItem.rowIndex, currItem.colIndex) == GridSpotType.homeBase) {
-				Debug.Log("there's an item in home base!");
-				Destroy(currItem.gameObject);
-			}
-			else{ //otherwise mark the grid as empty. we will put objects in the grid when we generate Trials.
-				myGrid [currItem.rowIndex, currItem.colIndex] = GridSpotType.empty;
-			}
+			//mark the grid as empty. we will put objects in the grid when we generate Trials.
+			myGrid [currItem.rowIndex, currItem.colIndex] = GridSpotType.empty;
+
 		}
 
 

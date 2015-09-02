@@ -7,6 +7,10 @@ public class Player : MonoBehaviour {
 	public TileSelector tileSelector;
 	public GameObject visuals;
 
+	public float StartX;
+	public float StartZ;
+	public float StartRotY;
+	
 	// Use this for initialization
 	void Start () {
 	
