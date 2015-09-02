@@ -1,20 +1,30 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ScoreController : MonoBehaviour {
 	
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
 	public int score = 0;
+	public Text scoreText;
 
-	/*public float minRange = 10;
-	public float midRange = 30;
-	public float maxRange = 50;*/
+	//SCORE VARIABLES
+	int timeBonusSmall = 10;
+	int timeBonusMed = 15;
+	int timeBonusBig = 20;
+	
+	int scorePerfect = 50;
+	int scoreClose = 30;
+	int scoreFar = 0;
+
+	int defaultObjectPoints = 1;
+	int specialObjectPoints = 10;
 
 
 	// Use this for initialization
 	void Start () {
-	
+
 	}
 	
 	// Update is called once per frame
@@ -22,7 +32,62 @@ public class ScoreController : MonoBehaviour {
 	
 	}
 
-	public int CalculatePoints(GameObject desiredObject){
+	void AddToScore(int amountToAdd){
+		score += amountToAdd;
+		UpdateScoreText ();
+	}
+
+	void UpdateScoreText(){
+		scoreText.text = "SCORE: " + score;
+	}
+
+	public void AddDefaultPoints(){
+		AddToScore(defaultObjectPoints);
+	}
+
+	public void AddSpecialPoints(){
+		AddToScore(specialObjectPoints);
+	}
+
+	public int CalculateMemoryPoints(Vector2 correctGridIndices, Vector2 chosenGridIndices){
+		int xDiff = (int) Mathf.Abs (correctGridIndices.x - chosenGridIndices.x);
+		int yDiff = (int) Mathf.Abs (correctGridIndices.y - chosenGridIndices.y);
+
+		if (xDiff == 0 && yDiff == 0) {
+			AddToScore(scorePerfect);
+			return scorePerfect;
+		}
+		else if ( xDiff <= 1 && yDiff <= 1) {
+			AddToScore(scoreClose);
+			return scoreClose;
+		}
+		else if (xDiff <= 2 && yDiff <= 2) {
+			AddToScore(scoreFar);
+			return scoreFar;
+		}
+
+		return 0;
+	}
+
+	public int CalculateTimeBonus(float secondsToCompleteTrial){
+		if (secondsToCompleteTrial < 30) {
+			AddToScore(timeBonusBig);
+			return timeBonusBig;
+		} 
+		else if (secondsToCompleteTrial < 45) {
+			AddToScore(timeBonusMed);
+			return timeBonusMed;
+		} 
+		else if (secondsToCompleteTrial < 60) {
+			AddToScore(timeBonusSmall);
+			return timeBonusSmall;
+		} 
+
+		return 0;
+
+	}
+
+	/*public int CalculatePoints(GameObject desiredObject){
 		Vector2 avatarXYPos = new Vector2( exp.player.transform.position.x, exp.player.transform.position.z);
 		Vector2 objectXYPos = new Vector2( desiredObject.transform.position.x, desiredObject.transform.position.z);
 
@@ -52,5 +117,5 @@ public class ScoreController : MonoBehaviour {
 			score += 10;
 			return 10;
 		}
-	}
+	}*/
 }

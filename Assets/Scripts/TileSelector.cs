@@ -7,7 +7,7 @@ public class TileSelector : MonoBehaviour {
 	EnvironmentGrid grid { get { return Experiment_CoinTask.Instance.environmentController.myGrid; } }
 	int selectedRow = 0;
 	int selectedCol = 0;
-	Tile selectedTile;
+	[HideInInspector] public Tile selectedTile;
 
 	int numRows { get { return Experiment_CoinTask.Instance.environmentController.myGrid.Rows; } }
 	int numCols { get { return Experiment_CoinTask.Instance.environmentController.myGrid.Columns; } }

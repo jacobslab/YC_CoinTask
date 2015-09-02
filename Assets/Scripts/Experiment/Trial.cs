@@ -86,26 +86,29 @@ public class Trial {
 		//TODO: counter the avatar? or always start at the home base?
 		//counterTrial.avatarStartPos = GetReflectedPositionXZ (avatarStartPos);
 		//counterTrial.avatarStartRot = GetReflectedRotation (avatarStartRot);
+		counterTrial.avatarStartPos = avatarStartPos;
+		counterTrial.avatarStartRot = avatarStartRot;
 
+
+		int maxRow = exp.environmentController.myGrid.Rows;
+		int maxCol = exp.environmentController.myGrid.Columns;
 		//counter the object positions
 		for (int i = 0; i < DefaultObjectGridIndices.Count; i++) {
-			Vector2 swappedIndices = DefaultObjectGridIndices[i];
-			//swap the indices
-			float tempIndex = swappedIndices.x; //(all of these are ints though, because they're indices...)
-			swappedIndices.x = swappedIndices.y;
-			swappedIndices.y = tempIndex;
+			Vector2 counteredIndices = new Vector3(DefaultObjectGridIndices[i].x, DefaultObjectGridIndices[i].y);
+			//counter the indices
+			counteredIndices.x = maxRow - counteredIndices.x - 1; // - 1 because indexing starts at zero
+			counteredIndices.y = maxCol - counteredIndices.y - 1; // - 1 because indexing starts at zero
 
-			counterTrial.DefaultObjectGridIndices.Add ( swappedIndices );
+			counterTrial.DefaultObjectGridIndices.Add ( counteredIndices );
 		}
 
 		for (int i = 0; i < SpecialObjectIndices.Count; i++) {
-			Vector2 swappedIndices = SpecialObjectIndices[i];
-			//swap the indices
-			float tempIndex = swappedIndices.x; //(all of these are ints though, because they're indices...)
-			swappedIndices.x = swappedIndices.y;
-			swappedIndices.y = tempIndex;
+			Vector2 counteredIndices = new Vector3(SpecialObjectIndices[i].x, SpecialObjectIndices[i].y);
+			//counter the indices
+			counteredIndices.x = maxRow - counteredIndices.x - 1; // - 1 because indexing starts at zero
+			counteredIndices.y = maxCol - counteredIndices.y - 1; // - 1 because indexing starts at zero
 			
-			counterTrial.SpecialObjectIndices.Add ( swappedIndices );
+			counterTrial.SpecialObjectIndices.Add ( counteredIndices );
 		}
 		
 		return counterTrial;

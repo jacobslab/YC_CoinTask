@@ -161,7 +161,7 @@ public class TrialController : MonoBehaviour {
 		yield return StartCoroutine (exp.ShowSingleInstruction ("Drive around and collect all of the coins. Pay attention to the surprise object locations!"+
 		                                                        "\n\nFinish quickly enough and you will receive a time bonus on your score!", true, true, Config_CoinTask.minDefaultInstructionTime));
 		//TODO: start a game timer
-
+		int timePassed = 0;
 
 		//unlock avatar controls, wait for player to collect all coins
 		exp.player.controls.ShouldLockControls = false;
@@ -170,6 +170,10 @@ public class TrialController : MonoBehaviour {
 		while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
 			yield return 0;
 		}
+
+		//Add time bonus
+		int timeBonus = exp.scoreController.CalculateTimeBonus (timePassed);
+		//TODO: do nice animation for adding time bonus...
 
 		//reset num coins collected
 		numDefaultObjectsCollected = 0;
@@ -183,6 +187,7 @@ public class TrialController : MonoBehaviour {
 		exp.player.controls.MoveToTower ();
 
 		//ask player to locate each object individually on the grid
+		int memoryScore = 0;
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
 			//turn on grid visibility
 			exp.environmentController.myGrid.TurnOnTileVisibility(true);
@@ -201,6 +206,11 @@ public class TrialController : MonoBehaviour {
 			correctTile.myHighlighter.HighlightHigh();
 			correctTile.myHighlighter.SetSpecialColor(Color.green);
 
+			//Add memory score
+			Vector2 chosenTileGridPos = exp.player.tileSelector.selectedTile.GetComponent<GridItem>().GetGridIndices();
+			Vector2 correctTileGridPos = correctTile.GetComponent<GridItem>().GetGridIndices();
+			memoryScore += exp.scoreController.CalculateMemoryPoints(correctTileGridPos, chosenTileGridPos);
+
 			//TODO: after object location has been chosen, show them how close they were / give them points
 			yield return StartCoroutine(Experiment_CoinTask.Instance.WaitForActionButton());
 			correctTile.myHighlighter.HighlightLow();
@@ -211,7 +221,7 @@ public class TrialController : MonoBehaviour {
 		exp.environmentController.myGrid.TurnOnTileVisibility(false);
 
 		//TODO: once all objects have been located, tell them their official score based on memory and time bonus
-		yield return StartCoroutine (exp.ShowSingleInstruction ("You scored some points! Continue to the next trial.", true, true, Config_CoinTask.minDefaultInstructionTime));
+		yield return StartCoroutine (exp.ShowSingleInstruction ("You scored" + memoryScore + " memory points and a " + timeBonus + " point time bonus! Continue to the next trial.", true, true, Config_CoinTask.minDefaultInstructionTime));
 
 		//clear the special objects
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {

@@ -19,6 +19,10 @@ public class GridItem : MonoBehaviour {
 	void Start () {
 
 	}
+
+	public Vector2 GetGridIndices(){
+		return new Vector2 (rowIndex, colIndex);
+	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -38,6 +42,9 @@ public class GridItem : MonoBehaviour {
 			EnvironmentGrid.GridSpotType mySpotType = envGrid.GetGridSpotType (rowIndex, colIndex);
 			Debug.Log(mySpotType.ToString());
 			if (mySpotType == EnvironmentGrid.GridSpotType.specialGridItem && tag == "DefaultGridItem") {
+
+				Experiment_CoinTask.Instance.scoreController.AddSpecialPoints();
+
 				//if it was a special spot and this is the default object...
 				//...we should spawn the special object!
 				//TODO: spawn with default coins, show on collision???
@@ -49,6 +56,8 @@ public class GridItem : MonoBehaviour {
 				StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForSpecialAnimation(specialObject));
 			}
 			else{
+				Experiment_CoinTask.Instance.scoreController.AddDefaultPoints();
+
 				DefaultParticles.Play();
 				defaultCollisionSound.Play();
 				Experiment_CoinTask.Instance.trialController.IncrementNumDefaultObjectsCollected();
