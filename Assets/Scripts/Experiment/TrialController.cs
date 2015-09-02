@@ -228,7 +228,7 @@ public class TrialController : MonoBehaviour {
 		exp.environmentController.myGrid.TurnOnTileVisibility(false);
 
 		//TODO: once all objects have been located, tell them their official score based on memory and time bonus
-		yield return StartCoroutine (exp.ShowSingleInstruction ("You scored" + memoryScore + " memory points and a " + timeBonus + " point time bonus! Continue to the next trial.", true, true, Config_CoinTask.minDefaultInstructionTime));
+		yield return StartCoroutine (exp.ShowSingleInstruction ("You scored " + memoryScore + " memory points and a " + timeBonus + " point time bonus! Continue to the next trial.", true, true, Config_CoinTask.minDefaultInstructionTime));
 
 		//clear the special objects
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {

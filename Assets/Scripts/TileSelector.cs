@@ -14,6 +14,8 @@ public class TileSelector : MonoBehaviour {
 
 	bool shouldSelect = false;
 
+	bool hasInput = false;
+
 	// Use this for initialization
 	void Start () {
 		SelectDefault ();
@@ -27,6 +29,85 @@ public class TileSelector : MonoBehaviour {
 				SelectTile ();
 			}
 		}
+	}
+	
+	bool GetChangedRowColInput(){
+		int origRow = selectedRow;
+		int origCol = selectedCol;
+		
+		float horizontalInput = Input.GetAxis ("Horizontal");
+		float verticalInput = Input.GetAxis ("Vertical");
+		
+		float inputEpsilon = 0.2f;
+		if (horizontalInput < inputEpsilon && horizontalInput > -inputEpsilon) {
+			if (verticalInput < inputEpsilon && verticalInput > -inputEpsilon) {
+				hasInput = false;
+			}
+		}
+
+		Debug.Log("horizontal " + horizontalInput + " , vertical " + verticalInput);
+
+		//working on this for better joystick control
+		 /* if (!hasInput) {
+			if (horizontalInput > 0.5f && verticalInput > 0.5f) {
+				Debug.Log ("OH HAI");
+				if (selectedCol < numCols - 1) {
+					selectedCol += 1;
+					hasInput = true;
+				}
+			} else if (horizontalInput < -0.5f && verticalInput < -0.5f) {
+				if (selectedCol > 0) {
+					selectedCol -= 1;
+					hasInput = true;
+				}
+			}
+			if (horizontalInput > 0.5f && verticalInput < -0.5f) {
+				Debug.Log ("OH HAI");
+				if (selectedRow > 0) {
+					selectedRow -= 1;
+					hasInput = true;
+				}
+			} else if (horizontalInput < -0.5f && verticalInput > 0.5f) {
+				if (selectedRow < numRows - 1) {
+					selectedRow += 1;
+					hasInput = true;
+				}
+			} else {
+				hasInput = false;
+			}
+		}*/
+
+		//works well for keyboard
+		if (horizontalInput == 1.0f) {
+			if (selectedRow > 0) {
+				selectedRow -= 1;
+				hasInput = true;
+			}
+		} 
+		else if (horizontalInput == -1.0f) {
+			if (selectedRow < numRows - 1) {
+				selectedRow += 1;
+				hasInput = true;
+			}
+		} 
+		else if (verticalInput == -1.0f) {
+			if (selectedCol > 0) {
+				selectedCol -= 1;
+				hasInput = true;
+			}
+		} 
+		else if (verticalInput == 1.0f) {
+			if (selectedCol < numCols - 1) {
+				selectedCol += 1;
+				hasInput = true;
+			}
+		}
+		
+		if(selectedRow != origRow || selectedCol != origCol){
+			return true;
+		}
+		
+		return false;
 	}
 
 	void SelectDefault(){
@@ -65,36 +146,4 @@ public class TileSelector : MonoBehaviour {
 
 	}
 
-	bool GetChangedRowColInput(){
-		int origRow = selectedRow;
-		int origCol = selectedCol;
-
-		if(Input.GetKeyDown(KeyCode.RightArrow)){
-			if(selectedRow > 0){
-				selectedRow -= 1;
-			}
-		}
-		else if(Input.GetKeyDown(KeyCode.LeftArrow)){
-			if(selectedRow < numRows - 1){
-				selectedRow += 1;
-			}
-		}
-		else if(Input.GetKeyDown(KeyCode.DownArrow)){
-			if(selectedCol > 0){
-				selectedCol -= 1;
-			}
-		}
-		else if(Input.GetKeyDown(KeyCode.UpArrow)){
-			if(selectedCol < numCols - 1){
-				selectedCol += 1;
-				Debug.Log(selectedCol);
-			}
-		}
-
-		if(selectedRow != origRow || selectedCol != origCol){
-			return true;
-		}
-
-		return false;
-	}
 }
