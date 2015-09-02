@@ -147,6 +147,7 @@ public class TrialController : MonoBehaviour {
 		//move player to first location & rotation
 		exp.player.transform.position = trial.avatarStartPos;
 		exp.player.transform.rotation = trial.avatarStartRot;
+		exp.player.TurnOnVisuals (true);
 
 		exp.environmentController.myGrid.Clear ();
 
@@ -185,6 +186,7 @@ public class TrialController : MonoBehaviour {
 		//bring player to tower, lock movement
 		exp.player.controls.ShouldLockControls = true;
 		exp.player.controls.MoveToTower ();
+		exp.player.TurnOnVisuals (false);
 
 		//ask player to locate each object individually on the grid
 		int memoryScore = 0;

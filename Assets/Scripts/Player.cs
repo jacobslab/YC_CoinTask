@@ -5,6 +5,7 @@ public class Player : MonoBehaviour {
 
 	public PlayerControls controls;
 	public TileSelector tileSelector;
+	public GameObject visuals;
 
 	// Use this for initialization
 	void Start () {
@@ -14,6 +15,10 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public void TurnOnVisuals(bool isVisible){
+		visuals.SetActive (isVisible);
 	}
 	
 }
