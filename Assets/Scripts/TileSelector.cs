@@ -48,17 +48,29 @@ public class TileSelector : MonoBehaviour {
 		Debug.Log("horizontal " + horizontalInput + " , vertical " + verticalInput);
 
 		//working on this for better joystick control
+		/*public enum DirectionType{
+		 * 		colUp,
+		 * 		colDown,
+		 * 		rowUp,
+		 * 		rowDown,
+		 * 		none
+		 * }
+		 * 
+		 * DirectionType lastDirection = DirectionType.none;
+		 * /
 		 /* if (!hasInput) {
 			if (horizontalInput > 0.5f && verticalInput > 0.5f) {
 				Debug.Log ("OH HAI");
 				if (selectedCol < numCols - 1) {
 					selectedCol += 1;
 					hasInput = true;
+					lastDirection = DirectionType.colUp;
 				}
 			} else if (horizontalInput < -0.5f && verticalInput < -0.5f) {
 				if (selectedCol > 0) {
 					selectedCol -= 1;
 					hasInput = true;
+					lastDirection = DirectionType.colDown;
 				}
 			}
 			if (horizontalInput > 0.5f && verticalInput < -0.5f) {
@@ -66,11 +78,13 @@ public class TileSelector : MonoBehaviour {
 				if (selectedRow > 0) {
 					selectedRow -= 1;
 					hasInput = true;
+					lastDirection = DirectionType.rowDown;
 				}
 			} else if (horizontalInput < -0.5f && verticalInput > 0.5f) {
 				if (selectedRow < numRows - 1) {
 					selectedRow += 1;
 					hasInput = true;
+					lastDirection = DirectionType.rowUp;
 				}
 			} else {
 				hasInput = false;
