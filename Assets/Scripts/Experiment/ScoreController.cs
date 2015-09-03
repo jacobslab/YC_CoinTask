@@ -34,6 +34,7 @@ public class ScoreController : MonoBehaviour {
 
 	void AddToScore(int amountToAdd){
 		score += amountToAdd;
+		ExperimentSettings_CoinTask.currentSubject.score = score;
 		UpdateScoreText ();
 	}
 

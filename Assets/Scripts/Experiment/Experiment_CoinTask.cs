@@ -110,9 +110,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 	}
 
 	public IEnumerator RunOutOfTrials(){
-		while(environmentMap.IsActive){
+		/*while(environmentMap.IsActive){
 			yield return 0; //thus, should wait for the button press before ending the experiment
-		}
+		}*/
 
 		cameraController.SetInstructions(); //TODO: might be unecessary? evaluate for oculus...? 
 		

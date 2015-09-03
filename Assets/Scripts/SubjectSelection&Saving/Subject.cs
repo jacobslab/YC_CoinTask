@@ -22,9 +22,9 @@ public class Subject {
 		trials++;
 	}
 	
-	public void AddScore ( int scoreToAdd ) {
+	/*public void AddScore ( int scoreToAdd ) {
 		Debug.Log("adding to score");
 		score += scoreToAdd;
-	}
+	}*/
 
 }
