@@ -38,14 +38,14 @@ public class TrialController : MonoBehaviour {
 		BlockList = new List<Block> ();
 
 		if (Config_CoinTask.doPracticeBlock) {
-			Trial one = new Trial(false);		//stim
-			Trial two = new Trial(false);		//non-stim
+			Trial one = new Trial(false, Trial.practiceDifficulty);		//non-stim for practice
+			Trial two = new Trial(false, Trial.practiceDifficulty);		//non-stim for practice
 			practiceBlock = new Block(one, two);
 		}
 
 		for(int i = 0; i < Config_CoinTask.numBlocks/2; i++){
-			Trial one = new Trial(true);			//stim
-			Trial two = new Trial(false);			//non-stim
+			Trial one = new Trial(true, Trial.DifficultySetting.easy);			//stim
+			Trial two = new Trial(false, Trial.DifficultySetting.easy);			//non-stim
 			Block block = new Block(one, two);
 
 			Trial counterOne = one.GetCounterSelf();//non-stim

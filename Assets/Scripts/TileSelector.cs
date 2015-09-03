@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TileSelector : MonoBehaviour {
 
-	public ArcGenerator myArc;
+	//public ArcGenerator myArc;
 	EnvironmentGrid grid { get { return Experiment_CoinTask.Instance.environmentController.myGrid; } }
 	int selectedRow = 0;
 	int selectedCol = 0;
@@ -49,7 +49,7 @@ public class TileSelector : MonoBehaviour {
 	
 
 	bool CheckWithinBounds(float value, float min, float max){
-		if (value > min && value < max) {
+		if (value >= min && value <= max) {
 			return true;
 		}
 
@@ -75,13 +75,58 @@ public class TileSelector : MonoBehaviour {
 
 
 		if (ExperimentSettings_CoinTask.isJoystickInput) {
-			bool horizInMaxBounds = CheckWithinBounds(horizontalInput, 0.0f, 1.0f);
+			//if we want it on the diagonal
+			/*bool horizInMaxBounds = CheckWithinBounds(horizontalInput, 0.0f, 1.0f);
 			bool vertInMaxBounds = CheckWithinBounds(verticalInput, 0.0f, 1.0f);
 			bool horizInMinBounds = CheckWithinBounds(horizontalInput, -1.0f, 0.0f);
-			bool vertInMinBounds = CheckWithinBounds(verticalInput, -1.0f, 0.0f);
+			bool vertInMinBounds = CheckWithinBounds(verticalInput, -1.0f, 0.0f);*/
+
+			bool horizInMaxBounds = CheckWithinBounds (horizontalInput, 0.3f, 1.0f);
+			bool vertInMaxBounds = CheckWithinBounds (verticalInput, 0.3f, 1.0f);
+			bool horizInMinBounds = CheckWithinBounds (horizontalInput, -1.0f, -0.3f);
+			bool vertInMinBounds = CheckWithinBounds (verticalInput, -1.0f, -0.3f);
+
+			Debug.Log("horizontal: " + horizontalInput + " vertical: " + verticalInput);
+
+			float absHorizInput = Mathf.Abs (horizontalInput);
+			float absVertInput = Mathf.Abs (verticalInput);
+
+			if (absHorizInput > absVertInput) {
+				if (horizInMaxBounds && lastSelectionDirection != DirectionType.rowDown) {
+					if (selectedRow > 0) {
+						selectedRow -= 1;
+						lastSelectionDirection = DirectionType.rowDown;
+					}
+				} else if (horizInMinBounds && lastSelectionDirection != DirectionType.rowUp) {
+					if (selectedRow < numRows - 1) {
+						selectedRow += 1;
+						lastSelectionDirection = DirectionType.rowUp;
+					}
+				}
+			} else {
+				if (vertInMaxBounds && lastSelectionDirection != DirectionType.colUp) {
+					if (selectedCol < numCols - 1) {
+						selectedCol += 1;
+						lastSelectionDirection = DirectionType.colUp;
+					}
+				} else if (vertInMinBounds && lastSelectionDirection != DirectionType.colDown) {
+					if (selectedCol > 0) {
+						selectedCol -= 1;
+						lastSelectionDirection = DirectionType.colDown;
+					}
+				}
+			}
+
+			if (!horizInMinBounds && !horizInMaxBounds && !vertInMinBounds && !vertInMaxBounds) {
+				lastSelectionDirection = DirectionType.none;
+			}
+		}
+
+
+
 
 			//both in max bounds
-			if (horizInMaxBounds && vertInMaxBounds && lastSelectionDirection != DirectionType.colUp) {
+			/*if (horizInMaxBounds && vertInMaxBounds && lastSelectionDirection != DirectionType.colUp) {
 				if (selectedCol < numCols - 1) {
 					selectedCol += 1;
 					lastSelectionDirection = DirectionType.colUp;
@@ -112,7 +157,7 @@ public class TileSelector : MonoBehaviour {
 				lastSelectionDirection = DirectionType.none;
 			}
 
-		}
+		}*/
 
 		//works well for keyboard
 		else {
@@ -163,13 +208,13 @@ public class TileSelector : MonoBehaviour {
 	//enable or disable selection
 	public void Enable(){
 		shouldSelect = true;
-		myArc.gameObject.SetActive(true);
+		//myArc.gameObject.SetActive(true);
 
 		SelectDefault ();
 	}
 
 	public void Disable(bool shouldDeselect){
-		myArc.gameObject.SetActive(false);
+		//myArc.gameObject.SetActive(false);
 		shouldSelect = false;
 		if(selectedTile != null && shouldDeselect){
 			selectedTile.myHighlighter.UnHighlight();
@@ -184,7 +229,7 @@ public class TileSelector : MonoBehaviour {
 		selectedTile = grid.GetGridTile( selectedRow, selectedCol );
 		selectedTile.myHighlighter.HighlightHigh();
 
-		myArc.GenerateArc(selectedTile.transform.position);
+		//myArc.GenerateArc(selectedTile.transform.position);
 
 	}
 

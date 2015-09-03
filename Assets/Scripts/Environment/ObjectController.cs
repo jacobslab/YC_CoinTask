@@ -94,6 +94,9 @@ public class ObjectController : MonoBehaviour {
 			GridItem newGridItem = newObj.GetComponent<GridItem>();
 			newGridItem.rowIndex = (int)currIndices.x;
 			newGridItem.colIndex = (int)currIndices.y;
+
+			SpawnableObject newSpawnableObj = newObj.GetComponent<SpawnableObject>();
+			newSpawnableObj.SetNameID(i);
 		}
 	}
 

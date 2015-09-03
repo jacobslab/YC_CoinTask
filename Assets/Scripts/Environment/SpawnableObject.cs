@@ -50,4 +50,17 @@ public class SpawnableObject : MonoBehaviour {
 		return name;
 	}
 
+	//should be set when spawned by the ObjectController
+	public void SetNameID(int ID){
+		if (ID < 10) {
+			gameObject.name = GetName() + "00" + ID; 
+		}
+		else if(ID < 100) {
+			gameObject.name = GetName() + "0" + ID; 
+		}
+		else if(ID < 1000) {
+			gameObject.name = GetName() + ID; 
+		}
+	}
+
 }

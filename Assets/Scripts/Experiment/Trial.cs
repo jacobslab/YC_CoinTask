@@ -14,14 +14,24 @@ public class Trial {
 	public Quaternion avatarStartRot;
 	public List<Vector2> DefaultObjectGridIndices;
 	public List<Vector2> SpecialObjectIndices;
-	
+
+	public DifficultySetting trialDifficulty;
+
+
+	public static DifficultySetting practiceDifficulty = DifficultySetting.easy;
+	public enum DifficultySetting {
+		easy,
+		medium,
+		hard
+	}
+
 
 	public Trial(){
 		DefaultObjectGridIndices = new List<Vector2> ();
 		SpecialObjectIndices = new List<Vector2> ();
 	}
 
-	public Trial(bool shouldBeStim){
+	public Trial(bool shouldBeStim, DifficultySetting difficulty){
 		isStim = shouldBeStim;
 
 		avatarStartPos = new Vector3 (exp.player.StartX, exp.player.transform.position.y, exp.player.StartZ);
@@ -30,15 +40,15 @@ public class Trial {
 		int numDefaultObjects = 0;
 		int numSpecialObjects = 0;
 
-		if (Config_CoinTask.difficultySetting == Config_CoinTask.DifficultySetting.easy) {
+		if (difficulty == DifficultySetting.easy) {
 			numDefaultObjects = Config_CoinTask.numDefaultObjectsEasy;
 			numSpecialObjects = Config_CoinTask.numSpecialObjectsEasy;
 		} 
-		else if (Config_CoinTask.difficultySetting == Config_CoinTask.DifficultySetting.medium) {
+		else if (difficulty == DifficultySetting.medium) {
 			numDefaultObjects = Config_CoinTask.numDefaultObjectsMedium;
 			numSpecialObjects = Config_CoinTask.numSpecialObjectsMedium;
 		} 
-		else if (Config_CoinTask.difficultySetting == Config_CoinTask.DifficultySetting.hard) {
+		else if (difficulty == DifficultySetting.hard) {
 			numDefaultObjects = Config_CoinTask.numDefaultObjectsHard;
 			numSpecialObjects = Config_CoinTask.numSpecialObjectsHard;
 		}

@@ -23,7 +23,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public static bool isOculus = false;
 	public static bool isJoystickInput = false;
 	public static bool isReplay = false;
-	public static bool isLogging = true; //if not in replay mode, should log things! or can be toggled off in main menu.
+	public static bool isLogging = false; //if not in replay mode, should log things! or can be toggled off in main menu.
 
 	public Toggle oculusToggle; //only exists in main menu -- make sure to null check
 	public Toggle joystickInputToggle; //only exists in main menu -- make sure to null check

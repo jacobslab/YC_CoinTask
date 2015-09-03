@@ -66,19 +66,11 @@ public class Config_CoinTask : MonoBehaviour {
 
 
 //SPECIFIC COIN TASK VARIABLES:
-	public enum DifficultySetting {
-		easy,
-		medium,
-		hard
-	}
-
-	public static DifficultySetting difficultySetting = DifficultySetting.easy;
-
 
 	//DEFAULT OBJECTS
 	public static int numDefaultObjectsEasy = 10;
-	public static int numDefaultObjectsMedium = 10;
-	public static int numDefaultObjectsHard = 10;
+	public static int numDefaultObjectsMedium = 15;
+	public static int numDefaultObjectsHard = 20;
 
 	//THERE MUST ALWAYS BE FEWER SPECIAL OBJECTS THAN DEFAULT OBJECTS
 	public static int numSpecialObjectsEasy = 2;
