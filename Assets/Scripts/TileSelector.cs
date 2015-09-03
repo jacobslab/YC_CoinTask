@@ -116,25 +116,32 @@ public class TileSelector : MonoBehaviour {
 
 		//works well for keyboard
 		else {
-			if (Input.GetKeyDown(KeyCode.RightArrow)) {
-				if (selectedRow > 0) {
+			if (Input.GetKey(KeyCode.RightArrow)) {
+				if (selectedRow > 0 && lastSelectionDirection != DirectionType.rowDown) {
 					selectedRow -= 1;
+					lastSelectionDirection = DirectionType.rowDown;
 				}
 			}
-			else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-				if (selectedRow < numRows - 1) {
+			else if (Input.GetKey(KeyCode.LeftArrow)) {
+				if (selectedRow < numRows - 1 && lastSelectionDirection != DirectionType.rowUp) {
 					selectedRow += 1;
+					lastSelectionDirection = DirectionType.rowUp;
 				}
 			} 
-			else if (Input.GetKeyDown(KeyCode.DownArrow)) {
-				if (selectedCol > 0) {
+			else if (Input.GetKey(KeyCode.DownArrow)) {
+				if (selectedCol > 0 && lastSelectionDirection != DirectionType.colDown) {
 					selectedCol -= 1;
+					lastSelectionDirection = DirectionType.colDown;
 				}
 			} 
-			else if (Input.GetKeyDown(KeyCode.UpArrow)) {
-				if (selectedCol < numCols - 1) {
+			else if (Input.GetKey(KeyCode.UpArrow)) {
+				if (selectedCol < numCols - 1 && lastSelectionDirection != DirectionType.colUp) {
 					selectedCol += 1;
+					lastSelectionDirection = DirectionType.colUp;
 				}
+			}
+			else{
+				lastSelectionDirection = DirectionType.none;
 			}
 		}
 
