@@ -14,6 +14,10 @@ public class TileSelector : MonoBehaviour {
 
 	bool shouldSelect = false;
 
+	//when a direction is held down, a certain amount of time must pass before automatically selecting the next tile
+	float inputTimePassed = 0;
+	float autoNextTileTime = 0.3f;
+
 
 	//used for precise joystick control
 	public enum DirectionType{
@@ -53,6 +57,16 @@ public class TileSelector : MonoBehaviour {
 	}
 
 	bool GetChangedRowColInput(){
+
+		if (lastSelectionDirection != DirectionType.none) {
+			inputTimePassed += Time.deltaTime;
+
+			if(inputTimePassed > autoNextTileTime){
+				inputTimePassed = 0;
+				lastSelectionDirection = DirectionType.none;
+			}
+		}
+
 		int origRow = selectedRow;
 		int origCol = selectedCol;
 		

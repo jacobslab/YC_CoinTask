@@ -70,15 +70,15 @@ public class ScoreController : MonoBehaviour {
 	}
 
 	public int CalculateTimeBonus(float secondsToCompleteTrial){
-		if (secondsToCompleteTrial < 30) {
+		if (secondsToCompleteTrial < 40) {
 			AddToScore(timeBonusBig);
 			return timeBonusBig;
 		} 
-		else if (secondsToCompleteTrial < 45) {
+		else if (secondsToCompleteTrial < 60) {
 			AddToScore(timeBonusMed);
 			return timeBonusMed;
 		} 
-		else if (secondsToCompleteTrial < 60) {
+		else if (secondsToCompleteTrial < 80) {
 			AddToScore(timeBonusSmall);
 			return timeBonusSmall;
 		} 
