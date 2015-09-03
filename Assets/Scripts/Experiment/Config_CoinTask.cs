@@ -86,6 +86,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static int numSpecialObjectsHard = 6;
 
 
+	public static float rotateToSpecialObjectTime = 1.0f;
 	public static float pauseAtSpecialObjectTime = 1.0f;
 
 

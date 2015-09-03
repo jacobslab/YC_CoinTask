@@ -109,6 +109,48 @@ public class PlayerControls : MonoBehaviour{
 		transform.rotation = towerPositionTransform.rotation;
 	}
 
+	public IEnumerator RotateTowardSpecialObject(GameObject target){
+		//set tilt to zero
+		lastRotation = transform.rotation;
+		SetTilt ();
 
+		Quaternion origRotation = transform.rotation;
+		Vector3 targetPosition = new Vector3 (target.transform.position.x, transform.position.y, target.transform.position.z);
+		transform.LookAt(targetPosition);
+		Quaternion desiredRotation = transform.rotation;
+		
+		
+		//rotate to look at target
+		transform.rotation = origRotation;
+		
+		float ELAPSEDTIME = 0.0f;
+		
+		float rotateRate = 1.0f / Config_CoinTask.rotateToSpecialObjectTime;
+		float tElapsed = 0.0f;
+		float rotationEpsilon = 0.01f;
+		//bool hasSetTilt = false;
+		while (Mathf.Abs(transform.rotation.eulerAngles.y - desiredRotation.eulerAngles.y) >= rotationEpsilon){
+			
+			lastRotation = transform.rotation; //set last rotation before rotating!
+			
+			tElapsed += (Time.deltaTime * rotateRate);
+			ELAPSEDTIME += Time.deltaTime;
+			//will spherically interpolate the rotation for config.spinTime seconds
+			transform.rotation = Quaternion.Slerp(origRotation, desiredRotation, tElapsed); //SLERP ALWAYS TAKES THE SHORTEST PATH.
+			
+			//if(!hasSetTilt && Config_CoinTask.isAvatarTilting){
+			//	SetTilt(); //should be a constant speed - only set this once
+			//	hasSetTilt = true;
+			//}
+			
+			yield return 0;
+		}
+		
+		
+		
+		transform.rotation = desiredRotation;
+		
+		Debug.Log ("TIME ELAPSED WHILE ROTATING: " + ELAPSEDTIME);
+	}
 	
 }

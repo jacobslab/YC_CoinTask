@@ -102,19 +102,22 @@ public class TileSelector : MonoBehaviour {
 
 		//works well for keyboard
 		else {
-			if (horizontalInput == 1.0f) {
+			if (Input.GetKeyDown(KeyCode.RightArrow)) {
 				if (selectedRow > 0) {
 					selectedRow -= 1;
 				}
-			} else if (horizontalInput == -1.0f) {
+			}
+			else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
 				if (selectedRow < numRows - 1) {
 					selectedRow += 1;
 				}
-			} else if (verticalInput == -1.0f) {
+			} 
+			else if (Input.GetKeyDown(KeyCode.DownArrow)) {
 				if (selectedCol > 0) {
 					selectedCol -= 1;
 				}
-			} else if (verticalInput == 1.0f) {
+			} 
+			else if (Input.GetKeyDown(KeyCode.UpArrow)) {
 				if (selectedCol < numCols - 1) {
 					selectedCol += 1;
 				}

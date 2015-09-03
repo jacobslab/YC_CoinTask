@@ -338,6 +338,8 @@ public class TrialController : MonoBehaviour {
 		//lock the avatar controls
 		exp.player.controls.ShouldLockControls = true;
 		exp.player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+
+		yield return StartCoroutine (exp.player.controls.RotateTowardSpecialObject (specialObject));
 		yield return new WaitForSeconds (Config_CoinTask.pauseAtSpecialObjectTime);
 		
 		//unlock the avatar controls
