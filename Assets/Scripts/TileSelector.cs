@@ -14,7 +14,18 @@ public class TileSelector : MonoBehaviour {
 
 	bool shouldSelect = false;
 
-	bool hasInput = false;
+
+	//used for precise joystick control
+	public enum DirectionType{
+		colUp,
+		colDown,
+		rowUp,
+		rowDown,
+		none
+	}
+	
+	DirectionType lastSelectionDirection = DirectionType.none;
+
 
 	// Use this for initialization
 	void Start () {
@@ -30,94 +41,87 @@ public class TileSelector : MonoBehaviour {
 			}
 		}
 	}
+
 	
+
+	bool CheckWithinBounds(float value, float min, float max){
+		if (value > min && value < max) {
+			return true;
+		}
+
+		return false;
+	}
+
 	bool GetChangedRowColInput(){
 		int origRow = selectedRow;
 		int origCol = selectedCol;
 		
 		float horizontalInput = Input.GetAxis ("Horizontal");
 		float verticalInput = Input.GetAxis ("Vertical");
-		
-		float inputEpsilon = 0.2f;
-		if (horizontalInput < inputEpsilon && horizontalInput > -inputEpsilon) {
-			if (verticalInput < inputEpsilon && verticalInput > -inputEpsilon) {
-				hasInput = false;
-			}
-		}
 
-		Debug.Log("horizontal " + horizontalInput + " , vertical " + verticalInput);
 
-		//working on this for better joystick control
-		/*public enum DirectionType{
-		 * 		colUp,
-		 * 		colDown,
-		 * 		rowUp,
-		 * 		rowDown,
-		 * 		none
-		 * }
-		 * 
-		 * DirectionType lastDirection = DirectionType.none;
-		 * /
-		 /* if (!hasInput) {
-			if (horizontalInput > 0.5f && verticalInput > 0.5f) {
-				Debug.Log ("OH HAI");
+		if (ExperimentSettings_CoinTask.isJoystickInput) {
+			bool horizInMaxBounds = CheckWithinBounds(horizontalInput, 0.0f, 1.0f);
+			bool vertInMaxBounds = CheckWithinBounds(verticalInput, 0.0f, 1.0f);
+			bool horizInMinBounds = CheckWithinBounds(horizontalInput, -1.0f, 0.0f);
+			bool vertInMinBounds = CheckWithinBounds(verticalInput, -1.0f, 0.0f);
+
+			//both in max bounds
+			if (horizInMaxBounds && vertInMaxBounds && lastSelectionDirection != DirectionType.colUp) {
 				if (selectedCol < numCols - 1) {
 					selectedCol += 1;
-					hasInput = true;
-					lastDirection = DirectionType.colUp;
+					lastSelectionDirection = DirectionType.colUp;
 				}
-			} else if (horizontalInput < -0.5f && verticalInput < -0.5f) {
+			} 
+			//both in min bounds
+			else if (horizInMinBounds && vertInMinBounds && lastSelectionDirection != DirectionType.colDown) {
 				if (selectedCol > 0) {
 					selectedCol -= 1;
-					hasInput = true;
-					lastDirection = DirectionType.colDown;
+					lastSelectionDirection = DirectionType.colDown;
 				}
 			}
-			if (horizontalInput > 0.5f && verticalInput < -0.5f) {
-				Debug.Log ("OH HAI");
+			//horiz in max bounds, vert in min bounds
+			else if (horizInMaxBounds && vertInMinBounds && lastSelectionDirection != DirectionType.rowDown) {
 				if (selectedRow > 0) {
 					selectedRow -= 1;
-					hasInput = true;
-					lastDirection = DirectionType.rowDown;
+					lastSelectionDirection = DirectionType.rowDown;
 				}
-			} else if (horizontalInput < -0.5f && verticalInput > 0.5f) {
+			} 
+			//horiz in min bounds, vert in max bounds
+			else if (horizInMinBounds && vertInMaxBounds && lastSelectionDirection != DirectionType.rowUp) {
 				if (selectedRow < numRows - 1) {
 					selectedRow += 1;
-					hasInput = true;
-					lastDirection = DirectionType.rowUp;
+					lastSelectionDirection = DirectionType.rowUp;
 				}
-			} else {
-				hasInput = false;
+			} 
+			else if(!horizInMinBounds && !horizInMaxBounds && !vertInMinBounds && !vertInMaxBounds) {
+				lastSelectionDirection = DirectionType.none;
 			}
-		}*/
+
+		}
 
 		//works well for keyboard
-		if (horizontalInput == 1.0f) {
-			if (selectedRow > 0) {
-				selectedRow -= 1;
-				hasInput = true;
-			}
-		} 
-		else if (horizontalInput == -1.0f) {
-			if (selectedRow < numRows - 1) {
-				selectedRow += 1;
-				hasInput = true;
-			}
-		} 
-		else if (verticalInput == -1.0f) {
-			if (selectedCol > 0) {
-				selectedCol -= 1;
-				hasInput = true;
-			}
-		} 
-		else if (verticalInput == 1.0f) {
-			if (selectedCol < numCols - 1) {
-				selectedCol += 1;
-				hasInput = true;
+		else {
+			if (horizontalInput == 1.0f) {
+				if (selectedRow > 0) {
+					selectedRow -= 1;
+				}
+			} else if (horizontalInput == -1.0f) {
+				if (selectedRow < numRows - 1) {
+					selectedRow += 1;
+				}
+			} else if (verticalInput == -1.0f) {
+				if (selectedCol > 0) {
+					selectedCol -= 1;
+				}
+			} else if (verticalInput == 1.0f) {
+				if (selectedCol < numCols - 1) {
+					selectedCol += 1;
+				}
 			}
 		}
-		
-		if(selectedRow != origRow || selectedCol != origCol){
+
+		if (selectedRow != origRow || selectedCol != origCol) {
 			return true;
 		}
 		

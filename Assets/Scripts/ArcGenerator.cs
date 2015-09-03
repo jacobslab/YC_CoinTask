@@ -24,7 +24,7 @@ public class ArcGenerator : MonoBehaviour {
 		DeleteArc();
 
 		Vector3 arcStartingPos = transform.position;
-		Debug.Log ("arc starting pos: " + arcStartingPos);
+
 		Vector3 totalDistance = arcToPosition - arcStartingPos;
 		Vector3 acceleration = Physics.gravity;
 		Vector3 initVelocity = (totalDistance - (acceleration*totalArcTime*totalArcTime) ) / totalArcTime;
