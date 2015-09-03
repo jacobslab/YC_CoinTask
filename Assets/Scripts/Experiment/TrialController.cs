@@ -160,7 +160,7 @@ public class TrialController : MonoBehaviour {
 		//turn off grid visibility
 		exp.environmentController.myGrid.TurnOnTileVisibility(false);
 		//disable grid selection
-		exp.player.tileSelector.Enable (false);
+		exp.player.tileSelector.Disable(true);
 
 		yield return StartCoroutine (exp.ShowSingleInstruction ("Drive around and collect all of the coins. Pay attention to the surprise object locations!"+
 		                                                        "\n\nFinish quickly enough and you will receive a time bonus on your score!", true, true, Config_CoinTask.minDefaultInstructionTime));
@@ -199,7 +199,7 @@ public class TrialController : MonoBehaviour {
 			//turn on grid visibility
 			exp.environmentController.myGrid.TurnOnTileVisibility(true);
 			//enable grid selection
-			exp.player.tileSelector.Enable (true);
+			exp.player.tileSelector.Enable ();
 
 			//show instructions for location selection -- TODO: use the image of the object instead?
 			SpawnableObject specialObj = exp.objectController.CurrentTrialSpecialObjects [i];
@@ -218,8 +218,10 @@ public class TrialController : MonoBehaviour {
 			Vector2 correctTileGridPos = correctTile.GetComponent<GridItem>().GetGridIndices();
 			memoryScore += exp.scoreController.CalculateMemoryPoints(correctTileGridPos, chosenTileGridPos);
 
+			exp.player.tileSelector.Disable(false);
+
 			//TODO: after object location has been chosen, show them how close they were / give them points
-			yield return StartCoroutine(Experiment_CoinTask.Instance.WaitForActionButton());
+			yield return StartCoroutine (exp.ShowSingleInstruction ("Press the button to continue.", false, true, Config_CoinTask.minDefaultInstructionTime));
 			correctTile.myHighlighter.HighlightLow();
 			correctTile.myHighlighter.ResetColor();
 		}

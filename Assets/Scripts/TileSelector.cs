@@ -30,7 +30,7 @@ public class TileSelector : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		SelectDefault ();
-		Enable (shouldSelect);
+		Disable (true);
 	}
 	
 	// Update is called once per frame
@@ -140,18 +140,18 @@ public class TileSelector : MonoBehaviour {
 	}
 
 	//enable or disable selection
-	public void Enable(bool isEnabled){
-		if (isEnabled) {
-			shouldSelect = true;
-			myArc.gameObject.SetActive(true);
-			SelectDefault ();
-		} 
-		else {
-			myArc.gameObject.SetActive(false);
-			shouldSelect = false;
-			if(selectedTile != null){
-				selectedTile.myHighlighter.UnHighlight();
-			}
+	public void Enable(){
+		shouldSelect = true;
+		myArc.gameObject.SetActive(true);
+
+		SelectDefault ();
+	}
+
+	public void Disable(bool shouldDeselect){
+		myArc.gameObject.SetActive(false);
+		shouldSelect = false;
+		if(selectedTile != null && shouldDeselect){
+			selectedTile.myHighlighter.UnHighlight();
 		}
 	}
 
