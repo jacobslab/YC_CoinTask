@@ -12,7 +12,7 @@ public class PlayerControls : MonoBehaviour{
 	public Transform TiltableTransform;
 	public Transform towerPositionTransform;
 
-	float RotationSpeed = 0.75f;
+	float RotationSpeed = 1.5f;
 	Quaternion lastRotation;
 
 

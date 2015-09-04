@@ -112,9 +112,6 @@ public class ObjectController : MonoBehaviour {
 	public GameObject SpawnSpecialObjectXY (Vector2 gridIndices, Vector3 spawnPosition){
 		GameObject objToSpawn = ChooseRandomObject ();
 		if (objToSpawn != null) {
-			float spawnPosY = objToSpawn.transform.position.y; //use the prefab's height
-
-			spawnPosition.y = spawnPosY;
 
 			GameObject newObject = Instantiate(objToSpawn, spawnPosition, objToSpawn.transform.rotation) as GameObject;
 
