@@ -34,8 +34,8 @@ public class Trial {
 	public Trial(bool shouldBeStim, DifficultySetting difficulty){
 		isStim = shouldBeStim;
 
-		avatarStartPos = new Vector3 (exp.player.StartX, exp.player.transform.position.y, exp.player.StartZ);
-		avatarStartRot = Quaternion.Euler (0, exp.player.StartRotY, 0);
+		avatarStartPos = new Vector3 (exp.player.controls.TrialStartPos.x, exp.player.transform.position.y, exp.player.controls.TrialStartPos.z);
+		avatarStartRot = Quaternion.Euler (0, exp.player.controls.TrialStartRotY, 0);
 
 		int numDefaultObjects = 0;
 		int numSpecialObjects = 0;

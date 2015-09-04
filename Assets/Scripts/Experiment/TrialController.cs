@@ -190,7 +190,7 @@ public class TrialController : MonoBehaviour {
 
 		//bring player to tower, lock movement
 		exp.player.controls.ShouldLockControls = true;
-		exp.player.controls.MoveToTower ();
+		StartCoroutine(exp.player.controls.MoveToTower ());
 		exp.player.TurnOnVisuals (false);
 
 		//ask player to locate each object individually on the grid

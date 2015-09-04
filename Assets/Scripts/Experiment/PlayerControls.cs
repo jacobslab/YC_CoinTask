@@ -12,6 +12,9 @@ public class PlayerControls : MonoBehaviour{
 	public Transform TiltableTransform;
 	public Transform towerPositionTransform;
 
+	public Vector3 TrialStartPos;
+	public float TrialStartRotY;
+
 	float RotationSpeed = 1.5f;
 	Quaternion lastRotation;
 
@@ -104,9 +107,18 @@ public class PlayerControls : MonoBehaviour{
 		transform.RotateAround (transform.position, Vector3.up, amount );
 	}
 
-	public void MoveToTower(){
+	public IEnumerator MoveToTower(){
 		transform.position = towerPositionTransform.position;
 		transform.rotation = towerPositionTransform.rotation;
+
+		yield return 0;
+	}
+
+	public IEnumerator MoveToStartPos(){
+		transform.position = TrialStartPos;
+		transform.rotation = Quaternion.Euler (0, TrialStartRotY, 0); //TODO: fix.
+		
+		yield return 0;
 	}
 
 	public IEnumerator RotateTowardSpecialObject(GameObject target){
