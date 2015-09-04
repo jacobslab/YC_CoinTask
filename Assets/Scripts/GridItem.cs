@@ -34,26 +34,33 @@ public class GridItem : MonoBehaviour {
 	void OnTriggerEnter(Collider collider){
 		if (collider.gameObject.tag == "Player" && tag == "DefaultGridItem") {
 
-			//turn invisible, play sound
-			GetComponent<Renderer>().enabled = false;
-			GetComponent<Collider>().enabled = false;
 			shouldDie = true;
 
 			EnvironmentGrid.GridSpotType mySpotType = envGrid.GetGridSpotType (rowIndex, colIndex);
-			Debug.Log(mySpotType.ToString());
+
+			//Check if it's a treasure chest
+			TreasureChest chest = GetComponent<TreasureChest>();
+			Vector3 specialSpawnPos = transform.position;
+			if(chest != null){
+				StartCoroutine(chest.Open(Experiment_CoinTask.Instance.player.gameObject)); //TODO: move particle systems to chest???
+				specialSpawnPos = chest.treasureSpawnPoint.position;
+			}
+
 			if (mySpotType == EnvironmentGrid.GridSpotType.specialGridItem && tag == "DefaultGridItem") {
 
 				Experiment_CoinTask.Instance.scoreController.AddSpecialPoints();
 
 				//if it was a special spot and this is the default object...
 				//...we should spawn the special object!
-				//TODO: spawn with default coins, show on collision???
-				GameObject specialObject = Experiment_CoinTask.Instance.objectController.SpawnSpecialObjectXY(new Vector2(rowIndex, colIndex), transform.position);
-				SpecialParticles.Play();
-				specialCollisionSound.Play ();
+				//TODO: spawn with default objects, show on collision???
 
+				GameObject specialObject = Experiment_CoinTask.Instance.objectController.SpawnSpecialObjectXY(new Vector2(rowIndex, colIndex), specialSpawnPos);
 				//tell the trial controller to wait for the animation
 				StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForSpecialAnimation(specialObject));
+
+				SpecialParticles.Play();
+				Debug.Log(SpecialParticles.isPlaying);
+				specialCollisionSound.Play ();
 			}
 			else{
 				Experiment_CoinTask.Instance.scoreController.AddDefaultPoints();

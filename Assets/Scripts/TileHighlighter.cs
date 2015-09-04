@@ -5,7 +5,7 @@ public class TileHighlighter : MonoBehaviour {
 
 	[HideInInspector] public bool isHighlighted = false;
 	[HideInInspector]  Material myMaterial;
-	float highlightAlphaLow = 0.5f;
+	float highlightAlphaLow = 0.3f;
 	float highlightAlphaHigh = 1.0f;
 	float origMatAlpha;
 
