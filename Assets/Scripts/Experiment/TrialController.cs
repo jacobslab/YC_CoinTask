@@ -213,6 +213,12 @@ public class TrialController : MonoBehaviour {
 			correctTile.myHighlighter.HighlightHigh();
 			correctTile.myHighlighter.SetSpecialColor(Color.green);
 
+			//make object visible on the field, up the scale
+			specialObj.GetComponent<SpawnableObject>().TurnVisible(true);
+			float scaleMult = 3.5f;//TODO: PUT SOMEWHERE ELSE THAT ACTUALLY MAKES SENSE. ORGANIZE THIS MESS. UGH.
+			Vector3 specialObjOrigScale = specialObj.transform.localScale;
+			specialObj.transform.localScale = specialObjOrigScale*scaleMult;
+
 			//Add memory score
 			Vector2 chosenTileGridPos = exp.player.tileSelector.selectedTile.GetComponent<GridItem>().GetGridIndices();
 			Vector2 correctTileGridPos = correctTile.GetComponent<GridItem>().GetGridIndices();
@@ -224,6 +230,9 @@ public class TrialController : MonoBehaviour {
 			yield return StartCoroutine (exp.ShowSingleInstruction ("Press the button to continue.", false, true, Config_CoinTask.minDefaultInstructionTime));
 			correctTile.myHighlighter.HighlightLow();
 			correctTile.myHighlighter.ResetColor();
+			//make object invisible on the field, scale back down
+			specialObj.GetComponent<SpawnableObject>().TurnVisible(false);
+			specialObj.transform.localScale = specialObjOrigScale;
 		}
 
 		//turn off grid visibility

@@ -58,6 +58,10 @@ public class ObjectLogTrack : LogTrack {
 	void LogRotation(){
 		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "ROTATION" + separator + transform.rotation.eulerAngles.x + separator + transform.rotation.eulerAngles.y + separator + transform.rotation.eulerAngles.z);
 	}
+
+	void LogScale(){
+		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "SCALE" + separator + transform.localScale.x + separator + transform.localScale.x + separator + transform.localScale.x);
+	}
 	
 	void LogVisibility(){
 		if (spawnedObj != null) {
