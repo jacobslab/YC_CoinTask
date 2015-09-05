@@ -163,8 +163,11 @@ public class TrialController : MonoBehaviour {
 		exp.player.tileSelector.Disable(true);
 
 		exp.player.controls.ShouldLockControls = true;
+
+		exp.instructionsController.EnableScoreInstructions(true);
 		yield return StartCoroutine (exp.ShowSingleInstruction ("Drive around and collect all of the coins. Pay attention to the surprise object locations!"+
 		                                                        "\n\nFinish quickly enough and you will receive a time bonus on your score!", true, true, Config_CoinTask.minDefaultInstructionTime));
+		exp.instructionsController.EnableScoreInstructions(false);
 
 		//start a game timer
 		trialTimer.ResetTimer ();

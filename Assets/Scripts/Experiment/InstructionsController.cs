@@ -21,10 +21,13 @@ public class InstructionsController : MonoBehaviour {
 	public Image oculusBackground;
 	public Color backgroundColorDefault;
 
+	public GameObject ScoreInstructions; //turn these on and off as necessary during the trial.......
+
 	List<string> _instructions;
 
 	// Use this for initialization
 	void Start () {
+		EnableScoreInstructions(false);
 		//_textMesh = GetComponent<TextMesh> ();
 	}
 	
@@ -36,6 +39,10 @@ public class InstructionsController : MonoBehaviour {
 	public void TurnOffInstructions(){
 		SetInstructionsTransparentOverlay();
 		SetInstructionsBlank();
+	}
+
+	public void EnableScoreInstructions(bool shouldEnable){
+		ScoreInstructions.SetActive(shouldEnable);
 	}
 
 	void SetText(string newText){

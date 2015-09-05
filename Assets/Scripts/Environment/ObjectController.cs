@@ -122,10 +122,11 @@ public class ObjectController : MonoBehaviour {
 
 			newObject.GetComponent<GridItem>().rowIndex = (int)gridIndices.x;
 			newObject.GetComponent<GridItem>().colIndex = (int)gridIndices.y;
+		
 
 			//make object face the player -- DOESN'T WORK FOR OBJECTS WITH INCONSISTENT Z-FACING TRANSFORMS.
 			//don't want object to tilt downward at the player -- use object's current y position
-			//Vector3 lookAtPos = new Vector3(experiment.player.transform.position.x , newObject.transform.position.y, experiment.player.transform.position.z);
+			// Vector3 lookAtPos = new Vector3(experiment.player.transform.position.x , newObject.transform.position.y, experiment.player.transform.position.z);
 			//newObject.transform.LookAt(lookAtPos);
 
 			return newObject;
