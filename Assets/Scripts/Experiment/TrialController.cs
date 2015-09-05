@@ -162,9 +162,11 @@ public class TrialController : MonoBehaviour {
 		//disable grid selection
 		exp.player.tileSelector.Disable(true);
 
+		exp.player.controls.ShouldLockControls = true;
 		yield return StartCoroutine (exp.ShowSingleInstruction ("Drive around and collect all of the coins. Pay attention to the surprise object locations!"+
 		                                                        "\n\nFinish quickly enough and you will receive a time bonus on your score!", true, true, Config_CoinTask.minDefaultInstructionTime));
-		//TODO: start a game timer
+
+		//start a game timer
 		trialTimer.ResetTimer ();
 		trialTimer.StartTimer ();
 
@@ -184,14 +186,15 @@ public class TrialController : MonoBehaviour {
 		//reset num coins collected
 		numDefaultObjectsCollected = 0;
 
-		//show instructions for location selection
-		yield return StartCoroutine (exp.ShowSingleInstruction ("You will now be shown the environment as a grid. Use the joystick to select the location of the requested object.", true, true, Config_CoinTask.minDefaultInstructionTime));
-
-
-		//bring player to tower, lock movement
+		//lock player movement
 		exp.player.controls.ShouldLockControls = true;
-		exp.player.controls.SmoothMoveToTower ();
+
+		//bring player to tower
 		exp.player.TurnOnVisuals (false);
+		exp.player.controls.SmoothMoveToTower ();
+
+		//show instructions for location selection 
+		yield return StartCoroutine (exp.ShowSingleInstruction ("You will now be shown the environment as a grid. Use the joystick to select the location of the requested object.", true, true, Config_CoinTask.minDefaultInstructionTime));
 
 		//ask player to locate each object individually on the grid
 		int memoryScore = 0;
@@ -204,20 +207,20 @@ public class TrialController : MonoBehaviour {
 			//show instructions for location selection -- TODO: use the image of the object instead?
 			SpawnableObject specialObj = exp.objectController.CurrentTrialSpecialObjects [i];
 			string specialItemName = specialObj.GetName();
-			yield return StartCoroutine (exp.ShowSingleInstruction ("Select the location of the " + specialItemName + ".", true, true, Config_CoinTask.minDefaultInstructionTime));
-
-			//wait for them to chose a location
-			yield return StartCoroutine(Experiment_CoinTask.Instance.WaitForActionButton());
+			//show instructions and wait for selection button press
+			yield return StartCoroutine (exp.ShowSingleInstruction ("Select the location of the " + specialItemName + ".", false, true, Config_CoinTask.minDefaultInstructionTime));
 
 			Tile correctTile = exp.environmentController.myGrid.GetGridTile(specialObj.GetComponent<GridItem>().rowIndex, specialObj.GetComponent<GridItem>().colIndex);
 			correctTile.myHighlighter.HighlightHigh();
 			correctTile.myHighlighter.SetSpecialColor(Color.green);
 
-			//make object visible on the field, up the scale
+			//make object visible on the field, up the scale, move upward for better visibility
 			specialObj.GetComponent<SpawnableObject>().TurnVisible(true);
 			float scaleMult = 3.5f;//TODO: PUT SOMEWHERE ELSE THAT ACTUALLY MAKES SENSE. ORGANIZE THIS MESS. UGH.
+			Vector3 liftVector = new Vector3(0.0f, 1.0f, 0.0f); //for better visibility
 			Vector3 specialObjOrigScale = specialObj.transform.localScale;
 			specialObj.transform.localScale = specialObjOrigScale*scaleMult;
+			specialObj.transform.position += liftVector;
 
 			//Add memory score
 			Vector2 chosenTileGridPos = exp.player.tileSelector.selectedTile.GetComponent<GridItem>().GetGridIndices();
@@ -226,19 +229,20 @@ public class TrialController : MonoBehaviour {
 
 			exp.player.tileSelector.Disable(false);
 
-			//TODO: after object location has been chosen, show them how close they were / give them points
+			//after object location has been chosen, show them how close they were / give them points
 			yield return StartCoroutine (exp.ShowSingleInstruction ("Press the button to continue.", false, true, Config_CoinTask.minDefaultInstructionTime));
 			correctTile.myHighlighter.HighlightLow();
 			correctTile.myHighlighter.ResetColor();
-			//make object invisible on the field, scale back down
+			//make object invisible on the field, scale back down, move back to orig position
 			specialObj.GetComponent<SpawnableObject>().TurnVisible(false);
 			specialObj.transform.localScale = specialObjOrigScale;
+			specialObj.transform.position -= liftVector;
 		}
 
 		//turn off grid visibility
 		exp.environmentController.myGrid.TurnOnTileVisibility(false);
 
-		//TODO: once all objects have been located, tell them their official score based on memory and time bonus
+		//once all objects have been located, tell them their official score based on memory and time bonus
 		yield return StartCoroutine (exp.ShowSingleInstruction ("You scored " + memoryScore + " memory points and a " + timeBonus + " point time bonus! Continue to the next trial.", true, true, Config_CoinTask.minDefaultInstructionTime));
 
 		//clear the special objects
