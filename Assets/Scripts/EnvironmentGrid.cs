@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class EnvironmentGrid : MonoBehaviour {
 	//move this elsewhere?
 	public GameObject DefaultObject;
+	[HideInInspector]public GridLogTrack MyGridLogTrack;
 
 
 	int numRows = 6;
@@ -29,6 +30,8 @@ public class EnvironmentGrid : MonoBehaviour {
 	}
 
 	void InitGrids(){
+		MyGridLogTrack = GetComponent<GridLogTrack>();
+
 		myGrid = new GridSpotType[numRows, numCols];
 
 		GameObject[] gridItems = GameObject.FindGameObjectsWithTag ("DefaultGridItem");

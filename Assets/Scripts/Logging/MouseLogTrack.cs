@@ -17,7 +17,7 @@ public class MouseLogTrack : LogTrack {
 	void LogMouse(){
 		//log the position
 		//TODO: do a check if the mouse position is out of range.
-		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "Mouse" + separator + "POSITION" + separator + Input.mousePosition.x + separator + Input.mousePosition.y);
+		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "Mouse" + separator + "POSITION" + separator + Input.mousePosition.x + separator + Input.mousePosition.y);
 
 		//log a clicked object
 		if(Input.GetMouseButtonDown(0)){
@@ -26,10 +26,10 @@ public class MouseLogTrack : LogTrack {
 			if(Camera.main != null){
 				ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				if(Physics.Raycast(ray, out hit)){
-					subjectLog.Log(Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "Mouse"+ separator + "CLICKED" + separator + hit.collider.gameObject);
+					subjectLog.Log(exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "Mouse"+ separator + "CLICKED" + separator + hit.collider.gameObject);
 				}
 				else{
-					subjectLog.Log(Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "Mouse" + separator +"CLICKED" + separator + "EMPTY");
+					subjectLog.Log(exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "Mouse" + separator +"CLICKED" + separator + "EMPTY");
 				}
 			}
 			else{

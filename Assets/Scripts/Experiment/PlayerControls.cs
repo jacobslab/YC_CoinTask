@@ -19,6 +19,7 @@ public class PlayerControls : MonoBehaviour{
 	Quaternion lastRotation;
 
 	float toTowerTime = 2.0f;
+	float toStartTime = 1.0f;
 
 
 
@@ -118,7 +119,7 @@ public class PlayerControls : MonoBehaviour{
 	public void SmoothMoveToPos(Vector3 position, Quaternion rotation){
 		int a = 0;
 
-		StartCoroutine( SmoothMoveTo (position, rotation, toTowerTime) );
+		StartCoroutine( SmoothMoveTo (position, rotation, toStartTime) );
 
 	}
 

@@ -213,7 +213,14 @@ public class TrialController : MonoBehaviour {
 			//show instructions and wait for selection button press
 			yield return StartCoroutine (exp.ShowSingleInstruction ("Select the location of the " + specialItemName + ".", false, true, Config_CoinTask.minDefaultInstructionTime));
 
+			//log the chosen tile
+			Tile chosenTile = exp.player.tileSelector.selectedTile;
+			exp.environmentController.myGrid.MyGridLogTrack.LogGridTile(chosenTile, GridLogTrack.LoggedTileType.chosenTestTile);
+
 			Tile correctTile = exp.environmentController.myGrid.GetGridTile(specialObj.GetComponent<GridItem>().rowIndex, specialObj.GetComponent<GridItem>().colIndex);
+			//log correct tile
+			exp.environmentController.myGrid.MyGridLogTrack.LogGridTile(correctTile, GridLogTrack.LoggedTileType.correctTestTile);
+			//light up correct tile
 			correctTile.myHighlighter.HighlightHigh();
 			correctTile.myHighlighter.SetSpecialColor(Color.green);
 
@@ -226,8 +233,8 @@ public class TrialController : MonoBehaviour {
 			specialObj.transform.position += liftVector;
 
 			//Add memory score
-			Vector2 chosenTileGridPos = exp.player.tileSelector.selectedTile.GetComponent<GridItem>().GetGridIndices();
-			Vector2 correctTileGridPos = correctTile.GetComponent<GridItem>().GetGridIndices();
+			Vector2 chosenTileGridPos = chosenTile.GridIndices;
+			Vector2 correctTileGridPos = correctTile.GridIndices;
 			memoryScore += exp.scoreController.CalculateMemoryPoints(correctTileGridPos, chosenTileGridPos);
 
 			exp.player.tileSelector.Disable(false);

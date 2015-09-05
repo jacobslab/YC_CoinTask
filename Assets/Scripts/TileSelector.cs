@@ -231,6 +231,9 @@ public class TileSelector : MonoBehaviour {
 
 		//myArc.GenerateArc(selectedTile.transform.position);
 
+		//Log the tile selection
+		grid.MyGridLogTrack.LogGridTile(selectedTile, GridLogTrack.LoggedTileType.currentSelectedTile);
+
 	}
 
 }

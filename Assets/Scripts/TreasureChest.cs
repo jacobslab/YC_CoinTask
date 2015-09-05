@@ -36,19 +36,19 @@ public class TreasureChest : MonoBehaviour {
 		}
 
 
-		//TAKEN FROM PLAYER CONTROLS
-		float ELAPSEDTIME = 0.0f;
-		
-		float rotateRate = 1.0f / Config_CoinTask.rotateToSpecialObjectTime;
-		float tElapsed = 0.0f;
-		float rotationEpsilon = 0.01f;
-
 		Quaternion origRotation = top.rotation;
 		top.RotateAround(pivotPos, Vector3.forward, angleToOpen); //rotate to get the desired rotation
 		Quaternion desiredRotation = top.transform.rotation;
 
 		//TODO: nicely animate the opening...
 		/*top.rotation = origRotation; //rotate back to original
+
+		//TAKEN FROM PLAYER CONTROLS
+		float ELAPSEDTIME = 0.0f;
+
+		float rotateRate = 1.0f / Config_CoinTask.rotateToSpecialObjectTime;
+		float tElapsed = 0.0f;
+		float rotationEpsilon = 0.01f;
 
 		while (Mathf.Abs(top.rotation.eulerAngles.y - desiredRotation.eulerAngles.y) >= rotationEpsilon){
 
