@@ -16,7 +16,8 @@ public class ScoreController : MonoBehaviour {
 	
 	int scorePerfect = 50;
 	int scoreClose = 30;
-	int scoreFar = 0;
+	int scoreFar = 15;
+	int scoreWrong = 0;
 
 	int defaultObjectPoints = 1;
 	int specialObjectPoints = 10;
@@ -66,8 +67,9 @@ public class ScoreController : MonoBehaviour {
 			AddToScore(scoreFar);
 			return scoreFar;
 		}
-
-		return 0;
+		else{
+			return scoreWrong;
+		}
 	}
 
 	public int CalculateTimeBonus(float secondsToCompleteTrial){
