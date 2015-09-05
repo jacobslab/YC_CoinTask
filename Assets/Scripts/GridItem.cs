@@ -80,9 +80,10 @@ public class GridItem : MonoBehaviour {
 		//set special object text
 		specialObjectText.text = specialObject.GetComponent<SpawnableObject>().GetName();
 		RotateTextTowardPlayer();
-		
+
+		SpecialParticles.Stop(); //reset the particles just in case.
 		SpecialParticles.Play();
-		Debug.Log(SpecialParticles.isPlaying);
+
 		specialCollisionSound.Play ();
 
 		//tell the trial controller to wait for the animation
