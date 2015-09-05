@@ -18,6 +18,8 @@ public class PlayerControls : MonoBehaviour{
 	float RotationSpeed = 1.5f;
 	Quaternion lastRotation;
 
+	float toTowerTime = 2.0f;
+
 
 
 	// Use this for initialization
@@ -107,18 +109,65 @@ public class PlayerControls : MonoBehaviour{
 		transform.RotateAround (transform.position, Vector3.up, amount );
 	}
 
-	public IEnumerator MoveToTower(){
-		transform.position = towerPositionTransform.position;
-		transform.rotation = towerPositionTransform.rotation;
+	public void SmoothMoveToTower(){
 
-		yield return 0;
+		StartCoroutine( SmoothMoveTo (towerPositionTransform.position, towerPositionTransform.rotation, toTowerTime ));
+		
 	}
 
-	public IEnumerator MoveToStartPos(){
-		transform.position = TrialStartPos;
-		transform.rotation = Quaternion.Euler (0, TrialStartRotY, 0); //TODO: fix.
+	public void SmoothMoveToPos(Vector3 position, Quaternion rotation){
+		int a = 0;
+
+		StartCoroutine( SmoothMoveTo (position, rotation, toTowerTime) );
+
+	}
+
+	IEnumerator SmoothMoveTo(Vector3 targetPosition, Quaternion targetRotation,  float totalTime){
+
+		Debug.Log("Started Smooth Moving");
+
+		Quaternion origRotation = transform.rotation;
+		Vector3 origPosition = transform.position;
+		
+		float moveAndRotateRate = 1.0f / totalTime;
+		float tElapsed = 0.0f;
+		float epsilon = 0.01f;
+
+		float angleDiff = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
+		bool arePositionsCloseEnough = CheckPositionsCloseEnough(transform.position, targetPosition, epsilon);
+		while ( ( angleDiff >= epsilon ) || (!arePositionsCloseEnough) ){
+			Debug.Log("AHHHHH");
+			lastRotation = transform.rotation; //set last rotation before rotating!
+			
+			tElapsed += (Time.deltaTime * moveAndRotateRate);
+			//will spherically interpolate the rotation for config.spinTime seconds
+			transform.rotation = Quaternion.Slerp(origRotation, targetRotation, tElapsed); //SLERP ALWAYS TAKES THE SHORTEST PATH.
+			transform.position = Vector3.Lerp(origPosition, targetPosition, tElapsed);
+
+			//calculate new differences
+			angleDiff = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
+			arePositionsCloseEnough = CheckPositionsCloseEnough(transform.position, targetPosition, epsilon);
+			yield return 0;
+		}
+		
+		
+		transform.rotation = targetRotation;
+		transform.position = targetPosition;
 		
 		yield return 0;
+	}
+	
+	bool CheckPositionsCloseEnough(Vector3 position1, Vector3 position2, float epsilon){
+		float xDiff = Mathf.Abs (position1.x - position2.x);
+		float yDiff = Mathf.Abs (position1.y - position2.y);
+		float zDiff = Mathf.Abs (position1.z - position2.z);
+		
+		if (xDiff < epsilon && yDiff < epsilon && zDiff < epsilon) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	public IEnumerator RotateTowardSpecialObject(GameObject target){
@@ -164,5 +213,7 @@ public class PlayerControls : MonoBehaviour{
 		
 		Debug.Log ("TIME ELAPSED WHILE ROTATING: " + ELAPSEDTIME);
 	}
+
+
 	
 }

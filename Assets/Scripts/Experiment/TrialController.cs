@@ -148,8 +148,8 @@ public class TrialController : MonoBehaviour {
 		Debug.Log ("IS STIM: " + trial.isStim);
 
 		//move player to first location & rotation
-		exp.player.transform.position = trial.avatarStartPos;
-		exp.player.transform.rotation = trial.avatarStartRot;
+		exp.player.controls.SmoothMoveToPos(trial.avatarStartPos, trial.avatarStartRot);
+
 		exp.player.TurnOnVisuals (true);
 
 		exp.environmentController.myGrid.Clear ();
@@ -190,7 +190,7 @@ public class TrialController : MonoBehaviour {
 
 		//bring player to tower, lock movement
 		exp.player.controls.ShouldLockControls = true;
-		StartCoroutine(exp.player.controls.MoveToTower ());
+		exp.player.controls.SmoothMoveToTower ();
 		exp.player.TurnOnVisuals (false);
 
 		//ask player to locate each object individually on the grid
