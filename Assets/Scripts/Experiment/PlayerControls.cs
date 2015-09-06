@@ -15,7 +15,7 @@ public class PlayerControls : MonoBehaviour{
 	public Vector3 TrialStartPos;
 	public float TrialStartRotY;
 
-	float RotationSpeed = 1.5f;
+	float RotationSpeed = 1.2f;
 	Quaternion lastRotation;
 
 	float toTowerTime = 2.0f;

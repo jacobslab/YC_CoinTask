@@ -18,6 +18,10 @@ public class TileSelector : MonoBehaviour {
 	float inputTimePassed = 0;
 	float autoNextTileTime = 0.3f;
 
+	//for keyboard only, must make sure that there is no jittering of keypresses, causing tile selection to jump 2-3 tiles
+	float timeBetweenKeyDown = 0.0f;
+	float minTimeBetweenKeyPresses = 0.1f;
+
 
 	//used for precise joystick control
 	public enum DirectionType{
@@ -159,34 +163,45 @@ public class TileSelector : MonoBehaviour {
 
 		}*/
 
-		//works well for keyboard
+		//keyboard
 		else {
-			if (Input.GetKey(KeyCode.RightArrow)) {
-				if (selectedRow > 0 && lastSelectionDirection != DirectionType.rowDown) {
-					selectedRow -= 1;
-					lastSelectionDirection = DirectionType.rowDown;
+			if(timeBetweenKeyDown >= minTimeBetweenKeyPresses){
+				if (Input.GetKey(KeyCode.RightArrow)) {
+					if (selectedRow > 0 && lastSelectionDirection != DirectionType.rowDown) {
+						timeBetweenKeyDown = 0;
+						selectedRow -= 1;
+						lastSelectionDirection = DirectionType.rowDown;
+					}
 				}
-			}
-			else if (Input.GetKey(KeyCode.LeftArrow)) {
-				if (selectedRow < numRows - 1 && lastSelectionDirection != DirectionType.rowUp) {
-					selectedRow += 1;
-					lastSelectionDirection = DirectionType.rowUp;
+				else if (Input.GetKey(KeyCode.LeftArrow)) {
+					if (selectedRow < numRows - 1 && lastSelectionDirection != DirectionType.rowUp) {
+						timeBetweenKeyDown = 0;
+						selectedRow += 1;
+						lastSelectionDirection = DirectionType.rowUp;
+					}
+				} 
+				else if (Input.GetKey(KeyCode.DownArrow)) {
+					if (selectedCol > 0 && lastSelectionDirection != DirectionType.colDown) {
+						timeBetweenKeyDown = 0;
+						selectedCol -= 1;
+						lastSelectionDirection = DirectionType.colDown;
+					}
+				} 
+				else if (Input.GetKey(KeyCode.UpArrow)) {
+					if (selectedCol < numCols - 1 && lastSelectionDirection != DirectionType.colUp) {
+						timeBetweenKeyDown = 0;
+						selectedCol += 1;
+						lastSelectionDirection = DirectionType.colUp;
+					}
 				}
-			} 
-			else if (Input.GetKey(KeyCode.DownArrow)) {
-				if (selectedCol > 0 && lastSelectionDirection != DirectionType.colDown) {
-					selectedCol -= 1;
-					lastSelectionDirection = DirectionType.colDown;
-				}
-			} 
-			else if (Input.GetKey(KeyCode.UpArrow)) {
-				if (selectedCol < numCols - 1 && lastSelectionDirection != DirectionType.colUp) {
-					selectedCol += 1;
-					lastSelectionDirection = DirectionType.colUp;
+				else{
+					//redundant?
+					lastSelectionDirection = DirectionType.none;
 				}
 			}
 			else{
 				lastSelectionDirection = DirectionType.none;
+				timeBetweenKeyDown += Time.deltaTime;
 			}
 		}
 
