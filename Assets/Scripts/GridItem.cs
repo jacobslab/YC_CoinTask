@@ -94,7 +94,7 @@ public class GridItem : MonoBehaviour {
 	}
 
 	void RotateTextTowardPlayer(){
-		GameObject player = Experiment_CoinTask.Instance.player.visuals.gameObject;
+		GameObject player = Experiment_CoinTask.Instance.player.gameObject;
 		Vector3 lookAtPos = new Vector3 (player.transform.position.x, specialObjectText.transform.position.y, player.transform.position.z);
 		specialObjectText.transform.LookAt(lookAtPos);
 		specialObjectText.transform.RotateAround(transform.position, Vector3.up, 180.0f); //text faces opposite, so flip 180 degrees to actually face the player

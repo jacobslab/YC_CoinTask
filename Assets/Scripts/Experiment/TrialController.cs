@@ -150,7 +150,7 @@ public class TrialController : MonoBehaviour {
 		//move player to first location & rotation
 		exp.player.controls.SmoothMoveToPos(trial.avatarStartPos, trial.avatarStartRot);
 
-		exp.player.TurnOnVisuals (true);
+		//exp.player.TurnOnVisuals (true);
 
 		exp.environmentController.myGrid.Clear ();
 
@@ -193,7 +193,7 @@ public class TrialController : MonoBehaviour {
 		exp.player.controls.ShouldLockControls = true;
 
 		//bring player to tower
-		exp.player.TurnOnVisuals (false);
+		//exp.player.TurnOnVisuals (false);
 		exp.player.controls.SmoothMoveToTower ();
 
 		//show instructions for location selection 
