@@ -40,7 +40,7 @@ public class PlayerControls : MonoBehaviour{
 
 		if (exp.currentState == Experiment_CoinTask.ExperimentState.inExperiment) {
 			if(!ShouldLockControls){
-				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY; // TODO: on collision, don't allow a change in angular velocity?
+				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationY; // TODO: on collision, don't allow a change in angular velocity?
 
 				if (Config_CoinTask.isAvatarTilting) {
 					SetTilt ();
