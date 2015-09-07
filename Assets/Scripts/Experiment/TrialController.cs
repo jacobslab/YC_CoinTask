@@ -201,6 +201,7 @@ public class TrialController : MonoBehaviour {
 
 		//ask player to locate each object individually on the grid
 		int memoryScore = 0;
+		List<int> randomSpecialObjectOrder = GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
 			//turn on grid visibility
 			exp.environmentController.myGrid.TurnOnTileVisibility(true);
@@ -208,7 +209,8 @@ public class TrialController : MonoBehaviour {
 			exp.player.tileSelector.Enable ();
 
 			//show instructions for location selection -- TODO: use the image of the object instead?
-			SpawnableObject specialObj = exp.objectController.CurrentTrialSpecialObjects [i];
+			int randomOrderIndex = randomSpecialObjectOrder[i];
+			SpawnableObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
 			string specialItemName = specialObj.GetName();
 			//show instructions and wait for selection button press
 			yield return StartCoroutine (exp.ShowSingleInstruction ("Select the location of the " + specialItemName + ".", false, true, Config_CoinTask.minDefaultInstructionTime));
@@ -266,97 +268,23 @@ public class TrialController : MonoBehaviour {
 		//increment subject's trial count
 		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
 
+	}
 
+	//given the size of an array or a list, will return a list of indices in a random order
+	public List<int> GetRandomIndexOrder(int count){
+		List<int> inOrderList = new List<int>();
+		for(int i = 0; i < count; i++){
+			inOrderList.Add(i);
+		}
 
+		List<int> randomOrderList = new List<int>();
+		for(int i = 0; i < count; i++){
+			int randomIndex = Random.Range(0, inOrderList.Count);
+			randomOrderList.Add( inOrderList[randomIndex] );
+			inOrderList.RemoveAt(randomIndex);
+		}
 
-
-
-/*		GameObject newObject = exp.objectController.SpawnRandomObjectXY (trial.objectPosition);
-		SpawnableObject newSpawnedObject = newObject.GetComponent<SpawnableObject> ();
-		string newObjectName = newObject.GetComponent<SpawnableObject>().GetName();
-
-		//override player input -- going to be driven to the object
-		exp.avatar.ShouldLockControls = true;
-
-		//show instruction for "press the button to be driven to the OBJECT_NAME".
-		yield return StartCoroutine(exp.ShowSingleInstruction("Press the button to be driven to the " + newObjectName + ".", true, true, Config_CoinTask.learningTrialInstructionTime));
-		
-		//drive the player to the object
-		newSpawnedObject.TurnVisible (false); //important function to turn off the object without setting it inactive -- because we want to keep logging on
-		yield return new WaitForSeconds(Config_CoinTask.pauseBeforeSpinTime);
-		newSpawnedObject.TurnVisible (true);
-		yield return exp.avatar.StartCoroutine(exp.avatar.DriveToTargetObject(newObject));
-		yield return new WaitForSeconds (Config_CoinTask.waitAtObjTime); //wait at object
-		
-		//show instruction for "you will now be driven to the OBJECT_NAME from another location.
-		yield return StartCoroutine(exp.ShowSingleInstruction("You will now be driven to the " + newObjectName + 
-		                                                      "\n from another location.", true, false, Config_CoinTask.learningTrialInstructionTime));
-		
-		//override player input (already done above)
-		//move player to second location
-		//drive player to object
-		exp.avatar.transform.position = trial.avatarPosition002;
-		exp.avatar.transform.rotation = trial.avatarRotation002;
-
-		newSpawnedObject.TurnVisible (false);
-		yield return new WaitForSeconds(Config_CoinTask.pauseBeforeSpinTime);
-		newSpawnedObject.TurnVisible (true);
-		yield return exp.avatar.StartCoroutine(exp.avatar.DriveToTargetObject(newObject));
-		yield return new WaitForSeconds (Config_CoinTask.waitAtObjTime); //wait at object
-
-
-		//HIDE OBJECT
-
-		//turn off visuals of object
-		newSpawnedObject.TurnVisible (false);
-
-		//show instruction for "the OBJECT_NAME is now hidden. you will now drive to the OBJECT_NAME on your own."
-		//+"Press the button to continue, and then drive to the locaiton of the cactus and press the button when you are in the correct location."
-		yield return StartCoroutine(exp.ShowSingleInstruction("The " + newObjectName + " is now hidden. " +
-														"\nYou will now drive to the " + newObjectName + " on your own.", true, false, Config_CoinTask.minTestTrialInstructionTime1));
-		//after some time, add more to the instruction...
-		yield return StartCoroutine(exp.ShowSingleInstruction("The " + newObjectName + " is now hidden. " +
-		                                                      "\nYou will now drive to the " + newObjectName + " on your own." +
-		                                                      "\n" + "\nPress the button to continue, and then drive to the location of the "+ newObjectName +
-		                                                      "and press the button when you are in the correct location.", true, true, Config_CoinTask.minTestTrialInstructionTime2));
-		
-		//show black text across top of screen: "press the button at the location of the OBJECT_NAME"
-		//exp.inGameInstructionsController.DisplayText("press the button at the location of the " + newObjectName);
-		exp.instructionsController.DisplayText("press the button at the location of the " + newObjectName);
-		
-		//move player to random location (location 3) & rotation
-		exp.avatar.transform.position = trial.avatarPosition003;
-		exp.avatar.transform.rotation = trial.avatarRotation003;
-
-		//enable player movement
-		//wait for player to press the button, then move on
-		exp.avatar.ShouldLockControls = false;
-		yield return StartCoroutine(exp.WaitForActionButton());
-
-
-		//show overhead view of player's position vs. desired object position
-		//with text: "Nice job. You earned X points. Press the button to continue."
-		exp.environmentMap.SetAvatarVisualPosition(exp.avatar.transform.position);
-		exp.environmentMap.SetObjectVisualPosition(newObject.transform.position);
-		exp.environmentMap.TurnOn();
-
-		//calculate points
-		int pointsReceived = exp.scoreController.CalculatePoints(newObject);
-
-		//add points
-		ExperimentSettings_CoinTask.currentSubject.AddScore(pointsReceived);
-
-		//show point text
-		yield return StartCoroutine(exp.ShowSingleInstruction("Nice job! You earned " + pointsReceived.ToString() + " points. Press the button to continue. " + 
-		                                                      "\n" + "\n Overall Score: " + exp.scoreController.score,false, true, Config_CoinTask.minScoreMapTime));
-
-		//turn off the environment map
-		exp.environmentMap.TurnOff();
-		
-		GameObject.Destroy(newObject); 
-
-		 //increment subject's trial count
-		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();*/
+		return randomOrderList;
 	}
 
 	public IEnumerator WaitForSpecialAnimation(GameObject specialObject){
