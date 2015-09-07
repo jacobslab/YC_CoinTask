@@ -29,6 +29,14 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public Toggle joystickInputToggle; //only exists in main menu -- make sure to null check
 	public Toggle loggingToggle; //only exists in main menu -- make sure to null check
 
+	public Toggle easyToggle;
+	public Toggle mediumToggle;
+	public Toggle hardToggle;
+	//TODO: will probably want to refactor this later, as practice difficulty etc. are used in Trial.cs and TrialController.cs
+	//difficulty setting system needs to be decided on!
+	public static Trial.DifficultySetting difficultySetting = Trial.DifficultySetting.easy;
+
+
 	public Text endCongratsText;
 	public Text endScoreText;
 	public Text endSessionText;
@@ -70,6 +78,30 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	// Update is called once per frame
 	void Update () {
 
+	}
+
+	public void ChangeDifficulty(){
+		if(difficultySetting == Trial.DifficultySetting.easy){
+			//switch to medium
+			difficultySetting = Trial.DifficultySetting.medium;
+			easyToggle.isOn = false;
+			mediumToggle.isOn = true;
+			hardToggle.isOn = false;
+		}
+		else if (difficultySetting == Trial.DifficultySetting.medium){
+			//switch to hard
+			difficultySetting = Trial.DifficultySetting.hard;
+			easyToggle.isOn = false;
+			mediumToggle.isOn = false;
+			hardToggle.isOn = true;
+		}
+		else if(difficultySetting == Trial.DifficultySetting.hard){
+			//switch to easy
+			difficultySetting = Trial.DifficultySetting.easy;
+			easyToggle.isOn = true;
+			mediumToggle.isOn = false;
+			hardToggle.isOn = false;
+		}
 	}
 
 	public void SetReplayTrue(){
