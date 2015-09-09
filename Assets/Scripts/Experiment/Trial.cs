@@ -50,6 +50,7 @@ public class Trial {
 
 		fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
 		if (fiftyFiftyChance == 0) {
+			Debug.Log("FIFTY FIFTY 0");
 			avatarTowerPos = exp.player.controls.towerPositionTransform1.position;
 			avatarTowerRot = exp.player.controls.towerPositionTransform1.rotation;
 		}

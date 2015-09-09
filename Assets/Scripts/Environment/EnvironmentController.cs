@@ -10,6 +10,7 @@ public class EnvironmentController : MonoBehaviour {
 	public Vector3 center{ get { return GetEnvironmentCenter(); } }
 
 	public EnvironmentGrid myGrid;
+	public EnvironmentPositionSelector myPositionSelector;
 
 
 	// Use this for initialization

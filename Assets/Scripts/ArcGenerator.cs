@@ -7,7 +7,7 @@ public class ArcGenerator : MonoBehaviour {
 	public GameObject ArcComponent;
 
 	public float totalArcTime;
-	int numComponents = 10;
+	int numComponents;
 	List<GameObject> ArcComponents;
 
 	// Use this for initialization
@@ -26,6 +26,8 @@ public class ArcGenerator : MonoBehaviour {
 		Vector3 arcStartingPos = transform.position;
 
 		Vector3 totalDistance = arcToPosition - arcStartingPos;
+		numComponents = (int) (totalDistance.magnitude / 4 );
+
 		Vector3 acceleration = Physics.gravity;
 		Vector3 initVelocity = (totalDistance - (acceleration*totalArcTime*totalArcTime) ) / totalArcTime;
 

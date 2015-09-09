@@ -163,7 +163,7 @@ public class TrialController : MonoBehaviour {
 		//turn off grid visibility
 		exp.environmentController.myGrid.TurnOnTileVisibility(false);
 		//disable grid selection
-		exp.player.tileSelector.Disable(true);
+		exp.environmentController.myPositionSelector.DisableMovement();
 
 		exp.player.controls.ShouldLockControls = true;
 
@@ -200,34 +200,42 @@ public class TrialController : MonoBehaviour {
 		exp.player.controls.SmoothMoveToPos (trial.avatarTowerPos, trial.avatarTowerRot, exp.player.controls.toStartTime);
 
 		//show instructions for location selection 
-		yield return StartCoroutine (exp.ShowSingleInstruction ("You will now be shown the environment as a grid. Use the joystick to select the location of the requested object.", true, true, Config_CoinTask.minDefaultInstructionTime));
+		yield return StartCoroutine (exp.ShowSingleInstruction ("Use the joystick to select the location of the requested object.", true, true, Config_CoinTask.minDefaultInstructionTime));
 
 		//ask player to locate each object individually on the grid
 		int memoryScore = 0;
 		List<int> randomSpecialObjectOrder = GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
 			//turn on grid visibility
-			exp.environmentController.myGrid.TurnOnTileVisibility(true);
+			//exp.environmentController.myGrid.TurnOnTileVisibility(true);
 			//enable grid selection
-			exp.player.tileSelector.Enable ();
+			exp.environmentController.myPositionSelector.EnableSelection ();
+			exp.environmentController.myPositionSelector.EnableSelectionIndicator(true);
+			exp.environmentController.myPositionSelector.EnableCorrectIndicator(false);
 
-			//show instructions for location selection -- TODO: use the image of the object instead?
+			//show instructions for location selection
 			int randomOrderIndex = randomSpecialObjectOrder[i];
 			SpawnableObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
 			string specialItemName = specialObj.GetName();
 			//show instructions and wait for selection button press
 			yield return StartCoroutine (exp.ShowSingleInstruction ("Select the location of the " + specialItemName + ".", false, true, Config_CoinTask.minDefaultInstructionTime));
 
-			//log the chosen tile
-			Tile chosenTile = exp.player.tileSelector.selectedTile;
-			exp.environmentController.myGrid.MyGridLogTrack.LogGridTile(chosenTile, GridLogTrack.LoggedTileType.chosenTestTile);
+			//TODO: log the chosen tile
+			//Tile chosenTile = exp.player.tileSelector.selectedTile;
+			//exp.environmentController.myGrid.MyGridLogTrack.LogGridTile(chosenTile, GridLogTrack.LoggedTileType.chosenTestTile);
 
 			Tile correctTile = exp.environmentController.myGrid.GetGridTile(specialObj.GetComponent<GridItem>().rowIndex, specialObj.GetComponent<GridItem>().colIndex);
-			//log correct tile
-			exp.environmentController.myGrid.MyGridLogTrack.LogGridTile(correctTile, GridLogTrack.LoggedTileType.correctTestTile);
+			//TODO: log correct tile
+			//exp.environmentController.myGrid.MyGridLogTrack.LogGridTile(correctTile, GridLogTrack.LoggedTileType.correctTestTile);
 			//light up correct tile
-			correctTile.myHighlighter.HighlightHigh();
-			correctTile.myHighlighter.SetSpecialColor(Color.green);
+			//correctTile.myHighlighter.HighlightHigh();
+			//correctTile.myHighlighter.SetSpecialColor(Color.green);
+
+			//show correct selection indicator
+			float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;
+			Vector3 correctIndicatorPosition = new Vector3 (specialObj.transform.position.x, indicatorHeight, specialObj.transform.position.z);
+			exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position = correctIndicatorPosition;
+			exp.environmentController.myPositionSelector.EnableCorrectIndicator(true);
 
 			//make object visible on the field, up the scale, move upward for better visibility
 			specialObj.GetComponent<SpawnableObject>().TurnVisible(true);
@@ -237,17 +245,20 @@ public class TrialController : MonoBehaviour {
 			specialObj.transform.localScale = specialObjOrigScale*scaleMult;
 			specialObj.transform.position += liftVector;
 
-			//Add memory score
-			Vector2 chosenTileGridPos = chosenTile.GridIndices;
+			//TODO: Add memory score
+			//Vector2 chosenTileGridPos = chosenTile.GridIndices;
 			Vector2 correctTileGridPos = correctTile.GridIndices;
-			memoryScore += exp.scoreController.CalculateMemoryPoints(correctTileGridPos, chosenTileGridPos);
+			//memoryScore += exp.scoreController.CalculateMemoryPoints(correctTileGridPos, chosenTileGridPos);
 
-			exp.player.tileSelector.Disable(false);
+			exp.environmentController.myPositionSelector.DisableMovement();
 
 			//after object location has been chosen, show them how close they were / give them points
 			yield return StartCoroutine (exp.ShowSingleInstruction ("Press the button to continue.", false, true, Config_CoinTask.minDefaultInstructionTime));
-			correctTile.myHighlighter.HighlightLow();
-			correctTile.myHighlighter.ResetColor();
+			//correctTile.myHighlighter.HighlightLow();
+			//correctTile.myHighlighter.ResetColor();
+			exp.environmentController.myPositionSelector.EnableSelectionIndicator(false);
+			exp.environmentController.myPositionSelector.EnableCorrectIndicator(false);
+
 			//make object invisible on the field, scale back down, move back to orig position
 			specialObj.GetComponent<SpawnableObject>().TurnVisible(false);
 			specialObj.transform.localScale = specialObjOrigScale;

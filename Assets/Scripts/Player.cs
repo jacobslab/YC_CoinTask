@@ -4,7 +4,8 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
 	public PlayerControls controls;
-	public TileSelector tileSelector;
+	//public TileSelector tileSelector;
+	public EnvironmentPositionSelector positionSelector;
 	public GameObject visuals;
 
 	// Use this for initialization
@@ -14,7 +15,7 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		
 	}
 
 	public void TurnOnVisuals(bool isVisible){
