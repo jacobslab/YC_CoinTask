@@ -78,6 +78,10 @@ public class Config_CoinTask : MonoBehaviour {
 	public static int numSpecialObjectsMedium = 4;
 	public static int numSpecialObjectsHard = 6;
 
+	//RADII FOR CORRECT SELECTION DURING TESTING PHASE
+	public static float smallSelectionRadius = 20.0f;
+	public static float bigSelectionRadius = 40.0f;
+	public static EnvironmentPositionSelector.SelectionRadiusType currentSelectionRadiusType = EnvironmentPositionSelector.SelectionRadiusType.small;
 
 	public static float objectToWallBuffer = 5.0f;
 	public static float objectToObjectBuffer = 10.0f;

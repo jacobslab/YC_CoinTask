@@ -5,8 +5,7 @@ using UnityEngine.UI;
 public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main menu AND experiment
 
 
-	//public static string fileName; //log file name
-
+	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
 
 
@@ -35,6 +34,10 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	//TODO: will probably want to refactor this later, as practice difficulty etc. are used in Trial.cs and TrialController.cs
 	//difficulty setting system needs to be decided on!
 	public static Trial.DifficultySetting difficultySetting = Trial.DifficultySetting.easy;
+
+	public Toggle smallRadiusToggle;
+	public Toggle bigRadiusToggle;
+
 
 
 	public InputField NumTreasureChestsInputField; //Frames Per Second
@@ -112,6 +115,22 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			easyToggle.isOn = true;
 			mediumToggle.isOn = false;
 			hardToggle.isOn = false;
+		}
+	}
+
+	//TODO: MOVE THIS TO IN-GAME.
+	public void ChangeSelectionRadius(){
+		if(Config_CoinTask.currentSelectionRadiusType == EnvironmentPositionSelector.SelectionRadiusType.small){
+			//switch to big
+			Config_CoinTask.currentSelectionRadiusType = EnvironmentPositionSelector.SelectionRadiusType.big;
+			smallRadiusToggle.isOn = false;
+			bigRadiusToggle.isOn = true;
+		}
+		else if (Config_CoinTask.currentSelectionRadiusType == EnvironmentPositionSelector.SelectionRadiusType.big){
+			//switch to small
+			Config_CoinTask.currentSelectionRadiusType = EnvironmentPositionSelector.SelectionRadiusType.small;
+			smallRadiusToggle.isOn = true;
+			bigRadiusToggle.isOn = false;
 		}
 	}
 

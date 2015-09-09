@@ -6,20 +6,29 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
 	public GameObject PositionSelector;
-	public GameObject PositionRadius;
 	public GameObject CorrectPositionIndicator;
 	public ArcGenerator myArc;
-	
-	float smallRadius = 4.0f;
-	float bigRadius = 8.0f;
-	float currentSetRadius; //TODO: allow player to choose either big or small radius.
+
+	public enum SelectionRadiusType{
+		big,
+		small
+	}
+	public SelectionRadiusType currentRadiusType;
 
 	bool shouldSelect;
 	float selectionMovementSpeed = 4.0f;
 
 	// Use this for initialization
 	void Start () {
-		currentSetRadius = smallRadius;
+		//TODO: allow player to choose either big or small radius.
+		float currentRadius = Config_CoinTask.smallSelectionRadius;
+		currentRadiusType = Config_CoinTask.currentSelectionRadiusType; //TODO: TAKE THIS SELECTION OUT OF MAIN MENU/CONFIG
+		if (currentRadiusType == SelectionRadiusType.big) {
+			currentRadius = Config_CoinTask.bigSelectionRadius;
+		}
+		Debug.Log (currentRadius);
+		PositionSelector.transform.localScale = new Vector3 (currentRadius, PositionSelector.transform.localScale.y, currentRadius);
+
 		DisableMovement ();
 		EnableSelectionIndicator (false);
 		EnableCorrectIndicator (false);
@@ -50,14 +59,27 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		Vector3 horizAmountVec = PositionSelector.transform.right * amountHorizontal;
 
 		bool wouldBeInWallsVert = exp.environmentController.CheckWithinWalls (PositionSelector.transform.position + (vertAmountVec), Config_CoinTask.objectToWallBuffer);
-		bool wouldBeInWallsHoriz = exp.environmentController.CheckWithinWalls (PositionSelector.transform.position + (horizAmountVec) , Config_CoinTask.objectToWallBuffer); 
+		bool wouldBeInWallsHoriz = exp.environmentController.CheckWithinWalls (PositionSelector.transform.position + (horizAmountVec), Config_CoinTask.objectToWallBuffer); 
 
-		if ( wouldBeInWallsVert ){
+		if (wouldBeInWallsVert) {
 			PositionSelector.transform.position += vertAmountVec;
 		}
-		if( wouldBeInWallsHoriz ){
+		if (wouldBeInWallsHoriz) {
 			PositionSelector.transform.position += horizAmountVec;
 		}
+	}
+
+	public bool GetRadiusOverlap(Vector3 position){
+		float distance = (position - PositionSelector.transform.position).magnitude;
+		if (distance < PositionSelector.transform.localScale.x) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public Vector3 GetSelectorPosition(){
+		return PositionSelector.transform.position;
 	}
 
 	//enable or disable selection

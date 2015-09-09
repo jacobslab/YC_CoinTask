@@ -247,8 +247,9 @@ public class TrialController : MonoBehaviour {
 
 			//TODO: Add memory score
 			//Vector2 chosenTileGridPos = chosenTile.GridIndices;
-			Vector2 correctTileGridPos = correctTile.GridIndices;
+			//Vector2 correctTileGridPos = correctTile.GridIndices;
 			//memoryScore += exp.scoreController.CalculateMemoryPoints(correctTileGridPos, chosenTileGridPos);
+			memoryScore += exp.scoreController.CalculateMemoryPoints( specialObj.transform.position );
 
 			exp.environmentController.myPositionSelector.DisableMovement();
 

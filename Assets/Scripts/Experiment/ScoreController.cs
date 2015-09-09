@@ -14,10 +14,12 @@ public class ScoreController : MonoBehaviour {
 	int timeBonusMed = 15;
 	int timeBonusBig = 20;
 	
-	int scorePerfect = 50;
+	/*int scorePerfect = 50;
 	int scoreClose = 30;
 	int scoreFar = 15;
-	int scoreWrong = 0;
+	int scoreWrong = 0;*/
+	int memoryScoreBest = 50;
+	int memoryScoreMedium = 30;
 
 	int defaultObjectPoints = 1;
 	int specialObjectPoints = 10;
@@ -51,7 +53,34 @@ public class ScoreController : MonoBehaviour {
 		AddToScore(specialObjectPoints);
 	}
 
-	public int CalculateMemoryPoints(Vector2 correctGridIndices, Vector2 chosenGridIndices){
+	//small radius is more impressive, more points
+	public int AddMemoryPointsSmallRadius(){
+		AddToScore (memoryScoreBest);
+		return memoryScoreBest;
+	}
+
+	//big radius is less impressive, fewer points
+	public int AddMemoryPointsLargeRadius(){
+		AddToScore (memoryScoreMedium);
+		return memoryScoreMedium;
+	}
+
+	public int CalculateMemoryPoints (Vector3 correctPosition){
+		if (exp.environmentController.myPositionSelector.GetRadiusOverlap (correctPosition)) {
+			if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.small){
+				AddToScore(memoryScoreBest);
+				return memoryScoreBest;
+			}
+			else{
+				AddToScore(memoryScoreMedium);
+				return memoryScoreMedium;
+			}
+		}
+
+		return 0;
+	}
+
+	/*public int CalculateMemoryPoints(Vector2 correctGridIndices, Vector2 chosenGridIndices){
 		int xDiff = (int) Mathf.Abs (correctGridIndices.x - chosenGridIndices.x);
 		int yDiff = (int) Mathf.Abs (correctGridIndices.y - chosenGridIndices.y);
 
@@ -70,7 +99,7 @@ public class ScoreController : MonoBehaviour {
 		else{
 			return scoreWrong;
 		}
-	}
+	}*/
 
 	public int CalculateTimeBonus(float secondsToCompleteTrial){
 		if (secondsToCompleteTrial < 40) {
