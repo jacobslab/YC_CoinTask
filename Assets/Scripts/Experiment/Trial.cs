@@ -12,6 +12,8 @@ public class Trial {
 
 	public Vector3 avatarStartPos;
 	public Quaternion avatarStartRot;
+	public Vector3 avatarTowerPos;
+	public Quaternion avatarTowerRot;
 	public List<Vector2> DefaultObjectGridIndices;
 	public List<Vector2> SpecialObjectIndices;
 
@@ -34,8 +36,27 @@ public class Trial {
 	public Trial(bool shouldBeStim, DifficultySetting difficulty){
 		isStim = shouldBeStim;
 
-		avatarStartPos = new Vector3 (exp.player.controls.TrialStartPos.x, exp.player.transform.position.y, exp.player.controls.TrialStartPos.z);
-		avatarStartRot = Quaternion.Euler (0, exp.player.controls.TrialStartRotY, 0);
+		int fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
+		if (fiftyFiftyChance == 0) {
+			avatarStartPos = exp.player.controls.startPositionTransform1.position;//new Vector3 (exp.player.controls.startPositionTransform1.position.x, exp.player.transform.position.y, exp.player.controls.startPositionTransform1.z);
+			avatarStartRot = exp.player.controls.startPositionTransform1.rotation;//Quaternion.Euler (0, exp.player.controls.startPositionTransform1.rotation, 0);
+		}
+		else {
+			avatarStartPos = exp.player.controls.startPositionTransform2.position;
+			avatarStartRot = exp.player.controls.startPositionTransform2.rotation;
+		}
+
+
+
+		fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
+		if (fiftyFiftyChance == 0) {
+			avatarTowerPos = exp.player.controls.towerPositionTransform1.position;
+			avatarTowerRot = exp.player.controls.towerPositionTransform1.rotation;
+		}
+		else {
+			avatarTowerPos = exp.player.controls.towerPositionTransform2.position;
+			avatarTowerRot = exp.player.controls.towerPositionTransform2.rotation;
+		}
 
 		int numDefaultObjects = 0;
 		int numSpecialObjects = 0;
@@ -93,11 +114,27 @@ public class Trial {
 		counterTrial.isStim = !isStim;
 
 
-		//TODO: counter the avatar? or always start at the home base?
+		//TODO: counter the avatar?
 		//counterTrial.avatarStartPos = GetReflectedPositionXZ (avatarStartPos);
 		//counterTrial.avatarStartRot = GetReflectedRotation (avatarStartRot);
-		counterTrial.avatarStartPos = avatarStartPos;
-		counterTrial.avatarStartRot = avatarStartRot;
+		if (avatarStartPos == exp.player.controls.startPositionTransform1.position) {
+			counterTrial.avatarStartPos = exp.player.controls.startPositionTransform2.position;
+			counterTrial.avatarStartRot = exp.player.controls.startPositionTransform2.rotation;
+		} 
+		else {
+			counterTrial.avatarStartPos = exp.player.controls.startPositionTransform1.position;
+			counterTrial.avatarStartRot = exp.player.controls.startPositionTransform1.rotation;
+		}
+
+		//flip the tower positions
+		if (avatarStartPos == exp.player.controls.towerPositionTransform1.position) {
+			counterTrial.avatarTowerPos = exp.player.controls.towerPositionTransform2.position;
+			counterTrial.avatarTowerRot = exp.player.controls.towerPositionTransform2.rotation;
+		}
+		else {
+			counterTrial.avatarTowerPos = exp.player.controls.towerPositionTransform1.position;
+			counterTrial.avatarTowerRot = exp.player.controls.towerPositionTransform1.rotation;
+		}
 
 
 		int maxRow = exp.environmentController.myGrid.Rows;

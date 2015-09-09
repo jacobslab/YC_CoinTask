@@ -151,7 +151,7 @@ public class TrialController : MonoBehaviour {
 		Debug.Log ("IS STIM: " + trial.isStim);
 
 		//move player to first location & rotation
-		exp.player.controls.SmoothMoveToPos(trial.avatarStartPos, trial.avatarStartRot);
+		exp.player.controls.SmoothMoveToPos(trial.avatarStartPos, trial.avatarStartRot, exp.player.controls.toStartTime);
 
 		//exp.player.TurnOnVisuals (true);
 
@@ -196,8 +196,8 @@ public class TrialController : MonoBehaviour {
 		exp.player.controls.ShouldLockControls = true;
 
 		//bring player to tower
-		//exp.player.TurnOnVisuals (false);
-		exp.player.controls.SmoothMoveToTower ();
+		//exp.player.TurnOnVisuals (false)
+		exp.player.controls.SmoothMoveToPos (trial.avatarTowerPos, trial.avatarTowerRot, exp.player.controls.toStartTime);
 
 		//show instructions for location selection 
 		yield return StartCoroutine (exp.ShowSingleInstruction ("You will now be shown the environment as a grid. Use the joystick to select the location of the requested object.", true, true, Config_CoinTask.minDefaultInstructionTime));

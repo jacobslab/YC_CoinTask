@@ -10,16 +10,16 @@ public class PlayerControls : MonoBehaviour{
 
 
 	public Transform TiltableTransform;
-	public Transform towerPositionTransform;
-
-	public Vector3 TrialStartPos;
-	public float TrialStartRotY;
+	public Transform towerPositionTransform1;
+	public Transform towerPositionTransform2;
+	public Transform startPositionTransform1;
+	public Transform startPositionTransform2;
 
 	float RotationSpeed = 1.2f;
 	Quaternion lastRotation;
 
-	float toTowerTime = 2.0f;
-	float toStartTime = 1.0f;
+	[HideInInspector] public float toTowerTime = 2.0f;
+	[HideInInspector] public float toStartTime = 1.0f;
 
 
 
@@ -110,22 +110,16 @@ public class PlayerControls : MonoBehaviour{
 		transform.RotateAround (transform.position, Vector3.up, amount );
 	}
 
-	public void SmoothMoveToTower(){
 
-		StartCoroutine( SmoothMoveTo (towerPositionTransform.position, towerPositionTransform.rotation, toTowerTime ));
-		
-	}
+	public void SmoothMoveToPos(Vector3 position, Quaternion rotation, float time){
 
-	public void SmoothMoveToPos(Vector3 position, Quaternion rotation){
-		int a = 0;
-
-		StartCoroutine( SmoothMoveTo (position, rotation, toStartTime) );
+		StartCoroutine( SmoothMoveTo (position, rotation, time) );
 
 	}
 
 	IEnumerator SmoothMoveTo(Vector3 targetPosition, Quaternion targetRotation,  float totalTime){
 
-		Debug.Log("Started Smooth Moving");
+		Debug.Log("Smooth pos target: " + targetPosition + " smooth rot target: " + targetRotation.eulerAngles.y);
 
 		Quaternion origRotation = transform.rotation;
 		Vector3 origPosition = transform.position;
@@ -137,7 +131,7 @@ public class PlayerControls : MonoBehaviour{
 		float angleDiff = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
 		bool arePositionsCloseEnough = CheckPositionsCloseEnough(transform.position, targetPosition, epsilon);
 		while ( ( angleDiff >= epsilon ) || (!arePositionsCloseEnough) ){
-			Debug.Log("AHHHHH");
+
 			lastRotation = transform.rotation; //set last rotation before rotating!
 			
 			tElapsed += (Time.deltaTime * moveAndRotateRate);
