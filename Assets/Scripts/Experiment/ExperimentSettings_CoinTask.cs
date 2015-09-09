@@ -37,6 +37,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public static Trial.DifficultySetting difficultySetting = Trial.DifficultySetting.easy;
 
 
+	public InputField NumTreasureChestsInputField; //Frames Per Second
+
+
 	public Text endCongratsText;
 	public Text endScoreText;
 	public Text endSessionText;
@@ -77,7 +80,15 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	
 	// Update is called once per frame
 	void Update () {
+		if (NumTreasureChestsInputField != null) {
+			UpdateNumTreasureChests ();
+		}
+	}
 
+	//set the number of treasure chests/default objects
+	void UpdateNumTreasureChests(){
+		int inputNum = int.Parse (NumTreasureChestsInputField.text);
+		Config_CoinTask.numDefaultObjects = inputNum;
 	}
 
 	public void ChangeDifficulty(){

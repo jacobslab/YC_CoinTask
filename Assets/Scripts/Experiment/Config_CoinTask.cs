@@ -68,9 +68,10 @@ public class Config_CoinTask : MonoBehaviour {
 //SPECIFIC COIN TASK VARIABLES:
 
 	//DEFAULT OBJECTS
-	public static int numDefaultObjectsEasy = 15;
+	/*public static int numDefaultObjectsEasy = 15;
 	public static int numDefaultObjectsMedium = 15;
-	public static int numDefaultObjectsHard = 15;
+	public static int numDefaultObjectsHard = 15;*/
+	public static int numDefaultObjects = 10;
 
 	//THERE MUST ALWAYS BE FEWER SPECIAL OBJECTS THAN DEFAULT OBJECTS
 	public static int numSpecialObjectsEasy = 2;

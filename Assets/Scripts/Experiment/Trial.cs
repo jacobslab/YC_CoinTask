@@ -62,17 +62,19 @@ public class Trial {
 		int numSpecialObjects = 0;
 
 		if (difficulty == DifficultySetting.easy) {
-			numDefaultObjects = Config_CoinTask.numDefaultObjectsEasy;
+			//numDefaultObjects = Config_CoinTask.numDefaultObjectsEasy;
 			numSpecialObjects = Config_CoinTask.numSpecialObjectsEasy;
 		} 
 		else if (difficulty == DifficultySetting.medium) {
-			numDefaultObjects = Config_CoinTask.numDefaultObjectsMedium;
+			//numDefaultObjects = Config_CoinTask.numDefaultObjectsMedium;
 			numSpecialObjects = Config_CoinTask.numSpecialObjectsMedium;
 		} 
 		else if (difficulty == DifficultySetting.hard) {
-			numDefaultObjects = Config_CoinTask.numDefaultObjectsHard;
+			//numDefaultObjects = Config_CoinTask.numDefaultObjectsHard;
 			numSpecialObjects = Config_CoinTask.numSpecialObjectsHard;
 		}
+		//TODO: change back to difficulty levels?
+		numDefaultObjects = Config_CoinTask.numDefaultObjects;
 
 		//init default and special locations
 		DefaultObjectGridIndices = new List<Vector2> ();
