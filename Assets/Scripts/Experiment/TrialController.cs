@@ -157,8 +157,8 @@ public class TrialController : MonoBehaviour {
 
 		exp.environmentController.myGrid.Clear ();
 
-		exp.environmentController.myGrid.SetConfiguration (trial.DefaultObjectGridIndices, trial.SpecialObjectIndices);
-		exp.objectController.SpawnDefaultObjects (trial.DefaultObjectGridIndices);
+		//exp.environmentController.myGrid.SetConfiguration (trial.DefaultObjectGridIndices, trial.SpecialObjectIndices);
+		exp.objectController.SpawnDefaultObjects (trial.DefaultObjectLocationsXZ, trial.SpecialObjectLocationsXZ);
 
 		//turn off grid visibility
 		exp.environmentController.myGrid.TurnOnTileVisibility(false);
@@ -178,7 +178,7 @@ public class TrialController : MonoBehaviour {
 
 		//unlock avatar controls, wait for player to collect all coins
 		exp.player.controls.ShouldLockControls = false;
-		int numDefaultObjectsToCollect = trial.DefaultObjectGridIndices.Count;
+		int numDefaultObjectsToCollect = trial.DefaultObjectLocationsXZ.Count;
 
 		while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
 			yield return 0;

@@ -84,7 +84,7 @@ public class ObjectController : MonoBehaviour {
 	}
 
 	//for use in trial with configuration setup of the grid
-	public void SpawnDefaultObjects(List<Vector2> GridIndices){
+	/*public void SpawnDefaultObjects(List<Vector2> GridIndices){
 		for(int i = 0; i < GridIndices.Count; i++){
 			Vector2 currIndices = GridIndices[i];
 			Vector3 objPos = experiment.environmentController.myGrid.GetGridPosition( (int)currIndices.x, (int)currIndices.y );
@@ -98,6 +98,21 @@ public class ObjectController : MonoBehaviour {
 			SpawnableObject newSpawnableObj = newObj.GetComponent<SpawnableObject>();
 			newSpawnableObj.SetNameID(i);
 		}
+	}*/
+
+	public void SpawnDefaultObjects(List<Vector2> defaultPositions, List<Vector2> specialPositions){
+		for(int i = 0; i < defaultPositions.Count; i++){
+			Vector2 currPos = defaultPositions[i];
+			Vector3 objPos = new Vector3(currPos.x, DefaultObject.transform.position.y, currPos.y);
+			GameObject newObj = Instantiate(DefaultObject, objPos, DefaultObject.transform.rotation) as GameObject;
+			
+			SpawnableObject newSpawnableObj = newObj.GetComponent<SpawnableObject>();
+			newSpawnableObj.SetNameID(i);
+
+			if( specialPositions.Contains(currPos) ){
+				newObj.tag = "DefaultSpecialGridItem";
+			}
+		}
 	}
 
 
@@ -109,7 +124,7 @@ public class ObjectController : MonoBehaviour {
 	}
 
 	//spawn random object at a specified location
-	public GameObject SpawnSpecialObjectXY (Vector2 gridIndices, Vector3 spawnPosition){
+	public GameObject SpawnSpecialObjectXY (Vector3 spawnPosition){
 		GameObject objToSpawn = ChooseRandomObject ();
 		if (objToSpawn != null) {
 
@@ -120,8 +135,8 @@ public class ObjectController : MonoBehaviour {
 
 			CurrentTrialSpecialObjects.Add(newObject.GetComponent<SpawnableObject>());
 
-			newObject.GetComponent<GridItem>().rowIndex = (int)gridIndices.x;
-			newObject.GetComponent<GridItem>().colIndex = (int)gridIndices.y;
+			//newObject.GetComponent<GridItem>().rowIndex = (int)gridIndices.x;
+			//newObject.GetComponent<GridItem>().colIndex = (int)gridIndices.y;
 		
 
 			//make object face the player -- DOESN'T WORK FOR OBJECTS WITH INCONSISTENT Z-FACING TRANSFORMS.
@@ -136,25 +151,76 @@ public class ObjectController : MonoBehaviour {
 		}
 	}
 
-	//for spawning a random object at a random location
-	/*public GameObject SpawnRandomObjectXY(){
-		GameObject objToSpawn = ChooseRandomObject ();
-		if (objToSpawn != null) {
+	public List<Vector2> GenerateDefaultObjectPositions (int numDefaultObjects){
+		List<Vector2> defaultPositions = new List<Vector2> ();
 
-			float spawnPosY = objToSpawn.transform.position.y;
-			Vector3 spawnPos = experiment.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.bufferBetweenObjectsAndWall );
-			spawnPos = new Vector3(spawnPos.x, spawnPosY, spawnPos.z);
+		for (int i = 0; i < numDefaultObjects; i++) {
+			//generate random position in the environment
+			Vector3 randomEnvPosition = experiment.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.objectToWallBuffer );
+			Vector2 randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
 
-			GameObject newObject = Instantiate(objToSpawn, spawnPos, objToSpawn.transform.rotation) as GameObject;
+			int numTries = 0;
+			int maxNumTries = 15; //ARBITRARY.
+			//make sure that this position is far enough away from all other default object locations we've already generated
+			while( !CheckObjectsFarEnoughXZ( randomEnvPositionVec2, defaultPositions) && numTries < maxNumTries ){
+				//try again to generate a valid position
+				randomEnvPosition = experiment.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.objectToWallBuffer );
+				randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
+				numTries++;
+			}
 
-			float randomRot = GenerateRandomRotationY();
-			newObject.transform.RotateAround(newObject.transform.position, Vector3.up, randomRot);
+			if (numTries == 15){
+				Debug.Log("Tried 15 times to place default objects!");
+			}
 
-			return newObject;
+			defaultPositions.Add(randomEnvPositionVec2);
+
 		}
-		else{
-			return null;
+
+		return defaultPositions;
+	}
+
+	public bool CheckObjectsFarEnoughXZ(Vector2 newObjectPos, List<Vector2> otherObjectPositions){
+		for(int i = 0; i < otherObjectPositions.Count; i++){
+			Vector2 previousDefaultObjectLocation = otherObjectPositions[i];
+			if( (newObjectPos - previousDefaultObjectLocation).magnitude < Config_CoinTask.objectToObjectBuffer ){
+				return false;
+			}
 		}
-	}*/
+		
+		return true;
+	}
+
+	public List<Vector2> GenerateSpecialObjectPositions (List<Vector2> defaultObjectLocationsXZ, int numSpecialObjects){
+		List<Vector2> specialPositions = new List<Vector2> ();
+		List<Vector2> defaultPositionsCopy = new List<Vector2> ();
+		
+		//copy the list so we can delete from it...
+		for (int i = 0; i < defaultObjectLocationsXZ.Count; i++) {
+			Vector2 currPosition = defaultObjectLocationsXZ[i];
+			Vector2 positionCopy = new Vector2(currPosition.x, currPosition.y);
+			defaultPositionsCopy.Add(positionCopy);
+		}
+		
+		for (int i = 0; i < numSpecialObjects; i++) {
+			int randomIndex = Random.Range(0, defaultPositionsCopy.Count);
+			
+			//if number of special objects exceeds the number of free spots, we'll get stuck.
+			//...so exit the loop instead.
+			if(i > defaultPositionsCopy.Count){
+				break;
+			}
+			
+			Vector2 currPosition = defaultPositionsCopy[i];
+
+			specialPositions.Add (currPosition);
+			
+			//remove it from the parameter list so that no two special objects are in the same spot.
+			//this will not change the original list, as the list was passed by copy.
+			defaultPositionsCopy.RemoveAt(randomIndex);
+		}
+		
+		return specialPositions;
+	}
 
 }

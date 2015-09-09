@@ -36,9 +36,7 @@ public class GridItem : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider hitCollider){
-		if (hitCollider.gameObject.tag == "Player" && tag == "DefaultGridItem") {
-
-			EnvironmentGrid.GridSpotType mySpotType = envGrid.GetGridSpotType (rowIndex, colIndex);
+		if (hitCollider.gameObject.tag == "Player" && (tag == "DefaultGridItem" || tag == "DefaultSpecialGridItem") ) {
 
 			//Check if it's a treasure chest
 			TreasureChest chest = GetComponent<TreasureChest>();
@@ -51,7 +49,7 @@ public class GridItem : MonoBehaviour {
 
 			//if it was a special spot and this is the default object...
 			//...we should spawn the special object!
-			if (mySpotType == EnvironmentGrid.GridSpotType.specialGridItem && tag == "DefaultGridItem") {
+			if (tag == "DefaultSpecialGridItem") {
 
 				StartCoroutine(SpawnSpecialObject(specialSpawnPos));
 
@@ -75,7 +73,7 @@ public class GridItem : MonoBehaviour {
 		
 		//TODO: spawn with default objects, show on collision???
 		
-		GameObject specialObject = Experiment_CoinTask.Instance.objectController.SpawnSpecialObjectXY(new Vector2(rowIndex, colIndex), specialSpawnPos);
+		GameObject specialObject = Experiment_CoinTask.Instance.objectController.SpawnSpecialObjectXY(specialSpawnPos);
 		
 		//set special object text
 		specialObjectText.text = specialObject.GetComponent<SpawnableObject>().GetName();

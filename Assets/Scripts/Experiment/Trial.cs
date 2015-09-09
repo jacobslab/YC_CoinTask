@@ -14,8 +14,10 @@ public class Trial {
 	public Quaternion avatarStartRot;
 	public Vector3 avatarTowerPos;
 	public Quaternion avatarTowerRot;
-	public List<Vector2> DefaultObjectGridIndices;
-	public List<Vector2> SpecialObjectIndices;
+	//public List<Vector2> DefaultObjectGridIndices;
+	//public List<Vector2> SpecialObjectIndices;
+	public List<Vector2> DefaultObjectLocationsXZ;
+	public List<Vector2> SpecialObjectLocationsXZ;
 
 	public DifficultySetting trialDifficulty;
 
@@ -29,8 +31,10 @@ public class Trial {
 
 
 	public Trial(){
-		DefaultObjectGridIndices = new List<Vector2> ();
-		SpecialObjectIndices = new List<Vector2> ();
+		//DefaultObjectGridIndices = new List<Vector2> ();
+		//SpecialObjectIndices = new List<Vector2> ();
+		DefaultObjectLocationsXZ = new List<Vector2> ();
+		SpecialObjectLocationsXZ = new List<Vector2> ();
 	}
 
 	public Trial(bool shouldBeStim, DifficultySetting difficulty){
@@ -78,13 +82,14 @@ public class Trial {
 		numDefaultObjects = Config_CoinTask.numDefaultObjects;
 
 		//init default and special locations
-		DefaultObjectGridIndices = new List<Vector2> ();
+		/*DefaultObjectGridIndices = new List<Vector2> ();
 		SpecialObjectIndices = new List<Vector2> ();
 
 		DefaultObjectGridIndices = envGrid.GenerateDefaultObjectConfiguration (numDefaultObjects);
 
-		SpecialObjectIndices = envGrid.GenerateSpecialObjectConfiguration (DefaultObjectGridIndices, numSpecialObjects);
-
+		SpecialObjectIndices = envGrid.GenerateSpecialObjectConfiguration (DefaultObjectGridIndices, numSpecialObjects);*/
+		DefaultObjectLocationsXZ = exp.objectController.GenerateDefaultObjectPositions (numDefaultObjects);
+		SpecialObjectLocationsXZ = exp.objectController.GenerateSpecialObjectPositions (DefaultObjectLocationsXZ, numSpecialObjects);
 
 	}
 	
@@ -140,11 +145,11 @@ public class Trial {
 		}
 
 
-		int maxRow = exp.environmentController.myGrid.Rows;
+		/*int maxRow = exp.environmentController.myGrid.Rows;
 		int maxCol = exp.environmentController.myGrid.Columns;
 		//counter the object positions
 		for (int i = 0; i < DefaultObjectGridIndices.Count; i++) {
-			Vector2 counteredIndices = new Vector3(DefaultObjectGridIndices[i].x, DefaultObjectGridIndices[i].y);
+			Vector2 counteredIndices = new Vector2(DefaultObjectGridIndices[i].x, DefaultObjectGridIndices[i].y);
 			//counter the indices
 			counteredIndices.x = maxRow - counteredIndices.x - 1; // - 1 because indexing starts at zero
 			counteredIndices.y = maxCol - counteredIndices.y - 1; // - 1 because indexing starts at zero
@@ -153,12 +158,31 @@ public class Trial {
 		}
 
 		for (int i = 0; i < SpecialObjectIndices.Count; i++) {
-			Vector2 counteredIndices = new Vector3(SpecialObjectIndices[i].x, SpecialObjectIndices[i].y);
+			Vector2 counteredIndices = new Vector2(SpecialObjectIndices[i].x, SpecialObjectIndices[i].y);
 			//counter the indices
 			counteredIndices.x = maxRow - counteredIndices.x - 1; // - 1 because indexing starts at zero
 			counteredIndices.y = maxCol - counteredIndices.y - 1; // - 1 because indexing starts at zero
 			
 			counterTrial.SpecialObjectIndices.Add ( counteredIndices );
+		}*/
+
+		counterTrial.DefaultObjectLocationsXZ = new List<Vector2> ();
+		counterTrial.SpecialObjectLocationsXZ = new List<Vector2> ();
+		//counter the object positions
+		for (int i = 0; i < DefaultObjectLocationsXZ.Count; i++) {
+			Vector3 currPosition = new Vector3( DefaultObjectLocationsXZ[i].x, 0, DefaultObjectLocationsXZ[i].y );
+			Vector3 counteredPosition = GetReflectedPositionXZ( currPosition );
+
+			Vector2 counteredPositionXZ = new Vector2(counteredPosition.x, counteredPosition.z);
+			counterTrial.DefaultObjectLocationsXZ.Add(counteredPositionXZ);
+		}
+		
+		for (int i = 0; i < SpecialObjectLocationsXZ.Count; i++) {
+			Vector3 currPosition = new Vector3( SpecialObjectLocationsXZ[i].x, 0, SpecialObjectLocationsXZ[i].y );
+			Vector3 counteredPosition = GetReflectedPositionXZ( currPosition );
+			
+			Vector2 counteredPositionXZ = new Vector2(counteredPosition.x, counteredPosition.z);
+			counterTrial.SpecialObjectLocationsXZ.Add(counteredPositionXZ);
 		}
 		
 		return counterTrial;
