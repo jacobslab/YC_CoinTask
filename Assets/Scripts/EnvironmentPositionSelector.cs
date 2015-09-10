@@ -46,12 +46,24 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		float verticalAxisInput = Input.GetAxis ("Vertical");
 		float horizontalAxisInput = Input.GetAxis ("Horizontal");
 
-		if (exp.player.transform.position == exp.player.controls.towerPositionTransform1.position) {
+		float epsilon = 0.1f;
+		bool positionCloseToTower1 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.towerPositionTransform1.position);
+		bool positionCloseToTower2 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.towerPositionTransform1.position);
+
+		if (positionCloseToTower1) {
 			Move (verticalAxisInput * selectionMovementSpeed, horizontalAxisInput * selectionMovementSpeed);
 		} 
-		else if (exp.player.transform.position == exp.player.controls.towerPositionTransform2.position) {
+		else if (positionCloseToTower2) {
 			Move (-verticalAxisInput * selectionMovementSpeed, -horizontalAxisInput * selectionMovementSpeed);
 		}
+	}
+
+	bool CheckPositionsClose(float epsilon, Vector3 pos1, Vector3 pos2){
+		float distance = (pos1 - pos2).magnitude;
+		if (distance < epsilon) {
+			return true;
+		}
+		return false;
 	}
 
 	void Move(float amountVertical, float amountHorizontal){
