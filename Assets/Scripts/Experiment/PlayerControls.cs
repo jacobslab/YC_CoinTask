@@ -157,6 +157,7 @@ public class PlayerControls : MonoBehaviour{
 
 		//make sure the tilt stays at zero
 		lastRotation = transform.rotation;
+		SetTilt ();
 		isSmoothMoving = false;
 
 		//enable collisions again
