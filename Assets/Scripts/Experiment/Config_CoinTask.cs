@@ -83,7 +83,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float bigSelectionRadius = 40.0f;
 	public static EnvironmentPositionSelector.SelectionRadiusType currentSelectionRadiusType = EnvironmentPositionSelector.SelectionRadiusType.small;
 
-	public static float objectToWallBuffer = 5.0f;
+	public static float objectToWallBuffer = 20.0f; //TODO: RADIUS IS ACTUALLY DIAMETER. CHANGE THAT.
 	public static float objectToObjectBuffer = 10.0f;
 
 
@@ -127,6 +127,10 @@ public class Config_CoinTask : MonoBehaviour {
 		else {
 			return numTestTrials + numTestTrialsPract;
 		}
+	}
+
+	public void CalculateObjectToObjectBuffer(){
+
 	}
 
 }

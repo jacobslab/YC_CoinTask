@@ -48,7 +48,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 		float epsilon = 0.1f;
 		bool positionCloseToTower1 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.towerPositionTransform1.position);
-		bool positionCloseToTower2 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.towerPositionTransform1.position);
+		bool positionCloseToTower2 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.towerPositionTransform2.position);
 
 		if (positionCloseToTower1) {
 			Move (verticalAxisInput * selectionMovementSpeed, horizontalAxisInput * selectionMovementSpeed);
@@ -67,6 +67,8 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	}
 
 	void Move(float amountVertical, float amountHorizontal){
+		float epsilon = 0.01f;
+
 		Vector3 vertAmountVec = PositionSelector.transform.forward * amountVertical;
 		Vector3 horizAmountVec = PositionSelector.transform.right * amountHorizontal;
 
@@ -75,10 +77,30 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 		if (wouldBeInWallsVert) {
 			PositionSelector.transform.position += vertAmountVec;
-		}
+		} /*else {
+			//move to edge
+			if( amountVertical < -epsilon ){
+				float vertDist = exp.environmentController.GetDistanceFromEdge( PositionSelector.transform.position, Config_CoinTask.objectToWallBuffer, -PositionSelector.transform.forward);
+				PositionSelector.transform.position += PositionSelector.transform.forward*vertDist;
+			}
+			else if(amountVertical > epsilon ){
+				float vertDist = exp.environmentController.GetDistanceFromEdge( PositionSelector.transform.position, Config_CoinTask.objectToWallBuffer, PositionSelector.transform.forward);
+				PositionSelector.transform.position += PositionSelector.transform.forward*vertDist;
+			}
+		}*/
 		if (wouldBeInWallsHoriz) {
 			PositionSelector.transform.position += horizAmountVec;
-		}
+		} /*else {
+			//move to edge
+			if( amountHorizontal < -epsilon ){
+				float horizDist = exp.environmentController.GetDistanceFromEdge( PositionSelector.transform.position, Config_CoinTask.objectToWallBuffer, PositionSelector.transform.right);
+				PositionSelector.transform.position += PositionSelector.transform.right*horizDist;
+			}
+			else if( amountHorizontal > epsilon ){
+				float horizDist = exp.environmentController.GetDistanceFromEdge( PositionSelector.transform.position, Config_CoinTask.objectToWallBuffer, -PositionSelector.transform.right);
+				PositionSelector.transform.position -= PositionSelector.transform.right*horizDist;
+			}
+		}*/
 	}
 
 	public bool GetRadiusOverlap(Vector3 position){
