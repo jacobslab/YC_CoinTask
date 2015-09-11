@@ -19,8 +19,8 @@ public class PlayerControls : MonoBehaviour{
 	float RotationSpeed = 1.2f;
 	Quaternion lastRotation;
 
-	[HideInInspector] public float toTowerTime = 2.0f;
-	[HideInInspector] public float toStartTime = 1.0f;
+	[HideInInspector] public float toTowerTime = 4.0f;
+	[HideInInspector] public float toStartTime = 3.0f;
 
 
 

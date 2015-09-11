@@ -7,6 +7,9 @@ public class EnvironmentController : MonoBehaviour {
 	public Transform WallsZPos;
 	public Transform WallsZNeg;
 
+	public GameObject HomeBaseIndicatorA;
+	public GameObject HomeBaseIndicatorB;
+
 	public Vector3 center{ get { return GetEnvironmentCenter(); } }
 
 	public EnvironmentGrid myGrid;
@@ -94,32 +97,12 @@ public class EnvironmentController : MonoBehaviour {
 			}
 		}
 
-
-
-		/*Vector3 xPosDistance = WallsXPos.transform.position - position;
-		Vector3 xNegDistance = WallsXNeg.transform.position - position;
-		Vector3 zPosDistance = WallsZPos.transform.position - position;
-		Vector3 zNegDistance = WallsZNeg.transform.position - position;
-
-		float angleXPos = Mathf.Atan2 (xPosDistance.x , xPosDistance.z) * 180.0f / 3.14159f;//(xPosDistance.z / xPosDistance.x) * 180.0f / 3.14159f;
-		float angleXNeg = Mathf.Atan2 (xNegDistance.x , xNegDistance.z) * 180.0f / 3.14159f;//(xNegDistance.z / xNegDistance.x) * 180.0f / 3.14159f;
-		float angleZPos = Mathf.Atan2 (zPosDistance.x , zPosDistance.z) * 180.0f / 3.14159f;//(zPosDistance.z / zPosDistance.x) * 180.0f / 3.14159f;
-		float angleZNeg = Mathf.Atan2 (zNegDistance.x , zNegDistance.z) * 180.0f / 3.14159f;//(zNegDistance.z / zNegDistance.x) * 180.0f / 3.14159f;
-
-		if (angleXPos < angleXNeg && angleXPos < angleZPos && angleXPos < angleZNeg) { //xPos wall has the smallest angle difference
-			distance = (WallsXPos.position.x + wallBuffer) - position.x;
-		}
-		else if (angleXNeg < angleZPos && angleXNeg < angleZNeg){ //xNeg wall has the smallest angle difference
-			distance = (WallsXNeg.position.x - wallBuffer) - position.x;
-		}
-		else if (angleZPos < angleZNeg){ //zPos wall has the smallest angle difference
-			distance = (WallsZPos.position.z - wallBuffer) - position.z;
-		}
-		else{ //zNeg wall has the smallest angle difference
-			distance = (WallsZNeg.position.z + wallBuffer) - position.z;
-		}*/
-
 		return distanceToWall;
+	}
+
+	public void EnableHomeBaseIndicators(bool isEnabled){
+		HomeBaseIndicatorA.SetActive (isEnabled);
+		HomeBaseIndicatorB.SetActive (isEnabled);
 	}
 
 }

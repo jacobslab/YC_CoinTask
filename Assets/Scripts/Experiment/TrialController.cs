@@ -196,7 +196,7 @@ public class TrialController : MonoBehaviour {
 		exp.player.controls.ShouldLockControls = true;
 
 		//bring player to tower
-		//exp.player.TurnOnVisuals (false)
+		//exp.player.TurnOnVisuals (false);
 		yield return StartCoroutine( exp.player.controls.SmoothMoveTo (trial.avatarTowerPos, trial.avatarTowerRot, exp.player.controls.toStartTime) );
 
 		//show instructions for location selection 
