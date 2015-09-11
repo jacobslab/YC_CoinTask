@@ -206,21 +206,20 @@ public class TrialController : MonoBehaviour {
 		int memoryScore = 0;
 		List<int> randomSpecialObjectOrder = GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
-			//turn on grid visibility
-			//exp.environmentController.myGrid.TurnOnTileVisibility(true);
-			//enable grid selection
-			exp.environmentController.myPositionSelector.EnableSelection ();
-			exp.environmentController.myPositionSelector.EnableSelectionIndicator(true);
-			exp.environmentController.myPositionSelector.EnableCorrectIndicator(false);
 
 			//show instructions for location selection
 			int randomOrderIndex = randomSpecialObjectOrder[i];
 			SpawnableObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
 			string specialItemName = specialObj.GetName();
 
+
 			string selectObjectText = "Select the location of the " + specialItemName + ".";
 			Debug.Log("Should wait for radius selection");
 			yield return StartCoroutine ( exp.environmentController.myPositionSelector.WaitForRadiusSelection( selectObjectText ) );
+
+			exp.environmentController.myPositionSelector.EnableSelection ();
+			exp.environmentController.myPositionSelector.EnableSelectionIndicator(true);
+			exp.environmentController.myPositionSelector.EnableCorrectIndicator(false);
 
 			//show instructions and wait for selection button press
 			Debug.Log("Should wait for button press");
