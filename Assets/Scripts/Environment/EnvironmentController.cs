@@ -30,13 +30,19 @@ public class EnvironmentController : MonoBehaviour {
 		return new Vector3(centerX, 0.0f, centerZ);
 	}
 
-	public bool CheckWithinWalls(Vector3 position, float wallBuffer){
+	public bool CheckWithinWallsHoriz(Vector3 position, float wallBuffer){
 		if(position.x < WallsXPos.position.x - wallBuffer && position.x > WallsXNeg.position.x + wallBuffer){
-			if(position.z < WallsZPos.position.z - wallBuffer && position.z > WallsZNeg.position.z + wallBuffer){
-				return true;	
-			}
+			return true;
 		}
 
+		return false;
+	}
+
+	public bool CheckWithinWallsVert(Vector3 position, float wallBuffer){
+		if(position.z < WallsZPos.position.z - wallBuffer && position.z > WallsZNeg.position.z + wallBuffer){
+			return true;	
+		}
+		
 		return false;
 	}
 
@@ -52,10 +58,45 @@ public class EnvironmentController : MonoBehaviour {
 	}
 
 	//NOT WORKING AS INTENDED.
-	/*public float GetDistanceFromEdge(Vector3 position, float wallBuffer, Vector3 direction){
-		float distance = 0;
+	public float GetDistanceFromEdge(GameObject positionObject, float wallBuffer, Vector3 direction){
+		float distanceToWall = 0;
 
-		Vector3 xPosDistance = WallsXPos.transform.position - position;
+		RaycastHit wallHit;
+		
+		if (Physics.Raycast(positionObject.transform.position, direction, out wallHit, 100.0F)) {
+			if(positionObject.transform.forward == -Vector3.forward){
+				if(wallHit.collider.tag == "WallXPos"){
+					distanceToWall = WallsXPos.transform.position.x - positionObject.transform.position.x - wallBuffer;
+				}
+				else if(wallHit.collider.tag == "WallXNeg"){
+					distanceToWall = WallsXNeg.transform.position.x - positionObject.transform.position.x + wallBuffer;
+				}
+				else if(wallHit.collider.tag == "WallZPos"){
+					distanceToWall = WallsZPos.transform.position.z - positionObject.transform.position.z - wallBuffer;
+				}
+				else if(wallHit.collider.tag == "WallZNeg"){
+					distanceToWall = WallsZNeg.transform.position.z - positionObject.transform.position.z + wallBuffer;
+				}
+			}
+			else if(positionObject.transform.forward == Vector3.forward){
+				if(wallHit.collider.tag == "WallXPos"){
+					distanceToWall = WallsXPos.transform.position.x - positionObject.transform.position.x + wallBuffer;
+				}
+				else if(wallHit.collider.tag == "WallXNeg"){
+					distanceToWall = WallsXNeg.transform.position.x - positionObject.transform.position.x - wallBuffer;
+				}
+				else if(wallHit.collider.tag == "WallZPos"){
+					distanceToWall = WallsZPos.transform.position.z - positionObject.transform.position.z + wallBuffer;
+				}
+				else if(wallHit.collider.tag == "WallZNeg"){
+					distanceToWall = WallsZNeg.transform.position.z - positionObject.transform.position.z - wallBuffer;
+				}
+			}
+		}
+
+
+
+		/*Vector3 xPosDistance = WallsXPos.transform.position - position;
 		Vector3 xNegDistance = WallsXNeg.transform.position - position;
 		Vector3 zPosDistance = WallsZPos.transform.position - position;
 		Vector3 zNegDistance = WallsZNeg.transform.position - position;
@@ -76,9 +117,9 @@ public class EnvironmentController : MonoBehaviour {
 		}
 		else{ //zNeg wall has the smallest angle difference
 			distance = (WallsZNeg.position.z + wallBuffer) - position.z;
-		}
+		}*/
 
-		return distance;
-	}*/
+		return distanceToWall;
+	}
 
 }

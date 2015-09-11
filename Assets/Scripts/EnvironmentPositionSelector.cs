@@ -66,35 +66,43 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		Vector3 vertAmountVec = PositionSelector.transform.forward * amountVertical;
 		Vector3 horizAmountVec = PositionSelector.transform.right * amountHorizontal;
 
-		bool wouldBeInWallsVert = exp.environmentController.CheckWithinWalls (PositionSelector.transform.position + (vertAmountVec), Config_CoinTask.objectToWallBuffer);
-		bool wouldBeInWallsHoriz = exp.environmentController.CheckWithinWalls (PositionSelector.transform.position + (horizAmountVec), Config_CoinTask.objectToWallBuffer); 
+		bool wouldBeInWallsVert = exp.environmentController.CheckWithinWallsVert (PositionSelector.transform.position + (vertAmountVec), Config_CoinTask.objectToWallBuffer);
+		bool wouldBeInWallsHoriz = exp.environmentController.CheckWithinWallsHoriz (PositionSelector.transform.position + (horizAmountVec), Config_CoinTask.objectToWallBuffer); 
+
+		if (amountVertical != 0) {
+			int a = 0;
+		}
+		if (amountHorizontal != 0) {
+			int a = 0;
+		}
 
 		if (wouldBeInWallsVert) {
 			PositionSelector.transform.position += vertAmountVec;
-		} /*else {
+		} else {
 			//move to edge
 			if( amountVertical < -epsilon ){
-				float vertDist = exp.environmentController.GetDistanceFromEdge( PositionSelector.transform.position, Config_CoinTask.objectToWallBuffer, -PositionSelector.transform.forward);
-				PositionSelector.transform.position += PositionSelector.transform.forward*vertDist;
+
+				float vertDist = exp.environmentController.GetDistanceFromEdge( PositionSelector, Config_CoinTask.objectToWallBuffer, -PositionSelector.transform.forward);
+				PositionSelector.transform.position -= PositionSelector.transform.forward*vertDist;
 			}
 			else if(amountVertical > epsilon ){
-				float vertDist = exp.environmentController.GetDistanceFromEdge( PositionSelector.transform.position, Config_CoinTask.objectToWallBuffer, PositionSelector.transform.forward);
-				PositionSelector.transform.position += PositionSelector.transform.forward*vertDist;
+				float vertDist = exp.environmentController.GetDistanceFromEdge( PositionSelector, Config_CoinTask.objectToWallBuffer, PositionSelector.transform.forward);
+				PositionSelector.transform.position -= PositionSelector.transform.forward*vertDist;
 			}
-		}*/
+		}
 		if (wouldBeInWallsHoriz) {
 			PositionSelector.transform.position += horizAmountVec;
-		} /*else {
+		} else {
 			//move to edge
 			if( amountHorizontal < -epsilon ){
-				float horizDist = exp.environmentController.GetDistanceFromEdge( PositionSelector.transform.position, Config_CoinTask.objectToWallBuffer, PositionSelector.transform.right);
-				PositionSelector.transform.position += PositionSelector.transform.right*horizDist;
-			}
-			else if( amountHorizontal > epsilon ){
-				float horizDist = exp.environmentController.GetDistanceFromEdge( PositionSelector.transform.position, Config_CoinTask.objectToWallBuffer, -PositionSelector.transform.right);
+				float horizDist = exp.environmentController.GetDistanceFromEdge( PositionSelector, Config_CoinTask.objectToWallBuffer, -PositionSelector.transform.right);
 				PositionSelector.transform.position -= PositionSelector.transform.right*horizDist;
 			}
-		}*/
+			else if( amountHorizontal > epsilon ){
+				float horizDist = exp.environmentController.GetDistanceFromEdge( PositionSelector, Config_CoinTask.objectToWallBuffer, PositionSelector.transform.right);
+				PositionSelector.transform.position -= PositionSelector.transform.right*horizDist;
+			}
+		}
 	}
 
 	bool hasSelectedSize = false;
