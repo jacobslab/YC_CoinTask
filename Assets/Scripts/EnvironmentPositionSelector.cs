@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class EnvironmentPositionSelector : MonoBehaviour {
 
@@ -7,6 +8,8 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	public GameObject PositionSelector;
 	public GameObject CorrectPositionIndicator;
+	public GameObject RadiusButtonUI;
+	public Text RadiusButtonUIText; //should say "select special object" or something of the sort.
 	public ArcGenerator myArc;
 
 	public enum SelectionRadiusType{
@@ -20,15 +23,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//TODO: allow player to choose either big or small radius.
-		float currentRadius = Config_CoinTask.smallSelectionRadius;
-		currentRadiusType = Config_CoinTask.currentSelectionRadiusType; //TODO: TAKE THIS SELECTION OUT OF MAIN MENU/CONFIG
-		if (currentRadiusType == SelectionRadiusType.big) {
-			currentRadius = Config_CoinTask.bigSelectionRadius;
-		}
-		Debug.Log (currentRadius);
-		PositionSelector.transform.localScale = new Vector3 (currentRadius, PositionSelector.transform.localScale.y, currentRadius);
-
 		DisableMovement ();
 		EnableSelectionIndicator (false);
 		EnableCorrectIndicator (false);
@@ -69,6 +63,33 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		}
 	}
 
+	bool hasSelectedRadius = false;
+	public IEnumerator WaitForRadiusSelection( string displayText ){
+		EnableRadiusButtonUI(true);
+		hasSelectedRadius = false;
+		RadiusButtonUIText.text = displayText;
+		while(!hasSelectedRadius){
+			yield return 0;
+		}
+		EnableRadiusButtonUI(false);
+	}
+
+	void EnableRadiusButtonUI(bool shouldEnable){
+		RadiusButtonUI.SetActive(shouldEnable);
+	}
+
+	public void SetBigRadius(){
+		float currentRadius = Config_CoinTask.bigSelectionRadius;
+		PositionSelector.transform.localScale = new Vector3 (currentRadius, PositionSelector.transform.localScale.y, currentRadius);
+		hasSelectedRadius = true;
+	}
+
+	public void SetSmallRadius(){
+		float currentRadius = Config_CoinTask.smallSelectionRadius;
+		PositionSelector.transform.localScale = new Vector3 (currentRadius, PositionSelector.transform.localScale.y, currentRadius);
+		hasSelectedRadius = true;
+	}
+
 	public bool GetRadiusOverlap(Vector3 position){
 		float distance = (position - PositionSelector.transform.position).magnitude;
 		if (distance < PositionSelector.transform.localScale.x) {
@@ -89,12 +110,12 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		PositionSelector.SetActive (true);
 	}
 
-	public void EnableCorrectIndicator(bool isEnabled){
-		CorrectPositionIndicator.SetActive (isEnabled);
+	public void EnableCorrectIndicator(bool shouldEnable){
+		CorrectPositionIndicator.SetActive (shouldEnable);
 	}
 
-	public void EnableSelectionIndicator(bool isEnabled){
-		PositionSelector.SetActive (isEnabled);
+	public void EnableSelectionIndicator(bool shouldEnable){
+		PositionSelector.SetActive (shouldEnable);
 	}
 
 	public void DisableMovement(){

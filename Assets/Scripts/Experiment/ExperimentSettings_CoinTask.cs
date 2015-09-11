@@ -118,22 +118,6 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		}
 	}
 
-	//TODO: MOVE THIS TO IN-GAME.
-	public void ChangeSelectionRadius(){
-		if(Config_CoinTask.currentSelectionRadiusType == EnvironmentPositionSelector.SelectionRadiusType.small){
-			//switch to big
-			Config_CoinTask.currentSelectionRadiusType = EnvironmentPositionSelector.SelectionRadiusType.big;
-			smallRadiusToggle.isOn = false;
-			bigRadiusToggle.isOn = true;
-		}
-		else if (Config_CoinTask.currentSelectionRadiusType == EnvironmentPositionSelector.SelectionRadiusType.big){
-			//switch to small
-			Config_CoinTask.currentSelectionRadiusType = EnvironmentPositionSelector.SelectionRadiusType.small;
-			smallRadiusToggle.isOn = true;
-			bigRadiusToggle.isOn = false;
-		}
-	}
-
 	public void SetReplayTrue(){
 		isReplay = true;
 		isLogging = false;

@@ -217,8 +217,12 @@ public class TrialController : MonoBehaviour {
 			int randomOrderIndex = randomSpecialObjectOrder[i];
 			SpawnableObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
 			string specialItemName = specialObj.GetName();
+
+			string selectObjectText = "Select the location of the " + specialItemName + ".";
+			yield return StartCoroutine ( exp.environmentController.myPositionSelector.WaitForRadiusSelection( selectObjectText ) );
+
 			//show instructions and wait for selection button press
-			yield return StartCoroutine (exp.ShowSingleInstruction ("Select the location of the " + specialItemName + ".", false, true, Config_CoinTask.minDefaultInstructionTime));
+			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, Config_CoinTask.minDefaultInstructionTime));
 
 			//TODO: log the chosen tile
 			//Tile chosenTile = exp.player.tileSelector.selectedTile;
