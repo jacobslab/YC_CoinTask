@@ -245,8 +245,8 @@ public class TrialController : MonoBehaviour {
 
 			//make object visible on the field, up the scale, move upward for better visibility
 			specialObj.GetComponent<SpawnableObject>().TurnVisible(true);
-			float scaleMult = 3.5f;//TODO: PUT SOMEWHERE ELSE THAT ACTUALLY MAKES SENSE. ORGANIZE THIS MESS. UGH.
-			Vector3 liftVector = new Vector3(0.0f, 1.0f, 0.0f); //for better visibility
+			float scaleMult = 2.0f;//TODO: PUT SOMEWHERE ELSE THAT ACTUALLY MAKES SENSE. ORGANIZE THIS MESS. UGH.
+			Vector3 liftVector = new Vector3(0.0f, 0.5f, 0.0f); //for better visibility
 			Vector3 specialObjOrigScale = specialObj.transform.localScale;
 			specialObj.transform.localScale = specialObjOrigScale*scaleMult;
 			specialObj.transform.position += liftVector;

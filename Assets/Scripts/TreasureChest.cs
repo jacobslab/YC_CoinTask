@@ -37,7 +37,7 @@ public class TreasureChest : MonoBehaviour {
 
 
 		Quaternion origRotation = top.rotation;
-		top.RotateAround(pivotPos, Vector3.forward, angleToOpen); //rotate to get the desired rotation
+		top.RotateAround(pivotPos, -transform.right, angleToOpen); //rotate to get the desired rotation
 		Quaternion desiredRotation = top.transform.rotation;
 
 		//TODO: nicely animate the opening...
