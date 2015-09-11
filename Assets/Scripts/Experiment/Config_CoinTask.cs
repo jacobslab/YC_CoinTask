@@ -83,7 +83,8 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float bigSelectionSize = 20.0f;
 
 	public static float objectToWallBuffer = 10.0f; //half of the big selection size, because the selection size is actually the diameter of the selector.
-	public static float objectToObjectBuffer = 5.0f;
+	public static float objectToObjectBuffer { get { return CalculateObjectToObjectBuffer(); } } //calculated base on min time to drive between objects!
+	public static float minDriveTimeBetweenObjects = 0.5f; //half a second driving between objects
 
 
 	public static float rotateToSpecialObjectTime = 1.0f;
@@ -128,8 +129,21 @@ public class Config_CoinTask : MonoBehaviour {
 		}
 	}
 
-	public void CalculateObjectToObjectBuffer(){
+	public static float CalculateObjectToObjectBuffer(){
+		float buffer = 0;
 
+		if (Experiment_CoinTask.Instance != null) {
+
+			float playerMaxSpeed = driveSpeed;
+			buffer = driveSpeed * minDriveTimeBetweenObjects; //d = vt
+
+			buffer += Experiment_CoinTask.Instance.objectController.GetMaxDefaultObjectColliderBoundXZ ();
+
+			Debug.Log ("BUFFER: " + buffer);
+
+		}
+
+		return buffer;
 	}
 
 }

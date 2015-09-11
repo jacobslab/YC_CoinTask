@@ -8,6 +8,7 @@ public class TreasureChest : MonoBehaviour {
 	public Transform top;
 	public Transform treasureSpawnPoint;
 
+
 	float angleToOpen = 150.0f; //degrees
 
 	// Use this for initialization
