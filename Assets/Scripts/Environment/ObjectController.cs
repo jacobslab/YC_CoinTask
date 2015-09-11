@@ -208,11 +208,11 @@ public class ObjectController : MonoBehaviour {
 			
 			//if number of special objects exceeds the number of free spots, we'll get stuck.
 			//...so exit the loop instead.
-			if(i > defaultPositionsCopy.Count){
+			if(i >= defaultObjectLocationsXZ.Count){
 				break;
 			}
 			
-			Vector2 currPosition = defaultPositionsCopy[i];
+			Vector2 currPosition = defaultPositionsCopy[randomIndex];
 
 			specialPositions.Add (currPosition);
 			
