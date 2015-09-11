@@ -219,9 +219,11 @@ public class TrialController : MonoBehaviour {
 			string specialItemName = specialObj.GetName();
 
 			string selectObjectText = "Select the location of the " + specialItemName + ".";
+			Debug.Log("Should wait for radius selection");
 			yield return StartCoroutine ( exp.environmentController.myPositionSelector.WaitForRadiusSelection( selectObjectText ) );
 
 			//show instructions and wait for selection button press
+			Debug.Log("Should wait for button press");
 			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, Config_CoinTask.minDefaultInstructionTime));
 
 			//TODO: log the chosen tile

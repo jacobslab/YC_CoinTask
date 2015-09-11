@@ -78,11 +78,11 @@ public class Config_CoinTask : MonoBehaviour {
 	public static int numSpecialObjectsMedium = 4;
 	public static int numSpecialObjectsHard = 6;
 
-	//RADII FOR CORRECT SELECTION DURING TESTING PHASE
-	public static float smallSelectionRadius = 20.0f;
-	public static float bigSelectionRadius = 40.0f;
+	//SIZE (diameter, actually) FOR CORRECT SELECTION DURING TESTING PHASE
+	public static float smallSelectionSize = 20.0f;
+	public static float bigSelectionSize = 40.0f;
 
-	public static float objectToWallBuffer = 20.0f; //TODO: RADIUS IS ACTUALLY DIAMETER. CHANGE THAT.
+	public static float objectToWallBuffer = 20.0f; //half of the big selection size, because the selection size is actually the diameter of the selector.
 	public static float objectToObjectBuffer = 10.0f;
 
 

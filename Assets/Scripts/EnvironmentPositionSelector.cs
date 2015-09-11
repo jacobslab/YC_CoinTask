@@ -97,31 +97,32 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		}*/
 	}
 
-	bool hasSelectedRadius = false;
+	bool hasSelectedSize = false;
 	public IEnumerator WaitForRadiusSelection( string displayText ){
 		EnableRadiusButtonUI(true);
-		hasSelectedRadius = false;
+		hasSelectedSize = false;
 		RadiusButtonUIText.text = displayText;
-		while(!hasSelectedRadius){
+		while(!hasSelectedSize){
 			yield return 0;
 		}
 		EnableRadiusButtonUI(false);
 	}
 
 	void EnableRadiusButtonUI(bool shouldEnable){
+		Debug.Log ("ENABLING OR DISABLING RADIUS BUTTON UI");
 		RadiusButtonUI.SetActive(shouldEnable);
 	}
 
 	public void SetBigRadius(){
-		float currentRadius = Config_CoinTask.bigSelectionRadius;
+		float currentRadius = Config_CoinTask.bigSelectionSize;
 		PositionSelector.transform.localScale = new Vector3 (currentRadius, PositionSelector.transform.localScale.y, currentRadius);
-		hasSelectedRadius = true;
+		hasSelectedSize = true;
 	}
 
 	public void SetSmallRadius(){
-		float currentRadius = Config_CoinTask.smallSelectionRadius;
-		PositionSelector.transform.localScale = new Vector3 (currentRadius, PositionSelector.transform.localScale.y, currentRadius);
-		hasSelectedRadius = true;
+		float currentSize = Config_CoinTask.smallSelectionSize;
+		PositionSelector.transform.localScale = new Vector3 (currentSize, PositionSelector.transform.localScale.y, currentSize);
+		hasSelectedSize = true;
 	}
 
 	public bool GetRadiusOverlap(Vector3 position){
