@@ -81,6 +81,8 @@ public class GridItem : MonoBehaviour {
 
 		SpecialParticles.Stop(); //reset the particles just in case.
 		SpecialParticles.Play();
+		Debug.Log ("Special particles playing: " + SpecialParticles.isPlaying);
+		Debug.Log ("Special particles life: " + SpecialParticles.time);
 
 		specialCollisionSound.Play ();
 
