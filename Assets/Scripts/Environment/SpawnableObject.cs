@@ -2,13 +2,16 @@
 using System.Collections;
 using System.Text.RegularExpressions;
 
+[RequireComponent (typeof (VisibilityToggler))]
 public class SpawnableObject : MonoBehaviour {
 
-	public bool isVisible = true;
+	VisibilityToggler myVisibilityToggler;
+	public bool isVisible { get { return myVisibilityToggler.GetVisibility (); } }
+
 
 	// Use this for initialization
 	void Start () {
-	
+		myVisibilityToggler = GetComponent<VisibilityToggler> ();
 	}
 	
 	// Update is called once per frame
@@ -18,28 +21,7 @@ public class SpawnableObject : MonoBehaviour {
 
 	//function to turn off (or on) the object without setting it inactive -- because we want to keep logging on
 	public void TurnVisible(bool shouldBeVisible){ 
-		if(GetComponent<Renderer>() != null){
-			GetComponent<Renderer>().enabled = shouldBeVisible;
-		}
-
-		Renderer[] renderers = GetComponentsInChildren<Renderer>();
-		for(int i = 0; i < renderers.Length; i++){
-			renderers[i].enabled = shouldBeVisible;
-		}
-		
-		
-		//turn off all colliders of an object
-		if(GetComponent<Collider>() != null){
-			GetComponent<Collider>().enabled = shouldBeVisible;
-		}
-		Collider[] colliders = GetComponentsInChildren<Collider>();
-		for(int i = 0; i < colliders.Length; i++){
-			colliders[i].enabled = shouldBeVisible;
-		}
-
-
-		isVisible = shouldBeVisible;
-
+		myVisibilityToggler.TurnVisible (shouldBeVisible);
 	}
 
 	public string GetName(){

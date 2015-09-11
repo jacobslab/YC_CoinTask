@@ -8,6 +8,7 @@ public class PlayerControls : MonoBehaviour{
 
 	public bool ShouldLockControls = false;
 
+	bool isSmoothMoving = false;
 
 	public Transform TiltableTransform;
 	public Transform towerPositionTransform1;
@@ -42,7 +43,7 @@ public class PlayerControls : MonoBehaviour{
 			if(!ShouldLockControls){
 				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationY; // TODO: on collision, don't allow a change in angular velocity?
 
-				if (Config_CoinTask.isAvatarTilting) {
+				if (Config_CoinTask.isAvatarTilting && !isSmoothMoving) {
 					SetTilt ();
 					lastRotation = transform.rotation;
 				}
@@ -109,15 +110,18 @@ public class PlayerControls : MonoBehaviour{
 	void Turn( float amount ){
 		transform.RotateAround (transform.position, Vector3.up, amount );
 	}
+	
 
+	public IEnumerator SmoothMoveTo(Vector3 targetPosition, Quaternion targetRotation,  float totalTime){
 
-	public void SmoothMoveToPos(Vector3 position, Quaternion rotation, float time){
+		//set tilt stays at zero
+		lastRotation = transform.rotation;
+		SetTilt ();
+		//notify tilting that we're smoothly moving, and thus should not tilt
+		isSmoothMoving = true;
 
-		StartCoroutine( SmoothMoveTo (position, rotation, time) );
-
-	}
-
-	IEnumerator SmoothMoveTo(Vector3 targetPosition, Quaternion targetRotation,  float totalTime){
+		//stop collisions
+		GetComponent<Collider> ().enabled = false;
 
 		Debug.Log("Smooth pos target: " + targetPosition + " smooth rot target: " + targetRotation.eulerAngles.y);
 
@@ -128,9 +132,10 @@ public class PlayerControls : MonoBehaviour{
 		float tElapsed = 0.0f;
 		float epsilon = 0.01f;
 
-		float angleDiff = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
+		float angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
+		float angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
 		bool arePositionsCloseEnough = CheckPositionsCloseEnough(transform.position, targetPosition, epsilon);
-		while ( ( angleDiff >= epsilon ) || (!arePositionsCloseEnough) ){
+		while ( ( angleDiffY >= epsilon ) || ( angleDiffX >= epsilon ) || (!arePositionsCloseEnough) ){
 
 			lastRotation = transform.rotation; //set last rotation before rotating!
 			
@@ -140,7 +145,8 @@ public class PlayerControls : MonoBehaviour{
 			transform.position = Vector3.Lerp(origPosition, targetPosition, tElapsed);
 
 			//calculate new differences
-			angleDiff = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
+			angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
+			angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
 			arePositionsCloseEnough = CheckPositionsCloseEnough(transform.position, targetPosition, epsilon);
 			yield return 0;
 		}
@@ -148,7 +154,15 @@ public class PlayerControls : MonoBehaviour{
 		
 		transform.rotation = targetRotation;
 		transform.position = targetPosition;
-		
+
+		//make sure the tilt stays at zero
+		lastRotation = transform.rotation;
+		SetTilt ();
+		isSmoothMoving = false;
+
+		//enable collisions again
+		GetComponent<Collider> ().enabled = true;
+
 		yield return 0;
 	}
 	

@@ -100,6 +100,7 @@ public class ObjectController : MonoBehaviour {
 		}
 	}*/
 
+	//special positions get passed in so that the default object can get a special tag for later use for spawning special objects
 	public void SpawnDefaultObjects(List<Vector2> defaultPositions, List<Vector2> specialPositions){
 		for(int i = 0; i < defaultPositions.Count; i++){
 			Vector2 currPos = defaultPositions[i];
