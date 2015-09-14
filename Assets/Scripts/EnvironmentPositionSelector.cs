@@ -8,7 +8,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	public GameObject PositionSelector;
 	public GameObject PositionSelectorVisuals;
-	public GameObject AllVisuals; //includes radius & arc --> for visibility toggling
 	public GameObject CorrectPositionIndicator;
 	public ArcGenerator myArc;
 	public TextMesh RadiusPointText;
@@ -25,9 +24,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		DisableMovement ();
-		EnableSelectionIndicator (false);
-		EnableCorrectIndicator (false);
+		EnableSelection(false);
 	}
 	
 	// Update is called once per frame
@@ -113,35 +110,62 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		}
 	}
 
-
+	//TODO: put these size change functions in a separate script so that the visuals control their own size -- will be easier for duplication of indicators
 	void ChangeRadiusSize(){
-		float radiusSize = 0.0f;
 		if (currentRadiusType == SelectionRadiusType.none) { //none --> big
-			AllVisuals.GetComponent<VisibilityToggler>().SetAlpha(1.0f);
-			radiusSize = Config_CoinTask.bigSelectionSize;
-			currentRadiusType = SelectionRadiusType.big;
-			SetRadiusSize (radiusSize);
-
-			SetRadiusText();
+			SetRadiusSizeBig();
 		}
 		else if(currentRadiusType == SelectionRadiusType.big){ //big --> small
-			radiusSize = Config_CoinTask.smallSelectionSize;
-			currentRadiusType = SelectionRadiusType.small;
-			SetRadiusSize (radiusSize);
-
-			SetRadiusText();
+			SetRadiusSizeSmall();
 		}
 		else if (currentRadiusType == SelectionRadiusType.small){ //small --> none
-			AllVisuals.GetComponent<VisibilityToggler>().SetAlpha(0.0f);
-			currentRadiusType = SelectionRadiusType.none;
-
-			/*radiusSize = Config_CoinTask.smallSelectionSize;
-			currentRadiusType = SelectionRadiusType.small;
-			SetRadiusSize (radiusSize);
-*/
-			SetRadiusText();
+			SetRadiusSizeNone();
 		}
 
+	}
+
+	public void SetRadiusSize (SelectionRadiusType newRadiusType){
+		if (newRadiusType == SelectionRadiusType.none) {
+			SetRadiusSizeNone();
+		} 
+		else if (newRadiusType == SelectionRadiusType.small) {
+			SetRadiusSizeSmall();
+		} 
+		else if (newRadiusType == SelectionRadiusType.big) {
+			SetRadiusSizeBig();
+		}
+	}
+
+	void SetRadiusSizeBig(){
+		float radiusSize = 0.0f;
+
+		PositionSelectorVisuals.GetComponent<VisibilityToggler>().TurnVisible(true);
+		myArc.GetComponent<VisibilityToggler>().TurnVisible(true);
+		radiusSize = Config_CoinTask.bigSelectionSize;
+		currentRadiusType = SelectionRadiusType.big;
+		SetRadiusSize (radiusSize);
+		
+		SetRadiusText();
+	}
+
+	void SetRadiusSizeSmall(){
+		float radiusSize = 0.0f;
+
+		PositionSelectorVisuals.GetComponent<VisibilityToggler>().TurnVisible(true);
+		myArc.GetComponent<VisibilityToggler>().TurnVisible(true);
+		radiusSize = Config_CoinTask.smallSelectionSize;
+		currentRadiusType = SelectionRadiusType.small;
+		SetRadiusSize (radiusSize);
+		
+		SetRadiusText();
+	}
+
+	void SetRadiusSizeNone(){
+		PositionSelectorVisuals.GetComponent<VisibilityToggler>().TurnVisible(false);
+		myArc.GetComponent<VisibilityToggler>().TurnVisible(false);
+		currentRadiusType = SelectionRadiusType.none;
+		
+		SetRadiusText();
 	}
 
 	void SetRadiusSize( float size ){
@@ -149,16 +173,23 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	}
 
 	void SetRadiusText(){
-		string pointsText = " POINTS";
 
-		if (currentRadiusType == SelectionRadiusType.none) { //none
-			RadiusPointText.text = ScoreController.memoryScoreNoChoice + pointsText;
+		if (!shouldSelect) {
+			RadiusPointText.text = "";
 		}
-		else if(currentRadiusType == SelectionRadiusType.big){ //big
-			RadiusPointText.text = ScoreController.memoryScoreMedium + pointsText;
-		}
-		else if (currentRadiusType == SelectionRadiusType.small){ //small
-			RadiusPointText.text = ScoreController.memoryScoreBest + pointsText;
+
+		else{
+			string pointsText = " POINTS";
+
+			if (currentRadiusType == SelectionRadiusType.none) { //none
+				RadiusPointText.text = ScoreController.memoryScoreNoChoice + pointsText;
+			}
+			else if(currentRadiusType == SelectionRadiusType.big){ //big
+				RadiusPointText.text = ScoreController.memoryScoreMedium + pointsText;
+			}
+			else if (currentRadiusType == SelectionRadiusType.small){ //small
+				RadiusPointText.text = ScoreController.memoryScoreBest + pointsText;
+			}
 		}
 	}
 
@@ -175,28 +206,17 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		return PositionSelector.transform.position;
 	}
 	
-	public void EnableSelection(){
-		shouldSelect = true;
-		SetRadiusText ();
-		myArc.gameObject.SetActive(true);
-		PositionSelectorVisuals.SetActive (true);
+	public void EnableSelection(bool shouldEnable){
+		shouldSelect = shouldEnable;
+		EnableSelectionIndicator (shouldEnable);
 	}
 
-	public void EnableCorrectIndicator(bool shouldEnable){
-		CorrectPositionIndicator.SetActive (shouldEnable);
-	}
-
-	public void EnableSelectionIndicator(bool shouldEnable){
-		if (!shouldEnable) {
-			RadiusPointText.text = "";
-		} else {
-			SetRadiusText();
+	void EnableSelectionIndicator(bool shouldEnable){
+		if (currentRadiusType != SelectionRadiusType.none) {
+			PositionSelectorVisuals.GetComponent<VisibilityToggler> ().TurnVisible (shouldEnable);
+			myArc.GetComponent<VisibilityToggler> ().TurnVisible (shouldEnable);
 		}
-		PositionSelectorVisuals.SetActive (shouldEnable);
+		SetRadiusText ();
 	}
-
-	public void DisableMovement(){
-		myArc.gameObject.SetActive(false);
-		shouldSelect = false;
-	}
+	
 }

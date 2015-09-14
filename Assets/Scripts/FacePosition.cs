@@ -2,9 +2,7 @@
 using System.Collections;
 
 public class FacePosition : MonoBehaviour {
-
-	//if false, we will face *away* from the player
-	//public bool ShouldFaceTowardsPosition;
+	
 	public Transform TargetPositionTransform;
 
 
@@ -19,6 +17,10 @@ public class FacePosition : MonoBehaviour {
 	}
 
 	void FaceThePosition(){
+		Quaternion origRot = transform.rotation;
 		transform.LookAt (TargetPositionTransform);
+		float yRot = transform.rotation.eulerAngles.y;
+
+		transform.rotation = Quaternion.Euler (origRot.eulerAngles.x, yRot, origRot.eulerAngles.z);
 	}
 }

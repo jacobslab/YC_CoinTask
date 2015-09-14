@@ -162,8 +162,8 @@ public class TrialController : MonoBehaviour {
 
 		//turn off grid visibility
 		exp.environmentController.myGrid.TurnOnTileVisibility(false);
-		//disable grid selection
-		exp.environmentController.myPositionSelector.DisableMovement();
+		//disable selection
+		exp.environmentController.myPositionSelector.EnableSelection(false);
 
 		exp.player.controls.ShouldLockControls = true;
 
@@ -205,6 +205,8 @@ public class TrialController : MonoBehaviour {
 		//ask player to locate each object individually on the grid
 		int memoryScore = 0;
 		List<int> randomSpecialObjectOrder = GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
+		List<Vector3> chosenPositions = new List<Vector3> (); //chosen positions will be in the same order as the random special object order
+		List<EnvironmentPositionSelector.SelectionRadiusType> chosenSelectorSizes = new List<EnvironmentPositionSelector.SelectionRadiusType> (); //chosen sizes will be in the same order as the random special object order
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
 
 			//show instructions for location selection
@@ -215,59 +217,100 @@ public class TrialController : MonoBehaviour {
 
 			string selectObjectText = "Select the location of the " + specialItemName + ".";
 
-			exp.environmentController.myPositionSelector.EnableSelection ();
-			exp.environmentController.myPositionSelector.EnableSelectionIndicator(true);
-			exp.environmentController.myPositionSelector.EnableCorrectIndicator(false);
+			exp.environmentController.myPositionSelector.EnableSelection (true);
+
 
 			//show instructions and wait for selection button press
 			Debug.Log("Should wait for button press");
 			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, Config_CoinTask.minDefaultInstructionTime));
 
-			//TODO: log the chosen tile
-			//Tile chosenTile = exp.player.tileSelector.selectedTile;
-			//exp.environmentController.myGrid.MyGridLogTrack.LogGridTile(chosenTile, GridLogTrack.LoggedTileType.chosenTestTile);
+			//TODO: log the chosen position
 
-			Tile correctTile = exp.environmentController.myGrid.GetGridTile(specialObj.GetComponent<GridItem>().rowIndex, specialObj.GetComponent<GridItem>().colIndex);
-			//TODO: log correct tile
-			//exp.environmentController.myGrid.MyGridLogTrack.LogGridTile(correctTile, GridLogTrack.LoggedTileType.correctTestTile);
-			//light up correct tile
-			//correctTile.myHighlighter.HighlightHigh();
-			//correctTile.myHighlighter.SetSpecialColor(Color.green);
+			//TODO: log correct position
 
-			//show correct selection indicator
-			float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;
-			Vector3 correctIndicatorPosition = new Vector3 (specialObj.transform.position.x, indicatorHeight, specialObj.transform.position.z);
-			exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position = correctIndicatorPosition;
-			exp.environmentController.myPositionSelector.EnableCorrectIndicator(true);
+			//add current chosen position to list of chosen positions
+			chosenPositions.Add(exp.environmentController.myPositionSelector.GetSelectorPosition());
+			chosenSelectorSizes.Add(exp.environmentController.myPositionSelector.currentRadiusType);
 
-			//make object visible on the field, up the scale, move upward for better visibility
+		}
+
+
+		//SHOW ALL FEEDBACK: TODO: make this its own function.
+		List<GameObject> CorrectPositionIndicators = new List<GameObject> ();
+		List<GameObject> ChosenPositionIndicators = new List<GameObject> ();
+		for (int i = 0; i < randomSpecialObjectOrder.Count; i++){
+			int randomOrderIndex = randomSpecialObjectOrder[i];
+
+			//turn on each special object & scale up for better visibility
+			SpawnableObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
 			specialObj.GetComponent<SpawnableObject>().TurnVisible(true);
 			float scaleMult = 2.0f;//TODO: PUT SOMEWHERE ELSE THAT ACTUALLY MAKES SENSE. ORGANIZE THIS MESS. UGH.
-			//Vector3 liftVector = new Vector3(0.0f, 0.5f, 0.0f); //for better visibility
 			Vector3 specialObjOrigScale = specialObj.transform.localScale;
 			specialObj.transform.localScale = specialObjOrigScale*scaleMult;
-			//specialObj.transform.position += liftVector;
 
-			//TODO: Add memory score
-			//Vector2 chosenTileGridPos = chosenTile.GridIndices;
-			//Vector2 correctTileGridPos = correctTile.GridIndices;
-			//memoryScore += exp.scoreController.CalculateMemoryPoints(correctTileGridPos, chosenTileGridPos);
-			memoryScore += exp.scoreController.CalculateMemoryPoints( specialObj.transform.position );
+			//create an indicator for each special object
+			float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;
+			Vector3 correctPosition = new Vector3 (specialObj.transform.position.x, indicatorHeight, specialObj.transform.position.z);
+			GameObject correctPositionIndicator = Instantiate( exp.environmentController.myPositionSelector.CorrectPositionIndicator, correctPosition, exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.rotation) as GameObject;
+			CorrectPositionIndicators.Add(correctPositionIndicator);
+			correctPositionIndicator.GetComponentInChildren<FacePosition>().TargetPositionTransform = exp.player.transform;
 
-			exp.environmentController.myPositionSelector.DisableMovement();
+			//create an indicator for each chosen position -- of the appropriate radius
+			Vector3 chosenPosition = chosenPositions[i];
+			GameObject chosenPositionIndicator = Instantiate (exp.environmentController.myPositionSelector.PositionSelectorVisuals, chosenPosition, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.rotation) as GameObject;
 
-			//after object location has been chosen, show them how close they were / give them points
-			yield return StartCoroutine (exp.ShowSingleInstruction ("Press the button to continue.", false, true, Config_CoinTask.minDefaultInstructionTime));
-			//correctTile.myHighlighter.HighlightLow();
-			//correctTile.myHighlighter.ResetColor();
-			exp.environmentController.myPositionSelector.EnableSelectionIndicator(false);
-			exp.environmentController.myPositionSelector.EnableCorrectIndicator(false);
+			chosenPositionIndicator.GetComponent<VisibilityToggler>().TurnVisible(true);
 
-			//make object invisible on the field, scale back down, move back to orig position
-			specialObj.GetComponent<SpawnableObject>().TurnVisible(false);
-			specialObj.transform.localScale = specialObjOrigScale;
-			//specialObj.transform.position -= liftVector;
+			EnvironmentPositionSelector.SelectionRadiusType chosenRadiusSize = chosenSelectorSizes[i];
+			if( chosenRadiusSize == EnvironmentPositionSelector.SelectionRadiusType.big ){
+				chosenPositionIndicator.transform.localScale = new Vector3 ( Config_CoinTask.bigSelectionSize, chosenPositionIndicator.transform.localScale.y, Config_CoinTask.bigSelectionSize );
+			} 
+			else if ( chosenRadiusSize == EnvironmentPositionSelector.SelectionRadiusType.small ){
+				chosenPositionIndicator.transform.localScale = new Vector3 ( Config_CoinTask.smallSelectionSize, chosenPositionIndicator.transform.localScale.y, Config_CoinTask.smallSelectionSize );
+			} 
+			else {
+				chosenPositionIndicator.SetActive(false);
+			}
+			ChosenPositionIndicators.Add(chosenPositionIndicator);
+
+			//render a line between each special object and its corresponding chosen position
+			LineRenderer positionConnector = correctPositionIndicator.GetComponent<LineRenderer>();
+			if(chosenRadiusSize != EnvironmentPositionSelector.SelectionRadiusType.none){
+				float lineHeight = correctPosition.y;
+				if(chosenPosition.y > correctPosition.y){
+					lineHeight = chosenPosition.y;
+				}
+				lineHeight += 0.3f; //0.3f is arbitrary...
+				Vector3 chosenLineHeightVec = new Vector3(chosenPosition.x, lineHeight, chosenPosition.z); //height amount is arbitrary...
+				Vector3 correctLineHeightVec = new Vector3(correctPosition.x, lineHeight, correctPosition.z); //height amount is arbitrary...
+
+				positionConnector.SetPosition(0, chosenLineHeightVec);
+				positionConnector.SetPosition(1, correctLineHeightVec);
+
+			}
+			else {
+				positionConnector.SetPosition(0, Vector3.zero);
+				positionConnector.SetPosition(1, Vector3.zero);
+			}
+
+			//calculate the memory points and display them
+			exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
+			exp.environmentController.myPositionSelector.SetRadiusSize( chosenRadiusSize );
+			int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position );
+			correctPositionIndicator.GetComponentInChildren<TextMesh>().text = "+ " + points + "!";
+			memoryScore += points;
+
+			//set the position selector back to big or small -- otherwise it will be invisible when cloned in the next iteration of indicator creation
+			exp.environmentController.myPositionSelector.SetRadiusSize( EnvironmentPositionSelector.SelectionRadiusType.small );
 		}
+
+		//disable original selector
+		exp.environmentController.myPositionSelector.EnableSelection(false);
+
+		//wait for button press
+		//after object location has been chosen, show them how close they were / give them points
+		yield return StartCoroutine (exp.ShowSingleInstruction ("Press the button to continue.", false, true, Config_CoinTask.minDefaultInstructionTime));
+
 
 		//turn off grid visibility
 		exp.environmentController.myGrid.TurnOnTileVisibility(false);
@@ -275,9 +318,24 @@ public class TrialController : MonoBehaviour {
 		//once all objects have been located, tell them their official score based on memory and time bonus
 		yield return StartCoroutine (exp.ShowSingleInstruction ("You scored " + memoryScore + " memory points and a " + timeBonus + " point time bonus! Continue to the next trial.", true, true, Config_CoinTask.minDefaultInstructionTime));
 
+
+		//delete all indicators
+		int numIndicators = CorrectPositionIndicators.Count;
+		for (int i = 0; i < numIndicators; i++) {
+			Destroy (CorrectPositionIndicators[i]);
+
+			//should be the same # of correct indicators as chosen position indicators
+			//can delete both in same loop
+			Destroy (ChosenPositionIndicators[i]);
+		}
+		CorrectPositionIndicators.Clear ();
+		ChosenPositionIndicators.Clear ();
+
+
 		//clear the special objects
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
-			Destroy(exp.objectController.CurrentTrialSpecialObjects[i]); //destroy the special objects
+			GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects[i].gameObject;
+			Destroy(specialObj); //destroy the special objects
 		}
 		exp.objectController.CurrentTrialSpecialObjects.Clear (); //clear the object controller's list of special objects
 
