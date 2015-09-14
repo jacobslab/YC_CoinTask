@@ -7,14 +7,16 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
 	public GameObject PositionSelector;
+	public GameObject PositionSelectorVisuals;
+	public GameObject AllVisuals; //includes radius & arc --> for visibility toggling
 	public GameObject CorrectPositionIndicator;
-	public GameObject RadiusButtonUI;
-	public Text RadiusButtonUIText; //should say "select special object" or something of the sort.
 	public ArcGenerator myArc;
+	public TextMesh RadiusPointText;
 
 	public enum SelectionRadiusType{
 		big,
-		small
+		small,
+		none
 	}
 	public SelectionRadiusType currentRadiusType;
 
@@ -32,7 +34,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	void Update () {
 		if (shouldSelect) {
 			GetInput();
-			myArc.GenerateArc( exp.player.transform.position - Vector3.up*exp.player.controls.startPositionTransform1.position.y ); //move it down a bit...
+			myArc.AdjustArc( PositionSelector.transform.position, exp.player.transform.position - Vector3.up*exp.player.controls.startPositionTransform1.position.y ); //move it down a bit...
 		}
 	}
 
@@ -49,6 +51,12 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		} 
 		else if (positionCloseToTower2) {
 			Move (-verticalAxisInput * selectionMovementSpeed, -horizontalAxisInput * selectionMovementSpeed);
+		}
+
+		//Get Radius Selection Input
+
+		if (Input.GetButtonDown("A Button")) {
+			ChangeRadiusSize();
 		}
 	}
 
@@ -105,37 +113,58 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		}
 	}
 
-	bool hasSelectedSize = false;
-	public IEnumerator WaitForRadiusSelection( string displayText ){
-		EnableRadiusButtonUI(true);
-		hasSelectedSize = false;
-		RadiusButtonUIText.text = displayText;
-		while(!hasSelectedSize){
-			yield return 0;
+
+	void ChangeRadiusSize(){
+		float radiusSize = 0.0f;
+		if (currentRadiusType == SelectionRadiusType.none) { //none --> big
+			AllVisuals.GetComponent<VisibilityToggler>().SetAlpha(1.0f);
+			radiusSize = Config_CoinTask.bigSelectionSize;
+			currentRadiusType = SelectionRadiusType.big;
+			SetRadiusSize (radiusSize);
+
+			SetRadiusText();
 		}
-		EnableRadiusButtonUI(false);
+		else if(currentRadiusType == SelectionRadiusType.big){ //big --> small
+			radiusSize = Config_CoinTask.smallSelectionSize;
+			currentRadiusType = SelectionRadiusType.small;
+			SetRadiusSize (radiusSize);
+
+			SetRadiusText();
+		}
+		else if (currentRadiusType == SelectionRadiusType.small){ //small --> none
+			AllVisuals.GetComponent<VisibilityToggler>().SetAlpha(0.0f);
+			currentRadiusType = SelectionRadiusType.none;
+
+			/*radiusSize = Config_CoinTask.smallSelectionSize;
+			currentRadiusType = SelectionRadiusType.small;
+			SetRadiusSize (radiusSize);
+*/
+			SetRadiusText();
+		}
+
 	}
 
-	void EnableRadiusButtonUI(bool shouldEnable){
-		Debug.Log ("ENABLING OR DISABLING RADIUS BUTTON UI");
-		RadiusButtonUI.SetActive(shouldEnable);
+	void SetRadiusSize( float size ){
+		PositionSelectorVisuals.transform.localScale = new Vector3 (size, PositionSelectorVisuals.transform.localScale.y, size);
 	}
 
-	public void SetBigRadius(){
-		float currentRadius = Config_CoinTask.bigSelectionSize;
-		PositionSelector.transform.localScale = new Vector3 (currentRadius, PositionSelector.transform.localScale.y, currentRadius);
-		hasSelectedSize = true;
-	}
+	void SetRadiusText(){
+		string pointsText = " POINTS";
 
-	public void SetSmallRadius(){
-		float currentSize = Config_CoinTask.smallSelectionSize;
-		PositionSelector.transform.localScale = new Vector3 (currentSize, PositionSelector.transform.localScale.y, currentSize);
-		hasSelectedSize = true;
+		if (currentRadiusType == SelectionRadiusType.none) { //none
+			RadiusPointText.text = ScoreController.memoryScoreNoChoice + pointsText;
+		}
+		else if(currentRadiusType == SelectionRadiusType.big){ //big
+			RadiusPointText.text = ScoreController.memoryScoreMedium + pointsText;
+		}
+		else if (currentRadiusType == SelectionRadiusType.small){ //small
+			RadiusPointText.text = ScoreController.memoryScoreBest + pointsText;
+		}
 	}
 
 	public bool GetRadiusOverlap(Vector3 position){
 		float distance = (position - PositionSelector.transform.position).magnitude;
-		if (distance < PositionSelector.transform.localScale.x) {
+		if (distance < PositionSelectorVisuals.transform.localScale.x) {
 			return true;
 		}
 
@@ -145,12 +174,12 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	public Vector3 GetSelectorPosition(){
 		return PositionSelector.transform.position;
 	}
-
-	//enable or disable selection
+	
 	public void EnableSelection(){
 		shouldSelect = true;
+		SetRadiusText ();
 		myArc.gameObject.SetActive(true);
-		PositionSelector.SetActive (true);
+		PositionSelectorVisuals.SetActive (true);
 	}
 
 	public void EnableCorrectIndicator(bool shouldEnable){
@@ -158,7 +187,12 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	}
 
 	public void EnableSelectionIndicator(bool shouldEnable){
-		PositionSelector.SetActive (shouldEnable);
+		if (!shouldEnable) {
+			RadiusPointText.text = "";
+		} else {
+			SetRadiusText();
+		}
+		PositionSelectorVisuals.SetActive (shouldEnable);
 	}
 
 	public void DisableMovement(){

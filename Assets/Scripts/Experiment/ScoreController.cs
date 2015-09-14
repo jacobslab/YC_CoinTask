@@ -18,8 +18,9 @@ public class ScoreController : MonoBehaviour {
 	int scoreClose = 30;
 	int scoreFar = 15;
 	int scoreWrong = 0;*/
-	int memoryScoreBest = 50;
-	int memoryScoreMedium = 30;
+	public static int memoryScoreBest = 50;
+	public static int memoryScoreMedium = 30;
+	public static int memoryScoreNoChoice = 10;
 
 	int defaultObjectPoints = 1;
 	int specialObjectPoints = 10;
@@ -71,11 +72,16 @@ public class ScoreController : MonoBehaviour {
 				AddToScore(memoryScoreBest);
 				return memoryScoreBest;
 			}
-			else{
+			else if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.big){
 				AddToScore(memoryScoreMedium);
 				return memoryScoreMedium;
 			}
 		}
+		else if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.none){
+			AddToScore(memoryScoreNoChoice);
+			return memoryScoreNoChoice;
+		}
+		
 
 		return 0;
 	}

@@ -4,10 +4,11 @@ using System.Collections;
 public class VisibilityToggler : MonoBehaviour {
 
 	bool isVisible;
+	float currentAlpha = 1.0f;
 
 	// Use this for initialization
 	void Start () {
-	
+
 	}
 	
 	// Update is called once per frame
@@ -43,5 +44,25 @@ public class VisibilityToggler : MonoBehaviour {
 		
 		isVisible = shouldBeVisible;
 		
+	}
+
+	public void SetAlpha(float newAlpha){
+		currentAlpha = newAlpha;
+
+		Renderer myRenderer = GetComponent<Renderer> ();
+		if(myRenderer != null){
+			Color materialColor = myRenderer.material.color;
+			myRenderer.material.color = new Color(materialColor.r, materialColor.g, materialColor.b, newAlpha);
+		}
+		
+		Renderer[] renderers = GetComponentsInChildren<Renderer>();
+		for(int i = 0; i < renderers.Length; i++){
+			Color materialColor = renderers[i].material.color;
+			renderers[i].material.color = new Color(materialColor.r, materialColor.g, materialColor.b, newAlpha);
+		}
+	}
+
+	public float GetAlpha(){
+		return currentAlpha;
 	}
 }

@@ -123,7 +123,6 @@ public class PlayerControls : MonoBehaviour{
 		//stop collisions
 		GetComponent<Collider> ().enabled = false;
 
-		Debug.Log("Smooth pos target: " + targetPosition + " smooth rot target: " + targetRotation.eulerAngles.y);
 
 		Quaternion origRotation = transform.rotation;
 		Vector3 origPosition = transform.position;

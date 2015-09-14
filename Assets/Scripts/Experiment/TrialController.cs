@@ -214,8 +214,6 @@ public class TrialController : MonoBehaviour {
 
 
 			string selectObjectText = "Select the location of the " + specialItemName + ".";
-			Debug.Log("Should wait for radius selection");
-			yield return StartCoroutine ( exp.environmentController.myPositionSelector.WaitForRadiusSelection( selectObjectText ) );
 
 			exp.environmentController.myPositionSelector.EnableSelection ();
 			exp.environmentController.myPositionSelector.EnableSelectionIndicator(true);

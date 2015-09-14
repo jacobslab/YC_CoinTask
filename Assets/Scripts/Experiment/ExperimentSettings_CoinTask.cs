@@ -35,10 +35,6 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	//difficulty setting system needs to be decided on!
 	public static Trial.DifficultySetting difficultySetting = Trial.DifficultySetting.easy;
 
-	public Toggle smallRadiusToggle;
-	public Toggle bigRadiusToggle;
-
-
 
 	public InputField NumTreasureChestsInputField; //Frames Per Second
 
