@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class ObjectController : MonoBehaviour {
 
 	public GameObject DefaultObject;
-	public List<SpawnableObject> CurrentTrialSpecialObjects;
+	public List<GameObject> CurrentTrialSpecialObjects;
 
 
 	//experiment singleton
@@ -20,7 +20,7 @@ public class ObjectController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		gameObjectList_Spawnable = new List<GameObject> ();
-		CurrentTrialSpecialObjects = new List<SpawnableObject> ();
+		CurrentTrialSpecialObjects = new List<GameObject> ();
 		CreateObjectList (gameObjectList_Spawnable);
 	}
 	
@@ -134,7 +134,7 @@ public class ObjectController : MonoBehaviour {
 			float randomRot = GenerateRandomRotationY();
 			newObject.transform.RotateAround(newObject.transform.position, Vector3.up, randomRot);
 
-			CurrentTrialSpecialObjects.Add(newObject.GetComponent<SpawnableObject>());
+			CurrentTrialSpecialObjects.Add(newObject);
 
 			//newObject.GetComponent<GridItem>().rowIndex = (int)gridIndices.x;
 			//newObject.GetComponent<GridItem>().colIndex = (int)gridIndices.y;

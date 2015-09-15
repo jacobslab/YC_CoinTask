@@ -8,10 +8,12 @@ public class SpawnableObject : MonoBehaviour {
 	VisibilityToggler myVisibilityToggler;
 	public bool isVisible { get { return myVisibilityToggler.GetVisibility (); } }
 
+	Vector3 origScale;
 
 	// Use this for initialization
 	void Start () {
 		myVisibilityToggler = GetComponent<VisibilityToggler> ();
+		origScale = transform.localScale;
 	}
 	
 	// Update is called once per frame
@@ -43,6 +45,14 @@ public class SpawnableObject : MonoBehaviour {
 		else if(ID < 1000) {
 			gameObject.name = GetName() + ID; 
 		}
+	}
+
+	public void Scale(float scaleMult){
+		transform.localScale *= scaleMult;
+	}
+
+	public void SetOrigScale(){
+		transform.localScale = origScale;
 	}
 
 }
