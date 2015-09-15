@@ -45,10 +45,6 @@ public class SimpleTimer : MonoBehaviour {
 		seconds = 0;
 	}
 
-	public void ShowTimer(bool isVisible){
-		timerText.enabled = isVisible;
-	}
-
 	public int GetSeconds(){
 		return (int)seconds;
 	}
