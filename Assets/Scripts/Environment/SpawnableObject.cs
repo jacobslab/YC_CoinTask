@@ -23,6 +23,9 @@ public class SpawnableObject : MonoBehaviour {
 
 	//function to turn off (or on) the object without setting it inactive -- because we want to keep logging on
 	public void TurnVisible(bool shouldBeVisible){ 
+		if (myVisibilityToggler == null) {
+			myVisibilityToggler = GetComponent<VisibilityToggler> ();
+		}
 		myVisibilityToggler.TurnVisible (shouldBeVisible);
 	}
 
@@ -53,6 +56,22 @@ public class SpawnableObject : MonoBehaviour {
 
 	public void SetOrigScale(){
 		transform.localScale = origScale;
+	}
+
+	public void SetShadowCasting(bool shouldCastShadows){
+		UnityEngine.Rendering.ShadowCastingMode shadowMode = UnityEngine.Rendering.ShadowCastingMode.On;
+		if (!shouldCastShadows) {
+			shadowMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+		}
+
+		if(GetComponent<Renderer>() != null){
+			GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+		}
+		
+		Renderer[] renderers = GetComponentsInChildren<Renderer>();
+		for(int i = 0; i < renderers.Length; i++){
+			renderers[i].shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+		}
 	}
 
 }

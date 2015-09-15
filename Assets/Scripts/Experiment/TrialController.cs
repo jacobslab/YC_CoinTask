@@ -8,6 +8,7 @@ public class TrialController : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
 	public SimpleTimer trialTimer;
+	public SelectObjectUI mySelectObjectUI;
 
 
 	bool isPracticeTrial = false;
@@ -212,13 +213,19 @@ public class TrialController : MonoBehaviour {
 			string specialItemName = specialObj.GetComponent<SpawnableObject>().GetName();
 
 
-			string selectObjectText = "Select the location of the " + specialItemName + ".";
-
-			exp.environmentController.myPositionSelector.EnableSelection (true);
-
-
-			//show instructions and wait for selection button press
+			//show nice UI
 			Debug.Log("Should wait for button press");
+			GameObject specialObjUICopy = Instantiate (specialObj, Vector3.zero, specialObj.transform.rotation) as GameObject;
+			yield return StartCoroutine( mySelectObjectUI.Play(specialObjUICopy) );
+			yield return StartCoroutine (exp.WaitForActionButton());
+
+
+			//enable position selection, turn off fancy selection UI
+			exp.environmentController.myPositionSelector.EnableSelection (true);
+			mySelectObjectUI.Stop();
+
+			//show single selection instruction and wait for selection button press
+			string selectObjectText = "Select the location of the " + specialItemName + ".";
 			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, Config_CoinTask.minDefaultInstructionTime));
 
 			//TODO: log the chosen position
@@ -229,6 +236,8 @@ public class TrialController : MonoBehaviour {
 			chosenPositions.Add(exp.environmentController.myPositionSelector.GetSelectorPosition());
 			chosenSelectorSizes.Add(exp.environmentController.myPositionSelector.currentRadiusType);
 
+			//disable position selection
+			exp.environmentController.myPositionSelector.EnableSelection (false);
 		}
 
 		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, chosenSelectorSizes) );
