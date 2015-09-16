@@ -270,7 +270,9 @@ public class TrialController : MonoBehaviour {
 			
 			//create an indicator for each chosen position -- of the appropriate radius
 			Vector3 chosenPosition = chosenPositions[i];
-			GameObject chosenPositionIndicator = Instantiate (exp.environmentController.myPositionSelector.PositionSelectorVisuals, chosenPosition, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.rotation) as GameObject;
+			//spawn the indicator at the height of the original indicator
+			Vector3 chosenIndicatorPosition = new Vector3(chosenPosition.x, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.position.y, chosenPosition.z);
+			GameObject chosenPositionIndicator = Instantiate (exp.environmentController.myPositionSelector.PositionSelectorVisuals, chosenIndicatorPosition, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.rotation) as GameObject;
 			
 			chosenPositionIndicator.GetComponent<VisibilityToggler>().TurnVisible(true);
 
