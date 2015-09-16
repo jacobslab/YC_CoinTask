@@ -254,8 +254,15 @@ public class TrialController : MonoBehaviour {
 		List<GameObject> ChosenPositionIndicators = new List<GameObject> ();
 		
 		for (int i = 0; i < specialObjectOrder.Count; i++){
+
+			Vector3 chosenPosition = chosenPositions[i];
+
+			//throw bomb to selected location
+			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't actually want its visuals showing up as we wait
+			yield return StartCoroutine( exp.objectController.ThrowBomb( exp.player.transform.position, chosenPosition ) );
+
 			int randomOrderIndex = specialObjectOrder[i];
-			
+
 			//turn on each special object & scale up for better visibility
 			GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
 			specialObj.GetComponent<SpawnableObject>().TurnVisible(true);
@@ -269,8 +276,8 @@ public class TrialController : MonoBehaviour {
 			correctPositionIndicator.GetComponentInChildren<FacePosition>().TargetPositionTransform = exp.player.transform;
 			
 			//create an indicator for each chosen position -- of the appropriate radius
-			Vector3 chosenPosition = chosenPositions[i];
 			//spawn the indicator at the height of the original indicator
+			exp.environmentController.myPositionSelector.EnableSelection (true); //turn on selector for spawning indicator
 			Vector3 chosenIndicatorPosition = new Vector3(chosenPosition.x, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.position.y, chosenPosition.z);
 			GameObject chosenPositionIndicator = Instantiate (exp.environmentController.myPositionSelector.PositionSelectorVisuals, chosenIndicatorPosition, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.rotation) as GameObject;
 			
@@ -323,7 +330,7 @@ public class TrialController : MonoBehaviour {
 
 	void SetConnectingLines( GameObject correctPositionIndicator, Vector3 chosenPosition, EnvironmentPositionSelector.SelectionRadiusType chosenRadiusSize ){
 
-		//render a line between each special object and its corresponding chosen position
+		//render a line between the special object and its corresponding chosen position
 		LineRenderer positionConnector = correctPositionIndicator.GetComponent<LineRenderer>();
 		Vector3 correctPosition = correctPositionIndicator.transform.position;
 		if(chosenRadiusSize != EnvironmentPositionSelector.SelectionRadiusType.none){

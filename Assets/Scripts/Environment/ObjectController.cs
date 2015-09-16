@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class ObjectController : MonoBehaviour {
 
 	public GameObject DefaultObject;
+	public GameObject BombObject;
 	public List<GameObject> CurrentTrialSpecialObjects;
 
 
@@ -56,6 +57,11 @@ public class ObjectController : MonoBehaviour {
 			}
 		}
 		return null;
+	}
+
+	public IEnumerator ThrowBomb(Vector3 from, Vector3 to){
+		GameObject newBomb = Instantiate (BombObject, from, BombObject.transform.rotation) as GameObject;
+		yield return StartCoroutine( newBomb.GetComponent<Bomb>().ThrowSelf(from, to) );
 	}
 
 

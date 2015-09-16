@@ -9,34 +9,31 @@ public class Bomb : MonoBehaviour {
 	float totalTravelTime = 2.0f;
 	Rigidbody myRigidbody;
 
-	bool isInAir = false;
-
 	// Use this for initialization
 	void Start () {
-		myRigidbody = GetComponent<Rigidbody> ();
-		FuseParticles.Stop();
 
 	}
 	
 	void Update(){
-		if (Input.GetKey (KeyCode.B)) {
-			StartCoroutine ( ThrowSelf(Vector3.zero, new Vector3(2, 0, 2)) );
-			FuseParticles.Play();
-		}
+
 	}
 
 
-	IEnumerator ThrowSelf (Vector3 startPos, Vector3 endPos) {
+	public IEnumerator ThrowSelf (Vector3 startPos, Vector3 endPos) {
+		FuseParticles.Play();
+
+		myRigidbody = GetComponent<Rigidbody> ();
+
+		float randomTorqueX = Random.Range (-10.0f, 10.0f);
+		float randomTorqueZ = Random.Range (-10.0f, 10.0f);
+		myRigidbody.AddTorque (randomTorqueX, 0.0f, randomTorqueZ);
 
 		Vector3 totalDistance = endPos - startPos;
-		//numComponents = (int) (totalDistance.magnitude / 4 );
 		
 		Vector3 acceleration = Physics.gravity;
 		Vector3 initVelocity = (totalDistance - (acceleration * totalTravelTime * totalTravelTime)) / totalTravelTime;
 
 		transform.position = startPos;
-
-		//myRigidbody.velocity = initVelocity;
 
 		float currentTime = 0;
 
@@ -53,16 +50,6 @@ public class Bomb : MonoBehaviour {
 		FuseParticles.Stop();
 		Instantiate(ExplosionParticles, transform.position, transform.rotation);
 
-
-
-		/*float timeStep = totalTravelTime / numComponents;
-		for (int i = 0; i < numComponents; i++) {
-			float currentTime = timeStep * i;
-			Vector3 componentPosition = arcStartPos + (initVelocity * currentTime) + (acceleration * currentTime * currentTime);
-			
-			ArcComponents [i].transform.position = componentPosition;
-		}*/
-
-
+		Destroy (gameObject);
 	}
 }
