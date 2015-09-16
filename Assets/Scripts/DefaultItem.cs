@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GridItem : MonoBehaviour {
+public class DefaultItem : MonoBehaviour {
 
 	public ParticleSystem DefaultParticles;
 	public ParticleSystem SpecialParticles;
@@ -12,20 +12,11 @@ public class GridItem : MonoBehaviour {
 
 	public TextMesh specialObjectText;
 
-	public int rowIndex;
-	public int colIndex;
-
-	EnvironmentGrid envGrid { get { return Experiment_CoinTask.Instance.environmentController.myGrid; } }
-
 	// Use this for initialization
 	void Start () {
 		if (specialObjectText != null) {
 			specialObjectText.text = "";
 		}
-	}
-
-	public Vector2 GetGridIndices(){
-		return new Vector2 (rowIndex, colIndex);
 	}
 	
 	// Update is called once per frame
@@ -36,7 +27,7 @@ public class GridItem : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider hitCollider){
-		if (hitCollider.gameObject.tag == "Player" && (tag == "DefaultGridItem" || tag == "DefaultSpecialGridItem") ) {
+		if (hitCollider.gameObject.tag == "Player" && (tag == "DefaultItem" || tag == "DefaultSpecialItem") ) {
 
 			//Check if it's a treasure chest
 			TreasureChest chest = GetComponent<TreasureChest>();
@@ -49,7 +40,7 @@ public class GridItem : MonoBehaviour {
 
 			//if it was a special spot and this is the default object...
 			//...we should spawn the special object!
-			if (tag == "DefaultSpecialGridItem") {
+			if (tag == "DefaultSpecialItem") {
 
 				StartCoroutine(SpawnSpecialObject(specialSpawnPos));
 
@@ -95,11 +86,5 @@ public class GridItem : MonoBehaviour {
 		Vector3 lookAtPos = new Vector3 (player.transform.position.x, specialObjectText.transform.position.y, player.transform.position.z);
 		specialObjectText.transform.LookAt(lookAtPos);
 		specialObjectText.transform.RotateAround(transform.position, Vector3.up, 180.0f); //text faces opposite, so flip 180 degrees to actually face the player
-
-
-	}
-
-	void OnDestroy(){
-		envGrid.RemoveGridItem (rowIndex, colIndex);
 	}
 }

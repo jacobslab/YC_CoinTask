@@ -20,7 +20,7 @@ public class GridLogTrack : LogTrack {
 	}
 
 	public void LogGridTile(Tile gridTile, LoggedTileType tileType){
-		if (ExperimentSettings_CoinTask.isLogging) {
+		/*if (ExperimentSettings_CoinTask.isLogging) {
 			string tileTypeString = "TILE_SELECTED";
 			if(tileType == LoggedTileType.chosenTestTile){
 				tileTypeString = "TEST_TILE_CHOSEN";
@@ -36,6 +36,6 @@ public class GridLogTrack : LogTrack {
 			subjectLog.Log( exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), tileIndicesLogString);
 			//log the position
 			subjectLog.Log( exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), tilePositionLogString);
-		}
+		}*/
 	}
 }

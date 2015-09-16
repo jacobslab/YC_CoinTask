@@ -83,23 +83,6 @@ public class ObjectController : MonoBehaviour {
 		return randomRotY;
 	}
 
-	//for use in trial with configuration setup of the grid
-	/*public void SpawnDefaultObjects(List<Vector2> GridIndices){
-		for(int i = 0; i < GridIndices.Count; i++){
-			Vector2 currIndices = GridIndices[i];
-			Vector3 objPos = experiment.environmentController.myGrid.GetGridPosition( (int)currIndices.x, (int)currIndices.y );
-			objPos = new Vector3(objPos.x, DefaultObject.transform.position.y, objPos.z);
-			GameObject newObj = Instantiate(DefaultObject, objPos, DefaultObject.transform.rotation) as GameObject;
-
-			GridItem newGridItem = newObj.GetComponent<GridItem>();
-			newGridItem.rowIndex = (int)currIndices.x;
-			newGridItem.colIndex = (int)currIndices.y;
-
-			SpawnableObject newSpawnableObj = newObj.GetComponent<SpawnableObject>();
-			newSpawnableObj.SetNameID(i);
-		}
-	}*/
-
 	//special positions get passed in so that the default object can get a special tag for later use for spawning special objects
 	public void SpawnDefaultObjects(List<Vector2> defaultPositions, List<Vector2> specialPositions){
 		for(int i = 0; i < defaultPositions.Count; i++){
@@ -111,7 +94,7 @@ public class ObjectController : MonoBehaviour {
 			newSpawnableObj.SetNameID(i);
 
 			if( specialPositions.Contains(currPos) ){
-				newObj.tag = "DefaultSpecialGridItem";
+				newObj.tag = "DefaultSpecialItem";
 			}
 		}
 	}
@@ -135,9 +118,6 @@ public class ObjectController : MonoBehaviour {
 			newObject.transform.RotateAround(newObject.transform.position, Vector3.up, randomRot);
 
 			CurrentTrialSpecialObjects.Add(newObject);
-
-			//newObject.GetComponent<GridItem>().rowIndex = (int)gridIndices.x;
-			//newObject.GetComponent<GridItem>().colIndex = (int)gridIndices.y;
 		
 
 			//make object face the player -- DOESN'T WORK FOR OBJECTS WITH INCONSISTENT Z-FACING TRANSFORMS.

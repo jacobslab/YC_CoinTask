@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 [ExecuteInEditMode]
@@ -27,7 +27,7 @@ public class EnvironmentTiler : MonoBehaviour {
 	}
 
 	void Tile(){
-		int rows = EnvController.myGrid.Rows;
+		/*int rows = EnvController.myGrid.Rows;
 		int columns = EnvController.myGrid.Columns;
 		Vector3 currentPosition = new Vector3( transform.position.x, myObject.transform.position.y, transform.position.z );
 
@@ -37,7 +37,7 @@ public class EnvironmentTiler : MonoBehaviour {
 				GameObject newTile = Instantiate(myObject, currentPosition, myObject.transform.rotation) as GameObject;
 				newTile.transform.parent = tileParent;
 
-				GridItem gridItem = newTile.GetComponent<GridItem>();
+				DefaultItem gridItem = newTile.GetComponent<DefaultItem>();
 				if(gridItem){
 					gridItem.rowIndex = i;
 					gridItem.colIndex = j;
@@ -46,6 +46,6 @@ public class EnvironmentTiler : MonoBehaviour {
 					Debug.Log("no grid item attached!");
 				}
 			}
-		}
+		}*/
 	}
 }

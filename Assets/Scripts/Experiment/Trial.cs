@@ -5,7 +5,6 @@ using System.Collections.Generic;
 //FOR USE IN TRIALCONTROLLER
 public class Trial {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
-	EnvironmentGrid envGrid { get { return Experiment_CoinTask.Instance.environmentController.myGrid; } }
 
 
 	public bool isStim = false;
@@ -14,8 +13,6 @@ public class Trial {
 	public Quaternion avatarStartRot;
 	public Vector3 avatarTowerPos;
 	public Quaternion avatarTowerRot;
-	//public List<Vector2> DefaultObjectGridIndices;
-	//public List<Vector2> SpecialObjectIndices;
 	public List<Vector2> DefaultObjectLocationsXZ;
 	public List<Vector2> SpecialObjectLocationsXZ;
 
@@ -31,8 +28,6 @@ public class Trial {
 
 
 	public Trial(){
-		//DefaultObjectGridIndices = new List<Vector2> ();
-		//SpecialObjectIndices = new List<Vector2> ();
 		DefaultObjectLocationsXZ = new List<Vector2> ();
 		SpecialObjectLocationsXZ = new List<Vector2> ();
 	}
@@ -82,12 +77,6 @@ public class Trial {
 		numDefaultObjects = Config_CoinTask.numDefaultObjects;
 
 		//init default and special locations
-		/*DefaultObjectGridIndices = new List<Vector2> ();
-		SpecialObjectIndices = new List<Vector2> ();
-
-		DefaultObjectGridIndices = envGrid.GenerateDefaultObjectConfiguration (numDefaultObjects);
-
-		SpecialObjectIndices = envGrid.GenerateSpecialObjectConfiguration (DefaultObjectGridIndices, numSpecialObjects);*/
 		DefaultObjectLocationsXZ = exp.objectController.GenerateDefaultObjectPositions (numDefaultObjects);
 		SpecialObjectLocationsXZ = exp.objectController.GenerateSpecialObjectPositions (DefaultObjectLocationsXZ, numSpecialObjects);
 
@@ -122,9 +111,7 @@ public class Trial {
 		counterTrial.isStim = !isStim;
 
 
-		//TODO: counter the avatar?
-		//counterTrial.avatarStartPos = GetReflectedPositionXZ (avatarStartPos);
-		//counterTrial.avatarStartRot = GetReflectedRotation (avatarStartRot);
+		//counter the avatar
 		if (avatarStartPos == exp.player.controls.startPositionTransform1.position) {
 			counterTrial.avatarStartPos = exp.player.controls.startPositionTransform2.position;
 			counterTrial.avatarStartRot = exp.player.controls.startPositionTransform2.rotation;
@@ -144,27 +131,6 @@ public class Trial {
 			counterTrial.avatarTowerRot = exp.player.controls.towerPositionTransform1.rotation;
 		}
 
-
-		/*int maxRow = exp.environmentController.myGrid.Rows;
-		int maxCol = exp.environmentController.myGrid.Columns;
-		//counter the object positions
-		for (int i = 0; i < DefaultObjectGridIndices.Count; i++) {
-			Vector2 counteredIndices = new Vector2(DefaultObjectGridIndices[i].x, DefaultObjectGridIndices[i].y);
-			//counter the indices
-			counteredIndices.x = maxRow - counteredIndices.x - 1; // - 1 because indexing starts at zero
-			counteredIndices.y = maxCol - counteredIndices.y - 1; // - 1 because indexing starts at zero
-
-			counterTrial.DefaultObjectGridIndices.Add ( counteredIndices );
-		}
-
-		for (int i = 0; i < SpecialObjectIndices.Count; i++) {
-			Vector2 counteredIndices = new Vector2(SpecialObjectIndices[i].x, SpecialObjectIndices[i].y);
-			//counter the indices
-			counteredIndices.x = maxRow - counteredIndices.x - 1; // - 1 because indexing starts at zero
-			counteredIndices.y = maxCol - counteredIndices.y - 1; // - 1 because indexing starts at zero
-			
-			counterTrial.SpecialObjectIndices.Add ( counteredIndices );
-		}*/
 
 		counterTrial.DefaultObjectLocationsXZ = new List<Vector2> ();
 		counterTrial.SpecialObjectLocationsXZ = new List<Vector2> ();

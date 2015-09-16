@@ -1,14 +1,14 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Tile : MonoBehaviour {
 
 	[HideInInspector] public TileHighlighter myHighlighter;
-	GridItem MyGridItem;
-	public Vector2 GridIndices { get { return GetGridIndices(); } }
+	DefaultItem MyGridItem;
+//	public Vector2 GridIndices { get { return GetGridIndices(); } }
 
 	void Awake(){
-		MyGridItem = GetComponent<GridItem>();
+		MyGridItem = GetComponent<DefaultItem>();
 		myHighlighter = GetComponent<TileHighlighter>();
 	}
 
@@ -22,7 +22,7 @@ public class Tile : MonoBehaviour {
 	
 	}
 
-	Vector2 GetGridIndices(){
-		return new Vector2 (MyGridItem.rowIndex, MyGridItem.colIndex);
-	}
+	//Vector2 GetGridIndices(){
+		//return new Vector2 (MyGridItem.rowIndex, MyGridItem.colIndex);
+	//}
 }

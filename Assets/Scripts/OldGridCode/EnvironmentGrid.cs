@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -34,13 +34,11 @@ public class EnvironmentGrid : MonoBehaviour {
 
 		myGrid = new GridSpotType[numRows, numCols];
 
-		GameObject[] gridItems = GameObject.FindGameObjectsWithTag ("DefaultGridItem");
+		GameObject[] gridItems = GameObject.FindGameObjectsWithTag ("DefaultItem");
 
 		for (int i = 0; i < gridItems.Length; i++) {
-			GridItem currItem = gridItems [i].GetComponent<GridItem> ();
+			DefaultItem currItem = gridItems [i].GetComponent<DefaultItem> ();
 
-			//mark the grid as empty. we will put objects in the grid when we generate Trials.
-			myGrid [currItem.rowIndex, currItem.colIndex] = GridSpotType.empty;
 
 		}
 
@@ -54,8 +52,8 @@ public class EnvironmentGrid : MonoBehaviour {
 		Tile[] gridTiles = GameObject.FindObjectsOfType<Tile> ();
 
 		for (int i = 0; i < gridTiles.Length; i++) {
-			GridItem tileItem = gridTiles[i].GetComponent<GridItem>();
-			tileGrid[tileItem.rowIndex, tileItem.colIndex] = gridTiles[i];
+			DefaultItem tileItem = gridTiles[i].GetComponent<DefaultItem>();
+			//tileGrid[tileItem.rowIndex, tileItem.colIndex] = gridTiles[i];
 		}
 	}
 

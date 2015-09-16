@@ -4,7 +4,7 @@ using System.Collections;
 public class TileSelector : MonoBehaviour {
 
 	//public ArcGenerator myArc;
-	EnvironmentGrid grid { get { return Experiment_CoinTask.Instance.environmentController.myGrid; } }
+	/*EnvironmentGrid grid { get { return Experiment_CoinTask.Instance.environmentController.myGrid; } }
 	int selectedRow = 0;
 	int selectedCol = 0;
 	[HideInInspector] public Tile selectedTile;
@@ -78,14 +78,14 @@ public class TileSelector : MonoBehaviour {
 		float verticalInput = Input.GetAxis ("Vertical");
 
 
-		if (ExperimentSettings_CoinTask.isJoystickInput) {
+		if (ExperimentSettings_CoinTask.isJoystickInput) { */
 			//if we want it on the diagonal
 			/*bool horizInMaxBounds = CheckWithinBounds(horizontalInput, 0.0f, 1.0f);
 			bool vertInMaxBounds = CheckWithinBounds(verticalInput, 0.0f, 1.0f);
 			bool horizInMinBounds = CheckWithinBounds(horizontalInput, -1.0f, 0.0f);
 			bool vertInMinBounds = CheckWithinBounds(verticalInput, -1.0f, 0.0f);*/
 
-			bool horizInMaxBounds = CheckWithinBounds (horizontalInput, 0.3f, 1.0f);
+			/*bool horizInMaxBounds = CheckWithinBounds (horizontalInput, 0.3f, 1.0f);
 			bool vertInMaxBounds = CheckWithinBounds (verticalInput, 0.3f, 1.0f);
 			bool horizInMinBounds = CheckWithinBounds (horizontalInput, -1.0f, -0.3f);
 			bool vertInMinBounds = CheckWithinBounds (verticalInput, -1.0f, -0.3f);
@@ -124,7 +124,7 @@ public class TileSelector : MonoBehaviour {
 			if (!horizInMinBounds && !horizInMaxBounds && !vertInMinBounds && !vertInMaxBounds) {
 				lastSelectionDirection = DirectionType.none;
 			}
-		}
+		}*/
 
 
 
@@ -164,7 +164,7 @@ public class TileSelector : MonoBehaviour {
 		}*/
 
 		//keyboard
-		else {
+		/*else {
 			if(timeBetweenKeyDown >= minTimeBetweenKeyPresses){
 				if (Input.GetKey(KeyCode.RightArrow)) {
 					if (selectedRow > 0 && lastSelectionDirection != DirectionType.rowDown) {
@@ -249,6 +249,6 @@ public class TileSelector : MonoBehaviour {
 		//Log the tile selection
 		grid.MyGridLogTrack.LogGridTile(selectedTile, GridLogTrack.LoggedTileType.currentSelectedTile);
 
-	}
+	}*/
 
 }
