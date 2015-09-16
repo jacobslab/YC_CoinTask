@@ -84,6 +84,8 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public static float objectToWallBuffer = 10.0f; //half of the big selection size, because the selection size is actually the diameter of the selector.
 	public static float objectToObjectBuffer { get { return CalculateObjectToObjectBuffer(); } } //calculated base on min time to drive between objects!
+	public static float specialObjectBufferMult = 2.0f; //the distance the object controller will try to keep between special objects. should be a multiple of objectToObjectBuffer
+
 	public static float minDriveTimeBetweenObjects = 0.5f; //half a second driving between objects
 
 
@@ -139,7 +141,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 			buffer += Experiment_CoinTask.Instance.objectController.GetMaxDefaultObjectColliderBoundXZ ();
 
-			Debug.Log ("BUFFER: " + buffer);
+			//Debug.Log ("BUFFER: " + buffer);
 
 		}
 

@@ -202,7 +202,7 @@ public class TrialController : MonoBehaviour {
 		yield return StartCoroutine (exp.ShowSingleInstruction ("Use the joystick to select the location of the requested object.", true, true, Config_CoinTask.minDefaultInstructionTime));
 
 		//ask player to locate each object individually
-		List<int> randomSpecialObjectOrder = GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
+		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
 		List<Vector3> chosenPositions = new List<Vector3> (); //chosen positions will be in the same order as the random special object order
 		List<EnvironmentPositionSelector.SelectionRadiusType> chosenSelectorSizes = new List<EnvironmentPositionSelector.SelectionRadiusType> (); //chosen sizes will be in the same order as the random special object order
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
@@ -349,23 +349,6 @@ public class TrialController : MonoBehaviour {
 			Destroy (listOfGameObjects [i]);
 		}
 		listOfGameObjects.Clear ();
-	}
-
-	//given the size of an array or a list, will return a list of indices in a random order
-	public List<int> GetRandomIndexOrder(int count){
-		List<int> inOrderList = new List<int>();
-		for(int i = 0; i < count; i++){
-			inOrderList.Add(i);
-		}
-
-		List<int> randomOrderList = new List<int>();
-		for(int i = 0; i < count; i++){
-			int randomIndex = Random.Range(0, inOrderList.Count);
-			randomOrderList.Add( inOrderList[randomIndex] );
-			inOrderList.RemoveAt(randomIndex);
-		}
-
-		return randomOrderList;
 	}
 
 	public IEnumerator WaitForSpecialAnimation(GameObject specialObject){

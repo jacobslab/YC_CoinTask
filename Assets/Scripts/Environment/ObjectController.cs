@@ -182,23 +182,55 @@ public class ObjectController : MonoBehaviour {
 			Vector2 positionCopy = new Vector2(currPosition.x, currPosition.y);
 			defaultPositionsCopy.Add(positionCopy);
 		}
-		
+
+
+		int specialIndex;
 		for (int i = 0; i < numSpecialObjects; i++) {
-			int randomIndex = Random.Range(0, defaultPositionsCopy.Count);
-			
+
 			//if number of special objects exceeds the number of free spots, we'll get stuck.
 			//...so exit the loop instead.
 			if(i >= defaultObjectLocationsXZ.Count){
 				break;
 			}
-			
+
+			List<int> randomIndices = UsefulFunctions.GetRandomIndexOrder( defaultPositionsCopy.Count );
+			int randomIndex = randomIndices[0];
 			Vector2 currPosition = defaultPositionsCopy[randomIndex];
+
+			if(i != 0){
+				for(int j = 1; j < randomIndices.Count; j++){
+					randomIndex = randomIndices[j];
+					currPosition = defaultPositionsCopy[randomIndex];
+					
+					//check against all other special item locations...
+					bool isDistanceBigEnough = true;
+					for(int k = 0; k < specialPositions.Count; k++){
+						//if distance is not big enough...
+						float currDistance = (currPosition - specialPositions[k]).magnitude;
+						if( currDistance < Config_CoinTask.specialObjectBufferMult*Config_CoinTask.objectToObjectBuffer ) {
+
+							isDistanceBigEnough = false;
+							continue;
+							
+							
+						}
+					}
+
+					if(isDistanceBigEnough){
+						break;
+					}
+				}
+
+			}
+
+
 
 			specialPositions.Add (currPosition);
 			
 			//remove it from the parameter list so that no two special objects are in the same spot.
 			//this will not change the original list, as the list was passed by copy.
 			defaultPositionsCopy.RemoveAt(randomIndex);
+
 		}
 		
 		return specialPositions;
