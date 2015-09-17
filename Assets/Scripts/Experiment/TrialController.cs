@@ -259,7 +259,9 @@ public class TrialController : MonoBehaviour {
 
 			//throw bomb to selected location
 			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't actually want its visuals showing up as we wait
-			yield return StartCoroutine( exp.objectController.ThrowBomb( exp.player.transform.position, chosenPosition ) );
+			if(chosenSelectorSizes[i] != EnvironmentPositionSelector.SelectionRadiusType.none){
+				yield return StartCoroutine( exp.objectController.ThrowBomb( exp.player.transform.position, chosenPosition ) );
+			}
 
 			int randomOrderIndex = specialObjectOrder[i];
 

@@ -25,6 +25,7 @@ public class Bomb : MonoBehaviour {
 		myRigidbody = GetComponent<Rigidbody> ();
 
 		float randomTorqueX = Random.Range (-10.0f, 10.0f);
+		float randomTorquey = Random.Range (-40.0f, 40.0f);
 		float randomTorqueZ = Random.Range (-10.0f, 10.0f);
 		myRigidbody.AddTorque (randomTorqueX, 0.0f, randomTorqueZ);
 

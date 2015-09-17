@@ -30,12 +30,17 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (shouldSelect) {
-			GetInput();
-			//myArc.AdjustArc( exp.player.transform.position - Vector3.up*exp.player.controls.startPositionTransform1.position.y, PositionSelector.transform.position ); //move it down a bit...
+
+			GetRadiusSelectionInput();
+
+			if(currentRadiusType != SelectionRadiusType.none){
+				GetMovementInput();
+				//myArc.AdjustArc( exp.player.transform.position - Vector3.up*exp.player.controls.startPositionTransform1.position.y, PositionSelector.transform.position ); //move it down a bit...
+			}
 		}
 	}
 
-	void GetInput(){
+	void GetMovementInput(){
 		float verticalAxisInput = Input.GetAxis ("Vertical");
 		float horizontalAxisInput = Input.GetAxis ("Horizontal");
 
@@ -49,9 +54,9 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		else if (positionCloseToTower2) {
 			Move (-verticalAxisInput * selectionMovementSpeed, -horizontalAxisInput * selectionMovementSpeed);
 		}
+	}
 
-		//Get Radius Selection Input
-
+	void GetRadiusSelectionInput(){
 		if (Input.GetButtonDown("A Button")) {
 			ChangeRadiusSize();
 		}
@@ -137,6 +142,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	}
 
 	void SetRadiusSizeBig(){
+
 		float radiusSize = 0.0f;
 
 		PositionSelectorVisuals.GetComponent<VisibilityToggler>().TurnVisible(true);
@@ -149,6 +155,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	}
 
 	void SetRadiusSizeSmall(){
+
 		float radiusSize = 0.0f;
 
 		PositionSelectorVisuals.GetComponent<VisibilityToggler>().TurnVisible(true);
@@ -161,6 +168,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	}
 
 	void SetRadiusSizeNone(){
+
 		PositionSelectorVisuals.GetComponent<VisibilityToggler>().TurnVisible(false);
 		myArc.GetComponent<VisibilityToggler>().TurnVisible(false);
 		currentRadiusType = SelectionRadiusType.none;
