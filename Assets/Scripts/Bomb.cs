@@ -5,6 +5,7 @@ public class Bomb : MonoBehaviour {
 
 	public ParticleSystem FuseParticles;
 	public EllipsoidParticleEmitter ExplosionParticles;
+	public AudioSource FuseSound;
 
 	float totalTravelTime = 2.0f;
 	Rigidbody myRigidbody;

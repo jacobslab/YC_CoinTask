@@ -4,7 +4,12 @@ using System.Collections.Generic;
 
 public class ObjectController : MonoBehaviour {
 
-	public GameObject DefaultObject;
+	//instantiated somewhere (hidden) in the scene at all times. for calculating default object bounds --> requires an active object, and we don't want to instantiate one every time we ask for the bounds.
+	//this object does *not* need to be logged.
+	//it should also have a special name in the scene.
+	public GameObject InGameDefaultObject;
+
+	public GameObject DefaultObject; //the prefab used to instantiate the other default objects.
 	public GameObject BombObject;
 	public List<GameObject> CurrentTrialSpecialObjects;
 
@@ -245,16 +250,16 @@ public class ObjectController : MonoBehaviour {
 	public float GetMaxDefaultObjectColliderBoundXZ(){
 		//create an active instance in order to retrieve the collider bounds. otherwise the bounds will be zero.
 		//there might be a less computationally expensive way to do this -- perhaps instead put a default object in the scene and keep it there for this, turn it off when not being used.
-		GameObject activeDefaultObj = Instantiate (DefaultObject, transform.position, Quaternion.identity) as GameObject;
+		//GameObject activeDefaultObj = Instantiate (DefaultObject, transform.position, Quaternion.identity) as GameObject;
 
-		Collider defaultCollider = activeDefaultObj.GetComponent<Collider> ();
+		Collider defaultCollider = InGameDefaultObject.GetComponent<Collider> ();
 		Vector3 bounds = defaultCollider.bounds.size;
 		float maxBound = bounds.x;
 		if (bounds.z > bounds.x){
 			maxBound = bounds.z;
 		}
 
-		Destroy (activeDefaultObj);
+		//Destroy (activeDefaultObj);
 
 		return maxBound;
 	}

@@ -44,6 +44,7 @@ public class ObjectLogTrack : LogTrack {
 	{
 		LogPosition();
 		LogRotation();
+		LogScale ();
 		LogVisibility();
 	}
 
