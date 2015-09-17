@@ -12,6 +12,8 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	public ArcGenerator myArc;
 	public TextMesh RadiusPointText;
 
+	public PositionSelectorLogTrack logTrack;
+
 	public enum SelectionRadiusType{
 		big,
 		small,

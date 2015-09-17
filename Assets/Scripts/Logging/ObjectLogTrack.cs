@@ -34,12 +34,6 @@ public class ObjectLogTrack : LogTrack {
 		}
 	}
 
-	// LOGGING SHOULD BE INDEPENDENT OF FRAME RATE
-	void FixedUpdate () {
-
-	}
-
-
 	public void Log ()
 	{
 		LogPosition();

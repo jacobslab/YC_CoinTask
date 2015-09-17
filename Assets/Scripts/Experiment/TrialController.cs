@@ -228,9 +228,8 @@ public class TrialController : MonoBehaviour {
 			string selectObjectText = "Select the location of the " + specialItemName + ".";
 			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, Config_CoinTask.minDefaultInstructionTime));
 
-			//TODO: log the chosen position
-
-			//TODO: log correct position
+			//log the chosen position and correct position
+			exp.environmentController.myPositionSelector.logTrack.LogPositionChosen( exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position );
 
 			//add current chosen position to list of chosen positions
 			chosenPositions.Add(exp.environmentController.myPositionSelector.GetSelectorPosition());

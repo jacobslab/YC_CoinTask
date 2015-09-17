@@ -2,8 +2,9 @@ using UnityEngine;
 using System.Collections;
 
 public class PositionSelectorLogTrack : LogTrack {
+	EnvironmentPositionSelector envPosSelector { get { return Experiment_CoinTask.Instance.environmentController.myPositionSelector; } }
 	GameObject selectorObject { get { return Experiment_CoinTask.Instance.environmentController.myPositionSelector.PositionSelector; } }
-	GameObject correctIndicatorObject { get { return Experiment_CoinTask.Instance.environmentController.myPositionSelector.CorrectPositionIndicator; } }
+	GameObject selectorVisuals { get { return Experiment_CoinTask.Instance.environmentController.myPositionSelector.PositionSelectorVisuals; } }
 
 	
 	// Use this for initialization
@@ -17,18 +18,12 @@ public class PositionSelectorLogTrack : LogTrack {
 		}
 	}
 	
-	// LOGGING SHOULD BE INDEPENDENT OF FRAME RATE
-	void FixedUpdate () {
-		
-	}
-	
 	
 	public void Log ()
 	{
 		LogSelectorPosition();
-		LogCorrectIndicatorPosition ();
+		LogSelectorSize ();
 		LogSelectorVisibility ();
-		LogCorrectIndicatorVisibility ();
 	}
 	
 	void LogSelectorPosition(){
@@ -36,20 +31,28 @@ public class PositionSelectorLogTrack : LogTrack {
 	}
 
 	void LogSelectorVisibility(){
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "SELECTOR_VISIBILITY" + separator + selectorObject.GetComponent<VisibilityToggler>().GetVisibility());
+		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "SELECTOR_VISIBILITY" + separator + selectorVisuals.GetComponent<VisibilityToggler>().GetVisibility());
 	}
 
-	void LogCorrectIndicatorPosition(){
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "CORRECT_INDICATOR_POSITION" + separator + correctIndicatorObject.transform.position.x + separator + correctIndicatorObject.transform.position.y + separator + correctIndicatorObject.transform.position.z);
+	void LogSelectorSize(){
+		string selectorSize = "NONE";
+		float selectorDiameter = 0.0f;
+		if (envPosSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.big) {
+			selectorSize = "BIG";
+			selectorDiameter = Config_CoinTask.bigSelectionSize;
+		} 
+		else if (envPosSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.small) {
+			selectorSize = "SMALL";
+			selectorDiameter = Config_CoinTask.smallSelectionSize;
+		} 
+		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "SELECTOR_SIZE" + separator + selectorSize + separator + "DIAMETER" + separator + selectorDiameter);
 	}
 
-	void LogCorrectIndicatorVisibility(){
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "CORRECT_INDICATOR_VISIBILITY" + separator + correctIndicatorObject.GetComponent<VisibilityToggler>().GetVisibility());
-	}
-
-	public void LogPositionChosen(){
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "CHOSEN_TEST_POSITION" + separator + transform.position.x + separator + transform.position.y + separator + transform.position.z);
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "CORRECT_TEST_POSITION" + separator + transform.position.x + separator + transform.position.y + separator + transform.position.z);
+	public void LogPositionChosen(Vector3 chosenPosition, Vector3 correctPosition){
+		//log chosen position
+		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "CHOSEN_TEST_POSITION" + separator + chosenPosition.x + separator + chosenPosition.y + separator + chosenPosition.z);
+		//log correct position
+		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "CORRECT_TEST_POSITION" + separator + correctPosition.x + separator + correctPosition.y + separator + correctPosition.z);
 	}
 	
 }
