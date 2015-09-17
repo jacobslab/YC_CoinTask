@@ -7,7 +7,7 @@ public class ArcGenerator : MonoBehaviour {
 	public GameObject ArcComponent;
 
 	public float totalArcTime;
-	int numComponents = 15;
+	public int numComponents;
 	List<GameObject> ArcComponents;
 
 	// Use this for initialization
@@ -38,12 +38,20 @@ public class ArcGenerator : MonoBehaviour {
 		Vector3 initVelocity = (totalDistance - (acceleration*totalArcTime*totalArcTime) ) / totalArcTime;
 
 		float timeStep = totalArcTime / numComponents;
+		LineRenderer arcLine = GetComponent<LineRenderer> ();
 		for(int i = 0; i < numComponents; i++){
 			float currentTime = timeStep*i;
-			Vector3 componentPosition = arcStartPos + (initVelocity * currentTime) + ( acceleration * currentTime * currentTime );
+			Vector3 nextPosition = arcStartPos + (initVelocity * currentTime) + ( acceleration * currentTime * currentTime );
 
-			ArcComponents[i].transform.position = componentPosition;
+			/*ArcComponents[i].transform.position = nextPosition;
+			if(i > 0){
+				ArcComponents[i].transform.LookAt( ArcComponents [i - 1].transform );
+			}*/
+			arcLine.SetPosition(i, nextPosition);
 		}
+
+		//set the last position
+		arcLine.SetPosition (numComponents, arcEndPos);
 	}
 
 	public void DeleteArc(){

@@ -31,7 +31,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	void Update () {
 		if (shouldSelect) {
 			GetInput();
-			myArc.AdjustArc( PositionSelector.transform.position, exp.player.transform.position - Vector3.up*exp.player.controls.startPositionTransform1.position.y ); //move it down a bit...
+			//myArc.AdjustArc( exp.player.transform.position - Vector3.up*exp.player.controls.startPositionTransform1.position.y, PositionSelector.transform.position ); //move it down a bit...
 		}
 	}
 
