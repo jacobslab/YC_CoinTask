@@ -274,6 +274,10 @@ public class TrialController : MonoBehaviour {
 			//show nice UI
 			Debug.Log("Should wait for button press");
 			GameObject specialObjUICopy = Instantiate (specialObj, Vector3.zero, specialObj.transform.rotation) as GameObject;
+			specialObjUICopy.layer = LayerMask.NameToLayer( "PlayerUI" ); //set the layer so that only the player-specific UI camera renders it.
+			for(int j = 0; j < specialObjUICopy.transform.childCount; j++){
+				specialObjUICopy.transform.GetChild(j).gameObject.layer = LayerMask.NameToLayer( "PlayerUI" );
+			}
 			yield return StartCoroutine( mySelectObjectUI.Play(specialObjUICopy) );
 			yield return StartCoroutine (exp.WaitForActionButton());
 
