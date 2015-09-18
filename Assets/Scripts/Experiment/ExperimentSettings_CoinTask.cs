@@ -120,6 +120,13 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		loggingToggle.isOn = false;
 	}
 
+	//TODO: use this.
+	public static bool isOneByOneReveal;
+	public Toggle treasureRevealToggle;
+	public void SetTreasureRevealMode(){
+		isOneByOneReveal = treasureRevealToggle.isOn;
+	}
+
 	public void SetReplayFalse(){
 		isReplay = false;
 		//shouldLog = true;

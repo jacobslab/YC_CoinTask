@@ -19,6 +19,8 @@ public class TrialController : MonoBehaviour {
 	int timeBonus = 0;
 	int memoryScore = 0;
 
+	Trial currentTrial;
+
 	private class Block{
 		public Trial trial1;
 		public Trial trial2;
@@ -136,30 +138,54 @@ public class TrialController : MonoBehaviour {
 
 	public void IncrementNumDefaultObjectsCollected(){
 		numDefaultObjectsCollected++;
+		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
+			CreateDefaultObject ( numDefaultObjectsCollected );
+		}
+	}
+
+	void CreateDefaultObject ( int index ){
+		if (currentTrial != null) {
+			if (index < currentTrial.DefaultObjectLocationsXZ.Count) {
+
+				Vector2 positionXZ = currentTrial.DefaultObjectLocationsXZ [index];
+				exp.objectController.SpawnDefaultObject (positionXZ, currentTrial.SpecialObjectLocationsXZ, index);
+			} else {
+				Debug.Log ("Can't create a default object at that index. Index is too big.");
+			}
+		}
 	}
 
 	//INDIVIDUAL TRIALS -- implement for repeating the same thing over and over again
 	//could also create other IEnumerators for other types of trials
 	IEnumerator RunTrial(Trial trial){
 
+		currentTrial = trial;
+
 		if (isPracticeTrial) {
-			GetComponent<TrialLogTrack> ().Log (-1, trial.isStim);
+			GetComponent<TrialLogTrack> ().Log (-1, currentTrial.isStim);
 			Debug.Log("Logged practice trial.");
 		} 
 		else {
-			GetComponent<TrialLogTrack> ().Log (numRealTrials, trial.isStim);
+			GetComponent<TrialLogTrack> ().Log (numRealTrials, currentTrial.isStim);
 			numRealTrials++;
 			Debug.Log("Logged trial #: " + numRealTrials);
 		}
 
-		Debug.Log ("IS STIM: " + trial.isStim);
+		Debug.Log ("IS STIM: " + currentTrial.isStim);
 
 		//move player to first location & rotation
-		yield return StartCoroutine( exp.player.controls.SmoothMoveTo(trial.avatarStartPos, trial.avatarStartRot, PlayerControls.toStartTime) );
+		yield return StartCoroutine( exp.player.controls.SmoothMoveTo(currentTrial.avatarStartPos, currentTrial.avatarStartRot, PlayerControls.toStartTime) );
 
 		//exp.player.TurnOnVisuals (true);
 
-		exp.objectController.SpawnDefaultObjects (trial.DefaultObjectLocationsXZ, trial.SpecialObjectLocationsXZ);
+		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
+			//Spawn the first default object
+			CreateDefaultObject (0);
+		}
+		else{
+			exp.objectController.SpawnDefaultObjects (currentTrial.DefaultObjectLocationsXZ, currentTrial.SpecialObjectLocationsXZ);
+		}
+
 
 		//disable selection
 		exp.environmentController.myPositionSelector.EnableSelection(false);
@@ -175,9 +201,9 @@ public class TrialController : MonoBehaviour {
 		trialTimer.ResetTimer ();
 		trialTimer.StartTimer ();
 
-		//unlock avatar controls, wait for player to collect all coins
+		//unlock avatar controls, wait for player to collect all default objects
 		exp.player.controls.ShouldLockControls = false;
-		int numDefaultObjectsToCollect = trial.DefaultObjectLocationsXZ.Count;
+		int numDefaultObjectsToCollect = currentTrial.DefaultObjectLocationsXZ.Count;
 
 		while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
 			yield return 0;
@@ -196,7 +222,7 @@ public class TrialController : MonoBehaviour {
 
 		//bring player to tower
 		//exp.player.TurnOnVisuals (false);
-		yield return StartCoroutine( exp.player.controls.SmoothMoveTo (trial.avatarTowerPos, trial.avatarTowerRot, PlayerControls.toTowerTime) );
+		yield return StartCoroutine( exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, PlayerControls.toTowerTime) );
 
 		//show instructions for location selection 
 		yield return StartCoroutine (exp.ShowSingleInstruction ("Use the joystick to select the location of the requested object.", true, true, Config_CoinTask.minDefaultInstructionTime));

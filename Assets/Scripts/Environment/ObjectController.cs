@@ -98,19 +98,24 @@ public class ObjectController : MonoBehaviour {
 	public void SpawnDefaultObjects(List<Vector2> defaultPositions, List<Vector2> specialPositions){
 		for(int i = 0; i < defaultPositions.Count; i++){
 			Vector2 currPos = defaultPositions[i];
-			Vector3 objPos = new Vector3(currPos.x, DefaultObject.transform.position.y, currPos.y);
-			GameObject newObj = Instantiate(DefaultObject, objPos, DefaultObject.transform.rotation) as GameObject;
-			
-			SpawnableObject newSpawnableObj = newObj.GetComponent<SpawnableObject>();
-			newSpawnableObj.SetNameID(i);
-
-			if( specialPositions.Contains(currPos) ){
-				newObj.tag = "DefaultSpecialItem";
-			}
+			SpawnDefaultObject( currPos, specialPositions, i );
 		}
 	}
 
-
+	//special positions get passed in so that the default object can get a special tag for later use for spawning special objects
+	public void SpawnDefaultObject (Vector2 positionXZ, List<Vector2> specialPositions, int index) {
+		Vector3 objPos = new Vector3(positionXZ.x, DefaultObject.transform.position.y, positionXZ.y);
+		GameObject newObj = Instantiate(DefaultObject, objPos, DefaultObject.transform.rotation) as GameObject;
+		
+		SpawnableObject newSpawnableObj = newObj.GetComponent<SpawnableObject>();
+		newSpawnableObj.SetNameID(index);
+		
+		if( specialPositions.Contains(positionXZ) ){
+			newObj.tag = "DefaultSpecialItem";
+		}
+	}
+	
+	
 	//for more generic object spawning -- such as in Replay!
 	public GameObject SpawnObject( GameObject objToSpawn, Vector3 spawnPos ){
 		GameObject spawnedObj = Instantiate(objToSpawn, spawnPos, objToSpawn.transform.rotation) as GameObject;
