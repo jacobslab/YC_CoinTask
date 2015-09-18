@@ -222,6 +222,24 @@ public class PlayerControls : MonoBehaviour{
 		Debug.Log ("TIME ELAPSED WHILE ROTATING: " + ELAPSEDTIME);
 	}
 
+	//returns the absolute value between the facing angle of the player and an XZ position
+	public float GetYAngleBetweenFacingDirAndObjectXZ ( Vector2 objectPos ){
+		Quaternion origRotation = transform.rotation;
+		Vector3 targetPosition = new Vector3 (objectPos.x, transform.position.y, objectPos.y); //vector 2's only have an x & y component
+		transform.LookAt(targetPosition);
+
+		float yAngle = Mathf.Abs (transform.rotation.eulerAngles.y - origRotation.eulerAngles.y);
+
+		if(yAngle > 180.0f){
+			yAngle = 360.0f - yAngle; //looking for shortest angle no matter the angle
+		}
+
+		//set back to original rotation
+		transform.rotation = origRotation;
+
+		return yAngle;
+	}
+
 
 	
 }

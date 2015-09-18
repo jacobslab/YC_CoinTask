@@ -139,12 +139,13 @@ public class TrialController : MonoBehaviour {
 	public void IncrementNumDefaultObjectsCollected(){
 		numDefaultObjectsCollected++;
 		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
-			CreateDefaultObject ( numDefaultObjectsCollected );
+			CreateNextDefaultObject ( numDefaultObjectsCollected );
 		}
 	}
 
-	void CreateDefaultObject ( int index ){
+	void CreateNextDefaultObject ( int index ){
 		if (currentTrial != null) {
+			SetUpNextDefaultObject (index);
 			if (index < currentTrial.DefaultObjectLocationsXZ.Count) {
 
 				Vector2 positionXZ = currentTrial.DefaultObjectLocationsXZ [index];
@@ -153,6 +154,35 @@ public class TrialController : MonoBehaviour {
 				Debug.Log ("Can't create a default object at that index. Index is too big.");
 			}
 		}
+	}
+
+	//will put the default object most in the player's field of view at the next position in the default object position list
+	void SetUpNextDefaultObject (int currentIndex){
+		//look through the objects from the current index to the end of the list -- only these haven't been spawned yet
+		float minAngleBetweenChestAndPlayer = 0;
+		int minIndex = currentIndex;
+
+		for (int i = currentIndex; i < currentTrial.DefaultObjectLocationsXZ.Count; i++) {
+			Vector2 currChestPositionXZ = currentTrial.DefaultObjectLocationsXZ [i];
+			float angleBetweenChestAndPlayer = exp.player.controls.GetYAngleBetweenFacingDirAndObjectXZ( currChestPositionXZ ) ; //TODO: CALCULATE THIS.
+			if (i == currentIndex){
+				minAngleBetweenChestAndPlayer = angleBetweenChestAndPlayer;
+			}
+			else {
+				if(minAngleBetweenChestAndPlayer > angleBetweenChestAndPlayer){
+					minAngleBetweenChestAndPlayer = angleBetweenChestAndPlayer;
+					minIndex = i;
+				}
+			}
+		}
+
+		//now that we have the index, let's swap the current index's value with the min index's value
+		if (minIndex != currentIndex) {
+			Vector2 tempCurrPosition = currentTrial.DefaultObjectLocationsXZ[currentIndex];
+			currentTrial.DefaultObjectLocationsXZ[currentIndex] = currentTrial.DefaultObjectLocationsXZ[minIndex];
+			currentTrial.DefaultObjectLocationsXZ[minIndex] = tempCurrPosition;
+		}
+
 	}
 
 	//INDIVIDUAL TRIALS -- implement for repeating the same thing over and over again
@@ -180,7 +210,9 @@ public class TrialController : MonoBehaviour {
 
 		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
 			//Spawn the first default object
-			CreateDefaultObject (0);
+			CreateNextDefaultObject (0);
+			//THE FOLLOWING IS FOR DEBUGGING PURPOSES.
+			//exp.objectController.SpawnDefaultObjects (currentTrial.DefaultObjectLocationsXZ, currentTrial.SpecialObjectLocationsXZ);
 		}
 		else{
 			exp.objectController.SpawnDefaultObjects (currentTrial.DefaultObjectLocationsXZ, currentTrial.SpecialObjectLocationsXZ);
