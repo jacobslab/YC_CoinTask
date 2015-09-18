@@ -7,7 +7,7 @@ public class Bomb : MonoBehaviour {
 	public EllipsoidParticleEmitter ExplosionParticles;
 	public AudioSource FuseSound;
 
-	float totalTravelTime = 2.0f;
+	float totalTravelTime = 1.2f;
 	Rigidbody myRigidbody;
 
 	// Use this for initialization
