@@ -288,6 +288,7 @@ public class TrialController : MonoBehaviour {
 
 			//enable position selection, turn off fancy selection UI
 			exp.environmentController.myPositionSelector.EnableSelection (true);
+			exp.environmentController.myPositionSelector.SetRadiusSize( EnvironmentPositionSelector.SelectionRadiusType.big ); //always start with the big selector. this choice was fairly arbitrary.
 			mySelectObjectUI.Stop();
 
 			//show single selection instruction and wait for selection button press
@@ -374,7 +375,7 @@ public class TrialController : MonoBehaviour {
 			memoryScore += points;
 			
 			//set the position selector back to big or small -- otherwise it will be invisible when cloned in the next iteration of indicator creation
-			exp.environmentController.myPositionSelector.SetRadiusSize( EnvironmentPositionSelector.SelectionRadiusType.small );
+			exp.environmentController.myPositionSelector.SetRadiusSize( EnvironmentPositionSelector.SelectionRadiusType.big );
 		}
 		
 		//disable original selector
