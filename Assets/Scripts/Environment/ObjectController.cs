@@ -191,58 +191,6 @@ public class ObjectController : MonoBehaviour {
 				defaultPositions.Add(randomEnvPositionVec2);
 			}
 
-
-
-
-
-			/*
-			//generate random position in the environment
-			Vector3 randomEnvPosition = experiment.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.objectToWallBuffer );
-			Vector2 randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
-
-			int numTries = 0;
-			int maxNumTries = 15; //ARBITRARY.
-			float smallestDistance = 0;
-			float currentBiggestSmallestDistance = 0; //if we fail at positioning in the allotted number of tries, we want to position the treasure chest with the maximal distance to the closest neighbor chest.
-			Vector2 smallestDistancePosition = randomEnvPositionVec2;
-			//make sure that this position is far enough away from all other default object locations we've already generated
-			while( !CheckObjectsFarEnoughXZ( randomEnvPositionVec2, defaultPositions, out smallestDistance) && numTries < maxNumTries ){
-
-
-				if(i == 0){
-					currentBiggestSmallestDistance = smallestDistance;
-				}
-				else if(smallestDistance > currentBiggestSmallestDistance){
-					currentBiggestSmallestDistance = smallestDistance;
-					smallestDistancePosition = randomEnvPositionVec2;
-				}
-
-
-				//try again to generate a valid position
-				randomEnvPosition = experiment.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.objectToWallBuffer );
-				randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
-				numTries++;
-
-
-				if( numTries == 15){
-					int a = 0;
-				}
-			}
-
-			if (numTries == 15){
-				if(smallestDistance > currentBiggestSmallestDistance){
-					currentBiggestSmallestDistance = smallestDistance;
-					smallestDistancePosition = randomEnvPositionVec2;
-				}
-
-				Debug.Log("Tried 15 times to place default objects!");
-				Debug.Log("DISTANCE: " + currentBiggestSmallestDistance + " POSITION: " + smallestDistancePosition);
-				defaultPositions.Add(smallestDistancePosition);
-			}
-			else{
-				defaultPositions.Add(randomEnvPositionVec2);
-			}
-*/
 		}
 
 		return defaultPositions;
