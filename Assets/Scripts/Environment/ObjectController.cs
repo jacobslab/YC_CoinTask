@@ -152,40 +152,122 @@ public class ObjectController : MonoBehaviour {
 		List<Vector2> defaultPositions = new List<Vector2> ();
 
 		for (int i = 0; i < numDefaultObjects; i++) {
+			bool objectsAreFarEnough = false;
+
+			int numTries = 0;
+			int maxNumTries = 15; //ARBITRARY.
+
+			Vector3 randomEnvPosition = Vector3.zero;
+			Vector2 randomEnvPositionVec2 = Vector2.zero;
+
+			float smallestDistance = 0.0f; //will get filled in by CheckObjectsFarEnoughXZ function
+			float currentBiggestSmallestDistance = 0; //if we fail at positioning in the allotted number of tries, we want to position the treasure chest with the maximal distance to the closest neighbor chest.
+			Vector2 smallestDistancePosition = Vector2.zero;
+
+			while( !objectsAreFarEnough && numTries < maxNumTries){
+				// generate a random position
+				randomEnvPosition = experiment.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.objectToWallBuffer );
+				randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
+
+				//increment numTries
+				numTries++;
+			
+				//check if the generated position is far enough from all other positions
+				objectsAreFarEnough = CheckObjectsFarEnoughXZ( randomEnvPositionVec2, defaultPositions, out smallestDistance);
+			
+				//if not, and the smallest distance is larger than the currents largest small distance...
+				if( !objectsAreFarEnough && smallestDistance > currentBiggestSmallestDistance ){
+					currentBiggestSmallestDistance = smallestDistance;
+					smallestDistancePosition = randomEnvPositionVec2;
+				}
+			}
+
+			if(numTries == maxNumTries){
+				Debug.Log("Tried 15 times to place default objects!");
+				Debug.Log("DISTANCE: " + currentBiggestSmallestDistance + " POSITION: " + smallestDistancePosition);
+				defaultPositions.Add(smallestDistancePosition);
+			}
+			else{
+				defaultPositions.Add(randomEnvPositionVec2);
+			}
+
+
+
+
+
+			/*
 			//generate random position in the environment
 			Vector3 randomEnvPosition = experiment.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.objectToWallBuffer );
 			Vector2 randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
 
 			int numTries = 0;
 			int maxNumTries = 15; //ARBITRARY.
+			float smallestDistance = 0;
+			float currentBiggestSmallestDistance = 0; //if we fail at positioning in the allotted number of tries, we want to position the treasure chest with the maximal distance to the closest neighbor chest.
+			Vector2 smallestDistancePosition = randomEnvPositionVec2;
 			//make sure that this position is far enough away from all other default object locations we've already generated
-			while( !CheckObjectsFarEnoughXZ( randomEnvPositionVec2, defaultPositions) && numTries < maxNumTries ){
+			while( !CheckObjectsFarEnoughXZ( randomEnvPositionVec2, defaultPositions, out smallestDistance) && numTries < maxNumTries ){
+
+
+				if(i == 0){
+					currentBiggestSmallestDistance = smallestDistance;
+				}
+				else if(smallestDistance > currentBiggestSmallestDistance){
+					currentBiggestSmallestDistance = smallestDistance;
+					smallestDistancePosition = randomEnvPositionVec2;
+				}
+
+
 				//try again to generate a valid position
 				randomEnvPosition = experiment.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.objectToWallBuffer );
 				randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
 				numTries++;
+
+
+				if( numTries == 15){
+					int a = 0;
+				}
 			}
 
 			if (numTries == 15){
+				if(smallestDistance > currentBiggestSmallestDistance){
+					currentBiggestSmallestDistance = smallestDistance;
+					smallestDistancePosition = randomEnvPositionVec2;
+				}
+
 				Debug.Log("Tried 15 times to place default objects!");
+				Debug.Log("DISTANCE: " + currentBiggestSmallestDistance + " POSITION: " + smallestDistancePosition);
+				defaultPositions.Add(smallestDistancePosition);
 			}
-
-			defaultPositions.Add(randomEnvPositionVec2);
-
+			else{
+				defaultPositions.Add(randomEnvPositionVec2);
+			}
+*/
 		}
 
 		return defaultPositions;
 	}
 
-	public bool CheckObjectsFarEnoughXZ(Vector2 newObjectPos, List<Vector2> otherObjectPositions){
+	//also fills the out float smallestDistance for informing how close the object is to overlap.
+	public bool CheckObjectsFarEnoughXZ(Vector2 newObjectPos, List<Vector2> otherObjectPositions, out float smallestDistance){
+		bool isFarEnough = true;
+		smallestDistance = 0;
 		for(int i = 0; i < otherObjectPositions.Count; i++){
 			Vector2 previousDefaultObjectLocation = otherObjectPositions[i];
-			if( (newObjectPos - previousDefaultObjectLocation).magnitude < Config_CoinTask.objectToObjectBuffer ){
-				return false;
+			float positionDistance = (newObjectPos - previousDefaultObjectLocation).magnitude;
+			if (i == 0){
+				//set smallest distance for the first time
+				smallestDistance = positionDistance;
+			}
+			if( positionDistance < Config_CoinTask.objectToObjectBuffer ){
+				if(smallestDistance > positionDistance) {
+					smallestDistance = positionDistance;
+				}
+				isFarEnough = false;
 			}
 		}
 		
-		return true;
+		return isFarEnough;
 	}
 
 	public List<Vector2> GenerateSpecialObjectPositions (List<Vector2> defaultObjectLocationsXZ, int numSpecialObjects){
