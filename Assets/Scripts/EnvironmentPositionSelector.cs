@@ -190,15 +190,14 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 		else{
 			string pointsText = " POINTS";
-
 			if (currentRadiusType == SelectionRadiusType.none) { //none
-				RadiusPointText.text = ScoreController.memoryScoreNoChoice + pointsText;
+				RadiusPointText.text = ScoreController.MemoryScoreNoChoice + pointsText;
 			}
 			else if(currentRadiusType == SelectionRadiusType.big){ //big
-				RadiusPointText.text = ScoreController.memoryScoreMedium + pointsText;
+				RadiusPointText.text = ScoreController.MemoryScoreMedium + pointsText;
 			}
 			else if (currentRadiusType == SelectionRadiusType.small){ //small
-				RadiusPointText.text = ScoreController.memoryScoreBest + pointsText;
+				RadiusPointText.text = ScoreController.MemoryScoreBest + pointsText;
 			}
 		}
 	}

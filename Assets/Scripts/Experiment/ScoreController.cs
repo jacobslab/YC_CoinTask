@@ -9,21 +9,42 @@ public class ScoreController : MonoBehaviour {
 	public int score = 0;
 	public Text scoreText;
 
-	//SCORE VARIABLES
-	int timeBonusSmall = 10;
-	int timeBonusMed = 15;
-	int timeBonusBig = 20;
+	//SCORE VARIABLES -- don't want anyone to change them, so make public getters, no setters.
+	static int timeBonusSmall = 10;
+	public static int TimeBonusSmall { get { return timeBonusSmall; } }
+
+	static int timeBonusMed = 15;
+	public static int TimeBonusMed { get { return timeBonusMed; } }
+
+	static int timeBonusBig = 20;
+	public static int TimeBonusBig { get { return timeBonusBig; } }
 	
-	/*int scorePerfect = 50;
-	int scoreClose = 30;
-	int scoreFar = 15;
-	int scoreWrong = 0;*/
-	public static int memoryScoreBest = 50;
-	public static int memoryScoreMedium = 30;
-	public static int memoryScoreNoChoice = 10;
+
+	static int memoryScoreBest = 50;
+	public static int MemoryScoreBest { get { return memoryScoreBest; } }
+
+	static int memoryScoreMedium = 30;
+	public static int MemoryScoreMedium { get { return memoryScoreMedium; } }
+
+	static int memoryScoreNoChoice = 10;
+	public static int MemoryScoreNoChoice { get { return memoryScoreNoChoice; } }
 
 	int defaultObjectPoints = 1;
 	int specialObjectPoints = 10;
+
+
+
+
+	//Time bonus time variables!
+	static int timeBonusTimeSmall = 40;
+	public static int TimeBonusTimeSmall { get { return timeBonusTimeSmall; } }
+	
+	static int timeBonusTimeMed = 60;
+	public static int TimeBonusTimeMed { get { return timeBonusTimeMed; } }
+	
+	static int timeBonusTimeBig = 80;
+	public static int TimeBonusTimeBig { get { return timeBonusTimeBig; } }
+
 
 
 	// Use this for initialization
@@ -37,13 +58,24 @@ public class ScoreController : MonoBehaviour {
 	}
 
 	void AddToScore(int amountToAdd){
+		StartCoroutine (UpdateScoreText(score, amountToAdd)); //pass in the original score, before adding the amount
+
 		score += amountToAdd;
 		ExperimentSettings_CoinTask.currentSubject.score = score;
-		UpdateScoreText ();
+		//UpdateScoreText ();
 	}
 
-	void UpdateScoreText(){
-		scoreText.text = "SCORE: " + score;
+	IEnumerator UpdateScoreText(int initialScore, int amountToAdd){
+		float timeBetweenUpdates = 0.05f;
+
+		while (amountToAdd > 0) {
+			initialScore++;
+			scoreText.text = "SCORE: " + (initialScore);
+			amountToAdd--;
+			yield return new WaitForSeconds(timeBetweenUpdates);
+		}
+
+		yield return 0;
 	}
 
 	public void AddDefaultPoints(){
@@ -86,37 +118,16 @@ public class ScoreController : MonoBehaviour {
 		return 0;
 	}
 
-	/*public int CalculateMemoryPoints(Vector2 correctGridIndices, Vector2 chosenGridIndices){
-		int xDiff = (int) Mathf.Abs (correctGridIndices.x - chosenGridIndices.x);
-		int yDiff = (int) Mathf.Abs (correctGridIndices.y - chosenGridIndices.y);
-
-		if (xDiff == 0 && yDiff == 0) {
-			AddToScore(scorePerfect);
-			return scorePerfect;
-		}
-		else if ( xDiff <= 1 && yDiff <= 1) {
-			AddToScore(scoreClose);
-			return scoreClose;
-		}
-		else if (xDiff <= 2 && yDiff <= 2) {
-			AddToScore(scoreFar);
-			return scoreFar;
-		}
-		else{
-			return scoreWrong;
-		}
-	}*/
-
 	public int CalculateTimeBonus(float secondsToCompleteTrial){
-		if (secondsToCompleteTrial < 40) {
+		if (secondsToCompleteTrial < timeBonusTimeSmall) {
 			AddToScore(timeBonusBig);
 			return timeBonusBig;
 		} 
-		else if (secondsToCompleteTrial < 60) {
+		else if (secondsToCompleteTrial < timeBonusTimeMed) {
 			AddToScore(timeBonusMed);
 			return timeBonusMed;
 		} 
-		else if (secondsToCompleteTrial < 80) {
+		else if (secondsToCompleteTrial < timeBonusTimeBig) {
 			AddToScore(timeBonusSmall);
 			return timeBonusSmall;
 		} 
@@ -125,35 +136,4 @@ public class ScoreController : MonoBehaviour {
 
 	}
 
-	/*public int CalculatePoints(GameObject desiredObject){
-		Vector2 avatarXYPos = new Vector2( exp.player.transform.position.x, exp.player.transform.position.z);
-		Vector2 objectXYPos = new Vector2( desiredObject.transform.position.x, desiredObject.transform.position.z);
-
-		float distanceFromObject = (avatarXYPos - objectXYPos).magnitude;
-
-		//calculate point ranges based on the visual circles from the map
-		float minRange = exp.environmentMap.SmallScoreRing.GetComponent<Renderer>().bounds.extents.x;
-		//Debug.Log("min range: " + minRange);
-		float midRange = exp.environmentMap.MediumScoreRing.GetComponent<Renderer>().bounds.extents.x;
-		//Debug.Log("mid range: " + midRange);
-		float maxRange = exp.environmentMap.BigScoreRing.GetComponent<Renderer>().bounds.extents.x;
-		//Debug.Log("max range: " + maxRange);
-
-		if(distanceFromObject < minRange){
-			score += 100;
-			return 100;
-		}
-		else if(distanceFromObject < midRange){
-			score += 50;
-			return 50;
-		}
-		else if(distanceFromObject < maxRange){
-			score += 25;
-			return 25;
-		}
-		else{
-			score += 10;
-			return 10;
-		}
-	}*/
 }
