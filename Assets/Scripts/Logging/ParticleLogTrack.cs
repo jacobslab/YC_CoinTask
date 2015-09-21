@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ParticleLogTrack : LogTrack {
 
-	//should be able to log either of these.
+	//should be able to log either or both of these.
 	public ParticleSystem particleSystem;
 	public EllipsoidParticleEmitter particleEmitter;
 
@@ -36,13 +36,13 @@ public class ParticleLogTrack : LogTrack {
 		}
 
 		if (particleEmitter != null) {
-			if (!isSystemPlaying && particleEmitter.emit) {
-				isSystemPlaying = true;
-				LogParticleSystemPlaying (particleEmitter.transform.position);
+			if (!isEmitterPlaying && particleEmitter.emit) {
+				isEmitterPlaying = true;
+				LogParticleEmitterPlaying (particleEmitter.transform.position);
 			} 
-			else if (isSystemPlaying && !particleEmitter.emit) {
-				isSystemPlaying = false;
-				LogParticleSystemOver (particleEmitter.transform.position);
+			else if (isEmitterPlaying && !particleEmitter.emit) {
+				isEmitterPlaying = false;
+				LogParticleEmitterOver (particleEmitter.transform.position);
 			}
 		}
 	}
@@ -59,11 +59,11 @@ public class ParticleLogTrack : LogTrack {
 	//for logging the particle emitter
 	//note: emitters do not have a looping property
 	public void LogParticleEmitterPlaying(Vector3 emitterLocation){
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_EMITTER_PLAYING" + separator + particleSystem.name + separator + emitterLocation.x + separator + emitterLocation.y + separator + emitterLocation.z);
+		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_EMITTER_PLAYING" + separator + particleEmitter.name + separator + emitterLocation.x + separator + emitterLocation.y + separator + emitterLocation.z);
 	}
 	
 	public void LogParticleEmitterOver(Vector3 emitterLocation){
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_EMITTER_STOPPED" + separator + particleSystem.name + separator + emitterLocation.x + separator + emitterLocation.y + separator + emitterLocation.z);
+		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_EMITTER_STOPPED" + separator + particleEmitter.name + separator + emitterLocation.x + separator + emitterLocation.y + separator + emitterLocation.z);
 	}
 
 	string GetNameToLog(){
