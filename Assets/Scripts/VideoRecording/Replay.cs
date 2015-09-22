@@ -4,9 +4,12 @@ using System.IO;
 using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 
 public class Replay : MonoBehaviour {
+
+	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
 	//image recording
 	public ScreenRecorder MyScreenRecorder;
@@ -226,13 +229,26 @@ public class Replay : MonoBehaviour {
 								}
 								else{ //if the object is not in the scene, but is in the log file, we should instantiate it!
 										//we could also check for the SPAWNED keyword
-									objInScene = Experiment_CoinTask.Instance.objectController.ChooseSpawnableObject(objName);
-									if(objInScene != null){
-										objInScene = Experiment_CoinTask.Instance.objectController.SpawnObject(objInScene, Vector3.zero); //position and rotation should be set next...
 
+									if(objName == "TreasureChest001"){
+										int a = 0;
+									}
+
+									//separate out the object name from a numeric ID
+									Regex numAlpha = new Regex("(?<Alpha>[a-zA-Z]*)(?<Numeric>[0-9]*)");
+									Match match = numAlpha.Match(objName);
+									string objShortName = match.Groups["Alpha"].Value;
+									string objID = match.Groups["Numeric"].Value;
+
+									objInScene = exp.objectController.ChooseSpawnableObject(objShortName);
+									
+									if(objInScene != null){ //if it did grab the prefab...
+										objInScene = exp.objectController.SpawnObject(objInScene, Vector3.zero); //position and rotation should be set next...
+										objInScene.name += objID;
 										objsInSceneDict.Add(objName, objInScene);
 									}
 								}
+
 							}
 							if(objInScene != null){
 								//NOW MOVE & ROTATE THE OBJECT.

@@ -27,7 +27,7 @@ public class ObjectController : MonoBehaviour {
 	void Start () {
 		gameObjectList_Spawnable = new List<GameObject> ();
 		CurrentTrialSpecialObjects = new List<GameObject> ();
-		CreateObjectList (gameObjectList_Spawnable);
+		CreateSpecialObjectList (gameObjectList_Spawnable);
 	}
 	
 	// Update is called once per frame
@@ -35,7 +35,7 @@ public class ObjectController : MonoBehaviour {
 	
 	}
 
-	void CreateObjectList(List<GameObject> gameObjectListToFill){
+	void CreateSpecialObjectList(List<GameObject> gameObjectListToFill){
 		gameObjectListToFill.Clear();
 		Object[] prefabs = Resources.LoadAll("Prefabs/Objects");
 		for (int i = 0; i < prefabs.Length; i++) {
@@ -43,18 +43,25 @@ public class ObjectController : MonoBehaviour {
 		}
 	}
 
-	void CreateSpawnableList (List<SpawnableObject> spawnableListToFill){
+	//used in replay
+	void CreateCompleteSpawnableList (List<SpawnableObject> spawnableListToFill){
 		spawnableListToFill.Clear();
-		Object[] prefabs = Resources.LoadAll("Prefabs/Objects");
-		for (int i = 0; i < prefabs.Length; i++) {
-			SpawnableObject spawnable = ( (GameObject)prefabs[i] ).GetComponent<SpawnableObject>();
+		Object[] specialPrefabs = Resources.LoadAll("Prefabs/Objects");
+		Object[] otherPrefabs = Resources.LoadAll("Prefabs/OtherSpawnables");
+		for (int i = 0; i < specialPrefabs.Length; i++) {
+			SpawnableObject spawnable = ( (GameObject)specialPrefabs[i] ).GetComponent<SpawnableObject>();
+			spawnableListToFill.Add(spawnable);
+		}
+		for (int i = 0; i < otherPrefabs.Length; i++) {
+			SpawnableObject spawnable = ( (GameObject)otherPrefabs[i] ).GetComponent<SpawnableObject>();
 			spawnableListToFill.Add(spawnable);
 		}
 	}
 
+	//used in replay
 	public GameObject ChooseSpawnableObject(string objectName){
 		List<SpawnableObject> allSpawnables = new List<SpawnableObject>(); //note: this is technically getting instantiated twice now... as it's instantiated in CREATE as well.
-		CreateSpawnableList (allSpawnables);
+		CreateCompleteSpawnableList (allSpawnables);
 
 		for (int i = 0; i < allSpawnables.Count; i++) {
 			if(allSpawnables[i].GetName() == objectName){
@@ -73,7 +80,7 @@ public class ObjectController : MonoBehaviour {
 	GameObject ChooseRandomObject(){
 		if (gameObjectList_Spawnable.Count == 0) {
 			Debug.Log ("No MORE objects to pick! Recreating object list.");
-			CreateObjectList(gameObjectList_Spawnable); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
+			CreateSpecialObjectList(gameObjectList_Spawnable); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
 			if(gameObjectList_Spawnable.Count == 0){
 				Debug.Log ("No objects to pick at all!"); //if there are still no objects in the list, then there weren't any to begin with...
 				return null;

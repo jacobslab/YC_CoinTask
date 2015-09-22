@@ -3,7 +3,7 @@ using System.Collections;
 
 public class VisibilityToggler : MonoBehaviour {
 
-	bool isVisible;
+	bool isVisible = true;
 	float currentAlpha = 1.0f;
 
 	// Use this for initialization
@@ -22,6 +22,10 @@ public class VisibilityToggler : MonoBehaviour {
 
 	//function to turn off (or on) the object without setting it inactive -- because we want to keep logging on
 	public void TurnVisible(bool shouldBeVisible){ 
+		if (name == "TreasureChest000") {
+			int a = 0;
+		}
+
 		if(GetComponent<Renderer>() != null){
 			GetComponent<Renderer>().enabled = shouldBeVisible;
 		}
