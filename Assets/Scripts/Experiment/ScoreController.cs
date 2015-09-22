@@ -36,14 +36,14 @@ public class ScoreController : MonoBehaviour {
 
 
 	//Time bonus time variables!
-	static int timeBonusTimeSmall = 40;
-	public static int TimeBonusTimeSmall { get { return timeBonusTimeSmall; } }
+	static int timeBonusTimeMin = 30;
+	public static int TimeBonusTimeSmall { get { return timeBonusTimeMin; } }
 	
-	static int timeBonusTimeMed = 60;
+	static int timeBonusTimeMed = 45;
 	public static int TimeBonusTimeMed { get { return timeBonusTimeMed; } }
 	
-	static int timeBonusTimeBig = 80;
-	public static int TimeBonusTimeBig { get { return timeBonusTimeBig; } }
+	static int timeBonusTimeMax = 60;
+	public static int TimeBonusTimeBig { get { return timeBonusTimeMax; } }
 
 
 
@@ -119,7 +119,7 @@ public class ScoreController : MonoBehaviour {
 	}
 
 	public int CalculateTimeBonus(float secondsToCompleteTrial){
-		if (secondsToCompleteTrial < timeBonusTimeSmall) {
+		if (secondsToCompleteTrial < timeBonusTimeMin) {
 			AddToScore(timeBonusBig);
 			return timeBonusBig;
 		} 
@@ -127,7 +127,7 @@ public class ScoreController : MonoBehaviour {
 			AddToScore(timeBonusMed);
 			return timeBonusMed;
 		} 
-		else if (secondsToCompleteTrial < timeBonusTimeBig) {
+		else if (secondsToCompleteTrial < timeBonusTimeMax) {
 			AddToScore(timeBonusSmall);
 			return timeBonusSmall;
 		} 
