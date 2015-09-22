@@ -230,10 +230,6 @@ public class Replay : MonoBehaviour {
 								else{ //if the object is not in the scene, but is in the log file, we should instantiate it!
 										//we could also check for the SPAWNED keyword
 
-									if(objName == "TreasureChest001"){
-										int a = 0;
-									}
-
 									//separate out the object name from a numeric ID
 									Regex numAlpha = new Regex("(?<Alpha>[a-zA-Z]*)(?<Numeric>[0-9]*)");
 									Match match = numAlpha.Match(objName);
@@ -244,6 +240,7 @@ public class Replay : MonoBehaviour {
 									
 									if(objInScene != null){ //if it did grab the prefab...
 										objInScene = exp.objectController.SpawnObject(objInScene, Vector3.zero); //position and rotation should be set next...
+										objInScene.name = objInScene.GetComponent<SpawnableObject>().GetName();
 										objInScene.name += objID;
 										objsInSceneDict.Add(objName, objInScene);
 									}
@@ -299,6 +296,7 @@ public class Replay : MonoBehaviour {
 								}
 								else if(loggedProperty == "DESTROYED"){
 									Debug.Log("Destroying object! " + objInScene.name);
+									objsInSceneDict.Remove( objName );
 									GameObject.Destroy(objInScene);
 								}
 
@@ -340,6 +338,49 @@ public class Replay : MonoBehaviour {
 										GameObject opener = objInScene.transform.Find( openerName ).gameObject;
 										StartCoroutine( objInScene.GetComponent<TreasureChest>().Open(opener) );
 									}
+								}
+
+								else if (loggedProperty == "PARTICLE_SYSTEM_PLAYING"){
+									string particleSystemName = splitLine [i+2];
+									ParticleSystem particles = objInScene.GetComponent<ParticleSystem>();
+									if(particles == null){
+										particles = objInScene.transform.FindChild( particleSystemName ).GetComponent<ParticleSystem>();
+									}
+
+									particles.Play();
+
+								}
+								else if (loggedProperty == "PARTICLE_SYSTEM_STOPPED"){
+									string particleSystemName = splitLine [i+2];
+									ParticleSystem particles = objInScene.GetComponent<ParticleSystem>();
+									if(particles == null){
+										particles = objInScene.transform.FindChild( particleSystemName ).GetComponent<ParticleSystem>();
+									}
+									
+									particles.Stop();
+									
+								}
+
+								else if (loggedProperty == "PARTICLE_EMITTER_PLAYING"){
+									string particleSystemName = splitLine [i+2];
+									ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter>();
+									if(particles == null){
+										particles = objInScene.transform.FindChild( particleSystemName ).GetComponent<ParticleEmitter>();
+									}
+
+
+									particles.emit = true;
+									
+								}
+								else if (loggedProperty == "PARTICLE_EMITTER_STOPPED"){
+									string particleSystemName = splitLine [i+2];
+									ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter>();
+									if(particles == null){
+										particles = objInScene.transform.FindChild( particleSystemName ).GetComponent<ParticleEmitter>();
+									}
+									
+									particles.emit = false;
+									
 								}
 
 							}
