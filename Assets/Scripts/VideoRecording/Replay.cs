@@ -333,6 +333,15 @@ public class Replay : MonoBehaviour {
 									image.color = new Color(r, g, b, a);
 								}
 
+								else if (loggedProperty == "TREASURE_OPEN"){
+									string openerName = splitLine[i+3];
+									TreasureChest tChest = objInScene.GetComponent<TreasureChest>();
+									if(tChest != null){
+										GameObject opener = objInScene.transform.Find( openerName ).gameObject;
+										StartCoroutine( objInScene.GetComponent<TreasureChest>().Open(opener) );
+									}
+								}
+
 							}
 							else{
 								Debug.Log("REPLAY: No obj in scene named " + objName);

@@ -26,14 +26,18 @@ public class TreasureChest : MonoBehaviour {
 		float distOpenerToPivotB = (pivotB.position - opener.transform.position).magnitude;
 
 		Vector3 pivotPos = transform.position;
+		string closePivotName = ""; //actually want to use the closer pivot as our opener reference for Logging
 		if (distOpenerToPivotA > distOpenerToPivotB) { //use the further away pivot
 			pivotPos = pivotA.position;
+			closePivotName = pivotB.name;
 		} 
 		else {
 			pivotPos = pivotB.position;
+			closePivotName = pivotA.name;
 			angleToOpen = -angleToOpen;
 		}
 
+		GetComponent<TreasureChestLogTrack> ().LogOpening (closePivotName); 
 
 		Quaternion origRotation = top.rotation;
 		top.RotateAround(pivotPos, -transform.right, angleToOpen); //rotate to get the desired rotation
