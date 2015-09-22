@@ -32,11 +32,11 @@ public class AudioLogTrack : LogTrack {
 	}
 
 	public void LogAudioPlaying(AudioClip audioClip, Vector3 audioLocation){
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "AUDIO_PLAYING" + separator + audioClip.name + separator + "IS_LOOPING" + separator + audioSource.loop + separator + audioLocation.x + separator + audioLocation.y + separator + audioLocation.z);
+		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "AUDIO_PLAYING" + separator + audioSource.name + separator + audioClip.name + separator + "IS_LOOPING" + separator + audioSource.loop + separator + audioLocation.x + separator + audioLocation.y + separator + audioLocation.z);
 	}
 
 	public void LogAudioOver(AudioClip audioClip, Vector3 audioLocation){
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "AUDIO_STOPPED" + separator + audioClip.name + separator + "IS_LOOPING" + separator + audioSource.loop + separator + audioLocation.x + separator + audioLocation.y + separator + audioLocation.z);
+		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "AUDIO_STOPPED" + separator + audioSource.name + separator + audioClip.name + separator + "IS_LOOPING" + separator + audioSource.loop + separator + audioLocation.x + separator + audioLocation.y + separator + audioLocation.z);
 	}
 
 	string GetNameToLog(){

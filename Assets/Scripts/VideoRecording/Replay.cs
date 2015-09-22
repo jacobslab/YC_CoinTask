@@ -331,6 +331,7 @@ public class Replay : MonoBehaviour {
 									image.color = new Color(r, g, b, a);
 								}
 
+								//TREASURE CHESTS
 								else if (loggedProperty == "TREASURE_OPEN"){
 									string openerName = splitLine[i+3];
 									TreasureChest tChest = objInScene.GetComponent<TreasureChest>();
@@ -340,6 +341,7 @@ public class Replay : MonoBehaviour {
 									}
 								}
 
+								//PARTICLE SYSTEMS
 								else if (loggedProperty == "PARTICLE_SYSTEM_PLAYING"){
 									string particleSystemName = splitLine [i+2];
 									ParticleSystem particles = objInScene.GetComponent<ParticleSystem>();
@@ -361,6 +363,7 @@ public class Replay : MonoBehaviour {
 									
 								}
 
+								//PARTICLE EMITTERS
 								else if (loggedProperty == "PARTICLE_EMITTER_PLAYING"){
 									string particleSystemName = splitLine [i+2];
 									ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter>();
@@ -380,6 +383,29 @@ public class Replay : MonoBehaviour {
 									}
 									
 									particles.emit = false;
+									
+								}
+
+								//AUDIO
+								else if (loggedProperty == "AUDIO_PLAYING"){
+									string audioSourceName = splitLine [i+2];
+									AudioSource audio = objInScene.GetComponent<AudioSource>();
+									if(audio == null){
+										audio = objInScene.transform.FindChild( audioSourceName ).GetComponent<AudioSource>();
+									}
+									
+									
+									audio.Play();
+									
+								}
+								else if (loggedProperty == "AUDIO_STOPPED"){
+									string audioSourceName = splitLine [i+2];
+									AudioSource audio = objInScene.GetComponent<AudioSource>();
+									if(audio == null){
+										audio = objInScene.transform.FindChild( audioSourceName ).GetComponent<AudioSource>();
+									}
+									
+									audio.Stop();
 									
 								}
 
