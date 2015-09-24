@@ -20,4 +20,24 @@ public class UsefulFunctions {
 		
 		return randomOrderList;
 	}
+
+	//set layer of gameobject and all its children using the layer ID (int)
+	public static void SetLayerRecursively (GameObject obj, int newLayer){
+		obj.layer = newLayer;
+		
+		foreach( Transform child in obj.transform )
+		{
+			SetLayerRecursively( child.gameObject, newLayer );
+		}
+	}
+
+	//set layer of gameobject and all its children using the layer name
+	public static void SetLayerRecursively (GameObject obj, string newLayer){
+		obj.layer = LayerMask.NameToLayer( newLayer );
+
+		foreach( Transform child in obj.transform )
+		{
+			SetLayerRecursively( child.gameObject, newLayer );
+		}
+	}
 }

@@ -275,11 +275,8 @@ public class TrialController : MonoBehaviour {
 			Debug.Log("Should wait for button press");
 			GameObject specialObjUICopy = Instantiate (specialObj, Vector3.zero, specialObj.transform.rotation) as GameObject;
 
-			//TODO: make a function for setting layers recursively. this piece of code may not reach all children.
-			specialObjUICopy.layer = LayerMask.NameToLayer( "PlayerUI" ); //set the layer so that only the player-specific UI camera renders it.
-			for(int j = 0; j < specialObjUICopy.transform.childCount; j++){
-				specialObjUICopy.transform.GetChild(j).gameObject.layer = LayerMask.NameToLayer( "PlayerUI" );
-			}
+			//set layer of object & children to PlayerUI
+			UsefulFunctions.SetLayerRecursively (specialObjUICopy, "PlayerUI");
 
 			yield return StartCoroutine( mySelectObjectUI.Play(specialObjUICopy) );
 
