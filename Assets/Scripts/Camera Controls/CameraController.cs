@@ -30,7 +30,8 @@ public class CameraController : MonoBehaviour {
 		TurnOffAllCameras();
 
 		if(ExperimentSettings_CoinTask.isOculus){
-
+			//EnableCameras(OculusRig, true);
+			SetOculus(true);
 		}
 		else{
 			EnableCameras(AvatarStandardCameraRig, true);
@@ -45,8 +46,9 @@ public class CameraController : MonoBehaviour {
 		if(ExperimentSettings_CoinTask.isOculus){
 			//OculusRig.transform.position = AvatarOculusParent.transform.position;
 			//OculusRig.transform.parent = AvatarOculusParent;
-
-			SetOculus();
+			if(!OculusRig.activeSelf){
+				SetOculus(true);
+			}
 		}
 		else{
 			EnableCameras(AvatarStandardCameraRig, true);
@@ -63,6 +65,7 @@ public class CameraController : MonoBehaviour {
 		}
 	}
 
+
 	void EnableCameras(GameObject cameraRig, bool setOn){
 		Camera[] cameras = cameraRig.GetComponentsInChildren<Camera>();
 		for(int i = 0; i < cameras.Length; i++){
@@ -70,11 +73,12 @@ public class CameraController : MonoBehaviour {
 		}
 	}
 
-	void SetOculus(){
-		Camera[] cameras = OculusRig.GetComponentsInChildren<Camera>();
+	void SetOculus(bool isActive){
+		/*Camera[] cameras = OculusRig.GetComponentsInChildren<Camera>();
 		for(int i = 0; i < cameras.Length; i++){
 			cameras[i].orthographic = false;
 			//cameras[i].clearFlags = CameraClearFlags.Skybox;
-		}
+		}*/
+		OculusRig.SetActive (isActive);
 	}
 }

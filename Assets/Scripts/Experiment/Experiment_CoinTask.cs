@@ -114,7 +114,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 			yield return 0; //thus, should wait for the button press before ending the experiment
 		}*/
 
-		cameraController.SetInstructions(); //TODO: might be unecessary? evaluate for oculus...? 
+		if (!ExperimentSettings_CoinTask.isOculus) {
+			cameraController.SetInstructions (); //TODO: might be unecessary? evaluate for oculus...? 
+		}
 		
 		yield return StartCoroutine(ShowSingleInstruction("You have finished your trials! \nPress the button to proceed.", true, true, 0.0f));
 		instructionsController.SetInstructionsColorful(); //want to keep a dark screen before transitioning to the end!
