@@ -8,6 +8,7 @@ public class ScoreController : MonoBehaviour {
 
 	public int score = 0;
 	public Text scoreText;
+	public TimeBonusUIController timeBonusUI;
 
 	//SCORE VARIABLES -- don't want anyone to change them, so make public getters, no setters.
 	static int timeBonusSmall = 10;
@@ -57,18 +58,23 @@ public class ScoreController : MonoBehaviour {
 	
 	}
 
-	void AddToScore(int amountToAdd){
-		StartCoroutine (UpdateScoreText(score, amountToAdd)); //pass in the original score, before adding the amount
+	void AddToScore(int amountToAdd, bool isTimeBonus){
+		StartCoroutine (UpdateScoreText(score, amountToAdd, isTimeBonus)); //pass in the original score, before adding the amount
 
 		score += amountToAdd;
 		ExperimentSettings_CoinTask.currentSubject.score = score;
 		//UpdateScoreText ();
 	}
 
-	IEnumerator UpdateScoreText(int initialScore, int amountToAdd){
+	IEnumerator UpdateScoreText(int initialScore, int amountToAdd, bool isTimeBonus){
 		float timeBetweenUpdates = 0.05f;
 
+		if (isTimeBonus) {
+			yield return StartCoroutine( timeBonusUI.MoveBonusText () );
+		}
+
 		while (amountToAdd > 0) {
+
 			initialScore++;
 			scoreText.text = "SCORE: " + (initialScore);
 			amountToAdd--;
@@ -79,38 +85,38 @@ public class ScoreController : MonoBehaviour {
 	}
 
 	public void AddDefaultPoints(){
-		AddToScore(defaultObjectPoints);
+		AddToScore(defaultObjectPoints, false);
 	}
 
 	public void AddSpecialPoints(){
-		AddToScore(specialObjectPoints);
+		AddToScore(specialObjectPoints, false);
 	}
 
 	//small radius is more impressive, more points
 	public int AddMemoryPointsSmallRadius(){
-		AddToScore (memoryScoreBest);
+		AddToScore (memoryScoreBest, false);
 		return memoryScoreBest;
 	}
 
 	//big radius is less impressive, fewer points
 	public int AddMemoryPointsLargeRadius(){
-		AddToScore (memoryScoreMedium);
+		AddToScore (memoryScoreMedium, false);
 		return memoryScoreMedium;
 	}
 
 	public int CalculateMemoryPoints (Vector3 correctPosition){
 		if (exp.environmentController.myPositionSelector.GetRadiusOverlap (correctPosition)) {
 			if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.small){
-				AddToScore(memoryScoreBest);
+				AddToScore(memoryScoreBest, false);
 				return memoryScoreBest;
 			}
 			else if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.big){
-				AddToScore(memoryScoreMedium);
+				AddToScore(memoryScoreMedium, false);
 				return memoryScoreMedium;
 			}
 		}
 		else if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.none){
-			AddToScore(memoryScoreNoChoice);
+			AddToScore(memoryScoreNoChoice, false);
 			return memoryScoreNoChoice;
 		}
 		
@@ -119,20 +125,20 @@ public class ScoreController : MonoBehaviour {
 	}
 
 	public int CalculateTimeBonus(float secondsToCompleteTrial){
+		int timeBonusScore = 0;
 		if (secondsToCompleteTrial < timeBonusTimeMin) {
-			AddToScore(timeBonusBig);
-			return timeBonusBig;
+			timeBonusScore = timeBonusBig;
 		} 
 		else if (secondsToCompleteTrial < timeBonusTimeMed) {
-			AddToScore(timeBonusMed);
-			return timeBonusMed;
+			timeBonusScore = timeBonusMed;
 		} 
 		else if (secondsToCompleteTrial < timeBonusTimeMax) {
-			AddToScore(timeBonusSmall);
-			return timeBonusSmall;
+			timeBonusScore = timeBonusSmall;
 		} 
 
-		return 0;
+		AddToScore (timeBonusScore, true);
+
+		return timeBonusScore;
 
 	}
 

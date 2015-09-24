@@ -4,6 +4,11 @@ using UnityEngine.UI;
 
 public class TimeBonusUIController : MonoBehaviour {
 
+	public RectTransform bonusTextMoveToTransform;
+	Vector3 bonusTextOrigPosition;
+	Vector3 bonusTextOrigScale;
+
+
 	public Image timeLessThanPanel;
 	public Text timeLessThanText;
 	public Text timeBonusToAddText;
@@ -34,12 +39,17 @@ public class TimeBonusUIController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		bonusTextOrigScale = timeBonusToAddText.rectTransform.localScale;
+		bonusTextOrigPosition = timeBonusToAddText.rectTransform.position;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		int seconds = trialTimer.GetSeconds ();
+
+		if (seconds == 0) {
+			ResetBonusText();
+		}
 
 		SetText (seconds);
 
@@ -69,6 +79,37 @@ public class TimeBonusUIController : MonoBehaviour {
 				StartCoroutine (LerpTextColor (timeBonusToAddText, timeBonusPanelColorDefault, timeBonusPanelColor3, colorLerpTime));
 			}
 		}
+	}
+
+	public IEnumerator MoveBonusText (){
+		//TODO: fade out panel behind the text...
+
+		float timeToMove = 1.0f;
+
+		Vector3 startPos = timeBonusToAddText.rectTransform.position;
+		Vector3 endPos = bonusTextMoveToTransform.position;
+
+		float currTime = 0.0f;
+
+		while (currTime < timeToMove) {
+			timeBonusToAddText.rectTransform.position = Vector3.Lerp (startPos, endPos, currTime);
+			timeBonusToAddText.rectTransform.localScale = Vector3.Lerp (bonusTextOrigScale, Vector3.zero, currTime/timeToMove);
+
+			currTime  += Time.deltaTime;
+
+			yield return 0;
+		}
+		timeBonusToAddText.rectTransform.position = endPos;
+		timeBonusToAddText.rectTransform.localScale = Vector3.zero;
+		
+
+		yield return 0;
+	}
+
+	void ResetBonusText(){
+		//TODO: fade in panel behind the text...
+		timeBonusToAddText.rectTransform.position = bonusTextOrigPosition;
+		timeBonusToAddText.rectTransform.localScale = bonusTextOrigScale;
 	}
 
 	void SetText(int seconds){
