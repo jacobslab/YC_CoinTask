@@ -3,6 +3,8 @@ using System.Collections;
 
 public class SelectObjectUI : MonoBehaviour {
 
+	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } } 
+
 	public TextMesh ObjectNameTextMesh;
 	public TextMesh PressButtonTextMesh;
 	public ParticleSystem ObjectParticles;
@@ -37,6 +39,8 @@ public class SelectObjectUI : MonoBehaviour {
 		selectedObjectSpawnable.Scale (objectScaleMult);
 
 		ObjectNameTextMesh.text = selectedObjectSpawnable.GetName ();
+
+		UsefulFunctions.FaceObject( objectToSelect, exp.player.gameObject, false ); //make UI copy face the player
 
 		yield return new WaitForSeconds (Config_CoinTask.minObjselectionUITime);
 

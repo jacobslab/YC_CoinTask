@@ -40,4 +40,12 @@ public class UsefulFunctions {
 			SetLayerRecursively( child.gameObject, newLayer );
 		}
 	}
+
+	public static void FaceObject( GameObject obj, GameObject target, bool shouldUseYPos){
+		Vector3 lookAtPos = target.transform.position;
+		if (!shouldUseYPos) {
+			lookAtPos = new Vector3 (target.transform.position.x, obj.transform.position.y, target.transform.position.z);
+		}
+		obj.transform.LookAt(lookAtPos);
+	}
 }

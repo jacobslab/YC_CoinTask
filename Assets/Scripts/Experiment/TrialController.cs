@@ -332,6 +332,7 @@ public class TrialController : MonoBehaviour {
 			GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
 			specialObj.GetComponent<SpawnableObject>().TurnVisible(true);
 			specialObj.GetComponent<SpawnableObject>().Scale(2.0f);
+			UsefulFunctions.FaceObject( specialObj, exp.player.gameObject, false);
 			
 			//create an indicator for each special object
 			float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;

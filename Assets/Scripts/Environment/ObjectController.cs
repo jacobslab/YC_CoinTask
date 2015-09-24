@@ -15,7 +15,7 @@ public class ObjectController : MonoBehaviour {
 
 
 	//experiment singleton
-	Experiment_CoinTask experiment { get { return Experiment_CoinTask.Instance; } }
+	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
 	//object array & list
 	List<GameObject> gameObjectList_Spawnable;
@@ -131,7 +131,7 @@ public class ObjectController : MonoBehaviour {
 	}
 
 	//spawn random object at a specified location
-	public GameObject SpawnSpecialObjectXY (Vector3 spawnPosition){
+	public GameObject SpawnSpecialObject (Vector3 spawnPosition){
 		GameObject objToSpawn = ChooseRandomObject ();
 		if (objToSpawn != null) {
 
@@ -143,10 +143,9 @@ public class ObjectController : MonoBehaviour {
 			CurrentTrialSpecialObjects.Add(newObject);
 		
 
-			//make object face the player -- DOESN'T WORK FOR OBJECTS WITH INCONSISTENT Z-FACING TRANSFORMS.
+			//make object face the player -- MUST MAKE SURE OBJECT FACES Z-AXIS
 			//don't want object to tilt downward at the player -- use object's current y position
-			// Vector3 lookAtPos = new Vector3(experiment.player.transform.position.x , newObject.transform.position.y, experiment.player.transform.position.z);
-			//newObject.transform.LookAt(lookAtPos);
+			UsefulFunctions.FaceObject( newObject, exp.player.gameObject, false);
 
 			return newObject;
 		}
@@ -173,7 +172,7 @@ public class ObjectController : MonoBehaviour {
 
 			while( !objectsAreFarEnough && numTries < maxNumTries){
 				// generate a random position
-				randomEnvPosition = experiment.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.objectToWallBuffer );
+				randomEnvPosition = exp.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.objectToWallBuffer );
 				randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
 
 				//increment numTries

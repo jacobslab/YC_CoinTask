@@ -64,7 +64,7 @@ public class DefaultItem : MonoBehaviour {
 		
 		//TODO: spawn with default objects, show on collision???
 		
-		GameObject specialObject = Experiment_CoinTask.Instance.objectController.SpawnSpecialObjectXY(specialSpawnPos);
+		GameObject specialObject = Experiment_CoinTask.Instance.objectController.SpawnSpecialObject(specialSpawnPos);
 		
 		//set special object text
 		specialObjectText.text = specialObject.GetComponent<SpawnableObject>().GetName();
