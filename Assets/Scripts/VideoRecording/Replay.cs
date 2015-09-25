@@ -230,11 +230,13 @@ public class Replay : MonoBehaviour {
 								else{ //if the object is not in the scene, but is in the log file, we should instantiate it!
 										//we could also check for the SPAWNED keyword
 
+
 									//separate out the object name from a numeric ID
-									Regex numAlpha = new Regex("(?<Alpha>[a-zA-Z]*)(?<Numeric>[0-9]*)");
+									Regex numAlpha = new Regex("(?<Alpha>[a-zA-Z ]*)(?<Numeric>[0-9]*)");
 									Match match = numAlpha.Match(objName);
 									string objShortName = match.Groups["Alpha"].Value;
 									string objID = match.Groups["Numeric"].Value;
+
 
 									objInScene = exp.objectController.ChooseSpawnableObject(objShortName);
 									
