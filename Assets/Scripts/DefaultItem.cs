@@ -74,8 +74,6 @@ public class DefaultItem : MonoBehaviour {
 		
 		//set special object text
 		SetSpecialObjectText (specialObject.GetComponent<SpawnableObject> ().GetName ());
-		
-		//RotateTextTowardPlayer();
 
 		SpecialParticles.Stop(); //reset the particles just in case.
 		SpecialParticles.Play();
@@ -92,13 +90,6 @@ public class DefaultItem : MonoBehaviour {
 		specialObjectText.text = text;
 		GetComponent<TreasureChestLogTrack> ().LogTreasureLabel (specialObjectText.text);
 	}
-
-	/*void RotateTextTowardPlayer(){
-		GameObject player = Experiment_CoinTask.Instance.player.gameObject;
-		Vector3 lookAtPos = new Vector3 (player.transform.position.x, specialObjectText.transform.position.y, player.transform.position.z);
-		specialObjectText.transform.LookAt(lookAtPos);
-		specialObjectText.transform.RotateAround(transform.position, Vector3.up, 180.0f); //text faces opposite, so flip 180 degrees to actually face the player
-	}*/
 
 	//open. most likely a treasure chest. could also be something like a giftbox.
 	public IEnumerator Open(GameObject opener){
