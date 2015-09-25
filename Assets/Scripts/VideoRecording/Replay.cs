@@ -266,8 +266,17 @@ public class Replay : MonoBehaviour {
 									float rotY = float.Parse(splitLine[i+3]);
 									float rotZ = float.Parse(splitLine[i+4]);
 
-									objInScene.transform.rotation = Quaternion.Euler(rotX, rotY, rotZ); //TODO: TEST THIS.
+									objInScene.transform.rotation = Quaternion.Euler(rotX, rotY, rotZ);
 
+								}
+								else if(loggedProperty == "SCALE"){
+									
+									float scaleX = float.Parse(splitLine[i+2]);
+									float scaleY = float.Parse(splitLine[i+3]);
+									float scaleZ = float.Parse(splitLine[i+4]);
+									
+									objInScene.transform.localScale = new Vector3(scaleX, scaleY, scaleZ);
+									
 								}
 								else if(loggedProperty == "VISIBILITY"){
 									SpawnableObject spawnedObj = objInScene.GetComponent<SpawnableObject>();
