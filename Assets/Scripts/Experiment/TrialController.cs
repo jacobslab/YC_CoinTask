@@ -338,15 +338,16 @@ public class TrialController : MonoBehaviour {
 			float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;
 			Vector3 correctPosition = new Vector3 (specialObj.transform.position.x, indicatorHeight, specialObj.transform.position.z);
 			GameObject correctPositionIndicator = Instantiate( exp.environmentController.myPositionSelector.CorrectPositionIndicator, correctPosition, exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.rotation) as GameObject;
-			CorrectPositionIndicators.Add(correctPositionIndicator);
-			correctPositionIndicator.GetComponentInChildren<FacePosition>().TargetPositionTransform = exp.player.transform;
+			correctPositionIndicator.GetComponent<SpawnableObject>().SetNameID(i);
+			CorrectPositionIndicators.Add(correctPositionIndicator); 
 			
 			//create an indicator for each chosen position -- of the appropriate radius
 			//spawn the indicator at the height of the original indicator
 			exp.environmentController.myPositionSelector.EnableSelection (true); //turn on selector for spawning indicator
 			Vector3 chosenIndicatorPosition = new Vector3(chosenPosition.x, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.position.y, chosenPosition.z);
 			GameObject chosenPositionIndicator = Instantiate (exp.environmentController.myPositionSelector.PositionSelectorVisuals, chosenIndicatorPosition, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.rotation) as GameObject;
-			
+
+			chosenPositionIndicator.GetComponent<SpawnableObject>().SetNameID(i);
 			chosenPositionIndicator.GetComponent<VisibilityToggler>().TurnVisible(true);
 
 			//scale the chosen indicators appropriately
@@ -400,7 +401,7 @@ public class TrialController : MonoBehaviour {
 		LineRenderer positionConnector = correctPositionIndicator.GetComponent<LineRenderer>();
 		Vector3 correctPosition = correctPositionIndicator.transform.position;
 		if(chosenRadiusSize != EnvironmentPositionSelector.SelectionRadiusType.none){
-			float lineHeight = correctPosition.y;
+			/*float lineHeight = correctPosition.y;
 			if(chosenPosition.y > correctPosition.y){
 				lineHeight = chosenPosition.y;
 			}
@@ -409,12 +410,13 @@ public class TrialController : MonoBehaviour {
 			Vector3 correctLineHeightVec = new Vector3(correctPosition.x, lineHeight, correctPosition.z); //height amount is arbitrary...
 			
 			positionConnector.SetPosition(0, chosenLineHeightVec);
-			positionConnector.SetPosition(1, correctLineHeightVec);
+			positionConnector.SetPosition(1, correctLineHeightVec);*/
+
+			correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>().SetLineTarget(chosenPosition);
 			
 		}
 		else {
-			positionConnector.SetPosition(0, Vector3.zero);
-			positionConnector.SetPosition(1, Vector3.zero);
+			correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>().SetLineTarget(correctPosition);
 		}
 	}
 

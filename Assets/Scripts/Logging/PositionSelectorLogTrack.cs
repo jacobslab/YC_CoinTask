@@ -21,9 +21,9 @@ public class PositionSelectorLogTrack : LogTrack {
 	
 	public void Log ()
 	{
-		LogSelectorPosition();
-		LogSelectorSize ();
-		LogSelectorVisibility ();
+		//LogSelectorPosition();
+		//LogSelectorSize ();
+		//LogSelectorVisibility ();
 	}
 	
 	void LogSelectorPosition(){

@@ -55,7 +55,7 @@ public class ObjectLogTrack : LogTrack {
 	}
 
 	void LogScale(){
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "SCALE" + separator + transform.localScale.x + separator + transform.localScale.x + separator + transform.localScale.x);
+		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "SCALE" + separator + transform.localScale.x + separator + transform.localScale.y + separator + transform.localScale.z);
 	}
 	
 	void LogVisibility(){

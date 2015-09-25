@@ -429,6 +429,16 @@ public class Replay : MonoBehaviour {
 									
 								}
 
+								//LINE RENDERERS
+								else if (loggedProperty == "LINE_RENDERER_POSITION"){
+									int positionIndex = int.Parse(splitLine[i+2]);
+									float posX = float.Parse(splitLine[i+3]);
+									float posY = float.Parse(splitLine[i+4]);
+									float posZ = float.Parse(splitLine[i+5]);
+
+									objInScene.GetComponent<LineRenderer>().SetPosition(positionIndex, new Vector3(posX, posY, posZ));
+								}
+
 							}
 							else{
 								Debug.Log("REPLAY: No obj in scene named " + objName);

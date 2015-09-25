@@ -16,7 +16,12 @@ public class FacePosition : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (!ShouldFacePlayer) {
-			FaceThePosition (TargetPositionTransform);
+			if(TargetPositionTransform != null){
+				FaceThePosition (TargetPositionTransform);
+			}
+			else {
+				Debug.Log("Face position transform is null! NAME: " + gameObject.name);
+			}
 		}
 		else {
 			FaceThePosition (Experiment_CoinTask.Instance.player.transform);
