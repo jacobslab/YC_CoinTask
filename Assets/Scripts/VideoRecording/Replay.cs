@@ -462,6 +462,26 @@ public class Replay : MonoBehaviour {
 									objInScene.GetComponent<LineRenderer>().SetPosition(positionIndex, new Vector3(posX, posY, posZ));
 								}
 
+								//SHADOW CAST CHANGE
+								else if (loggedProperty == "SHADOW_SETTING"){
+									string shadowSetting = splitLine[i+2];
+									bool shouldSetShadows = true;
+									if(shadowSetting == "Off"){
+										shouldSetShadows = false;
+									}
+									//set the shadow setting
+									objInScene.GetComponent<SpawnableObject>().SetShadowCasting(shouldSetShadows);
+								}
+
+								//LAYER CHANGE
+								else if (loggedProperty == "LAYER_CHANGE"){
+									int newLayer = int.Parse(splitLine[i+2]);
+
+									//set the layer
+									UsefulFunctions.SetLayerRecursively(objInScene, newLayer);
+								}
+
+
 							}
 							else{
 								Debug.Log("REPLAY: No obj in scene named " + objName);

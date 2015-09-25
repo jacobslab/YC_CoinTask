@@ -2,8 +2,8 @@ using UnityEngine;
 using System.Collections;
 
 public class ObjectLogTrack : LogTrack {
-	SpawnableObject spawnedObj;
-	string nameToLog;
+	SpawnableObject spawnableObject;
+	string nameToLog { get { return GetNameToLog (); } }
 
 	bool firstLog = false; //should log spawned on the first log
 
@@ -13,16 +13,8 @@ public class ObjectLogTrack : LogTrack {
 	//Vector3 lastRotation;
 	//bool lastVisibility;
 
-	// Use this for initialization
-	void Start () {
-		//NOTE: be wary of logging objects with the same name. might be an issue for things like replaying the scene.
-		spawnedObj = GetComponent<SpawnableObject> ();
-		if (spawnedObj != null) {
-			nameToLog = spawnedObj.GetName (); //important, because otherwise the logged name will have "(Clone)" attached to it.
-		}
-		else {
-			nameToLog = gameObject.name;
-		}
+	void Awake(){
+		spawnableObject = GetComponent<SpawnableObject> ();
 	}
 
 	void Update(){
@@ -59,8 +51,8 @@ public class ObjectLogTrack : LogTrack {
 	}
 	
 	void LogVisibility(){
-		if (spawnedObj != null) {
-			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "VISIBILITY" + separator + spawnedObj.isVisible);
+		if (spawnableObject != null) {
+			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "VISIBILITY" + separator + spawnableObject.isVisible);
 		}
 	}
 
@@ -72,7 +64,7 @@ public class ObjectLogTrack : LogTrack {
 
 	public void LogLayerChange(){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "SHADOW_SETTING" + separator + gameObject.layer);
+			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "LAYER_CHANGE" + separator + gameObject.layer);
 		}
 	}
 
@@ -84,6 +76,14 @@ public class ObjectLogTrack : LogTrack {
 		if (ExperimentSettings_CoinTask.isLogging) {
 			LogDestroy();
 		}
+	}
+
+	string GetNameToLog(){
+		string name = gameObject.name;
+		if (spawnableObject) {
+			name = spawnableObject.GetName();
+		}
+		return name;
 	}
 
 }
