@@ -303,6 +303,7 @@ public class Replay : MonoBehaviour {
 								//UI - TEXT
 								else if(loggedProperty == "TEXT"){
 									Text text = objInScene.GetComponent<Text>();
+									text.text = "";
 									for(int j = i+2; j < splitLine.Length; j++){ //the text may have been split unnecessarily if there is a splitCharacter in the text
 										text.text += splitLine[j]; //add each piece of the split text
 										if(j+1 < splitLine.Length){
@@ -334,10 +335,18 @@ public class Replay : MonoBehaviour {
 								//TREASURE CHESTS
 								else if (loggedProperty == "TREASURE_OPEN"){
 									string openerName = splitLine[i+3];
-									TreasureChest tChest = objInScene.GetComponent<TreasureChest>();
+									DefaultItem tChest = objInScene.GetComponent<DefaultItem>();
 									if(tChest != null){
 										GameObject opener = objInScene.transform.Find( openerName ).gameObject;
-										StartCoroutine( objInScene.GetComponent<TreasureChest>().Open(opener) );
+										StartCoroutine( tChest.Open(opener) );
+									}
+								}
+
+								else if (loggedProperty == "TREASURE_LABEL"){
+									string labelText = splitLine[i+2];
+									DefaultItem tChest = objInScene.GetComponent<DefaultItem>();
+									if(tChest != null){
+										tChest.SetSpecialObjectText(labelText);
 									}
 								}
 
