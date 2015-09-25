@@ -3,16 +3,20 @@ using System.Collections;
 using System.Text.RegularExpressions;
 
 [RequireComponent (typeof (VisibilityToggler))]
+[RequireComponent (typeof (ObjectLogTrack))]
 public class SpawnableObject : MonoBehaviour {
 
 	VisibilityToggler myVisibilityToggler;
 	public bool isVisible { get { return myVisibilityToggler.GetVisibility (); } }
 
+	ObjectLogTrack myLogTrack;
+
 	Vector3 origScale;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		myVisibilityToggler = GetComponent<VisibilityToggler> ();
+		myLogTrack = GetComponent<ObjectLogTrack> ();
 		origScale = transform.localScale;
 	}
 	
@@ -58,6 +62,12 @@ public class SpawnableObject : MonoBehaviour {
 		transform.localScale = origScale;
 	}
 
+	public void SetLayer(string newLayer){
+		UsefulFunctions.SetLayerRecursively (gameObject, newLayer);
+
+		myLogTrack.LogLayerChange ();
+	}
+
 	public void SetShadowCasting(bool shouldCastShadows){
 		UnityEngine.Rendering.ShadowCastingMode shadowMode = UnityEngine.Rendering.ShadowCastingMode.On;
 		if (!shouldCastShadows) {
@@ -65,13 +75,15 @@ public class SpawnableObject : MonoBehaviour {
 		}
 
 		if(GetComponent<Renderer>() != null){
-			GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+			GetComponent<Renderer>().shadowCastingMode = shadowMode;
 		}
 		
 		Renderer[] renderers = GetComponentsInChildren<Renderer>();
 		for(int i = 0; i < renderers.Length; i++){
-			renderers[i].shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+			renderers[i].shadowCastingMode = shadowMode;
 		}
+
+		myLogTrack.LogShadowSettings (shadowMode);
 	}
 
 }

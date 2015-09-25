@@ -34,7 +34,7 @@ public class ObjectLogTrack : LogTrack {
 		}
 	}
 
-	public void Log ()
+	void Log ()
 	{
 		LogPosition();
 		LogRotation();
@@ -61,6 +61,18 @@ public class ObjectLogTrack : LogTrack {
 	void LogVisibility(){
 		if (spawnedObj != null) {
 			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "VISIBILITY" + separator + spawnedObj.isVisible);
+		}
+	}
+
+	public void LogShadowSettings(UnityEngine.Rendering.ShadowCastingMode shadowMode){
+		if (ExperimentSettings_CoinTask.isLogging) {
+			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "SHADOW_SETTING" + separator + shadowMode);
+		}
+	}
+
+	public void LogLayerChange(){
+		if (ExperimentSettings_CoinTask.isLogging) {
+			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "SHADOW_SETTING" + separator + gameObject.layer);
 		}
 	}
 

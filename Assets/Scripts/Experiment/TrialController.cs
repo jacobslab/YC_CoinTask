@@ -276,7 +276,7 @@ public class TrialController : MonoBehaviour {
 			GameObject specialObjUICopy = Instantiate (specialObj, Vector3.zero, specialObj.transform.rotation) as GameObject;
 
 			//set layer of object & children to PlayerUI
-			UsefulFunctions.SetLayerRecursively (specialObjUICopy, "PlayerUI");
+			specialObjUICopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI"); //this will ensure it gets logged too!
 
 			yield return StartCoroutine( mySelectObjectUI.Play(specialObjUICopy) );
 
@@ -401,16 +401,6 @@ public class TrialController : MonoBehaviour {
 		LineRenderer positionConnector = correctPositionIndicator.GetComponent<LineRenderer>();
 		Vector3 correctPosition = correctPositionIndicator.transform.position;
 		if(chosenRadiusSize != EnvironmentPositionSelector.SelectionRadiusType.none){
-			/*float lineHeight = correctPosition.y;
-			if(chosenPosition.y > correctPosition.y){
-				lineHeight = chosenPosition.y;
-			}
-			lineHeight += 0.3f; //0.3f is arbitrary height
-			Vector3 chosenLineHeightVec = new Vector3(chosenPosition.x, lineHeight, chosenPosition.z); //height amount is arbitrary...
-			Vector3 correctLineHeightVec = new Vector3(correctPosition.x, lineHeight, correctPosition.z); //height amount is arbitrary...
-			
-			positionConnector.SetPosition(0, chosenLineHeightVec);
-			positionConnector.SetPosition(1, correctLineHeightVec);*/
 
 			correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>().SetLineTarget(chosenPosition);
 			

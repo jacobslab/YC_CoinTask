@@ -311,7 +311,30 @@ public class Replay : MonoBehaviour {
 									GameObject.Destroy(objInScene);
 								}
 
-								//UI - TEXT
+								//TEXT_MESH TEXT
+								else if(loggedProperty == "TEXT_MESH"){
+									TextMesh text = objInScene.GetComponent<TextMesh>();
+									text.text = "";
+									for(int j = i+2; j < splitLine.Length; j++){ //the text may have been split unnecessarily if there is a splitCharacter in the text
+										text.text += splitLine[j]; //add each piece of the split text
+										if(j+1 < splitLine.Length){
+											text.text += Logger_Threading.LogTextSeparator; //add back the split characters into the text!
+										}
+									}
+									
+									text.text = text.text.Replace("_NEWLINE_", "\n");
+								}
+								else if(loggedProperty == "TEXT_MESH_COLOR"){
+									TextMesh text = objInScene.GetComponent<TextMesh>();
+									float r = float.Parse(splitLine[i+2]);
+									float g = float.Parse(splitLine[i+3]);
+									float b = float.Parse(splitLine[i+4]);
+									float a = float.Parse(splitLine[i+5]);
+									text.color = new Color(r, g, b, a);
+								}
+
+
+								//UI - TEXT ...sadly I know this is repetitive :(
 								else if(loggedProperty == "TEXT"){
 									Text text = objInScene.GetComponent<Text>();
 									text.text = "";

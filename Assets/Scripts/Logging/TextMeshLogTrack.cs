@@ -3,16 +3,18 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
 
-public class TextLogTrack : LogTrack {
+//THIS CLASS IS SO CLOSE TO A DIRECT COPY OF TEXTLOGTRACK.CS. 
+//...this bothers me, but alas...
+public class TextMeshLogTrack : LogTrack {
 
-	Text myText;
+	TextMesh myText;
 	string currentText = "";
 
 	bool firstLog = false; //should make an initial log
 
 	// Use this for initialization
 	void Awake () {
-		myText = GetComponent<Text> ();
+		myText = GetComponent<TextMesh> ();
 	}
 	
 	// Update is called once per frame
@@ -35,7 +37,7 @@ public class TextLogTrack : LogTrack {
 			textToLog = textToLog.Replace (System.Environment.NewLine, "_NEWLINE_");
 		}
 
-		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "TEXT" + separator + textToLog );
-		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "TEXT_COLOR" + separator + myText.color.r + separator + myText.color.g + separator + myText.color.b + separator + myText.color.a);
+		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "TEXT_MESH" + separator + textToLog );
+		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "TEXT_MESH_COLOR" + separator + myText.color.r + separator + myText.color.g + separator + myText.color.b + separator + myText.color.a);
 	}
 }
