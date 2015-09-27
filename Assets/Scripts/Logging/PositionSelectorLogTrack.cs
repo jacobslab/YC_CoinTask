@@ -34,7 +34,7 @@ public class PositionSelectorLogTrack : LogTrack {
 		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "SELECTOR_VISIBILITY" + separator + selectorVisuals.GetComponent<VisibilityToggler>().GetVisibility());
 	}
 
-	void LogSelectorSize(){
+	public void LogSelectorSize(){
 		string selectorSize = "NONE";
 		float selectorDiameter = 0.0f;
 		if (envPosSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.big) {

@@ -493,6 +493,20 @@ public class Replay : MonoBehaviour {
 									objInScene.GetComponent<LineRenderer>().SetPosition(positionIndex, new Vector3(posX, posY, posZ));
 								}
 
+								//POSITION SELECTOR SIZE
+								else if (loggedProperty == "SELECTOR_SIZE"){
+									string selectionSize = splitLine[i+2];
+									EnvironmentPositionSelector.SelectionRadiusType selectionSizeType = EnvironmentPositionSelector.SelectionRadiusType.none;
+									if(selectionSize == "SMALL"){
+										selectionSizeType = EnvironmentPositionSelector.SelectionRadiusType.small;
+									}
+									else if(selectionSize == "BIG"){
+										selectionSizeType = EnvironmentPositionSelector.SelectionRadiusType.big;
+									}
+
+									objInScene.GetComponent<EnvironmentPositionSelector>().SetRadiusSize(selectionSizeType);
+								}
+
 							}
 							else{
 								Debug.Log("REPLAY: No obj in scene named " + objName);

@@ -42,6 +42,14 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		}
 	}
 
+	/*IEnumerator ChoosePosition(){
+		//change position selector visual colors!
+		//TODO: make a script for the visuals and add the "change color" function to it?
+		for (int i = 0; i < PositionSelectorVisuals.transform.childCount; i++){
+
+		}
+	}*/
+
 	void GetMovementInput(){
 		float verticalAxisInput = Input.GetAxis ("Vertical");
 		float horizontalAxisInput = Input.GetAxis ("Horizontal");
@@ -128,6 +136,8 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		else if (currentRadiusType == SelectionRadiusType.small){ //small --> none
 			SetRadiusSizeNone();
 		}
+
+		logTrack.LogSelectorSize();
 
 	}
 
