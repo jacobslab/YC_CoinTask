@@ -280,6 +280,18 @@ public class Replay : MonoBehaviour {
 									objInScene.transform.localScale = new Vector3(scaleX, scaleY, scaleZ);
 									
 								}
+
+								else if(loggedProperty == "ENABLED_CHILDREN"){
+									string shouldEnableString = splitLine[i+2];
+									bool shouldEnable = true;
+									if(shouldEnableString == "False"){
+										shouldEnable = false;
+									}
+
+									UsefulFunctions.EnableChildren( objInScene.transform, shouldEnable );
+									
+								}
+
 								else if(loggedProperty == "VISIBILITY"){
 									SpawnableObject spawnedObj = objInScene.GetComponent<SpawnableObject>();
 									if(spawnedObj != null){
@@ -292,6 +304,25 @@ public class Replay : MonoBehaviour {
 									else{
 										Debug.Log("no spawnable object!");
 									}
+								}
+
+								//SHADOW CAST CHANGE
+								else if (loggedProperty == "SHADOW_SETTING"){
+									string shadowSetting = splitLine[i+2];
+									bool shouldSetShadows = true;
+									if(shadowSetting == "Off"){
+										shouldSetShadows = false;
+									}
+									//set the shadow setting
+									objInScene.GetComponent<SpawnableObject>().SetShadowCasting(shouldSetShadows);
+								}
+								
+								//LAYER CHANGE
+								else if (loggedProperty == "LAYER_CHANGE"){
+									int newLayer = int.Parse(splitLine[i+2]);
+									
+									//set the layer
+									UsefulFunctions.SetLayerRecursively(objInScene, newLayer);
 								}
 
 								else if(loggedProperty == "CAMERA_ENABLED"){
@@ -461,26 +492,6 @@ public class Replay : MonoBehaviour {
 
 									objInScene.GetComponent<LineRenderer>().SetPosition(positionIndex, new Vector3(posX, posY, posZ));
 								}
-
-								//SHADOW CAST CHANGE
-								else if (loggedProperty == "SHADOW_SETTING"){
-									string shadowSetting = splitLine[i+2];
-									bool shouldSetShadows = true;
-									if(shadowSetting == "Off"){
-										shouldSetShadows = false;
-									}
-									//set the shadow setting
-									objInScene.GetComponent<SpawnableObject>().SetShadowCasting(shouldSetShadows);
-								}
-
-								//LAYER CHANGE
-								else if (loggedProperty == "LAYER_CHANGE"){
-									int newLayer = int.Parse(splitLine[i+2]);
-
-									//set the layer
-									UsefulFunctions.SetLayerRecursively(objInScene, newLayer);
-								}
-
 
 							}
 							else{

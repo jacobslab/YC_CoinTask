@@ -41,6 +41,13 @@ public class UsefulFunctions {
 		}
 	}
 
+	public static void EnableChildren(Transform parentTransform, bool shouldEnable){
+		//enable all children
+		for (int i = 0; i < parentTransform.childCount; ++i) {
+			parentTransform.GetChild (i).gameObject.SetActive (shouldEnable);
+		}
+	}
+
 	public static void FaceObject( GameObject obj, GameObject target, bool shouldUseYPos){
 		Vector3 lookAtPos = target.transform.position;
 		if (!shouldUseYPos) {

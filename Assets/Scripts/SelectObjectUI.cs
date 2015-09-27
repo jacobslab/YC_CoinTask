@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SelectObjectUI : MonoBehaviour {
+public class SelectObjectUI : LogTrack {
 
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } } 
 
@@ -57,10 +57,9 @@ public class SelectObjectUI : MonoBehaviour {
 	}
 
 	void Enable(bool shouldEnable){
-		//enable all children
-		for (int i = 0; i < transform.childCount; ++i) {
-			transform.GetChild (i).gameObject.SetActive (shouldEnable);
-		}
+		GetComponent<EnableChildrenLogTrack>().LogChildrenEnabled(shouldEnable);
+
+		UsefulFunctions.EnableChildren( transform, shouldEnable );
 	}
 
 }
