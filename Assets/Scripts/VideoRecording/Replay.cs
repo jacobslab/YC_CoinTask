@@ -214,15 +214,29 @@ public class Replay : MonoBehaviour {
 						if(objName != "Mouse" && objName != "Keyboard" && objName != "Trial Info"){
 
 							GameObject objInScene;
-
+								
 							if(objsInSceneDict.ContainsKey(objName)){
 								
 								objInScene = objsInSceneDict[objName];
+
+								if(objInScene == null){
+									//Object got destroyed before it could be removed from the list.
+									//This can happen in cases like an auto-destructing particle emitter.
+									//...So we should remove it from the objsInSceneDict.
+									if(splitLine[i+1] == "DESTROYED"){
+										objsInSceneDict.Remove(objName);
+									}
+								}
 
 							}
 							else{
 
 								objInScene = GameObject.Find(objName);
+
+								//DEBUG.
+								if(objName == "ExplosionParticles"){
+									int a = 0;
+								}
 
 								if(objInScene != null){
 									objsInSceneDict.Add(objName, objInScene);
@@ -247,6 +261,7 @@ public class Replay : MonoBehaviour {
 										objInScene.GetComponent<SpawnableObject>().IDstring = objID;
 										objsInSceneDict.Add(objName, objInScene);
 									}
+
 								}
 
 							}
@@ -338,6 +353,10 @@ public class Replay : MonoBehaviour {
 									}
 								}
 								else if(loggedProperty == "DESTROYED"){
+									//DEBUG.
+									if(objName == "ExplosionParticles"){
+										int a = 0;
+									}
 									Debug.Log("Destroying object! " + objInScene.name);
 									objsInSceneDict.Remove( objName );
 									GameObject.Destroy(objInScene);
