@@ -9,7 +9,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	public GameObject PositionSelector;
 	public GameObject PositionSelectorVisuals;
 	public GameObject CorrectPositionIndicator;
-	public ArcGenerator myArc;
 	public TextMesh RadiusPointText;
 
 	public PositionSelectorLogTrack logTrack;
@@ -37,7 +36,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 			if(currentRadiusType != SelectionRadiusType.none){
 				GetMovementInput();
-				//myArc.AdjustArc( exp.player.transform.position - Vector3.up*exp.player.controls.startPositionTransform1.position.y, PositionSelector.transform.position ); //move it down a bit...
 			}
 		}
 	}
@@ -158,7 +156,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		float radiusSize = 0.0f;
 
 		PositionSelectorVisuals.GetComponent<VisibilityToggler>().TurnVisible(true);
-		myArc.GetComponent<VisibilityToggler>().TurnVisible(true);
 		radiusSize = Config_CoinTask.bigSelectionSize;
 		currentRadiusType = SelectionRadiusType.big;
 		SetRadiusSize (radiusSize);
@@ -171,7 +168,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		float radiusSize = 0.0f;
 
 		PositionSelectorVisuals.GetComponent<VisibilityToggler>().TurnVisible(true);
-		myArc.GetComponent<VisibilityToggler>().TurnVisible(true);
 		radiusSize = Config_CoinTask.smallSelectionSize;
 		currentRadiusType = SelectionRadiusType.small;
 		SetRadiusSize (radiusSize);
@@ -182,7 +178,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	void SetRadiusSizeNone(){
 
 		PositionSelectorVisuals.GetComponent<VisibilityToggler>().TurnVisible(false);
-		myArc.GetComponent<VisibilityToggler>().TurnVisible(false);
 		currentRadiusType = SelectionRadiusType.none;
 		
 		SetRadiusText();
@@ -235,7 +230,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	void EnableSelectionIndicator(bool shouldEnable){
 		if (currentRadiusType != SelectionRadiusType.none) {
 			PositionSelectorVisuals.GetComponent<VisibilityToggler> ().TurnVisible (shouldEnable);
-			myArc.GetComponent<VisibilityToggler> ().TurnVisible (shouldEnable);
 		}
 		SetRadiusText ();
 	}
