@@ -13,6 +13,8 @@ public class SpawnableObject : MonoBehaviour {
 
 	Vector3 origScale;
 
+	public string IDstring = ""; //will get set in replay. TODO: don't really want this to be "settable" from the outside world... try to rethink how to structure this.
+
 	// Use this for initialization
 	void Awake () {
 		myVisibilityToggler = GetComponent<VisibilityToggler> ();
@@ -41,17 +43,29 @@ public class SpawnableObject : MonoBehaviour {
 		return name;
 	}
 
+	public string GetNameNoID(){
+		//separate out the object name from a numeric ID
+		Regex numAlpha = new Regex("(?<Alpha>[a-zA-Z ]*)(?<Numeric>[0-9]*)");
+		Match match = numAlpha.Match(GetName());
+		string objShortName = match.Groups["Alpha"].Value;
+		//string objID = match.Groups["Numeric"].Value;
+
+		return objShortName;
+	}
+
 	//should be set when spawned by the ObjectController
 	public void SetNameID(int ID){
 		if (ID < 10) {
-			gameObject.name = GetName() + "00" + ID; 
+			IDstring = "00" + ID; 
 		}
 		else if(ID < 100) {
-			gameObject.name = GetName() + "0" + ID; 
+			IDstring = "0" + ID; 
 		}
 		else if(ID < 1000) {
-			gameObject.name = GetName() + ID; 
+			IDstring = ID.ToString(); 
 		}
+
+		gameObject.name = GetName () + IDstring;
 	}
 
 	public void Scale(float scaleMult){

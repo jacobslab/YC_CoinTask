@@ -8,6 +8,8 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 	Vector3 startPos { get { return GetStartPos(); } }
 	LineRendererLogTrack lineLogTrack;
 
+	TextMesh pointsScoredText;
+
 	void Awake () {
 		toTargetLine = GetComponent<LineRenderer> ();
 		lineLogTrack = GetComponent<LineRendererLogTrack> ();
@@ -19,6 +21,11 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 		//log start pos as the beginning and end of the line.
 		lineLogTrack.LogPoint (startPos, 0);
 		lineLogTrack.LogPoint (startPos, 1);
+	}
+
+	void Start(){
+		pointsScoredText = GetComponentInChildren<TextMesh> ();
+		pointsScoredText.name += GetComponent<SpawnableObject> ().IDstring; //if it has an ID, it can log itself and be replayed without issue! ...maybe.
 	}
 	
 	// Update is called once per frame

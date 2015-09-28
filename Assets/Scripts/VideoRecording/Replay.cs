@@ -230,7 +230,7 @@ public class Replay : MonoBehaviour {
 								else{ //if the object is not in the scene, but is in the log file, we should instantiate it!
 										//we could also check for the SPAWNED keyword
 
-
+									//TODO: use new functions in spawnable object?
 									//separate out the object name from a numeric ID
 									Regex numAlpha = new Regex("(?<Alpha>[a-zA-Z ]*)(?<Numeric>[0-9]*)");
 									Match match = numAlpha.Match(objName);
@@ -244,6 +244,7 @@ public class Replay : MonoBehaviour {
 										objInScene = exp.objectController.SpawnObject(objInScene, Vector3.zero); //position and rotation should be set next...
 										objInScene.name = objInScene.GetComponent<SpawnableObject>().GetName();
 										objInScene.name += objID;
+										objInScene.GetComponent<SpawnableObject>().IDstring = objID;
 										objsInSceneDict.Add(objName, objInScene);
 									}
 								}

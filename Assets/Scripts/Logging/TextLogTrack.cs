@@ -17,6 +17,9 @@ public class TextLogTrack : LogTrack {
 	
 	// Update is called once per frame
 	void Update () {
+		if (myText == null) {
+			Debug.Log("Text is null! Did you mean to add a TextMeshLogTrack instead?");
+		}
 		if(ExperimentSettings_CoinTask.isLogging && ( currentText != myText.text || !firstLog) ){ //if the text has changed, log it!
 			firstLog = true;
 			LogText ();
