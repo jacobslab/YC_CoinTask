@@ -47,14 +47,14 @@ public class TrialController : MonoBehaviour {
 			//TODO: change back to practice difficulty once a difficulty-selection system is decided on.
 			//Trial one = new Trial(false, Trial.practiceDifficulty);		//non-stim for practice
 			//Trial two = new Trial(false, Trial.practiceDifficulty);		//non-stim for practice
-			Trial one = new Trial(false, ExperimentSettings_CoinTask.difficultySetting);		//non-stim for practice
-			Trial two = new Trial(false, ExperimentSettings_CoinTask.difficultySetting);		//non-stim for practice
+			Trial one = new Trial(ExperimentSettings_CoinTask.difficultySetting);		//non-stim for practice
+			Trial two = new Trial(ExperimentSettings_CoinTask.difficultySetting);		//non-stim for practice
 			practiceBlock = new Block(one, two);
 		}
 
 		for(int i = 0; i < Config_CoinTask.numBlocks/2; i++){
-			Trial one = new Trial(true, ExperimentSettings_CoinTask.difficultySetting);			//stim
-			Trial two = new Trial(false, ExperimentSettings_CoinTask.difficultySetting);			//non-stim
+			Trial one = new Trial(ExperimentSettings_CoinTask.difficultySetting);			//stim
+			Trial two = new Trial(ExperimentSettings_CoinTask.difficultySetting);			//non-stim
 			Block block = new Block(one, two);
 
 			Trial counterOne = one.GetCounterSelf();//non-stim
@@ -192,16 +192,14 @@ public class TrialController : MonoBehaviour {
 		currentTrial = trial;
 
 		if (isPracticeTrial) {
-			GetComponent<TrialLogTrack> ().Log (-1, currentTrial.isStim);
+			GetComponent<TrialLogTrack> ().Log (-1, currentTrial.DefaultObjectLocationsXZ.Count, currentTrial.SpecialObjectLocationsXZ.Count, ExperimentSettings_CoinTask.isOneByOneReveal);
 			Debug.Log("Logged practice trial.");
 		} 
 		else {
-			GetComponent<TrialLogTrack> ().Log (numRealTrials, currentTrial.isStim);
+			GetComponent<TrialLogTrack> ().Log (numRealTrials, currentTrial.DefaultObjectLocationsXZ.Count, currentTrial.SpecialObjectLocationsXZ.Count, ExperimentSettings_CoinTask.isOneByOneReveal);
 			numRealTrials++;
 			Debug.Log("Logged trial #: " + numRealTrials);
 		}
-
-		Debug.Log ("IS STIM: " + currentTrial.isStim);
 
 		//move player to first location & rotation
 		yield return StartCoroutine( exp.player.controls.SmoothMoveTo(currentTrial.avatarStartPos, currentTrial.avatarStartRot, PlayerControls.toStartTime) );

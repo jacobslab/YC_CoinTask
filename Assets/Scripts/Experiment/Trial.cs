@@ -6,9 +6,6 @@ using System.Collections.Generic;
 public class Trial {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
-
-	public bool isStim = false;
-
 	public Vector3 avatarStartPos;
 	public Quaternion avatarStartRot;
 	public Vector3 avatarTowerPos;
@@ -32,8 +29,7 @@ public class Trial {
 		SpecialObjectLocationsXZ = new List<Vector2> ();
 	}
 
-	public Trial(bool shouldBeStim, DifficultySetting difficulty){
-		isStim = shouldBeStim;
+	public Trial(DifficultySetting difficulty){
 
 		int fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
 		if (fiftyFiftyChance == 0) {
@@ -107,8 +103,6 @@ public class Trial {
 	
 	public Trial GetCounterSelf(){
 		Trial counterTrial = new Trial ();
-
-		counterTrial.isStim = !isStim;
 
 
 		//counter the avatar
