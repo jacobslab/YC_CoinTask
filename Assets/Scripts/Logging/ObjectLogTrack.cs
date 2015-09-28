@@ -9,9 +9,10 @@ public class ObjectLogTrack : LogTrack {
 
 	//if we want to only log objects when something has changed... should start with keep track of last positions/rotations.
 	//or I could set up some sort of a delegate system.
-	//Vector3 lastPosition;
-	//Vector3 lastRotation;
-	//bool lastVisibility;
+	Vector3 lastPosition;
+	Quaternion lastRotation;
+	Vector3 lastScale;
+	bool lastVisibility;
 
 	void Awake(){
 		spawnableObject = GetComponent<SpawnableObject> ();
@@ -19,19 +20,37 @@ public class ObjectLogTrack : LogTrack {
 
 	void Update(){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			if(!firstLog){
-				firstLog = true;
-			}
 			Log ();
 		}
 	}
 
 	void Log ()
 	{
-		LogPosition();
-		LogRotation();
-		LogScale ();
-		LogVisibility();
+		//the following is set up to log properties only when they change, or on an initial log.
+
+		if (lastPosition != transform.position || !firstLog) {
+			lastPosition = transform.position;
+			LogPosition ();
+		}
+		if (lastRotation != transform.rotation || !firstLog) {
+			lastRotation = transform.rotation;
+			LogRotation ();
+		}
+		if (lastScale != transform.localScale || !firstLog) {
+			lastScale = transform.localScale;
+			LogScale ();
+		}
+		if (spawnableObject != null) {
+			if (lastVisibility != spawnableObject.isVisible || !firstLog) {
+				lastVisibility = spawnableObject.isVisible;
+				LogVisibility ();
+			}
+		}
+
+		if(!firstLog){
+			LogSpawned();
+			firstLog = true;
+		}
 	}
 
 	void LogSpawned(){
@@ -51,9 +70,7 @@ public class ObjectLogTrack : LogTrack {
 	}
 	
 	void LogVisibility(){
-		if (spawnableObject != null) {
-			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "VISIBILITY" + separator + spawnableObject.isVisible);
-		}
+		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "VISIBILITY" + separator + spawnableObject.isVisible);
 	}
 
 	public void LogShadowSettings(UnityEngine.Rendering.ShadowCastingMode shadowMode){

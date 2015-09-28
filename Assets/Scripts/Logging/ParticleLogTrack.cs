@@ -24,6 +24,8 @@ public class ParticleLogTrack : LogTrack {
 	}
 
 	void LogParticles(){
+		//will only log when the particle system or emitter goes from playing to not playing, or vice versa
+
 		if (particleSystem != null) {
 			if (!isSystemPlaying && particleSystem.isPlaying) {
 				isSystemPlaying = true;

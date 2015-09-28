@@ -21,6 +21,8 @@ public class AudioLogTrack : LogTrack {
 	}
 
 	void LogAudio(){
+		//will only log when it changes from playing to not playing, or vice versa
+
 		if (!isAudioPlaying && audioSource.isPlaying) {
 			isAudioPlaying = true;
 			LogAudioPlaying (audioSource.clip, audioSource.transform.position);
