@@ -107,13 +107,20 @@ public class DefaultItem : MonoBehaviour {
 			closePivotName = pivotA.name;
 			angleToOpen = -angleToOpen;
 		}
-		
-		GetComponent<TreasureChestLogTrack> ().LogOpening (closePivotName); 
+
+		GetComponent<TreasureChestLogTrack> ().LogOpening (closePivotName, GetIsSpecial()); 
 		
 		Quaternion origRotation = top.rotation;
 		top.RotateAround(pivotPos, -transform.right, angleToOpen); //rotate to get the desired rotation
 		Quaternion desiredRotation = top.transform.rotation;
 		
 		yield return 0;
+	}
+
+	bool GetIsSpecial(){
+		if (gameObject.tag == "DefaultSpecialItem") {
+			return true;
+		}
+		return false;
 	}
 }

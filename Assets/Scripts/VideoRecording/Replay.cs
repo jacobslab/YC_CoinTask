@@ -437,7 +437,9 @@ public class Replay : MonoBehaviour {
 
 								//TREASURE CHESTS
 								else if (loggedProperty == "TREASURE_OPEN"){
-									string openerName = splitLine[i+3];
+									//i+3 -- IS_SPECIAL
+									//i+5 -- OPENER PIVOT
+									string openerName = splitLine[i+5];
 									DefaultItem tChest = objInScene.GetComponent<DefaultItem>();
 									if(tChest != null){
 										GameObject opener = objInScene.transform.Find( openerName ).gameObject;
