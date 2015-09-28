@@ -7,6 +7,7 @@ public class TextLogTrack : LogTrack {
 
 	Text myText;
 	string currentText = "";
+	Color currentColor;
 
 	bool firstLog = false; //should make an initial log
 
@@ -20,9 +21,10 @@ public class TextLogTrack : LogTrack {
 		if (myText == null) {
 			Debug.Log("Text is null! Did you mean to add a TextMeshLogTrack instead?");
 		}
-		if(ExperimentSettings_CoinTask.isLogging && ( currentText != myText.text || !firstLog) ){ //if the text has changed, log it!
+		if(ExperimentSettings_CoinTask.isLogging && ( currentText != myText.text || currentColor != myText.color || !firstLog) ){ //if the text has changed, log it!
 			firstLog = true;
 			LogText ();
+			LogColor();
 		}
 	}
 
@@ -39,6 +41,10 @@ public class TextLogTrack : LogTrack {
 		}
 
 		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "TEXT" + separator + textToLog );
+	}
+
+	void LogColor(){
+		currentColor = myText.color;
 		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "TEXT_COLOR" + separator + myText.color.r + separator + myText.color.g + separator + myText.color.b + separator + myText.color.a);
 	}
 }

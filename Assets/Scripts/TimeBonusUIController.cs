@@ -53,16 +53,22 @@ public class TimeBonusUIController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		int seconds = trialTimer.GetSeconds ();
 
+		if (!ExperimentSettings_CoinTask.isReplay) {
+			UpdateTimeState();
+		}
+	}
+
+	void UpdateTimeState(){
+		int seconds = trialTimer.GetSeconds ();
+		
 		if (seconds == 0) {
 			ResetBonusText();
 		}
-
+		
 		SetText (seconds);
-
+		
 		if (seconds < minTimeBonusTime) {
-			//best color
 			if (timeState != TimeState.minTime) {
 				timeState = TimeState.minTime;
 				StartCoroutine (LerpPanelColor (timeLessThanPanel, timeLessThanPanel.color, panelColor1, colorLerpTime));
@@ -71,20 +77,20 @@ public class TimeBonusUIController : MonoBehaviour {
 		} else if (seconds < medTimeBonusTime) {
 			if (timeState != TimeState.medTime) {
 				timeState = TimeState.medTime;
-				StartCoroutine (LerpPanelColor (timeLessThanPanel, panelColor1, panelColor2, colorLerpTime));
-				StartCoroutine (LerpTextColor (timeBonusText, timeBonusTextColor1, timeBonusTextColor2, colorLerpTime));
+				StartCoroutine (LerpPanelColor (timeLessThanPanel, timeLessThanPanel.color, panelColor2, colorLerpTime));
+				StartCoroutine (LerpTextColor (timeBonusText, timeBonusText.color, timeBonusTextColor2, colorLerpTime));
 			}
 		} else if (seconds < maxTimeBonusTime) {
 			if (timeState != TimeState.maxTime) {
 				timeState = TimeState.maxTime;
-				StartCoroutine (LerpPanelColor (timeLessThanPanel, panelColor2, panelColor3, colorLerpTime));
-				StartCoroutine (LerpTextColor (timeBonusText, timeBonusTextColor2, timeBonusTextColor3, colorLerpTime));
+				StartCoroutine (LerpPanelColor (timeLessThanPanel, timeLessThanPanel.color, panelColor3, colorLerpTime));
+				StartCoroutine (LerpTextColor (timeBonusText, timeBonusText.color, timeBonusTextColor3, colorLerpTime));
 			}
 		} else if (seconds >= maxTimeBonusTime) {
 			if (timeState != TimeState.overTime) {
 				timeState = TimeState.overTime;
-				StartCoroutine (LerpPanelColor (timeLessThanPanel, panelColor3, panelColor0, colorLerpTime));
-				StartCoroutine (LerpTextColor (timeBonusText, timeBonusTextColor3, timeBonusTextColorDefault, colorLerpTime));
+				StartCoroutine (LerpPanelColor (timeLessThanPanel, timeLessThanPanel.color, panelColor0, colorLerpTime));
+				StartCoroutine (LerpTextColor (timeBonusText, timeBonusText.color, timeBonusTextColorDefault, colorLerpTime));
 			}
 		}
 	}
@@ -166,9 +172,6 @@ public class TimeBonusUIController : MonoBehaviour {
 
 	IEnumerator LerpTextColor(Text text, Color fromColor, Color toColor, float timeToLerp){
 
-		Color opaqueUpperBoundColor = new Color (fromColor.r, fromColor.g, fromColor.b, fromColor.a);
-		Color opaqueLowerBoundColor = new Color (toColor.r, toColor.g, toColor.b, toColor.a);
-
 		float currentTime = 0.0f;
 		float currentTimePercent = 0.0f;
 		
@@ -176,7 +179,7 @@ public class TimeBonusUIController : MonoBehaviour {
 			currentTime += Time.deltaTime;
 			currentTimePercent = currentTime / timeToLerp;
 			
-			text.color = Color.Lerp (opaqueLowerBoundColor, opaqueUpperBoundColor, currentTimePercent);
+			text.color = Color.Lerp (fromColor, toColor, currentTimePercent);
 			yield return 0;
 		}
 	}

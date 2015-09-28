@@ -398,6 +398,24 @@ public class Replay : MonoBehaviour {
 									image.color = new Color(r, g, b, a);
 								}
 
+								//UI - RECT TRANSFORM PROPERTIES
+								else if (loggedProperty == "UI_POSITION"){
+									float posX = float.Parse(splitLine[i+2]);
+									float posY = float.Parse(splitLine[i+3]);
+									float posZ = float.Parse(splitLine[i+4]);
+
+									objInScene.GetComponent<RectTransform>().position = new Vector3 (posX, posY, posZ);
+								}
+
+								else if (loggedProperty == "UI_SCALE"){
+									
+									float scaleX = float.Parse(splitLine[i+2]);
+									float scaleY = float.Parse(splitLine[i+3]);
+									float scaleZ = float.Parse(splitLine[i+4]);
+
+									objInScene.GetComponent<RectTransform>().localScale = new Vector3 (scaleX, scaleY, scaleZ);
+								}
+
 								//TREASURE CHESTS
 								else if (loggedProperty == "TREASURE_OPEN"){
 									string openerName = splitLine[i+3];
