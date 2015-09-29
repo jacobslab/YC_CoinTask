@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.IO;
 
 public class Experiment_CoinTask : MonoBehaviour {
 
@@ -70,18 +71,38 @@ public class Experiment_CoinTask : MonoBehaviour {
 		_instance = this;
 
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLogfile = "TextFiles/" + ExperimentSettings_CoinTask.currentSubject.name + "Log.txt";
-			eegLogfile = "TextFiles/" + ExperimentSettings_CoinTask.currentSubject.name + "EEGLog.txt";
-
-			subjectLog.fileName = subjectLogfile;
-			eegLog.fileName = eegLogfile;
-
+			InitLogging();
 		}
 		else if(ExperimentSettings_CoinTask.isReplay) {
 			instructionsController.TurnOffInstructions();
 			cameraController.SetInGame(); //don't use oculus for replay mode
 		}
 
+	}
+
+	void InitLogging(){
+		subjectLogfile = "TextFiles/" + ExperimentSettings_CoinTask.currentSubject.name + "Log";
+		eegLogfile = "TextFiles/" + ExperimentSettings_CoinTask.currentSubject.name + "EEGLog";
+		
+		int logFileID = 0;
+		string logFileIDString = "000";
+
+		while(File.Exists(subjectLog.fileName) || logFileID == 0){
+			logFileID++;
+			//TODO: move this function somewhere else...?
+			if(logFileID < 10){
+				logFileIDString = "00" + logFileID;
+			}
+			else if (logFileID < 100){
+				logFileIDString = "0" + logFileID;
+			}
+			else{
+				logFileIDString = logFileID.ToString();
+			}
+
+			subjectLog.fileName = subjectLogfile + "_" + logFileIDString + ".txt";
+			eegLog.fileName = eegLogfile + "_" + logFileIDString + ".txt";
+		}
 	}
 
 	// Use this for initialization

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ScoreLogTrack : MonoBehaviour {
+public class ScoreLogTrack : LogTrack {
 
 	// Use this for initialization
 	void Start () {
