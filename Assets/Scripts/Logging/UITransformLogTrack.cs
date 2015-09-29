@@ -40,10 +40,12 @@ public class UITransformLogTrack : LogTrack {
 	}
 
 	void LogPosition(){
+		lastPosition = transform.position;
 		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "UI_POSITION" + separator + transform.position.x + separator + transform.position.y + separator + transform.position.z);
 	}
 	
 	void LogScale(){
+		lastScale = transform.localScale;
 		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "UI_SCALE" + separator + transform.localScale.x + separator + transform.localScale.y + separator + transform.localScale.z);
 	}
 }

@@ -79,7 +79,8 @@ public class Experiment_CoinTask : MonoBehaviour {
 		}
 
 	}
-
+	
+	//TODO: move to logger_threading perhaps? *shrug*
 	void InitLogging(){
 		subjectLogfile = "TextFiles/" + ExperimentSettings_CoinTask.currentSubject.name + "Log";
 		eegLogfile = "TextFiles/" + ExperimentSettings_CoinTask.currentSubject.name + "EEGLog";
@@ -88,7 +89,6 @@ public class Experiment_CoinTask : MonoBehaviour {
 		string logFileIDString = "000";
 
 		while(File.Exists(subjectLog.fileName) || logFileID == 0){
-			logFileID++;
 			//TODO: move this function somewhere else...?
 			if(logFileID < 10){
 				logFileIDString = "00" + logFileID;
@@ -102,6 +102,8 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 			subjectLog.fileName = subjectLogfile + "_" + logFileIDString + ".txt";
 			eegLog.fileName = eegLogfile + "_" + logFileIDString + ".txt";
+
+			logFileID++;
 		}
 	}
 
