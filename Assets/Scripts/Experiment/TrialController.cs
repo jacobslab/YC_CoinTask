@@ -275,11 +275,12 @@ public class TrialController : MonoBehaviour {
 			//show instructions for location selection
 			int randomOrderIndex = randomSpecialObjectOrder[i];
 			GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
-			string specialItemName = specialObj.GetComponent<SpawnableObject>().GetName();
+			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
+			string specialItemName = specialSpawnable.GetName();
 
 
 			//show nice UI
-			trialLogger.LogObjectToRecall(specialObj.GetComponent<SpawnableObject>());
+			trialLogger.LogObjectToRecall(specialSpawnable);
 			GameObject specialObjUICopy = Instantiate (specialObj, Vector3.zero, specialObj.transform.rotation) as GameObject;
 
 			//set layer of object & children to PlayerUI
@@ -300,7 +301,7 @@ public class TrialController : MonoBehaviour {
 			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, Config_CoinTask.minDefaultInstructionTime));
 
 			//log the chosen position and correct position
-			exp.environmentController.myPositionSelector.logTrack.LogPositionChosen( exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position );
+			exp.environmentController.myPositionSelector.logTrack.LogPositionChosen( exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position, specialSpawnable );
 
 			//add current chosen position to list of chosen positions
 			chosenPositions.Add(exp.environmentController.myPositionSelector.GetSelectorPosition());
@@ -338,8 +339,9 @@ public class TrialController : MonoBehaviour {
 
 			//turn on each special object & scale up for better visibility
 			GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
-			specialObj.GetComponent<SpawnableObject>().TurnVisible(true);
-			specialObj.GetComponent<SpawnableObject>().Scale(2.0f);
+			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
+			specialSpawnable.TurnVisible(true);
+			specialSpawnable.Scale(2.0f);
 			UsefulFunctions.FaceObject( specialObj, exp.player.gameObject, false);
 			
 			//create an indicator for each special object
