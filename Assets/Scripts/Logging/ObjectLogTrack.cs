@@ -28,6 +28,10 @@ public class ObjectLogTrack : LogTrack {
 	{
 		//the following is set up to log properties only when they change, or on an initial log.
 
+		if(!firstLog){
+			LogSpawned();
+		}
+
 		if (lastPosition != transform.position || !firstLog) {
 			LogPosition ();
 		}
@@ -41,9 +45,11 @@ public class ObjectLogTrack : LogTrack {
 			if (lastVisibility != spawnableObject.isVisible || !firstLog) {
 				LogVisibility ();
 
+				firstLog = true; //set this to true so we don't log the other properties twice on the first log...
+
 				//log all basic properties -- easier for replay, when there are UI copies of objects...
 				//...then the main object reappears -- but the position was not being set properly.
-				if(lastVisibility){
+				if(lastVisibility && !firstLog){
 					LogPosition();
 					LogRotation();
 					LogScale();
@@ -51,10 +57,7 @@ public class ObjectLogTrack : LogTrack {
 			}
 		}
 
-		if(!firstLog){
-			LogSpawned();
-			firstLog = true;
-		}
+		firstLog = true;
 	}
 
 	void LogSpawned(){
