@@ -29,21 +29,25 @@ public class ObjectLogTrack : LogTrack {
 		//the following is set up to log properties only when they change, or on an initial log.
 
 		if (lastPosition != transform.position || !firstLog) {
-			lastPosition = transform.position;
 			LogPosition ();
 		}
 		if (lastRotation != transform.rotation || !firstLog) {
-			lastRotation = transform.rotation;
 			LogRotation ();
 		}
 		if (lastScale != transform.localScale || !firstLog) {
-			lastScale = transform.localScale;
 			LogScale ();
 		}
 		if (spawnableObject != null) {
 			if (lastVisibility != spawnableObject.isVisible || !firstLog) {
-				lastVisibility = spawnableObject.isVisible;
 				LogVisibility ();
+
+				//log all basic properties -- easier for replay, when there are UI copies of objects...
+				//...then the main object reappears -- but the position was not being set properly.
+				if(lastVisibility){
+					LogPosition();
+					LogRotation();
+					LogScale();
+				}
 			}
 		}
 
@@ -58,18 +62,22 @@ public class ObjectLogTrack : LogTrack {
 	}
 
 	void LogPosition(){
+		lastPosition = transform.position;
 		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "POSITION" + separator + transform.position.x + separator + transform.position.y + separator + transform.position.z);
 	}
 	
 	void LogRotation(){
+		lastRotation = transform.rotation;
 		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "ROTATION" + separator + transform.rotation.eulerAngles.x + separator + transform.rotation.eulerAngles.y + separator + transform.rotation.eulerAngles.z);
 	}
 
 	void LogScale(){
+		lastScale = transform.localScale;
 		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "SCALE" + separator + transform.localScale.x + separator + transform.localScale.y + separator + transform.localScale.z);
 	}
 	
 	void LogVisibility(){
+		lastVisibility = spawnableObject.isVisible;
 		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "VISIBILITY" + separator + spawnableObject.isVisible);
 	}
 

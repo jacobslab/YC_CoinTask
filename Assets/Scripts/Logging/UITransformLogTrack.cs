@@ -8,6 +8,11 @@ public class UITransformLogTrack : LogTrack {
 	public bool ShouldLogPosition = false;
 	public bool ShouldLogScale = false;
 
+	Vector3 lastPosition;
+	Vector3 lastScale;
+
+	bool firstLog = false;
+
 	//TODO: log rotation too.
 
 	// Use this for initialization
@@ -17,8 +22,11 @@ public class UITransformLogTrack : LogTrack {
 	
 	// Update is called once per frame
 	void Update () {
-		if(ExperimentSettings_CoinTask.isLogging ){ //if the text has changed, log it!
+		if(ExperimentSettings_CoinTask.isLogging && (lastScale != transform.localScale || lastPosition != transform.position || !firstLog) ){ //if the text has changed, log it!
 			Log ();
+			if(!firstLog){
+				firstLog = true;
+			}
 		}
 	}
 

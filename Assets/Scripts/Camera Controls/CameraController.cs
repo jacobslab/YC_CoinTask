@@ -23,21 +23,6 @@ public class CameraController : MonoBehaviour {
 	
 	}
 
-
-	public void SetInstructions(){
-		//Debug.Log("hallo instructions cameras");
-
-		TurnOffAllCameras();
-
-		if(ExperimentSettings_CoinTask.isOculus){
-			//EnableCameras(OculusRig, true);
-			SetOculus(true);
-		}
-		else{
-			EnableCameras(AvatarStandardCameraRig, true);
-		}
-	}
-
 	public void SetInGame(){
 
 		//Debug.Log("oh hey in game cameras");

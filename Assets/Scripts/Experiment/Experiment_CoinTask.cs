@@ -113,10 +113,6 @@ public class Experiment_CoinTask : MonoBehaviour {
 		/*while(environmentMap.IsActive){
 			yield return 0; //thus, should wait for the button press before ending the experiment
 		}*/
-
-		if (!ExperimentSettings_CoinTask.isOculus) {
-			cameraController.SetInstructions (); //TODO: might be unecessary? evaluate for oculus...? 
-		}
 		
 		yield return StartCoroutine(ShowSingleInstruction("You have finished your trials! \nPress the button to proceed.", true, true, 0.0f));
 		instructionsController.SetInstructionsColorful(); //want to keep a dark screen before transitioning to the end!
@@ -129,14 +125,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	public IEnumerator RunInstructions(){
 		isRunningInstructions = true;
 
-		cameraController.SetInstructions();
-
-		//instructionsController.RunInstructions ();
-
-		//while (!instructionsController.isFinished) { //wait until instructions parser has finished showing the instructions
-		//	yield return 0;
-		//}
-		yield return StartCoroutine (ShowSingleInstruction (Config_CoinTask.initialInstructions, true, true, Config_CoinTask.minInitialInstructionsTime));
+		//IF THERE ARE ANY PRELIMINARY INSTRUCTIONS YOU WANT TO SHOW BEFORE THE EXPERIMENT STARTS, YOU COULD PUT THEM HERE...
 
 		currentState = ExperimentState.inExperiment;
 		isRunningInstructions = false;
@@ -148,12 +137,6 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 	public IEnumerator BeginExperiment(){
 		isRunningExperiment = true;
-		
-		//in case instructions are still on... should perhaps make this it's own function.
-		instructionsController.TurnOffInstructions ();
-		cameraController.SetInGame();
-
-		yield return StartCoroutine (WaitForActionButton ()); //explore the environment until this button press
 
 		yield return StartCoroutine(trialController.RunExperiment());
 		
@@ -179,7 +162,6 @@ public class Experiment_CoinTask : MonoBehaviour {
 		else{
 			instructionsController.SetInstructionsTransparentOverlay();
 		}
-		cameraController.SetInstructions();
 		instructionsController.DisplayText(line);
 
 		yield return new WaitForSeconds (minDisplayTimeSeconds);
