@@ -49,20 +49,15 @@ public class Config_CoinTask : MonoBehaviour {
 	//test session variables
 	//doTestSession (not implemented in the panda3d version )
 	
-	//practice variables
-	public static bool doPracticeBlock = true;
-	
 	//the following are set in INIT depending on isOneObjectVersion
-	public static int numBlocks = 2; 				//each block is two items
-	public static int numEasyLearningTrials;	//per item, trials with object visible the entire time //TODO
-	public static int numHardLearningTrials;	//per item, trials with object initially visible	//TODO
-	public static int numTestTrials = 4;			//per item, trials with object never visible
+	public static int numTestTrials = 8; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3]
 	
 	//practice settings
-	public static int numEasyLearningTrialsPract = 1;	//TODO
-	public static int numHardLearningTrialsPract = 1;	//TODO
-	public static int numTestTrialsPract = 2;
-
+	//public static int numEasyLearningTrialsPract = 1;	//TODO
+	//public static int numHardLearningTrialsPract = 1;	//TODO
+	public static int numTrialsPract = 1;
+	public static bool doPracticeTrial = true;
+	public static int numSpecialObjectsPract = 2;
 
 
 //SPECIFIC COIN TASK VARIABLES:
@@ -73,10 +68,10 @@ public class Config_CoinTask : MonoBehaviour {
 	public static int numDefaultObjectsHard = 15;*/
 	public static int numDefaultObjects = 10;
 
-	//THERE MUST ALWAYS BE FEWER SPECIAL OBJECTS THAN DEFAULT OBJECTS
-	public static int numSpecialObjectsEasy = 2;
+	//THERE MUST ALWAYS BE FEWER SPECIAL OBJECTS THAN DEFAULT OBJECTS ------> now randomizing 1-3 special.
+	/*public static int numSpecialObjectsEasy = 2;
 	public static int numSpecialObjectsMedium = 4;
-	public static int numSpecialObjectsHard = 6;
+	public static int numSpecialObjectsHard = 6;*/
 
 	//SIZE (diameter, actually) FOR CORRECT SELECTION DURING TESTING PHASE
 	public static float smallSelectionSize = 10.0f;
@@ -84,7 +79,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public static float objectToWallBuffer = 10.0f; //half of the big selection size, because the selection size is actually the diameter of the selector.
 	public static float objectToObjectBuffer { get { return CalculateObjectToObjectBuffer(); } } //calculated base on min time to drive between objects!
-	public static float specialObjectBufferMult = 2.0f; //the distance the object controller will try to keep between special objects. should be a multiple of objectToObjectBuffer
+	public static float specialObjectBufferMult = 0.0f; //the distance the object controller will try to keep between special objects. should be a multiple of objectToObjectBuffer
 
 	public static float minDriveTimeBetweenObjects = 0.5f; //half a second driving between objects
 
@@ -123,11 +118,11 @@ public class Config_CoinTask : MonoBehaviour {
 	}
 
 	public static int GetTotalNumTrials(){
-		if (!doPracticeBlock) {
+		if (!doPracticeTrial) {
 			return numTestTrials;
 		} 
 		else {
-			return numTestTrials + numTestTrialsPract;
+			return numTestTrials + numTrialsPract;
 		}
 	}
 

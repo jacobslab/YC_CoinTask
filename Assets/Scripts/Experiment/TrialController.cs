@@ -21,21 +21,10 @@ public class TrialController : MonoBehaviour {
 	int memoryScore = 0;
 
 	Trial currentTrial;
-
-	private class Block{
-		public Trial trial1;
-		public Trial trial2;
-
-		public Block(Trial one, Trial two){
-			trial1 = one;
-			trial2 = two;
-		}
-	}
-
-	Block practiceBlock; //for use when Config.doPracticeBlock == true!
+	Trial practiceTrial;
 
 
-	List<Block> BlockList;
+	List<Trial> TrialList;
 
 	void Start(){
 		InitTrials ();
@@ -43,42 +32,84 @@ public class TrialController : MonoBehaviour {
 	}
 
 	void InitTrials(){
-		BlockList = new List<Block> ();
+		TrialList = new List<Trial> ();
 
-		if (Config_CoinTask.doPracticeBlock) {
-			//TODO: change back to practice difficulty once a difficulty-selection system is decided on.
-			//Trial one = new Trial(false, Trial.practiceDifficulty);		//non-stim for practice
-			//Trial two = new Trial(false, Trial.practiceDifficulty);		//non-stim for practice
-			Trial one = new Trial(ExperimentSettings_CoinTask.difficultySetting);		//non-stim for practice
-			Trial two = new Trial(ExperimentSettings_CoinTask.difficultySetting);		//non-stim for practice
-			practiceBlock = new Block(one, two);
+		Vector3 specialObjDistribution = GetSpecialObjectDistribution ();
+
+		if(Config_CoinTask.doPracticeTrial){
+			practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract);	//2 special objects for practice trial
 		}
 
-		for(int i = 0; i < Config_CoinTask.numBlocks/2; i++){
-			Trial one = new Trial(ExperimentSettings_CoinTask.difficultySetting);			//stim
-			Trial two = new Trial(ExperimentSettings_CoinTask.difficultySetting);			//non-stim
-			Block block = new Block(one, two);
-
-			Trial counterOne = one.GetCounterSelf();//non-stim
-			Trial counterTwo = two.GetCounterSelf();//stim
-			Block counterBlock = new Block(counterTwo, counterOne); //add in opposite order to ensure that the [stim, non-stim] pattern is consistent across all blocks
-
-			BlockList.Add(block);
-			BlockList.Add(counterBlock);
-		}
+		GenerateTrials((int)specialObjDistribution.x, 1); //one special
+		GenerateTrials((int)specialObjDistribution.y, 2); //two special
+		GenerateTrials((int)specialObjDistribution.z, 3); //three special
 
 	}
 
-	Block PickRandomBlock(){
-		if (BlockList.Count > 0) {
-			int randomBlockIndex = Random.Range (0, BlockList.Count);
-			Block randomBlock = BlockList [randomBlockIndex];
+	//ASSUMES NUMTRIALS IS EVEN
+	void GenerateTrials(int numTrials, int numSpecial){
+		for(int j = 0; j < numTrials / 2; j++){ //divide by two because we are adding a trial and a counter trial at the same time
+			Trial one = new Trial(numSpecial);
+			
+			Trial counterOne = one.GetCounterSelf();
+			
+			TrialList.Add(one);
+			TrialList.Add(counterOne);
+		}
 
-			BlockList.RemoveAt (randomBlockIndex);
-			return randomBlock;
+		if ((float)numTrials % 2.0f != 0) {
+			Debug.Log("ODD NUMBER OF TRIALS.");
+		}
+	}
+
+	Vector3 GetSpecialObjectDistribution(){
+		//dist.x = 1 object trials, dist.y = 2 object trials, dist.z = 3 object trials
+		Vector3 distribution = Vector3.zero;
+
+		int numTestTrials = Config_CoinTask.numTestTrials;
+
+		int numTrialsLeft = 0; //number of trials to assign to 1 or 3 objects
+
+		if ((float)numTestTrials % 2.0f == 0) {
+			distribution.y = numTestTrials / 2;
+			numTrialsLeft = numTestTrials / 2;
 		} 
 		else {
-			Debug.Log("No more blocks left!");
+			Debug.Log("TRIAL DISTRIBUTION WILL NOT WORK PROPERLY.");
+			/*distribution.y = (numTestTrials + 1) / 2;
+			numTrialsLeft = numTestTrials - (int)distribution.y;*/
+		}
+		
+		if( (numTrialsLeft % 2) == 0 ){
+			distribution.x = numTrialsLeft / 2;
+			distribution.z = numTrialsLeft / 2;
+		}
+		else {
+			Debug.Log("TRIAL DISTRIBUTION WILL NOT WORK PROPERLY.");
+			/*int fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
+			if (fiftyFiftyChance == 0) { //more 1 trials
+				distribution.x = ( (numTrialsLeft - 1) / 2 ) + 1;
+				distribution.z = ( (numTrialsLeft - 1) / 2 );
+			}
+			else { //more 3 trials
+				distribution.x = ( (numTrialsLeft - 1) / 2 );
+				distribution.z = ( (numTrialsLeft - 1) / 2 ) + 1;
+			}*/
+		}
+
+		return distribution;
+	}
+
+	Trial PickRandomTrial(){
+		if (TrialList.Count > 0) {
+			int randomTrialIndex = Random.Range (0, TrialList.Count);
+			Trial randomTrial = TrialList [randomTrialIndex];
+
+			TrialList.RemoveAt (randomTrialIndex);
+			return randomTrial;
+		} 
+		else {
+			Debug.Log("No more trials left!");
 			return null;
 		}
 	}
@@ -99,9 +130,9 @@ public class TrialController : MonoBehaviour {
 			//get the number of blocks so far -- floor half the number of trials recorded
 			int totalTrialCount = ExperimentSettings_CoinTask.currentSubject.trials;
 			numRealTrials = totalTrialCount;
-			if (Config_CoinTask.doPracticeBlock) {
+			if (Config_CoinTask.doPracticeTrial) {
 				if (numRealTrials >= 2) { //otherwise, leave numRealTrials at zero.
-					numRealTrials -= Config_CoinTask.numTestTrialsPract;
+					numRealTrials -= 1; //-1 for practice trial
 				}
 			}
 
@@ -109,27 +140,23 @@ public class TrialController : MonoBehaviour {
 			//run practice trials
 			isPracticeTrial = true;
 			
-			if (isPracticeTrial && Config_CoinTask.doPracticeBlock) {
+			if (isPracticeTrial && Config_CoinTask.doPracticeTrial) {
 
-				yield return StartCoroutine (RunTrial ( practiceBlock.trial1 ));
-
-				yield return StartCoroutine (RunTrial ( practiceBlock.trial2 ));
+				yield return StartCoroutine (RunTrial ( practiceTrial ));
 
 				Debug.Log ("PRACTICE TRIALS COMPLETED");
-				totalTrialCount += 2;
+				totalTrialCount += 1;
 				isPracticeTrial = false;
 			}
 
 
 			//RUN THE REST OF THE BLOCKS
-			while (BlockList.Count > 0) {
-				Block nextBlock = PickRandomBlock ();
+			while (TrialList.Count > 0) {
+				Trial nextTrial = PickRandomTrial ();
 
-				yield return StartCoroutine (RunTrial ( nextBlock.trial1 ));
+				yield return StartCoroutine (RunTrial ( nextTrial ));
 
-				yield return StartCoroutine (RunTrial ( nextBlock.trial2 ));
-
-				totalTrialCount += 2;
+				totalTrialCount += 1;
 
 				Debug.Log ("TRIALS COMPLETED: " + totalTrialCount);
 			}

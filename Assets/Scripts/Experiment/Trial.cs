@@ -10,6 +10,7 @@ public class Trial {
 	public Quaternion avatarStartRot;
 	public Vector3 avatarTowerPos;
 	public Quaternion avatarTowerRot;
+	public int numSpecialObjects;
 	public List<Vector2> DefaultObjectLocationsXZ;
 	public List<Vector2> SpecialObjectLocationsXZ;
 
@@ -29,7 +30,9 @@ public class Trial {
 		SpecialObjectLocationsXZ = new List<Vector2> ();
 	}
 
-	public Trial(DifficultySetting difficulty){
+	public Trial(int numSpecial){
+
+		numSpecialObjects = numSpecial;
 
 		int fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
 		if (fiftyFiftyChance == 0) {
@@ -45,7 +48,6 @@ public class Trial {
 
 		fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
 		if (fiftyFiftyChance == 0) {
-			Debug.Log("FIFTY FIFTY 0");
 			avatarTowerPos = exp.player.controls.towerPositionTransform1.position;
 			avatarTowerRot = exp.player.controls.towerPositionTransform1.rotation;
 		}
@@ -55,21 +57,6 @@ public class Trial {
 		}
 
 		int numDefaultObjects = 0;
-		int numSpecialObjects = 0;
-
-		if (difficulty == DifficultySetting.easy) {
-			//numDefaultObjects = Config_CoinTask.numDefaultObjectsEasy;
-			numSpecialObjects = Config_CoinTask.numSpecialObjectsEasy;
-		} 
-		else if (difficulty == DifficultySetting.medium) {
-			//numDefaultObjects = Config_CoinTask.numDefaultObjectsMedium;
-			numSpecialObjects = Config_CoinTask.numSpecialObjectsMedium;
-		} 
-		else if (difficulty == DifficultySetting.hard) {
-			//numDefaultObjects = Config_CoinTask.numDefaultObjectsHard;
-			numSpecialObjects = Config_CoinTask.numSpecialObjectsHard;
-		}
-		//TODO: change back to difficulty levels?
 		numDefaultObjects = Config_CoinTask.numDefaultObjects;
 
 		//init default and special locations
@@ -77,7 +64,7 @@ public class Trial {
 		SpecialObjectLocationsXZ = exp.objectController.GenerateSpecialObjectPositions (DefaultObjectLocationsXZ, numSpecialObjects);
 
 	}
-	
+
 	//get reflected rotation
 	public Quaternion GetReflectedRotation(Quaternion rot){
 		Vector3 newRot = rot.eulerAngles;
@@ -104,6 +91,7 @@ public class Trial {
 	public Trial GetCounterSelf(){
 		Trial counterTrial = new Trial ();
 
+		counterTrial.numSpecialObjects = numSpecialObjects;
 
 		//counter the avatar
 		if (avatarStartPos == exp.player.controls.startPositionTransform1.position) {

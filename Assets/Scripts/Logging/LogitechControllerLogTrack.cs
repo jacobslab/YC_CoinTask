@@ -69,8 +69,8 @@ public class LogitechControllerLogTrack : LogTrack {
 		float[] axesInput = new float[numJoystickAxesUsed]; //will alternate: 
 		int axis = 0;
 
-		axesInput[axis++] = Input.GetAxis("Horizontal"); //DPAD X AXIS
-		axesInput[axis++] = Input.GetAxis("Vertical"); //DPAD Y AXIS
+		axesInput[axis++] = Input.GetAxis("Horizontal"); //left horizontal X AXIS
+		axesInput[axis++] = Input.GetAxis("Vertical"); //left vertical Y AXIS
 		//axesInput[axis++] = Input.GetAxis("HorizontalLeftJoystick"); //3rd AXIS
 		//axesInput[axis++] = Input.GetAxis("VerticalLeftJoystick"); //4th AXIS
 
