@@ -118,7 +118,7 @@ public class ObjectController : MonoBehaviour {
 		newSpawnableObj.SetNameID(index);
 		
 		if( specialPositions.Contains(positionXZ) ){
-			newObj.tag = "DefaultSpecialItem";
+			newObj.tag = "DefaultSpecialObject";
 		}
 	}
 	

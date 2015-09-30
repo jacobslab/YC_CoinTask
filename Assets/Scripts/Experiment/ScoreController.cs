@@ -8,6 +8,7 @@ public class ScoreController : MonoBehaviour {
 
 	public int score = 0;
 	public Text scoreText;
+	public ScoreLogTrack scoreLogger;
 	public TimeBonusUIController timeBonusUI;
 
 	//SCORE VARIABLES -- don't want anyone to change them, so make public getters, no setters.
@@ -63,7 +64,6 @@ public class ScoreController : MonoBehaviour {
 
 		score += amountToAdd;
 		ExperimentSettings_CoinTask.currentSubject.score = score;
-		//UpdateScoreText ();
 	}
 
 	IEnumerator UpdateScoreText(int initialScore, int amountToAdd, bool isTimeBonus){
@@ -86,42 +86,32 @@ public class ScoreController : MonoBehaviour {
 
 	public void AddDefaultPoints(){
 		AddToScore(defaultObjectPoints, false);
+		scoreLogger.LogTreasureOpenScoreAdded (defaultObjectPoints);
 	}
 
 	public void AddSpecialPoints(){
 		AddToScore(specialObjectPoints, false);
-	}
-
-	//small radius is more impressive, more points
-	public int AddMemoryPointsSmallRadius(){
-		AddToScore (memoryScoreBest, false);
-		return memoryScoreBest;
-	}
-
-	//big radius is less impressive, fewer points
-	public int AddMemoryPointsLargeRadius(){
-		AddToScore (memoryScoreMedium, false);
-		return memoryScoreMedium;
+		scoreLogger.LogTreasureOpenScoreAdded (specialObjectPoints);
 	}
 
 	public int CalculateMemoryPoints (Vector3 correctPosition){
+		int memoryPoints = 0;
 		if (exp.environmentController.myPositionSelector.GetRadiusOverlap (correctPosition)) {
 			if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.small){
-				AddToScore(memoryScoreBest, false);
-				return memoryScoreBest;
+				memoryPoints = memoryScoreBest;
 			}
 			else if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.big){
-				AddToScore(memoryScoreMedium, false);
-				return memoryScoreMedium;
+				memoryPoints =  memoryScoreMedium;
 			}
 		}
 		else if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.none){
-			AddToScore(memoryScoreNoChoice, false);
-			return memoryScoreNoChoice;
+			memoryPoints = memoryScoreNoChoice;
 		}
-		
 
-		return 0;
+		AddToScore(memoryPoints, false);
+		scoreLogger.LogMemoryScoreAdded (memoryPoints);
+
+		return memoryPoints;
 	}
 
 	public int CalculateTimeBonus(float secondsToCompleteTrial){
@@ -137,6 +127,7 @@ public class ScoreController : MonoBehaviour {
 		} 
 
 		AddToScore (timeBonusScore, true);
+		scoreLogger.LogTimeBonusAdded (timeBonusScore);
 
 		return timeBonusScore;
 

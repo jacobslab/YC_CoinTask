@@ -2,15 +2,17 @@ using UnityEngine;
 using System.Collections;
 
 public class TrialLogTrack : LogTrack {
-	
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
+
+
+	bool firstLog = false;
+
 	// Update is called once per frame
 	void Update () {
-
+		//just log the environment info on the first frame
+		if (ExperimentSettings_CoinTask.isLogging && !firstLog) {
+			LogEnvironmentDimensions ();
+			firstLog = true;
+		}
 	}
 
 	//gets called from trial controller instead of in update!
@@ -25,6 +27,27 @@ public class TrialLogTrack : LogTrack {
 		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "Trial Info" + separator + "NUM_TRIALS" + separator + trialNumber + separator
 		                + "NUM_TREASURE" + separator + numTreasureChests + separator + "NUM_SPECIAL_OBJECTS" + separator + numSpecialObjects + separator 
 		                + "IS_SEQUENTIAL" + separator + isSequential);
+	}
+
+	//TODO: move to an experiment or an environment logger... just want to log this once at the beginning of the trials so there is a reference for all positions in the world.
+	void LogEnvironmentDimensions(){
+		//log center
+		Vector3 envCenter = exp.environmentController.center;
+		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "Experiment Info" + separator + "ENV_CENTER" + separator + envCenter.x + separator + envCenter.y + separator + envCenter.z);
+	
+		//log walls
+		Vector3 wallPos = exp.environmentController.WallsXPos.position;
+		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "Experiment Info" + separator + "ENV_WALL_XPOS" + separator + wallPos.x + separator + wallPos.y + separator + wallPos.z);
+
+		wallPos = exp.environmentController.WallsXNeg.position;
+		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "Experiment Info" + separator + "ENV_WALL_XNEG" + separator + wallPos.x + separator + wallPos.y + separator + wallPos.z);
+
+		wallPos = exp.environmentController.WallsZPos.position;
+		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "Experiment Info" + separator + "ENV_WALL_ZPOS" + separator + wallPos.x + separator + wallPos.y + separator + wallPos.z);
+
+		wallPos = exp.environmentController.WallsZNeg.position;
+		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "Experiment Info" + separator + "ENV_WALL_ZNEG" + separator + wallPos.x + separator + wallPos.y + separator + wallPos.z);
+		Debug.Log ("LOGGED ENV");
 	}
 
 	public void LogInstructionEvent(){

@@ -34,7 +34,7 @@ public class EnvironmentGrid : MonoBehaviour {
 
 		myGrid = new GridSpotType[numRows, numCols];
 
-		GameObject[] gridItems = GameObject.FindGameObjectsWithTag ("DefaultItem");
+		GameObject[] gridItems = GameObject.FindGameObjectsWithTag ("DefaultObject");
 
 		for (int i = 0; i < gridItems.Length; i++) {
 			DefaultItem currItem = gridItems [i].GetComponent<DefaultItem> ();

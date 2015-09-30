@@ -61,7 +61,7 @@ public class ObjectLogTrack : LogTrack {
 	}
 
 	void LogSpawned(){
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "SPAWNED");
+		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "SPAWNED" + separator + gameObject.tag);
 	}
 
 	void LogPosition(){

@@ -38,7 +38,7 @@ public class DefaultItem : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider hitCollider){
-		if (hitCollider.gameObject.tag == "Player" && (tag == "DefaultItem" || tag == "DefaultSpecialItem") ) {
+		if (hitCollider.gameObject.tag == "Player" && (tag == "DefaultObject" || tag == "DefaultSpecialObject") ) {
 
 			//open the object
 			StartCoroutine( Open(Experiment_CoinTask.Instance.player.gameObject) ); //TODO: move particle systems to chest???
@@ -46,7 +46,7 @@ public class DefaultItem : MonoBehaviour {
 
 			//if it was a special spot and this is the default object...
 			//...we should spawn the special object!
-			if (tag == "DefaultSpecialItem") {
+			if (tag == "DefaultSpecialObject") {
 
 				StartCoroutine(SpawnSpecialObject(specialObjectSpawnPoint.position));
 
@@ -118,7 +118,7 @@ public class DefaultItem : MonoBehaviour {
 	}
 
 	bool GetIsSpecial(){
-		if (gameObject.tag == "DefaultSpecialItem") {
+		if (gameObject.tag == "DefaultSpecialObject") {
 			return true;
 		}
 		return false;
