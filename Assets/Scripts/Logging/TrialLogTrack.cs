@@ -50,6 +50,16 @@ public class TrialLogTrack : LogTrack {
 		Debug.Log ("LOGGED ENV");
 	}
 
+	public void LogDoubleDownResponse(bool response){
+		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "DOUBLE_DOWN_RESPONSE" + separator + response);
+		Debug.Log ("DOUBLE DOWN LOGGED: " + response);
+	}
+
+	public void LogRememberResponse(bool response){
+		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "REMEMBER_RESPONSE" + separator + response);
+		Debug.Log ("REMEMBER LOGGED: " + response);
+	}
+
 	public void LogInstructionEvent(){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "SHOWING_INSTRUCTIONS");

@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SelectObjectUI : LogTrack {
+public class QuestionUI : MonoBehaviour {
 
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } } 
 
 	public TextMesh ObjectNameTextMesh;
-	public TextMesh PressButtonTextMesh;
+	public GameObject Answers;
 	public ParticleSystem ObjectParticles;
 	public AudioSource ObjectSound;
 	public Transform ObjectPositionTransform;
@@ -20,9 +20,22 @@ public class SelectObjectUI : LogTrack {
 		Enable (false);
 	}
 
+	//no object
+	public IEnumerator Play(){
+		Enable (true);
+		Answers.gameObject.SetActive (false);
+
+		yield return new WaitForSeconds (Config_CoinTask.minObjselectionUITime);
+		
+		Answers.gameObject.SetActive (true);
+		
+		yield return 0;
+	}
+
+	//show an object
 	public IEnumerator Play(GameObject objectToSelect){
 		Enable (true);
-		PressButtonTextMesh.gameObject.SetActive (false);
+		Answers.gameObject.SetActive (false);
 
 		ObjectParticles.Stop ();
 		ObjectParticles.Play ();
@@ -40,11 +53,11 @@ public class SelectObjectUI : LogTrack {
 
 		ObjectNameTextMesh.text = selectedObjectSpawnable.GetName ();
 
-		UsefulFunctions.FaceObject( objectToSelect, exp.player.gameObject, false ); //make UI copy face the player
+		UsefulFunctions.FaceObject (objectToSelect, exp.player.gameObject, false); //make UI copy face the player
 
 		yield return new WaitForSeconds (Config_CoinTask.minObjselectionUITime);
 
-		PressButtonTextMesh.gameObject.SetActive (true);
+		Answers.gameObject.SetActive (true);
 
 		yield return 0;
 	}

@@ -8,7 +8,8 @@ public class TrialController : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
 	public SimpleTimer trialTimer;
-	public SelectObjectUI mySelectObjectUI;
+	public QuestionUI doYouRememberUI;
+	public QuestionUI doubleDownUI;
 
 	TrialLogTrack trialLogger;
 
@@ -215,6 +216,11 @@ public class TrialController : MonoBehaviour {
 
 	}
 
+	bool questionAnswer = false;
+	public void SetQuestionAnswer(bool answer){ //SET IN EXPERIMENT. TODO: REORGANIZE?!
+		questionAnswer = answer;
+	}
+
 	//INDIVIDUAL TRIALS -- implement for repeating the same thing over and over again
 	//could also create other IEnumerators for other types of trials
 	IEnumerator RunTrial(Trial trial){
@@ -296,6 +302,7 @@ public class TrialController : MonoBehaviour {
 		//ask player to locate each object individually
 		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
 		List<Vector3> chosenPositions = new List<Vector3> (); //chosen positions will be in the same order as the random special object order
+		List<bool> doubleDownResponses = new List<bool> (); //keep track of whether or not the player wanted to double down on each object
 		List<EnvironmentPositionSelector.SelectionRadiusType> chosenSelectorSizes = new List<EnvironmentPositionSelector.SelectionRadiusType> (); //chosen sizes will be in the same order as the random special object order
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
 
@@ -313,15 +320,15 @@ public class TrialController : MonoBehaviour {
 			//set layer of object & children to PlayerUI
 			specialObjUICopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI");
 
-			yield return StartCoroutine( mySelectObjectUI.Play(specialObjUICopy) );
+			yield return StartCoroutine( doYouRememberUI.Play(specialObjUICopy) );
 
-			yield return StartCoroutine (exp.WaitForActionButton());
-
+			yield return StartCoroutine (exp.WaitForYesNoResponse());
+			trialLogger.LogRememberResponse(questionAnswer); //question answer gets set with WaitForYesNoResponse...
 
 			//enable position selection, turn off fancy selection UI
 			exp.environmentController.myPositionSelector.EnableSelection (true);
 			exp.environmentController.myPositionSelector.SetRadiusSize( EnvironmentPositionSelector.SelectionRadiusType.big ); //always start with the big selector. this choice was fairly arbitrary.
-			mySelectObjectUI.Stop();
+			doYouRememberUI.Stop();
 
 			//show single selection instruction and wait for selection button press
 			string selectObjectText = "Select the location of the " + specialItemName + ".";
@@ -336,6 +343,14 @@ public class TrialController : MonoBehaviour {
 
 			//disable position selection
 			exp.environmentController.myPositionSelector.EnableSelection (false);
+
+			yield return StartCoroutine( doubleDownUI.Play() );
+
+			yield return StartCoroutine (exp.WaitForYesNoResponse());
+			trialLogger.LogDoubleDownResponse(questionAnswer); //question answer gets set with WaitForYesNoResponse...
+
+			doubleDownResponses.Add(questionAnswer);
+			doubleDownUI.Stop();
 		}
 
 		trialLogger.LogFeedbackStarted();

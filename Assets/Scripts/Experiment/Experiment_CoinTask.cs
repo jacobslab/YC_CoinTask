@@ -196,7 +196,8 @@ public class Experiment_CoinTask : MonoBehaviour {
 		instructionsController.TurnOffInstructions ();
 		cameraController.SetInGame();
 	}
-	
+
+	//TODO: move to trial controller????
 	public IEnumerator WaitForActionButton(){
 		bool hasPressedButton = false;
 		while(Input.GetAxis("ActionButton") != 0f){
@@ -205,6 +206,25 @@ public class Experiment_CoinTask : MonoBehaviour {
 		while(!hasPressedButton){
 			if(Input.GetAxis("ActionButton") == 1.0f){
 				hasPressedButton = true;
+			}
+			yield return 0;
+		}
+	}
+
+	//TODO: move to trial controller????
+	public IEnumerator WaitForYesNoResponse(){
+		bool hasPressedButton = false;
+		while(Input.GetAxis("ActionButton") != 0f && Input.GetAxis("A Button") != 0f){
+			yield return 0;
+		}
+		while(!hasPressedButton){
+			if(Input.GetAxis("ActionButton") == 1.0f){
+				hasPressedButton = true;
+				trialController.SetQuestionAnswer(true);
+			}
+			else if (Input.GetAxis("A Button") == 1.0f){
+				hasPressedButton = true;
+				trialController.SetQuestionAnswer(false);
 			}
 			yield return 0;
 		}
