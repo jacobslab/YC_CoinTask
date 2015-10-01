@@ -85,7 +85,7 @@ public class ScoreController : MonoBehaviour {
 		while (amountToAdd > 0) {
 
 			initialScore += increment;
-			scoreText.text = "SCORE: " + (initialScore);
+			scoreText.text = "$ " + (initialScore);
 			amountToAdd--;
 			yield return new WaitForSeconds(timeBetweenUpdates);
 		}

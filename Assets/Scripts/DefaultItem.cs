@@ -32,7 +32,7 @@ public class DefaultItem : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(shouldDie && (defaultCollisionSound.isPlaying == false && specialCollisionSound.isPlaying == false)){
+		if(shouldDie && (SpecialParticles.isPlaying == false && DefaultParticles.isPlaying == false)){//(defaultCollisionSound.isPlaying == false && specialCollisionSound.isPlaying == false)){
 			Destroy(gameObject); //once audio has finished playing, destroy the item!
 		}
 	}
