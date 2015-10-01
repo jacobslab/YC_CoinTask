@@ -354,14 +354,14 @@ public class TrialController : MonoBehaviour {
 		}
 
 		trialLogger.LogFeedbackStarted();
-		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, chosenSelectorSizes) );
+		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, chosenSelectorSizes, doubleDownResponses) );
 		
 		//increment subject's trial count
 		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
 
 	}
 
-	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<EnvironmentPositionSelector.SelectionRadiusType> chosenSelectorSizes){
+	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<EnvironmentPositionSelector.SelectionRadiusType> chosenSelectorSizes, List<bool> doubleDownResponses){
 		memoryScore = 0;
 
 		List<GameObject> CorrectPositionIndicators = new List<GameObject> ();
@@ -421,8 +421,17 @@ public class TrialController : MonoBehaviour {
 			//calculate the memory points and display them
 			exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
 			exp.environmentController.myPositionSelector.SetRadiusSize( chosenRadiusSize );
-			int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position );
-			correctPositionIndicator.GetComponentInChildren<TextMesh>().text = "+" + points + "!";
+			int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position, doubleDownResponses[i] );
+
+			CorrectPositionIndicatorController correctPosController = correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>();
+			if(doubleDownResponses[i] == true){
+				correctPosController.EnableDoubleDownVisuals(true);
+			}
+			else{
+				correctPosController.EnableDoubleDownVisuals(false);
+			}
+
+			correctPosController.SetPointsText(points);
 			memoryScore += points;
 			
 			//set the position selector back to big or small -- otherwise it will be invisible when cloned in the next iteration of indicator creation

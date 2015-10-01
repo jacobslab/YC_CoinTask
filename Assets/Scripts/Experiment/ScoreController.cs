@@ -31,6 +31,9 @@ public class ScoreController : MonoBehaviour {
 	static int memoryScoreNoChoice = 10;
 	public static int MemoryScoreNoChoice { get { return memoryScoreNoChoice; } }
 
+	static int memoryScoreWrong = -30;
+	public static int MemoryScoreWrong { get { return memoryScoreWrong; } }
+
 	int defaultObjectPoints = 1;
 	int specialObjectPoints = 10;
 
@@ -73,9 +76,15 @@ public class ScoreController : MonoBehaviour {
 			yield return StartCoroutine( timeBonusUI.MoveBonusText () );
 		}
 
+		int increment = 1;
+		if (amountToAdd < 0) {
+			increment = -1;
+		}
+
+		amountToAdd = Mathf.Abs (amountToAdd);
 		while (amountToAdd > 0) {
 
-			initialScore++;
+			initialScore += increment;
 			scoreText.text = "SCORE: " + (initialScore);
 			amountToAdd--;
 			yield return new WaitForSeconds(timeBetweenUpdates);
@@ -94,7 +103,7 @@ public class ScoreController : MonoBehaviour {
 		scoreLogger.LogTreasureOpenScoreAdded (specialObjectPoints);
 	}
 
-	public int CalculateMemoryPoints (Vector3 correctPosition){
+	public int CalculateMemoryPoints (Vector3 correctPosition, bool doubledDown){
 		int memoryPoints = 0;
 		if (exp.environmentController.myPositionSelector.GetRadiusOverlap (correctPosition)) {
 			if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.small){
@@ -106,6 +115,13 @@ public class ScoreController : MonoBehaviour {
 		}
 		else if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.none){
 			memoryPoints = memoryScoreNoChoice;
+		}
+		else{ //wrong
+			memoryPoints = memoryScoreWrong;
+		}
+
+		if (doubledDown) {
+			memoryPoints *= 2; //double the score if we doubled down!
 		}
 
 		AddToScore(memoryPoints, false);
