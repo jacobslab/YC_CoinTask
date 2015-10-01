@@ -106,16 +106,17 @@ public class ScoreController : MonoBehaviour {
 	public int CalculateMemoryPoints (Vector3 correctPosition, bool doubledDown){
 		int memoryPoints = 0;
 		if (exp.environmentController.myPositionSelector.GetRadiusOverlap (correctPosition)) {
-			if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.small){
+			/*if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.small){
 				memoryPoints = memoryScoreBest;
 			}
 			else if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.big){
 				memoryPoints =  memoryScoreMedium;
-			}
+			}*/
+			memoryPoints = memoryScoreMedium;
 		}
-		else if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.none){
+		/*else if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.none){
 			memoryPoints = memoryScoreNoChoice;
-		}
+		}*/
 		else{ //wrong
 			memoryPoints = memoryScoreWrong;
 		}

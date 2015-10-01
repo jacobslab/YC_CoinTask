@@ -13,13 +13,13 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	public PositionSelectorLogTrack logTrack;
 
-	public enum SelectionRadiusType{
+	/*public enum SelectionRadiusType{
 		big,
 		small,
 		none
 	}
 	public SelectionRadiusType currentRadiusType;
-
+*/
 	bool shouldSelect;
 	float selectionMovementSpeed = 4.0f;
 
@@ -31,12 +31,11 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (shouldSelect) {
+			//GetRadiusSelectionInput();
 
-			GetRadiusSelectionInput();
-
-			if(currentRadiusType != SelectionRadiusType.none){
+			//if(currentRadiusType != SelectionRadiusType.none){
 				GetMovementInput();
-			}
+			//}
 		}
 	}
 
@@ -64,11 +63,11 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		}
 	}
 
-	void GetRadiusSelectionInput(){
+	/*void GetRadiusSelectionInput(){
 		if (Input.GetButtonDown("A Button")) {
 			ChangeRadiusSize();
 		}
-	}
+	}*/
 
 	bool CheckPositionsClose(float epsilon, Vector3 pos1, Vector3 pos2){
 		float distance = (pos1 - pos2).magnitude;
@@ -124,7 +123,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	}
 
 	//TODO: put these size change functions in a separate script so that the visuals control their own size -- will be easier for duplication of indicators
-	void ChangeRadiusSize(){
+	/*void ChangeRadiusSize(){
 		if (currentRadiusType == SelectionRadiusType.none) { //none --> big
 			SetRadiusSizeBig();
 		}
@@ -137,9 +136,9 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 		logTrack.LogSelectorSize();
 
-	}
+	}*/
 
-	public void SetRadiusSize (SelectionRadiusType newRadiusType){
+	/*public void SetRadiusSize (SelectionRadiusType newRadiusType){
 		if (newRadiusType == SelectionRadiusType.none) {
 			SetRadiusSizeNone();
 		} 
@@ -149,9 +148,9 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		else if (newRadiusType == SelectionRadiusType.big) {
 			SetRadiusSizeBig();
 		}
-	}
+	}*/
 
-	void SetRadiusSizeBig(){
+	/*void SetRadiusSizeBig(){
 
 		float radiusSize = 0.0f;
 
@@ -185,7 +184,8 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	void SetRadiusSize( float size ){
 		PositionSelectorVisuals.transform.localScale = new Vector3 (size, PositionSelectorVisuals.transform.localScale.y, size);
-	}
+	}*/
+
 
 	void SetRadiusText(){
 
@@ -195,6 +195,8 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 		else{
 			string pointsText = " POINTS";
+			RadiusPointText.text = RadiusPointText.text = ScoreController.MemoryScoreMedium + pointsText;
+			/*
 			if (currentRadiusType == SelectionRadiusType.none) { //none
 				RadiusPointText.text = ScoreController.MemoryScoreNoChoice + pointsText;
 			}
@@ -203,7 +205,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 			}
 			else if (currentRadiusType == SelectionRadiusType.small){ //small
 				RadiusPointText.text = ScoreController.MemoryScoreBest + pointsText;
-			}
+			}*/
 		}
 	}
 
@@ -225,13 +227,15 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	public void EnableSelection(bool shouldEnable){
 		shouldSelect = shouldEnable;
 		EnableSelectionIndicator (shouldEnable);
+
+		SetRadiusText();
 	}
 
 	void EnableSelectionIndicator(bool shouldEnable){
-		if (currentRadiusType != SelectionRadiusType.none) {
+		//if (currentRadiusType != SelectionRadiusType.none) {
 			PositionSelectorVisuals.GetComponent<VisibilityToggler> ().TurnVisible (shouldEnable);
-		}
-		SetRadiusText ();
+		//}
+		//SetRadiusText ();
 	}
 	
 }

@@ -534,7 +534,7 @@ public class Replay : MonoBehaviour {
 								}
 
 								//POSITION SELECTOR SIZE
-								else if (loggedProperty == "SELECTOR_SIZE"){
+								/*else if (loggedProperty == "SELECTOR_SIZE"){
 									string selectionSize = splitLine[i+2];
 									EnvironmentPositionSelector.SelectionRadiusType selectionSizeType = EnvironmentPositionSelector.SelectionRadiusType.none;
 									if(selectionSize == "SMALL"){
@@ -545,7 +545,7 @@ public class Replay : MonoBehaviour {
 									}
 
 									objInScene.GetComponent<EnvironmentPositionSelector>().SetRadiusSize(selectionSizeType);
-								}
+								}*/
 
 							}
 							else{

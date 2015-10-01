@@ -303,7 +303,7 @@ public class TrialController : MonoBehaviour {
 		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
 		List<Vector3> chosenPositions = new List<Vector3> (); //chosen positions will be in the same order as the random special object order
 		List<bool> doubleDownResponses = new List<bool> (); //keep track of whether or not the player wanted to double down on each object
-		List<EnvironmentPositionSelector.SelectionRadiusType> chosenSelectorSizes = new List<EnvironmentPositionSelector.SelectionRadiusType> (); //chosen sizes will be in the same order as the random special object order
+		//List<EnvironmentPositionSelector.SelectionRadiusType> chosenSelectorSizes = new List<EnvironmentPositionSelector.SelectionRadiusType> (); //chosen sizes will be in the same order as the random special object order
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
 
 			//show instructions for location selection
@@ -327,7 +327,7 @@ public class TrialController : MonoBehaviour {
 
 			//enable position selection, turn off fancy selection UI
 			exp.environmentController.myPositionSelector.EnableSelection (true);
-			exp.environmentController.myPositionSelector.SetRadiusSize( EnvironmentPositionSelector.SelectionRadiusType.big ); //always start with the big selector. this choice was fairly arbitrary.
+			//exp.environmentController.myPositionSelector.SetRadiusSize( EnvironmentPositionSelector.SelectionRadiusType.big ); //always start with the big selector. this choice was fairly arbitrary.
 			doYouRememberUI.Stop();
 
 			//show single selection instruction and wait for selection button press
@@ -339,7 +339,7 @@ public class TrialController : MonoBehaviour {
 
 			//add current chosen position to list of chosen positions
 			chosenPositions.Add(exp.environmentController.myPositionSelector.GetSelectorPosition());
-			chosenSelectorSizes.Add(exp.environmentController.myPositionSelector.currentRadiusType);
+			//chosenSelectorSizes.Add(exp.environmentController.myPositionSelector.currentRadiusType);
 
 			//disable position selection
 			exp.environmentController.myPositionSelector.EnableSelection (false);
@@ -354,14 +354,14 @@ public class TrialController : MonoBehaviour {
 		}
 
 		trialLogger.LogFeedbackStarted();
-		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, chosenSelectorSizes, doubleDownResponses) );
+		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, doubleDownResponses) );
 		
 		//increment subject's trial count
 		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
 
 	}
 
-	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<EnvironmentPositionSelector.SelectionRadiusType> chosenSelectorSizes, List<bool> doubleDownResponses){
+	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<bool> doubleDownResponses){//, List<EnvironmentPositionSelector.SelectionRadiusType> chosenSelectorSizes){
 		memoryScore = 0;
 
 		List<GameObject> CorrectPositionIndicators = new List<GameObject> ();
@@ -373,9 +373,9 @@ public class TrialController : MonoBehaviour {
 
 			//throw bomb to selected location
 			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't actually want its visuals showing up as we wait
-			if(chosenSelectorSizes[i] != EnvironmentPositionSelector.SelectionRadiusType.none){
+			//if(chosenSelectorSizes[i] != EnvironmentPositionSelector.SelectionRadiusType.none){
 				yield return StartCoroutine( exp.objectController.ThrowBomb( exp.player.transform.position, chosenPosition ) );
-			}
+			//}
 
 			int randomOrderIndex = specialObjectOrder[i];
 
@@ -403,24 +403,24 @@ public class TrialController : MonoBehaviour {
 			chosenPositionIndicator.GetComponent<VisibilityToggler>().TurnVisible(true);
 
 			//scale the chosen indicators appropriately
-			EnvironmentPositionSelector.SelectionRadiusType chosenRadiusSize = chosenSelectorSizes[i];
-			if( chosenRadiusSize == EnvironmentPositionSelector.SelectionRadiusType.big ){
+			//EnvironmentPositionSelector.SelectionRadiusType chosenRadiusSize = chosenSelectorSizes[i];
+			//if( chosenRadiusSize == EnvironmentPositionSelector.SelectionRadiusType.big ){
 				chosenPositionIndicator.transform.localScale = new Vector3 ( Config_CoinTask.bigSelectionSize, chosenPositionIndicator.transform.localScale.y, Config_CoinTask.bigSelectionSize );
-			} 
-			else if ( chosenRadiusSize == EnvironmentPositionSelector.SelectionRadiusType.small ){
+			//} 
+			/*else if ( chosenRadiusSize == EnvironmentPositionSelector.SelectionRadiusType.small ){
 				chosenPositionIndicator.transform.localScale = new Vector3 ( Config_CoinTask.smallSelectionSize, chosenPositionIndicator.transform.localScale.y, Config_CoinTask.smallSelectionSize );
 			} 
 			else {
 				chosenPositionIndicator.SetActive(false);
-			}
+			}*/
 			ChosenPositionIndicators.Add(chosenPositionIndicator);
 
 			//connect the chosen and correct indicators via a line
-			SetConnectingLines( correctPositionIndicator, chosenPosition, chosenRadiusSize );
+			SetConnectingLines( correctPositionIndicator, chosenPosition);//, chosenRadiusSize );
 			
 			//calculate the memory points and display them
 			exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
-			exp.environmentController.myPositionSelector.SetRadiusSize( chosenRadiusSize );
+			//exp.environmentController.myPositionSelector.SetRadiusSize( chosenRadiusSize );
 			int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position, doubleDownResponses[i] );
 
 			CorrectPositionIndicatorController correctPosController = correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>();
@@ -435,7 +435,7 @@ public class TrialController : MonoBehaviour {
 			memoryScore += points;
 			
 			//set the position selector back to big or small -- otherwise it will be invisible when cloned in the next iteration of indicator creation
-			exp.environmentController.myPositionSelector.SetRadiusSize( EnvironmentPositionSelector.SelectionRadiusType.big );
+			//exp.environmentController.myPositionSelector.SetRadiusSize( EnvironmentPositionSelector.SelectionRadiusType.big );
 		}
 		
 		//disable original selector
@@ -457,19 +457,19 @@ public class TrialController : MonoBehaviour {
 		yield return 0;
 	}
 
-	void SetConnectingLines( GameObject correctPositionIndicator, Vector3 chosenPosition, EnvironmentPositionSelector.SelectionRadiusType chosenRadiusSize ){
+	void SetConnectingLines( GameObject correctPositionIndicator, Vector3 chosenPosition){//, EnvironmentPositionSelector.SelectionRadiusType chosenRadiusSize ){
 
 		//render a line between the special object and its corresponding chosen position
 		LineRenderer positionConnector = correctPositionIndicator.GetComponent<LineRenderer>();
 		Vector3 correctPosition = correctPositionIndicator.transform.position;
-		if(chosenRadiusSize != EnvironmentPositionSelector.SelectionRadiusType.none){
+		//if(chosenRadiusSize != EnvironmentPositionSelector.SelectionRadiusType.none){
 
 			correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>().SetLineTarget(chosenPosition);
 			
-		}
-		else {
+		//}
+		/*else {
 			correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>().SetLineTarget(correctPosition);
-		}
+		}*/
 	}
 
 	void DestroyGameObjectList(List<GameObject> listOfGameObjects){
