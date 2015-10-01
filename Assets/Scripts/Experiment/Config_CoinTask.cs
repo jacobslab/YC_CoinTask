@@ -93,7 +93,7 @@ public class Config_CoinTask : MonoBehaviour {
 			"\n" + "\nYou will get points for how well you remember the object locations and how quickly you complete the level." +
 			"\n" + "\nWe will now show you what the environment looks like. Press the button to continue."; 
 
-	public static float minObjselectionUITime = 1.0f;
+	public static float minObjselectionUITime = 0.5f;
 	public static float minInitialInstructionsTime = 0.0f; //TODO: change back to 5.0f
 	public static float minDefaultInstructionTime = 0.0f; //time each learning trial instruction should be displayed for
 	public static float minScoreMapTime = 0.0f;
