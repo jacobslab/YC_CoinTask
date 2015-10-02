@@ -44,8 +44,6 @@ public class Player : MonoBehaviour {
 
 			float angleBetweenPlayerAndTreasure = controls.GetYAngleBetweenFacingDirAndObjectXZ( currentDefaultPosXZ );
 
-			Debug.Log(angleBetweenPlayerAndTreasure);
-
 			//if the angle is bigger than the threshold, turn on the appropriate arrows
 			if( Mathf.Abs(angleBetweenPlayerAndTreasure) > arrowAngleThreshold){
 				if(angleBetweenPlayerAndTreasure < 0){

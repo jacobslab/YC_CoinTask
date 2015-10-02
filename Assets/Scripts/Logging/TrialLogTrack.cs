@@ -29,6 +29,7 @@ public class TrialLogTrack : LogTrack {
 		                + "IS_SEQUENTIAL" + separator + isSequential);
 	}
 
+
 	//TODO: move to an experiment or an environment logger... just want to log this once at the beginning of the trials so there is a reference for all positions in the world.
 	void LogEnvironmentDimensions(){
 		//log center
@@ -50,6 +51,23 @@ public class TrialLogTrack : LogTrack {
 		Debug.Log ("LOGGED ENV");
 	}
 
+
+
+	//TODO: move to an experiment logger
+	public void LogWaitForJitterStarted(float jitter){
+		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "RANDOM_JITTER_STARTED" + separator + jitter);
+		Debug.Log ("JITTER STARTED LOGGED: " + jitter);
+	}
+	
+	//TODO: move to an experiment logger
+	public void LogWaitForJitterEnded(float jitter){
+		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "RANDOM_JITTER_ENDED" + separator + jitter);
+		Debug.Log ("JITTER ENDED LOGGED: " + jitter);
+	}
+
+
+
+
 	public void LogDoubleDownResponse(bool response){
 		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "DOUBLE_DOWN_RESPONSE" + separator + response);
 		Debug.Log ("DOUBLE DOWN LOGGED: " + response);
@@ -59,6 +77,26 @@ public class TrialLogTrack : LogTrack {
 		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "REMEMBER_RESPONSE" + separator + response);
 		Debug.Log ("REMEMBER LOGGED: " + response);
 	}
+
+	//if the UI answer selector has moved TODO: move to an answer selector logger?
+	public void LogAnswerPositionMoved(bool isYesPosition, bool isRememberResponse){ //either remember response or double down response
+		string answerPosition = "NO";
+		if (isYesPosition) {
+			answerPosition = "YES";
+		}
+
+		if(isRememberResponse){
+			subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "REMEMBER_ANSWER_MOVEMENT" + separator + answerPosition);
+			Debug.Log ("REMEMBER MOVEMENT LOGGED: " + answerPosition);
+		}
+		else{
+			subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "DOUBLE_DOWN_ANSWER_MOVEMENT" + separator + answerPosition);
+			Debug.Log ("DOUBLE DOWN MOVEMENT LOGGED: " + answerPosition);
+		}
+	}
+
+
+	//THE FOLLOWING ARE EVENTS
 
 	public void LogInstructionEvent(){
 		if (ExperimentSettings_CoinTask.isLogging) {

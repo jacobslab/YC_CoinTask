@@ -11,6 +11,10 @@ public class QuestionUI : MonoBehaviour {
 	public AudioSource ObjectSound;
 	public Transform ObjectPositionTransform;
 
+	public bool isPlaying = false;
+
+	public AnswerSelector myAnswerSelector;
+
 	GameObject selectedObject = null;
 
 	float objectScaleMult = 5.0f; //what the appropriate object scale is when in this UI
@@ -22,20 +26,27 @@ public class QuestionUI : MonoBehaviour {
 
 	//no object
 	public IEnumerator Play(){
+		isPlaying = true;
+
 		Enable (true);
 		Answers.gameObject.SetActive (false);
+		myAnswerSelector.SetShouldCheckForInput(false);
 
 		yield return new WaitForSeconds (Config_CoinTask.minObjselectionUITime);
-		
+
 		Answers.gameObject.SetActive (true);
-		
+		myAnswerSelector.SetShouldCheckForInput (true);
+
 		yield return 0;
 	}
 
 	//show an object
 	public IEnumerator Play(GameObject objectToSelect){
+		isPlaying = true;
+
 		Enable (true);
 		Answers.gameObject.SetActive (false);
+		myAnswerSelector.SetShouldCheckForInput (false);
 
 		ObjectParticles.Stop ();
 		ObjectParticles.Play ();
@@ -58,11 +69,14 @@ public class QuestionUI : MonoBehaviour {
 		yield return new WaitForSeconds (Config_CoinTask.minObjselectionUITime);
 
 		Answers.gameObject.SetActive (true);
+		myAnswerSelector.SetShouldCheckForInput (true);
 
 		yield return 0;
 	}
 
 	public void Stop(){
+		isPlaying = false;
+
 		if (selectedObject != null) {
 			Destroy(selectedObject);
 		}

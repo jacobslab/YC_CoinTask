@@ -137,7 +137,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 			yield return 0; //thus, should wait for the button press before ending the experiment
 		}*/
 		
-		yield return StartCoroutine(ShowSingleInstruction("You have finished your trials! \nPress the button to proceed.", true, true, 0.0f));
+		yield return StartCoroutine(ShowSingleInstruction("You have finished your trials! \nPress the button to proceed.", true, true, false, 0.0f));
 		instructionsController.SetInstructionsColorful(); //want to keep a dark screen before transitioning to the end!
 		instructionsController.DisplayText("...loading end screen...");
 		EndExperiment();
@@ -177,8 +177,8 @@ public class Experiment_CoinTask : MonoBehaviour {
 		SceneController.Instance.LoadEndMenu();
 	}
 
-
-	public IEnumerator ShowSingleInstruction(string line, bool isDark, bool waitForButton, float minDisplayTimeSeconds){
+	//TODO: move to instructions controller...
+	public IEnumerator ShowSingleInstruction(string line, bool isDark, bool waitForButton, bool addRandomPostJitter, float minDisplayTimeSeconds){
 		if(isDark){
 			instructionsController.SetInstructionsColorful();
 		}
@@ -193,11 +193,14 @@ public class Experiment_CoinTask : MonoBehaviour {
 			yield return StartCoroutine (WaitForActionButton ());
 		}
 
+		if (addRandomPostJitter) {
+			yield return StartCoroutine(WaitForJitter ( Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax ) );
+		}
+
 		instructionsController.TurnOffInstructions ();
 		cameraController.SetInGame();
 	}
-
-	//TODO: move to trial controller????
+	
 	public IEnumerator WaitForActionButton(){
 		bool hasPressedButton = false;
 		while(Input.GetAxis("ActionButton") != 0f){
@@ -211,23 +214,17 @@ public class Experiment_CoinTask : MonoBehaviour {
 		}
 	}
 
-	//TODO: move to trial controller????
-	public IEnumerator WaitForYesNoResponse(){
-		bool hasPressedButton = false;
-		while(Input.GetAxis("ActionButton") != 0f && Input.GetAxis("A Button") != 0f){
+	public IEnumerator WaitForJitter(float minJitter, float maxJitter){
+		float randomJitter = Random.Range(minJitter, maxJitter);
+		trialController.GetComponent<TrialLogTrack>().LogWaitForJitterStarted(randomJitter);
+		
+		float currentTime = 0.0f;
+		while (currentTime < randomJitter) {
+			currentTime += Time.deltaTime;
 			yield return 0;
 		}
-		while(!hasPressedButton){
-			if(Input.GetAxis("ActionButton") == 1.0f){
-				hasPressedButton = true;
-				trialController.SetQuestionAnswer(true);
-			}
-			else if (Input.GetAxis("A Button") == 1.0f){
-				hasPressedButton = true;
-				trialController.SetQuestionAnswer(false);
-			}
-			yield return 0;
-		}
+
+		trialController.GetComponent<TrialLogTrack>().LogWaitForJitterEnded(randomJitter);
 	}
 	
 

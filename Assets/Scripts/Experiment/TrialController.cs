@@ -124,7 +124,7 @@ public class TrialController : MonoBehaviour {
 		if (!ExperimentSettings_CoinTask.isReplay) {
 			//show instructions for exploring, wait for the action button
 			trialLogger.LogInstructionEvent();
-			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions, true, true, Config_CoinTask.minInitialInstructionsTime));
+			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 
 			//let player explore until the button is pressed again
 			trialLogger.LogBeginningExplorationEvent();
@@ -219,11 +219,6 @@ public class TrialController : MonoBehaviour {
 
 	}
 
-	bool questionAnswer = false;
-	public void SetQuestionAnswer(bool answer){ //SET IN EXPERIMENT. TODO: REORGANIZE?!
-		questionAnswer = answer;
-	}
-
 	//INDIVIDUAL TRIALS -- implement for repeating the same thing over and over again
 	//could also create other IEnumerators for other types of trials
 	IEnumerator RunTrial(Trial trial){
@@ -265,7 +260,7 @@ public class TrialController : MonoBehaviour {
 		exp.instructionsController.EnableScoreInstructions(true);
 		trialLogger.LogInstructionEvent ();
 		yield return StartCoroutine (exp.ShowSingleInstruction ("Drive around and collect all of the coins. Pay attention to the surprise object locations!"+
-		                                                        "\n\nFinish quickly enough and you will receive a time bonus on your score!", true, true, Config_CoinTask.minDefaultInstructionTime));
+		                                                        "\n\nFinish quickly enough and you will receive a time bonus on your score!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
 		exp.instructionsController.EnableScoreInstructions(false);
 		trialLogger.LogTrialNavigationStarted ();
 
@@ -294,12 +289,15 @@ public class TrialController : MonoBehaviour {
 		//bring player to tower
 		//exp.player.TurnOnVisuals (false);
 		trialLogger.LogTransportationToTowerEvent ();
+		currentDefaultObject = null; //set to null so that arrows stop showing up...
 		yield return StartCoroutine( exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, PlayerControls.toTowerTime) );
 
 		//show instructions for location selection 
 		trialLogger.LogRecallPhaseStarted();
 		trialLogger.LogInstructionEvent ();
-		yield return StartCoroutine (exp.ShowSingleInstruction ("Use the joystick to select the location of the requested object.", true, true, Config_CoinTask.minDefaultInstructionTime));
+
+		//this instruction will also place a jitter before showing the first object -- hence the THIRD 'true' parameter...
+		yield return StartCoroutine (exp.ShowSingleInstruction ("Use the joystick to select the location of the requested object.", true, true, true, Config_CoinTask.minDefaultInstructionTime));
 
 		//ask player to locate each object individually
 		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
@@ -324,8 +322,9 @@ public class TrialController : MonoBehaviour {
 
 			yield return StartCoroutine( doYouRememberUI.Play(specialObjUICopy) );
 
-			yield return StartCoroutine (exp.WaitForYesNoResponse());
-			trialLogger.LogRememberResponse(questionAnswer); //question answer gets set with WaitForYesNoResponse...
+			yield return StartCoroutine (exp.WaitForActionButton());
+			bool response = doYouRememberUI.myAnswerSelector.IsYesPosition();
+			trialLogger.LogRememberResponse(response);
 
 			//enable position selection, turn off fancy selection UI
 			exp.environmentController.myPositionSelector.EnableSelection (true);
@@ -334,7 +333,7 @@ public class TrialController : MonoBehaviour {
 
 			//show single selection instruction and wait for selection button press
 			string selectObjectText = "Select the location of the " + specialItemName + ".";
-			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, Config_CoinTask.minDefaultInstructionTime));
+			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 
 			//log the chosen position and correct position
 			exp.environmentController.myPositionSelector.logTrack.LogPositionChosen( exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position, specialSpawnable );
@@ -348,11 +347,18 @@ public class TrialController : MonoBehaviour {
 
 			yield return StartCoroutine( doubleDownUI.Play() );
 
-			yield return StartCoroutine (exp.WaitForYesNoResponse());
-			trialLogger.LogDoubleDownResponse(questionAnswer); //question answer gets set with WaitForYesNoResponse...
+			yield return StartCoroutine (exp.WaitForActionButton());
+			response = doubleDownUI.myAnswerSelector.IsYesPosition();
+			trialLogger.LogDoubleDownResponse(response);
+			doubleDownResponses.Add(response);
 
-			doubleDownResponses.Add(questionAnswer);
+			if(i <= exp.objectController.CurrentTrialSpecialObjects.Count - 1){
+				//jitter if it's not the last object to be shown
+				yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
+			}
+
 			doubleDownUI.Stop();
+
 		}
 
 		trialLogger.LogFeedbackStarted();
@@ -444,11 +450,11 @@ public class TrialController : MonoBehaviour {
 		exp.environmentController.myPositionSelector.EnableSelection(false);
 		
 		//wait for selection button press
-		yield return StartCoroutine (exp.ShowSingleInstruction ("Press the button to continue.", false, true, Config_CoinTask.minDefaultInstructionTime));
+		yield return StartCoroutine (exp.ShowSingleInstruction ("Press the button to continue.", false, true, false, Config_CoinTask.minDefaultInstructionTime));
 		
 		//once all objects have been located, tell them their official score based on memory and time bonus, wait for button press
 		trialLogger.LogInstructionEvent ();
-		yield return StartCoroutine (exp.ShowSingleInstruction ("You scored " + memoryScore + " memory points and a " + timeBonus + " point time bonus! Continue to the next trial.", true, true, Config_CoinTask.minDefaultInstructionTime));
+		yield return StartCoroutine (exp.ShowSingleInstruction ("You scored " + memoryScore + " memory points and a " + timeBonus + " point time bonus! Continue to the next trial.", true, true, false, Config_CoinTask.minDefaultInstructionTime));
 		
 		
 		//delete all indicators & special objects
@@ -480,6 +486,15 @@ public class TrialController : MonoBehaviour {
 			Destroy (listOfGameObjects [i]);
 		}
 		listOfGameObjects.Clear ();
+	}
+
+	public void LogAnswerSelectorPositionChanged(bool isYesPosition){
+		if (doYouRememberUI.isPlaying) {
+			trialLogger.LogAnswerPositionMoved( isYesPosition, true );
+		} 
+		else if (doubleDownUI.isPlaying) {
+			trialLogger.LogAnswerPositionMoved( isYesPosition, false );
+		}
 	}
 
 	public IEnumerator WaitForSpecialAnimation(GameObject specialObject){

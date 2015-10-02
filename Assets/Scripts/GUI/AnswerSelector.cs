@@ -1,0 +1,89 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class AnswerSelector : MonoBehaviour {
+
+	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
+
+	bool shouldCheckForInput = false;
+
+	public Transform[] positionTransforms; //should be put in order of left to right
+	public GameObject selectorVisuals;
+
+	int currPositionIndex = 0;
+	int yesIndex = 0;
+	int noIndex = 1;
+
+	// Use this for initialization
+	void Start () {
+		ResetSelectorPosition ();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		if (shouldCheckForInput) {
+			CheckForInput();
+		}
+	}
+
+	public void SetShouldCheckForInput(bool shouldCheck){
+		shouldCheckForInput = shouldCheck;
+		if (shouldCheck) {
+			ResetSelectorPosition ();
+		}
+	}
+
+	void ResetSelectorPosition(){
+		exp.trialController.LogAnswerSelectorPositionChanged (IsYesPosition ());
+		if (positionTransforms.Length > 0) {
+			selectorVisuals.transform.position = positionTransforms[0].position;
+			currPositionIndex = 0;
+
+			StopCoroutine(selectorVisuals.GetComponent<TextMeshColorCycler>().CycleColors());
+			StartCoroutine(selectorVisuals.GetComponent<TextMeshColorCycler>().CycleColors());
+		}
+	}
+
+	void CheckForInput(){
+		if (Input.GetAxis ("Horizontal") > 0.3f) {
+			Move(1);
+		}
+		else if (Input.GetAxis ("Horizontal") < -0.3f){
+			Move (-1);
+		}
+	}
+
+	public bool IsYesPosition(){
+		if (currPositionIndex == yesIndex) {
+			return true;
+		}
+		return false;
+	}
+
+	public bool IsNoPosition(){
+		if (currPositionIndex == noIndex) {
+			return true;
+		}
+		return false;
+	}
+
+	void Move(int indicesToMove){
+		int oldPositionIndex = currPositionIndex;
+
+		currPositionIndex += indicesToMove;
+
+		if (currPositionIndex < 0) {
+			currPositionIndex = 0;
+		}
+		else if (currPositionIndex > positionTransforms.Length - 1){
+			currPositionIndex = positionTransforms.Length - 1;
+		}
+
+		//TODO: make nice smooth movement with a coroutine.
+		selectorVisuals.transform.position = positionTransforms [currPositionIndex].position;
+
+		if (currPositionIndex != oldPositionIndex) {
+			exp.trialController.LogAnswerSelectorPositionChanged (IsYesPosition ());
+		}
+	}
+}

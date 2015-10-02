@@ -62,6 +62,11 @@ public class Config_CoinTask : MonoBehaviour {
 
 //SPECIFIC COIN TASK VARIABLES:
 
+	public static float randomJitterMin = 0.0f;
+	public static float randomJitterMax = 0.2f;
+
+
+
 	//DEFAULT OBJECTS
 	/*public static int numDefaultObjectsEasy = 15;
 	public static int numDefaultObjectsMedium = 15;
