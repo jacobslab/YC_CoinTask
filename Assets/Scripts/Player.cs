@@ -63,6 +63,12 @@ public class Player : MonoBehaviour {
 				TurnOnRightArrows(false);
 			}
 		}
+		else if(rightArrowsOn){
+			TurnOnRightArrows(false);
+		}
+		else if(leftArrowsOn){
+			TurnOnLeftArrows(false);
+		}
 	}
 
 	public void TurnOnRightArrows(bool shouldTurnOn){

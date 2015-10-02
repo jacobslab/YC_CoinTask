@@ -284,7 +284,6 @@ public class TrialController : MonoBehaviour {
 		//Add time bonus
 		trialTimer.StopTimer ();
 		timeBonus = exp.scoreController.CalculateTimeBonus (trialTimer.GetSeconds());
-		//TODO: do nice animation for adding time bonus...
 
 		//reset num default objects collected
 		numDefaultObjectsCollected = 0;
