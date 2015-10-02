@@ -24,6 +24,8 @@ public class TrialController : MonoBehaviour {
 	Trial currentTrial;
 	Trial practiceTrial;
 
+	[HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
+
 
 	List<Trial> TrialList;
 
@@ -180,7 +182,7 @@ public class TrialController : MonoBehaviour {
 			if (index < currentTrial.DefaultObjectLocationsXZ.Count) {
 
 				Vector2 positionXZ = currentTrial.DefaultObjectLocationsXZ [index];
-				exp.objectController.SpawnDefaultObject (positionXZ, currentTrial.SpecialObjectLocationsXZ, index);
+				currentDefaultObject = exp.objectController.SpawnDefaultObject (positionXZ, currentTrial.SpecialObjectLocationsXZ, index);
 			} else {
 				Debug.Log ("Can't create a default object at that index. Index is too big.");
 			}
@@ -195,7 +197,8 @@ public class TrialController : MonoBehaviour {
 
 		for (int i = currentIndex; i < currentTrial.DefaultObjectLocationsXZ.Count; i++) {
 			Vector2 currChestPositionXZ = currentTrial.DefaultObjectLocationsXZ [i];
-			float angleBetweenChestAndPlayer = exp.player.controls.GetYAngleBetweenFacingDirAndObjectXZ( currChestPositionXZ ) ; //TODO: CALCULATE THIS.
+			float angleBetweenChestAndPlayer = exp.player.controls.GetYAngleBetweenFacingDirAndObjectXZ( currChestPositionXZ ) ;
+			angleBetweenChestAndPlayer = Mathf.Abs(angleBetweenChestAndPlayer);
 			if (i == currentIndex){
 				minAngleBetweenChestAndPlayer = angleBetweenChestAndPlayer;
 			}

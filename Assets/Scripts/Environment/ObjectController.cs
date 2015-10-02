@@ -110,7 +110,7 @@ public class ObjectController : MonoBehaviour {
 	}
 
 	//special positions get passed in so that the default object can get a special tag for later use for spawning special objects
-	public void SpawnDefaultObject (Vector2 positionXZ, List<Vector2> specialPositions, int index) {
+	public GameObject SpawnDefaultObject (Vector2 positionXZ, List<Vector2> specialPositions, int index) {
 		Vector3 objPos = new Vector3(positionXZ.x, DefaultObject.transform.position.y, positionXZ.y);
 		GameObject newObj = Instantiate(DefaultObject, objPos, DefaultObject.transform.rotation) as GameObject;
 		
@@ -120,6 +120,8 @@ public class ObjectController : MonoBehaviour {
 		if( specialPositions.Contains(positionXZ) ){
 			newObj.tag = "DefaultSpecialObject";
 		}
+
+		return newObj;
 	}
 	
 	
