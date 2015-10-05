@@ -237,7 +237,7 @@ public class TrialController : MonoBehaviour {
 
 		//move player to home location & rotation
 		trialLogger.LogTransportationToHomeEvent ();
-		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, exp.player.controls.toStartTime));//PlayerControls.toStartTime) );
+		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot));//PlayerControls.toStartTime) );
 
 		//exp.player.TurnOnVisuals (true);
 
@@ -290,7 +290,7 @@ public class TrialController : MonoBehaviour {
 		//exp.player.TurnOnVisuals (false);
 		trialLogger.LogTransportationToTowerEvent ();
 		currentDefaultObject = null; //set to null so that arrows stop showing up...
-		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, exp.player.controls.toTowerTime));//PlayerControls.toTowerTime) );
+		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot));//PlayerControls.toTowerTime) );
 
 		//show instructions for location selection 
 		trialLogger.LogRecallPhaseStarted();

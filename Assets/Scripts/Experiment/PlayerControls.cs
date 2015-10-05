@@ -17,10 +17,8 @@ public class PlayerControls : MonoBehaviour{
 	public Transform startPositionTransform2;
 
 	float RotationSpeed = 50.0f;
-
-	//TODO: change back to static once done debugging values in editor.
-	public float toTowerTime = 2.0f;
-	public float toStartTime = 2.0f;
+	
+	float smoothMoveSpeed = 0.0019f;
 
 
 
@@ -103,7 +101,7 @@ public class PlayerControls : MonoBehaviour{
 	}
 	
 
-	public IEnumerator SmoothMoveTo(Vector3 targetPosition, Quaternion targetRotation,  float totalTime){
+	public IEnumerator SmoothMoveTo(Vector3 targetPosition, Quaternion targetRotation){
 
 		SetTilt (0.0f, 1.0f);
 
@@ -116,16 +114,23 @@ public class PlayerControls : MonoBehaviour{
 
 		Quaternion origRotation = transform.rotation;
 		Vector3 origPosition = transform.position;
-		
-		float moveAndRotateRate = 1.0f / totalTime;
+
+		float travelDistance = (origPosition - targetPosition).magnitude;
+
+		float moveAndRotateRate = smoothMoveSpeed * travelDistance;//1.0f / totalTime;
 		float tElapsed = 0.0f;
 		float epsilon = 0.01f;
+
+		//DEBUG
+		float totalTimeElapsed = 0.0f;
 
 		float angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
 		float angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
 		bool arePositionsCloseEnough = CheckPositionsCloseEnough(transform.position, targetPosition, epsilon);
 		while ( ( angleDiffY >= epsilon ) || ( angleDiffX >= epsilon ) || (!arePositionsCloseEnough) ){
-			
+
+			totalTimeElapsed += Time.deltaTime;
+
 			tElapsed += (Time.deltaTime * moveAndRotateRate);
 			//will spherically interpolate the rotation for config.spinTime seconds
 			transform.rotation = Quaternion.Slerp(origRotation, targetRotation, tElapsed); //SLERP ALWAYS TAKES THE SHORTEST PATH.
@@ -138,7 +143,8 @@ public class PlayerControls : MonoBehaviour{
 			yield return 0;
 		}
 		
-		
+		Debug.Log ("TOTAL TIME ELAPSED FOR SMOOTH MOVE: " + totalTimeElapsed);
+
 		transform.rotation = targetRotation;
 		transform.position = targetPosition;
 
