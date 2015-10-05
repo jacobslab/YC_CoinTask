@@ -18,7 +18,7 @@ public class PlayerControls : MonoBehaviour{
 
 	float RotationSpeed = 50.0f;
 	
-	float smoothMoveSpeed = 0.0019f;
+	float smoothMoveSpeed = 35.0f;
 
 
 
@@ -117,7 +117,10 @@ public class PlayerControls : MonoBehaviour{
 
 		float travelDistance = (origPosition - targetPosition).magnitude;
 
-		float moveAndRotateRate = smoothMoveSpeed * travelDistance;//1.0f / totalTime;
+
+		float timeToTravel = travelDistance / smoothMoveSpeed;
+
+
 		float tElapsed = 0.0f;
 		float epsilon = 0.01f;
 
@@ -127,14 +130,19 @@ public class PlayerControls : MonoBehaviour{
 		float angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
 		float angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
 		bool arePositionsCloseEnough = CheckPositionsCloseEnough(transform.position, targetPosition, epsilon);
-		while ( ( angleDiffY >= epsilon ) || ( angleDiffX >= epsilon ) || (!arePositionsCloseEnough) ){
-
+		//while ( ( angleDiffY >= epsilon ) || ( angleDiffX >= epsilon ) || (!arePositionsCloseEnough) ){
+		while(tElapsed < timeToTravel){
 			totalTimeElapsed += Time.deltaTime;
 
-			tElapsed += (Time.deltaTime * moveAndRotateRate);
+			//tElapsed += (Time.deltaTime * moveAndRotateRate);
+
+			tElapsed += Time.deltaTime;
+
+			float percentageTime = tElapsed / timeToTravel;
+
 			//will spherically interpolate the rotation for config.spinTime seconds
-			transform.rotation = Quaternion.Slerp(origRotation, targetRotation, tElapsed); //SLERP ALWAYS TAKES THE SHORTEST PATH.
-			transform.position = Vector3.Lerp(origPosition, targetPosition, tElapsed);
+			transform.rotation = Quaternion.Slerp(origRotation, targetRotation, percentageTime); //SLERP ALWAYS TAKES THE SHORTEST PATH.
+			transform.position = Vector3.Lerp(origPosition, targetPosition, percentageTime);
 
 			//calculate new differences
 			angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
