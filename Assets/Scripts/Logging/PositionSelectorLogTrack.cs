@@ -14,12 +14,6 @@ public class PositionSelectorLogTrack : LogTrack {
 
 	void InitialLog(){
 		LogSelectorSize ();
-		LogCorrectIndicatorSize ();
-	}
-
-	void LogCorrectIndicatorSize(){
-		float diameter = envPosSelector.CorrectPositionIndicator.transform.localScale.x;
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "CORRECT_INDICATOR_SIZE" + separator + "DIAMETER" + separator + diameter);
 	}
 
 	/*public void LogSelectorSize(){

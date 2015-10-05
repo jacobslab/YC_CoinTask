@@ -215,8 +215,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	public bool GetRadiusOverlap(Vector3 correctPosition){
 		float distance = (correctPosition - PositionSelector.transform.position).magnitude;
 		float positionSelectorRadius = PositionSelectorVisuals.transform.localScale.x / 2.0f;
-		float correctRadius = CorrectPositionIndicator.transform.localScale.x / 2.0f;
-		if (distance < positionSelectorRadius + correctRadius) {
+		if (distance < positionSelectorRadius) {
 			return true;
 		}
 
