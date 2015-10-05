@@ -21,7 +21,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	public SelectionRadiusType currentRadiusType;
 */
 	bool shouldSelect;
-	float selectionMovementSpeed = 4.0f;
+	float selectionMovementSpeed = 80.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -56,10 +56,10 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		bool positionCloseToTower2 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.towerPositionTransform2.position);
 
 		if (positionCloseToTower1) {
-			Move (verticalAxisInput * selectionMovementSpeed, horizontalAxisInput * selectionMovementSpeed);
+			Move (verticalAxisInput * selectionMovementSpeed * Time.deltaTime, horizontalAxisInput * selectionMovementSpeed * Time.deltaTime);
 		} 
 		else if (positionCloseToTower2) {
-			Move (-verticalAxisInput * selectionMovementSpeed, -horizontalAxisInput * selectionMovementSpeed);
+			Move (-verticalAxisInput * selectionMovementSpeed * Time.deltaTime, -horizontalAxisInput * selectionMovementSpeed * Time.deltaTime);
 		}
 	}
 
