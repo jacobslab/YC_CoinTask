@@ -78,10 +78,6 @@ public class Config_CoinTask : MonoBehaviour {
 	public static int numSpecialObjectsMedium = 4;
 	public static int numSpecialObjectsHard = 6;*/
 
-	//SIZE (diameter, actually) FOR CORRECT SELECTION DURING TESTING PHASE
-	public static float smallSelectionSize = 10.0f;
-	public static float bigSelectionSize = 20.0f;
-
 	public static float objectToWallBuffer = 10.0f; //half of the big selection size, because the selection size is actually the diameter of the selector.
 	public static float objectToObjectBuffer { get { return CalculateObjectToObjectBuffer(); } } //calculated base on min time to drive between objects!
 	public static float specialObjectBufferMult = 0.0f; //the distance the object controller will try to keep between special objects. should be a multiple of objectToObjectBuffer

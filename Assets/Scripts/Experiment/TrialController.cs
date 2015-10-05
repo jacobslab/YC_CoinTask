@@ -417,7 +417,7 @@ public class TrialController : MonoBehaviour {
 			//scale the chosen indicators appropriately
 			//EnvironmentPositionSelector.SelectionRadiusType chosenRadiusSize = chosenSelectorSizes[i];
 			//if( chosenRadiusSize == EnvironmentPositionSelector.SelectionRadiusType.big ){
-				chosenPositionIndicator.transform.localScale = new Vector3 ( Config_CoinTask.bigSelectionSize, chosenPositionIndicator.transform.localScale.y, Config_CoinTask.bigSelectionSize );
+				//chosenPositionIndicator.transform.localScale = new Vector3 ( Config_CoinTask.bigSelectionSize, chosenPositionIndicator.transform.localScale.y, Config_CoinTask.bigSelectionSize );
 			//} 
 			/*else if ( chosenRadiusSize == EnvironmentPositionSelector.SelectionRadiusType.small ){
 				chosenPositionIndicator.transform.localScale = new Vector3 ( Config_CoinTask.smallSelectionSize, chosenPositionIndicator.transform.localScale.y, Config_CoinTask.smallSelectionSize );
