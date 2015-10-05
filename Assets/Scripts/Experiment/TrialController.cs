@@ -338,6 +338,10 @@ public class TrialController : MonoBehaviour {
 			//log the chosen position and correct position
 			exp.environmentController.myPositionSelector.logTrack.LogPositionChosen( exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position, specialSpawnable );
 
+			//wait for the position selector to choose the position, runs color changing of the selector
+			yield return StartCoroutine (exp.environmentController.myPositionSelector.ChoosePosition());
+
+
 			//add current chosen position to list of chosen positions
 			chosenPositions.Add(exp.environmentController.myPositionSelector.GetSelectorPosition());
 			//chosenSelectorSizes.Add(exp.environmentController.myPositionSelector.currentRadiusType);

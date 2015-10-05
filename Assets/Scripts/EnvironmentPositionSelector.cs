@@ -13,6 +13,10 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	public PositionSelectorLogTrack logTrack;
 
+
+	public Color VisualsDefaultColor;
+	public Color VisualsSelectColor;
+
 	/*public enum SelectionRadiusType{
 		big,
 		small,
@@ -39,13 +43,12 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		}
 	}
 
-	/*IEnumerator ChoosePosition(){
+	public IEnumerator ChoosePosition(){
 		//change position selector visual colors!
-		//TODO: make a script for the visuals and add the "change color" function to it?
-		for (int i = 0; i < PositionSelectorVisuals.transform.childCount; i++){
-
-		}
-	}*/
+		yield return StartCoroutine (PositionSelectorVisuals.GetComponent<ColorChanger> ().LerpChangeColor(VisualsSelectColor, 0.2f));
+		PositionSelectorVisuals.GetComponent<ColorChanger> ().ChangeColor (VisualsDefaultColor);
+		
+	}
 
 	void GetMovementInput(){
 		float verticalAxisInput = Input.GetAxis ("Vertical");
