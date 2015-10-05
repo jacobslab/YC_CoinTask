@@ -18,8 +18,9 @@ public class PlayerControls : MonoBehaviour{
 
 	float RotationSpeed = 50.0f;
 
-	public static float toTowerTime = 2.0f;
-	public static float toStartTime = 2.0f;
+	//TODO: change back to static once done debugging values in editor.
+	public float toTowerTime = 2.0f;
+	public float toStartTime = 2.0f;
 
 
 
