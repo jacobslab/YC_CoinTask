@@ -16,8 +16,7 @@ public class PlayerControls : MonoBehaviour{
 	public Transform startPositionTransform1;
 	public Transform startPositionTransform2;
 
-	float RotationSpeed = 1.2f;
-	Quaternion lastRotation;
+	float RotationSpeed = 50.0f;
 
 	public static float toTowerTime = 2.0f;
 	public static float toStartTime = 2.0f;
@@ -33,7 +32,6 @@ public class PlayerControls : MonoBehaviour{
 		else{
 			GetComponent<Collider>().enabled = true;
 		}
-		lastRotation = transform.rotation;
 	}
 	
 	// Update is called once per frame
@@ -42,11 +40,6 @@ public class PlayerControls : MonoBehaviour{
 		if (exp.currentState == Experiment_CoinTask.ExperimentState.inExperiment) {
 			if(!ShouldLockControls){
 				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationY; // TODO: on collision, don't allow a change in angular velocity?
-
-				if (Config_CoinTask.isAvatarTilting && !isSmoothMoving) {
-					SetTilt ();
-					lastRotation = transform.rotation;
-				}
 
 				//sets velocities
 				GetInput ();
@@ -57,22 +50,20 @@ public class PlayerControls : MonoBehaviour{
 		}
 	}
 
-	void FixedUpdate(){
-
-	}
 	
 	//based on amount difference of y rotation, tilt in z axis
-	void SetTilt(){
-		float rotationDifference = transform.rotation.eulerAngles.y - lastRotation.eulerAngles.y;
+	void SetTilt(float amountTurned, float turnTime){
+		if (Config_CoinTask.isAvatarTilting) {
+			float turnRate = 0.0f;
+			if (turnTime != 0.0f) {
+				turnRate = amountTurned / turnTime;
+			}
 
-		float percentTilt = rotationDifference / Config_CoinTask.maxAngleDifference;
-		float tiltAngle = percentTilt * Config_CoinTask.maxTiltAngle;
-		if (percentTilt > 1.0f) {
-			tiltAngle = Config_CoinTask.maxTiltAngle;
+			float tiltAngle = turnRate * Config_CoinTask.turnAngleMult;
+
+			tiltAngle *= -1; //tilt in opposite direction of the difference
+			TiltableTransform.rotation = Quaternion.Euler (transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, tiltAngle);	
 		}
-
-		tiltAngle *= -1; //tilt in opposite direction of the difference
-		TiltableTransform.rotation = Quaternion.Euler (transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, tiltAngle);
 	}
 
 	void GetInput()
@@ -94,11 +85,9 @@ public class PlayerControls : MonoBehaviour{
 
 			//GetComponent<Rigidbody> ().angularVelocity = Vector3.up * horizontalAxisInput * RotationSpeed;
 			float percent = horizontalAxisInput / 1.0f;
-			Turn (percent * RotationSpeed);
-			//Debug.Log("horizontal axis ANG VEL = " + GetComponent<Rigidbody>().angularVelocity);
-		}
-		else {
-			GetComponent<Rigidbody> ().angularVelocity = Vector3.zero * horizontalAxisInput * RotationSpeed;
+			Turn (percent * RotationSpeed * Time.deltaTime);
+		} else {
+			SetTilt(0.0f, 1.0f);
 		}
 
 	}
@@ -109,14 +98,14 @@ public class PlayerControls : MonoBehaviour{
 	
 	void Turn( float amount ){
 		transform.RotateAround (transform.position, Vector3.up, amount );
+		SetTilt (amount, Time.deltaTime);
 	}
 	
 
 	public IEnumerator SmoothMoveTo(Vector3 targetPosition, Quaternion targetRotation,  float totalTime){
 
-		//set tilt stays at zero
-		lastRotation = transform.rotation;
-		SetTilt ();
+		SetTilt (0.0f, 1.0f);
+
 		//notify tilting that we're smoothly moving, and thus should not tilt
 		isSmoothMoving = true;
 
@@ -135,8 +124,6 @@ public class PlayerControls : MonoBehaviour{
 		float angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
 		bool arePositionsCloseEnough = CheckPositionsCloseEnough(transform.position, targetPosition, epsilon);
 		while ( ( angleDiffY >= epsilon ) || ( angleDiffX >= epsilon ) || (!arePositionsCloseEnough) ){
-
-			lastRotation = transform.rotation; //set last rotation before rotating!
 			
 			tElapsed += (Time.deltaTime * moveAndRotateRate);
 			//will spherically interpolate the rotation for config.spinTime seconds
@@ -153,11 +140,6 @@ public class PlayerControls : MonoBehaviour{
 		
 		transform.rotation = targetRotation;
 		transform.position = targetPosition;
-
-		//make sure the tilt stays at zero
-		lastRotation = transform.rotation;
-		SetTilt ();
-		isSmoothMoving = false;
 
 		//enable collisions again
 		GetComponent<Collider> ().enabled = true;
@@ -179,10 +161,6 @@ public class PlayerControls : MonoBehaviour{
 	}
 
 	public IEnumerator RotateTowardSpecialObject(GameObject target){
-		//set tilt to zero
-		lastRotation = transform.rotation;
-		SetTilt ();
-
 		Quaternion origRotation = transform.rotation;
 		Vector3 targetPosition = new Vector3 (target.transform.position.x, transform.position.y, target.transform.position.z);
 		transform.LookAt(targetPosition);
@@ -197,21 +175,19 @@ public class PlayerControls : MonoBehaviour{
 		float rotateRate = 1.0f / Config_CoinTask.rotateToSpecialObjectTime;
 		float tElapsed = 0.0f;
 		float rotationEpsilon = 0.01f;
-		//bool hasSetTilt = false;
 		while (Mathf.Abs(transform.rotation.eulerAngles.y - desiredRotation.eulerAngles.y) >= rotationEpsilon){
-			
-			lastRotation = transform.rotation; //set last rotation before rotating!
-			
+
+			float currRotY = transform.rotation.eulerAngles.y;
+
 			tElapsed += (Time.deltaTime * rotateRate);
 			ELAPSEDTIME += Time.deltaTime;
+
 			//will spherically interpolate the rotation for config.spinTime seconds
 			transform.rotation = Quaternion.Slerp(origRotation, desiredRotation, tElapsed); //SLERP ALWAYS TAKES THE SHORTEST PATH.
-			
-			//if(!hasSetTilt && Config_CoinTask.isAvatarTilting){
-			//	SetTilt(); //should be a constant speed - only set this once
-			//	hasSetTilt = true;
-			//}
-			
+
+			float angleRotated = transform.rotation.eulerAngles.y - currRotY;
+			SetTilt(angleRotated, Time.deltaTime);
+
 			yield return 0;
 		}
 		

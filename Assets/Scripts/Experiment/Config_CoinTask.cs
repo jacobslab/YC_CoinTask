@@ -106,8 +106,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 	//tilt variables
 	public static bool isAvatarTilting = true;
-	public static float maxTiltAngle = 15.0f; //max angle to tilt
-	public static float maxAngleDifference = 5.0f; //maximum turning angle difference to use in tilt calculation --> currTiltAngle/maxTiltAngle = currentAngleDifference/maxAngleDifference
+	public static float turnAngleMult = 0.07f;
 
 	//drive variables
 	public static float driveSpeed = 22;
