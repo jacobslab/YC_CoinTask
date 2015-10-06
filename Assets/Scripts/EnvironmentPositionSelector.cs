@@ -9,7 +9,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	public GameObject PositionSelector;
 	public GameObject PositionSelectorVisuals;
 	public GameObject CorrectPositionIndicator;
-	public TextMesh RadiusPointText;
 
 	public PositionSelectorLogTrack logTrack;
 
@@ -190,27 +189,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	}*/
 
 
-	void SetRadiusText(){
-
-		if (!shouldSelect) {
-			RadiusPointText.text = "";
-		}
-
-		else{
-			string pointsText = " POINTS";
-			RadiusPointText.text = RadiusPointText.text = ScoreController.MemoryScoreMedium + pointsText;
-			/*
-			if (currentRadiusType == SelectionRadiusType.none) { //none
-				RadiusPointText.text = ScoreController.MemoryScoreNoChoice + pointsText;
-			}
-			else if(currentRadiusType == SelectionRadiusType.big){ //big
-				RadiusPointText.text = ScoreController.MemoryScoreMedium + pointsText;
-			}
-			else if (currentRadiusType == SelectionRadiusType.small){ //small
-				RadiusPointText.text = ScoreController.MemoryScoreBest + pointsText;
-			}*/
-		}
-	}
 
 	public bool GetRadiusOverlap(Vector3 correctPosition){
 		float distance = (correctPosition - PositionSelector.transform.position).magnitude;
@@ -229,8 +207,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	public void EnableSelection(bool shouldEnable){
 		shouldSelect = shouldEnable;
 		EnableSelectionIndicator (shouldEnable);
-
-		SetRadiusText();
 	}
 
 	void EnableSelectionIndicator(bool shouldEnable){
