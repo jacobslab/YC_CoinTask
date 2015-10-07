@@ -27,8 +27,7 @@ public class InstructionsController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		EnableScoreInstructions(false);
-		//_textMesh = GetComponent<TextMesh> ();
+
 	}
 	
 	// Update is called once per frame
@@ -39,10 +38,6 @@ public class InstructionsController : MonoBehaviour {
 	public void TurnOffInstructions(){
 		SetInstructionsTransparentOverlay();
 		SetInstructionsBlank();
-	}
-
-	public void EnableScoreInstructions(bool shouldEnable){
-		ScoreInstructions.SetActive(shouldEnable);
 	}
 
 	void SetText(string newText){

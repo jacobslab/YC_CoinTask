@@ -8,6 +8,7 @@ public class SimpleTimer : MonoBehaviour {
 	float seconds = 0;
 
 	bool isRunning = false;
+	public bool IsRunning { get { return isRunning; } } //public getter. don't want people setting isRunning outside of here.
 
 	// Use this for initialization
 	void Start () {

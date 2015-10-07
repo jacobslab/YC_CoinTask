@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -29,7 +29,7 @@ public class TimeBonusUIController : MonoBehaviour {
 
 	SimpleTimer trialTimer { get { return Experiment_CoinTask.Instance.trialController.trialTimer; } }
 
-	int minTimeBonusTime { get { return ScoreController.TimeBonusTimeSmall; } }
+	int minTimeBonusTime { get { return ScoreController.TimeBonusTimeMin; } }
 	int medTimeBonusTime { get { return ScoreController.TimeBonusTimeMed; } }
 	int maxTimeBonusTime { get { return ScoreController.TimeBonusTimeBig; } }
 

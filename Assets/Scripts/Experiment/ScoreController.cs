@@ -22,27 +22,27 @@ public class ScoreController : MonoBehaviour {
 	public static int TimeBonusBig { get { return timeBonusBig; } }
 	
 
-	static int memoryScoreBest = 50;
-	public static int MemoryScoreBest { get { return memoryScoreBest; } }
+	static int memoryScoreRight = 50;
+	public static int MemoryScoreRight { get { return memoryScoreRight; } }
 
-	static int memoryScoreMedium = 30;
-	public static int MemoryScoreMedium { get { return memoryScoreMedium; } }
-
-	static int memoryScoreNoChoice = 10;
-	public static int MemoryScoreNoChoice { get { return memoryScoreNoChoice; } }
-
-	static int memoryScoreWrong = -30;
+	static int memoryScoreWrong = -16;
 	public static int MemoryScoreWrong { get { return memoryScoreWrong; } }
 
-	int defaultObjectPoints = 1;
-	int specialObjectPoints = 10;
+	static int memoryScoreDoubleDown = 150;
+	public static int MemoryScoreDoubleDown { get { return memoryScoreDoubleDown; } }
+
+	static int memoryScoreWrongDoubleDown = -116;
+	public static int MemoryScoreWrongDoubleDown { get { return memoryScoreWrongDoubleDown; } }
+
+	int defaultObjectPoints = 0;
+	int specialObjectPoints = 50;
 
 
 
 
 	//Time bonus time variables!
 	static int timeBonusTimeMin = 30;
-	public static int TimeBonusTimeSmall { get { return timeBonusTimeMin; } }
+	public static int TimeBonusTimeMin { get { return timeBonusTimeMin; } }
 	
 	static int timeBonusTimeMed = 45;
 	public static int TimeBonusTimeMed { get { return timeBonusTimeMed; } }
@@ -106,23 +106,20 @@ public class ScoreController : MonoBehaviour {
 	public int CalculateMemoryPoints (Vector3 correctPosition, bool doubledDown){
 		int memoryPoints = 0;
 		if (exp.environmentController.myPositionSelector.GetRadiusOverlap (correctPosition)) {
-			/*if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.small){
-				memoryPoints = memoryScoreBest;
+			if(!doubledDown){
+				memoryPoints = memoryScoreRight;
 			}
-			else if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.big){
-				memoryPoints =  memoryScoreMedium;
-			}*/
-			memoryPoints = memoryScoreMedium;
+			else{
+				memoryPoints = memoryScoreDoubleDown;
+			}
 		}
-		/*else if(exp.environmentController.myPositionSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.none){
-			memoryPoints = memoryScoreNoChoice;
-		}*/
 		else{ //wrong
-			memoryPoints = memoryScoreWrong;
-		}
-
-		if (doubledDown) {
-			memoryPoints *= 2; //double the score if we doubled down!
+			if(!doubledDown){
+				memoryPoints = memoryScoreWrong;
+			}
+			else{
+				memoryPoints = memoryScoreWrongDoubleDown;
+			}
 		}
 
 		AddToScore(memoryPoints, false);
