@@ -10,9 +10,12 @@ public class SimpleTimer : MonoBehaviour {
 	bool isRunning = false;
 	public bool IsRunning { get { return isRunning; } } //public getter. don't want people setting isRunning outside of here.
 
+	public delegate void ResetDelegate();
+	public ResetDelegate myResetDelegate;
+
 	// Use this for initialization
 	void Start () {
-	
+
 	}
 	
 	// Update is called once per frame
@@ -24,13 +27,15 @@ public class SimpleTimer : MonoBehaviour {
 
 	void UpdateTimer(){
 		seconds += Time.deltaTime;
-		
-		int displayMinutes = (int)Mathf.Floor (seconds / 60.0f);
-		int displaySeconds = (int)Mathf.Floor (seconds - (displayMinutes * 60));
-		if (displaySeconds < 10) {
-			timerText.text = displayMinutes + ":0" + displaySeconds;
-		} else {
-			timerText.text = displayMinutes + ":" + displaySeconds;
+
+		if(timerText != null){
+			int displayMinutes = (int)Mathf.Floor (seconds / 60.0f);
+			int displaySeconds = (int)Mathf.Floor (seconds - (displayMinutes * 60));
+			if (displaySeconds < 10) {
+				timerText.text = displayMinutes + ":0" + displaySeconds;
+			} else {
+				timerText.text = displayMinutes + ":" + displaySeconds;
+			}
 		}
 	}
 
@@ -43,6 +48,7 @@ public class SimpleTimer : MonoBehaviour {
 	}
 
 	public void ResetTimer(){
+		myResetDelegate ();
 		seconds = 0;
 	}
 

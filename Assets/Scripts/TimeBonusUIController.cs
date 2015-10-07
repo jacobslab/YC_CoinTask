@@ -96,7 +96,6 @@ public class TimeBonusUIController : MonoBehaviour {
 	}
 
 	public IEnumerator MoveBonusText (){
-		//TODO: fade out panel behind the text...
 
 		float timeToMove = 1.0f;
 
