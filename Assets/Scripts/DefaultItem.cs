@@ -37,8 +37,8 @@ public class DefaultItem : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerEnter(Collider hitCollider){
-		if (hitCollider.gameObject.tag == "Player" && (tag == "DefaultObject" || tag == "DefaultSpecialObject") ) {
+	void OnCollisionEnter(Collision collision){
+		if (collision.gameObject.tag == "Player" && (tag == "DefaultObject" || tag == "DefaultSpecialObject") ) {
 
 			//open the object
 			StartCoroutine( Open(Experiment_CoinTask.Instance.player.gameObject) ); //TODO: move particle systems to chest???
@@ -55,8 +55,6 @@ public class DefaultItem : MonoBehaviour {
 				shouldDie = true;
 
 				Experiment_CoinTask.Instance.scoreController.AddDefaultPoints();
-
-				GetComponent<Collider>().enabled = false;
 
 				DefaultParticles.Play();
 				defaultCollisionSound.Play();
@@ -111,7 +109,24 @@ public class DefaultItem : MonoBehaviour {
 		GetComponent<TreasureChestLogTrack> ().LogOpening (closePivotName, GetIsSpecial()); 
 		
 		Quaternion origRotation = top.rotation;
-		top.RotateAround(pivotPos, -transform.right, angleToOpen); //rotate to get the desired rotation
+		//top.RotateAround(pivotPos, -transform.right, angleToOpen); //rotate to get the desired rotation
+
+		Debug.Log("TOP ROT: " + top.rotation + "ANGLE LEFT: " + angleToOpen);
+
+
+		float angleChange = 8.0f;
+		float directionMult = 1.0f;
+
+		if (angleToOpen < 0) {
+			directionMult = -1.0f;
+		}
+
+		while (directionMult*angleToOpen > 0) {
+			top.RotateAround (pivotPos, -directionMult*transform.right, angleChange);
+			angleToOpen -= directionMult*angleChange;
+			yield return 0;
+		}
+
 		Quaternion desiredRotation = top.transform.rotation;
 		
 		yield return 0;
