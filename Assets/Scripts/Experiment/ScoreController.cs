@@ -9,7 +9,6 @@ public class ScoreController : MonoBehaviour {
 	public int score = 0;
 	public Text scoreText;
 	public ScoreLogTrack scoreLogger;
-	public TimerBar timerBarUI;
 
 	//SCORE VARIABLES -- don't want anyone to change them, so make public getters, no setters.
 	static int timeBonusSmall = 10;
@@ -71,10 +70,6 @@ public class ScoreController : MonoBehaviour {
 
 	IEnumerator UpdateScoreText(int initialScore, int amountToAdd, bool isTimeBonus){
 		float timeBetweenUpdates = 0.05f;
-
-		if (isTimeBonus) {
-			yield return StartCoroutine( timerBarUI.MoveBonusText () );
-		}
 
 		int increment = 1;
 		if (amountToAdd < 0) {

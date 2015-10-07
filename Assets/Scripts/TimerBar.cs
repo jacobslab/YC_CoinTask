@@ -17,12 +17,6 @@ public class TimerBar : MonoBehaviour {
 	public RectTransform bottomBonusUI;
 
 
-	//bonus text movement when added
-	public Text bonusText;
-	public RectTransform bonusTextMoveToTransform;
-	Vector3 bonusTextOrigScale;
-
-
 	Vector3[] barPositions;
 	float[] barWidths;
 	float[] barTimes;
@@ -56,9 +50,6 @@ public class TimerBar : MonoBehaviour {
 		barTimes [0] = ScoreController.TimeBonusTimeMin;
 		barTimes [1] = ScoreController.TimeBonusTimeMed - ScoreController.TimeBonusTimeMin;
 		barTimes [2] = ScoreController.TimeBonusTimeBig - ScoreController.TimeBonusTimeMed;
-
-
-		bonusTextOrigScale = bonusText.rectTransform.localScale;
 
 		Reset ();
 	}
@@ -96,14 +87,14 @@ public class TimerBar : MonoBehaviour {
 
 	void SetState(TimeState newState, string newBonusText, Vector3 indicatorPosition){
 		timeState = newState;
-		bonusText.text = newBonusText;
-		bonusText.rectTransform.position = indicatorPosition;
 		indicator.position = indicatorPosition;
 	}
 
 	void ResizeBar(RectTransform bar, int barIndex){
 		float widthDecrement = ( barWidths[barIndex] / barTimes[barIndex] ) * Time.deltaTime;
-		float moveAmount = 0.5f * widthDecrement;
+
+		//0.7 is a trial & error value. when the bar scales, it scales from both sides. thus, we want to reposition the bar so it looks like it's shrinking from only one side.
+		float moveAmount = 0.6f * widthDecrement;
 		
 		bar.sizeDelta = bar.rect.size - new Vector2(widthDecrement, 0);
 		bar.position += Vector3.left * moveAmount;
@@ -122,41 +113,6 @@ public class TimerBar : MonoBehaviour {
 		midBar.sizeDelta = new Vector2 (barWidths [1], topBar.rect.height);
 		bottomBar.sizeDelta = new Vector2 (barWidths [2], topBar.rect.height);
 
-		ResetBonusText ();
-	}
-
-
-
-	public IEnumerator MoveBonusText (){
-
-		Vector3 startPos = bonusText.rectTransform.position;
-		Vector3 endPos = bonusTextMoveToTransform.position;
-
-		float moveSpeed = 0.01f;
-		float timeToMove = (startPos - endPos).magnitude * moveSpeed;
-		
-		float currTime = 0.0f;
-		
-		while (currTime < timeToMove) {
-			bonusText.rectTransform.position = Vector3.Lerp (startPos, endPos, currTime/timeToMove);
-			bonusText.rectTransform.localScale = Vector3.Lerp (bonusTextOrigScale, Vector3.zero, currTime/timeToMove);
-			
-			currTime  += Time.deltaTime;
-			
-			yield return 0;
-		}
-		bonusText.rectTransform.position = endPos;
-		bonusText.rectTransform.localScale = Vector3.zero;
-		
-		
-		yield return 0;
-	}
-	
-	void ResetBonusText(){
-		bonusText.text = topBonusUI.GetComponentInChildren<Text> ().text;
-
-		bonusText.rectTransform.position = topBonusUI.position;
-		bonusText.rectTransform.localScale = bonusTextOrigScale;
 	}
 
 }
