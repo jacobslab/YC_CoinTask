@@ -53,6 +53,6 @@ public class SimpleTimer : MonoBehaviour {
 	}
 
 	public int GetSeconds(){
-		return (int)seconds;
+		return Mathf.CeilToInt(seconds);
 	}
 }

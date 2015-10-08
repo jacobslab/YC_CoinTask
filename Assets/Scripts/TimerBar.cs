@@ -34,6 +34,7 @@ public class TimerBar : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
 		myTimer.myResetDelegate += Reset;
 
 		barPositions = new Vector3[3];
@@ -58,23 +59,23 @@ public class TimerBar : MonoBehaviour {
 	void Update () {
 		if (myTimer.IsRunning) {
 
-			if (myTimer.GetSeconds () < ScoreController.TimeBonusTimeMin) { //make top bar smaller
+			if (myTimer.GetSeconds () <= ScoreController.TimeBonusTimeMin) { //make top bar smaller
 				if(timeState != TimeState.minTime){
 					SetState(TimeState.minTime, topBonusUI.GetComponentInChildren<Text> ().text, topBonusUI.position);
 				}
-				ResizeBar (topBar, 0);
+				MoveBar (topBar, 0);
 			} 
-			else if (myTimer.GetSeconds () < ScoreController.TimeBonusTimeMed) { //make mid bar smaller
+			else if (myTimer.GetSeconds () <= ScoreController.TimeBonusTimeMed) { //make mid bar smaller
 				if(timeState != TimeState.medTime){
 					SetState(TimeState.medTime, topMidBonusUI.GetComponentInChildren<Text> ().text, topMidBonusUI.position);
 				}
-				ResizeBar (midBar, 1);
+				MoveBar (midBar, 1);
 			} 
-			else if (myTimer.GetSeconds () < ScoreController.TimeBonusTimeBig) { //make bottom bar smaller
+			else if (myTimer.GetSeconds () <= ScoreController.TimeBonusTimeBig) { //make bottom bar smaller
 				if(timeState != TimeState.maxTime){
 					SetState(TimeState.maxTime, bottomMidBonusUI.GetComponentInChildren<Text> ().text, bottomMidBonusUI.position);
 				}
-				ResizeBar (bottomBar, 2);
+				MoveBar (bottomBar, 2);
 			}
 			else{
 				if(timeState != TimeState.overTime){
@@ -89,15 +90,17 @@ public class TimerBar : MonoBehaviour {
 		timeState = newState;
 		indicator.position = indicatorPosition;
 	}
+	float amountMoveTotal = 0;
+	void MoveBar(RectTransform bar, int barIndex){
+		float totalMoveDistance = barWidths [barIndex];
+		float moveAmount = ( totalMoveDistance / barTimes[barIndex] ) * Time.deltaTime * bar.transform.lossyScale.x;
 
-	void ResizeBar(RectTransform bar, int barIndex){
-		float widthDecrement = ( barWidths[barIndex] / barTimes[barIndex] ) * Time.deltaTime;
-
-		//0.7 is a trial & error value. when the bar scales, it scales from both sides. thus, we want to reposition the bar so it looks like it's shrinking from only one side.
-		float moveAmount = 0.6f * widthDecrement;
-		
-		bar.sizeDelta = bar.rect.size - new Vector2(widthDecrement, 0);
 		bar.position += Vector3.left * moveAmount;
+
+		if (barIndex == 0) {
+			amountMoveTotal += moveAmount;
+			Debug.Log("AMOUNT MOVED TOTAL: " + amountMoveTotal);
+		}
 	}
 
 	void Reset(){
@@ -108,10 +111,6 @@ public class TimerBar : MonoBehaviour {
 		topBar.position = barPositions [0];
 		midBar.position = barPositions [1];
 		bottomBar.position = barPositions [2];
-
-		topBar.sizeDelta = new Vector2 (barWidths [0], topBar.rect.height);
-		midBar.sizeDelta = new Vector2 (barWidths [1], topBar.rect.height);
-		bottomBar.sizeDelta = new Vector2 (barWidths [2], topBar.rect.height);
 
 	}
 
