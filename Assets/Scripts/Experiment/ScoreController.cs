@@ -6,18 +6,21 @@ public class ScoreController : MonoBehaviour {
 	
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
+	public ScoreLogTrack scoreLogger;
+
 	public int score = 0;
 	public Text scoreText;
-	public ScoreLogTrack scoreLogger;
+	int scoreTextScore = 0;
+	int amountLeftToAdd = 0; //amount left to add to the score text
 
 	//SCORE VARIABLES -- don't want anyone to change them, so make public getters, no setters.
 	static int timeBonusSmall = 10;
 	public static int TimeBonusSmall { get { return timeBonusSmall; } }
 
-	static int timeBonusMed = 15;
+	static int timeBonusMed = 20;
 	public static int TimeBonusMed { get { return timeBonusMed; } }
 
-	static int timeBonusBig = 20;
+	static int timeBonusBig = 30;
 	public static int TimeBonusBig { get { return timeBonusBig; } }
 	
 
@@ -53,7 +56,7 @@ public class ScoreController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		StartCoroutine (UpdateScoreText());
 	}
 	
 	// Update is called once per frame
@@ -61,40 +64,50 @@ public class ScoreController : MonoBehaviour {
 	
 	}
 
-	void AddToScore(int amountToAdd, bool isTimeBonus){
-		StartCoroutine (UpdateScoreText(score, amountToAdd, isTimeBonus)); //pass in the original score, before adding the amount
-
+	void AddToScore(int amountToAdd){
+		amountLeftToAdd += amountToAdd;
 		score += amountToAdd;
 		ExperimentSettings_CoinTask.currentSubject.score = score;
 	}
 
-	IEnumerator UpdateScoreText(int initialScore, int amountToAdd, bool isTimeBonus){
+	IEnumerator UpdateScoreText(){
 		float timeBetweenUpdates = 0.05f;
 
 		int increment = 1;
-		if (amountToAdd < 0) {
-			increment = -1;
+
+		while (true) {
+
+			int absAmountLeftToAdd = Mathf.Abs (amountLeftToAdd);
+			while (absAmountLeftToAdd > 0) {
+
+				if (amountLeftToAdd < 0) {
+					increment = -1;
+				}
+				else{
+					increment = 1;
+				}
+
+				scoreTextScore += increment;
+				scoreText.text = "$ " + (scoreTextScore);
+				amountLeftToAdd -= increment;
+
+				absAmountLeftToAdd = Mathf.Abs (amountLeftToAdd);
+
+				yield return new WaitForSeconds (timeBetweenUpdates);
+			}
+
+			yield return 0;
+
 		}
-
-		amountToAdd = Mathf.Abs (amountToAdd);
-		while (amountToAdd > 0) {
-
-			initialScore += increment;
-			scoreText.text = "$ " + (initialScore);
-			amountToAdd--;
-			yield return new WaitForSeconds(timeBetweenUpdates);
-		}
-
-		yield return 0;
 	}
 
 	public void AddDefaultPoints(){
-		AddToScore(defaultObjectPoints, false);
+		AddToScore(defaultObjectPoints);
 		scoreLogger.LogTreasureOpenScoreAdded (defaultObjectPoints);
 	}
 
 	public void AddSpecialPoints(){
-		AddToScore(specialObjectPoints, false);
+		AddToScore(specialObjectPoints);
 		scoreLogger.LogTreasureOpenScoreAdded (specialObjectPoints);
 	}
 
@@ -117,7 +130,7 @@ public class ScoreController : MonoBehaviour {
 			}
 		}
 
-		AddToScore(memoryPoints, false);
+		AddToScore(memoryPoints);
 		scoreLogger.LogMemoryScoreAdded (memoryPoints);
 
 		return memoryPoints;
@@ -135,7 +148,7 @@ public class ScoreController : MonoBehaviour {
 			timeBonusScore = timeBonusSmall;
 		} 
 
-		AddToScore (timeBonusScore, true);
+		AddToScore (timeBonusScore);
 		scoreLogger.LogTimeBonusAdded (timeBonusScore);
 
 		return timeBonusScore;

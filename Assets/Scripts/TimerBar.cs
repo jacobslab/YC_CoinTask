@@ -99,7 +99,6 @@ public class TimerBar : MonoBehaviour {
 
 		if (barIndex == 0) {
 			amountMoveTotal += moveAmount;
-			Debug.Log("AMOUNT MOVED TOTAL: " + amountMoveTotal);
 		}
 	}
 
