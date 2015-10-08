@@ -19,6 +19,8 @@ public class DefaultItem : MonoBehaviour {
 	
 	public AudioSource defaultCollisionSound;
 	public AudioSource specialCollisionSound;
+
+	bool isOpen = false;
 	bool shouldDie = false;
 
 	public TextMesh specialObjectText;
@@ -38,10 +40,11 @@ public class DefaultItem : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision){
-		if (collision.gameObject.tag == "Player" && (tag == "DefaultObject" || tag == "DefaultSpecialObject") ) {
+		Debug.Log ("OH HEY TREASURE COLLISION");
+		if (collision.gameObject.tag == "Player" && (tag == "DefaultObject" || tag == "DefaultSpecialObject") && !isOpen ) {
 
 			//open the object
-			StartCoroutine( Open(Experiment_CoinTask.Instance.player.gameObject) ); //TODO: move particle systems to chest???
+			StartCoroutine( Open(Experiment_CoinTask.Instance.player.gameObject) );
 
 
 			//if it was a special spot and this is the default object...
@@ -91,6 +94,8 @@ public class DefaultItem : MonoBehaviour {
 
 	//open. most likely a treasure chest. could also be something like a giftbox.
 	public IEnumerator Open(GameObject opener){
+		isOpen = true;
+
 		float distOpenerToPivotA = (pivotA.position - opener.transform.position).magnitude;
 		float distOpenerToPivotB = (pivotB.position - opener.transform.position).magnitude;
 		
