@@ -224,7 +224,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 			yield return 0;
 		}
 
-		trialController.GetComponent<TrialLogTrack>().LogWaitForJitterEnded(randomJitter);
+		trialController.GetComponent<TrialLogTrack>().LogWaitForJitterEnded(currentTime);
 	}
 	
 

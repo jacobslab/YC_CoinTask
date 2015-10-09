@@ -276,10 +276,11 @@ public class TrialController : MonoBehaviour {
 
 		//show instructions for location selection 
 		trialLogger.LogRecallPhaseStarted();
-		trialLogger.LogInstructionEvent ();
 
-		//this instruction will also place a jitter before showing the first object -- hence the THIRD 'true' parameter...
-		yield return StartCoroutine (exp.ShowSingleInstruction ("Use the joystick to select the location of the requested object.", true, true, true, Config_CoinTask.minDefaultInstructionTime));
+
+		//jitter before the first object is shown
+		yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
+
 
 		//ask player to locate each object individually
 		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
