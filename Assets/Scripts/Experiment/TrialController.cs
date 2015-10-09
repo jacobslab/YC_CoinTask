@@ -10,6 +10,7 @@ public class TrialController : MonoBehaviour {
 	public SimpleTimer trialTimer;
 	public QuestionUI doYouRememberUI;
 	public QuestionUI doubleDownUI;
+	public UnitCompleteUI unitCompletedUI;
 
 	TrialLogTrack trialLogger;
 
@@ -26,7 +27,7 @@ public class TrialController : MonoBehaviour {
 
 	[HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
 
-	List<List<Trial>> ListOfTrialChunks;
+	List<List<Trial>> ListOfTrialUnits;
 
 	void Start(){
 		InitTrials ();
@@ -34,19 +35,19 @@ public class TrialController : MonoBehaviour {
 	}
 
 	void InitTrials(){
-		ListOfTrialChunks = new List<List<Trial>> ();
+		ListOfTrialUnits = new List<List<Trial>> ();
 
 		int numTestTrials = Config_CoinTask.numTestTrials;
 
-		int numTrialsPerChunk = (int)(Config_CoinTask.trialChunkDistribution [0] + Config_CoinTask.trialChunkDistribution [1] + Config_CoinTask.trialChunkDistribution [2]);
+		int numTrialsPerUnit = (int)(Config_CoinTask.trialUnitDistribution [0] + Config_CoinTask.trialUnitDistribution [1] + Config_CoinTask.trialUnitDistribution [2]);
 
-		if (numTestTrials % numTrialsPerChunk != 0) {
+		if (numTestTrials % numTrialsPerUnit != 0) {
 			Debug.Log("CANNOT EXECUTE THIS TRIAL DISTRIBUTION");
 		}
 
-		int numTrialChunks = numTestTrials / numTrialsPerChunk;
-		for (int i = 0; i < numTrialChunks; i++) {
-			ListOfTrialChunks.Add(GenerateTrialChunk());
+		int numTrialUnits = numTestTrials / numTrialsPerUnit;
+		for (int i = 0; i < numTrialUnits; i++) {
+			ListOfTrialUnits.Add(GenerateTrialUnit());
 		}
 
 		if(Config_CoinTask.doPracticeTrial){
@@ -55,17 +56,17 @@ public class TrialController : MonoBehaviour {
 
 	}
 
-	List<Trial> GenerateTrialChunk(){
-		List<Trial> trialChunk = new List<Trial> ();
-		int numTrials = (int)(Config_CoinTask.trialChunkDistribution [0] + Config_CoinTask.trialChunkDistribution [1] + Config_CoinTask.trialChunkDistribution [2]);
+	List<Trial> GenerateTrialUnit(){
+		List<Trial> trialUnit = new List<Trial> ();
+		int numTrials = (int)(Config_CoinTask.trialUnitDistribution [0] + Config_CoinTask.trialUnitDistribution [1] + Config_CoinTask.trialUnitDistribution [2]);
 
 		int numSpecial = 1;
 		for (int i = 0; i < numTrials / 2; i++) { //divide by two because we're adding a regular and a counterbalanced trial
 
-			if(i < Config_CoinTask.trialChunkDistribution[0] / 2){
+			if(i < Config_CoinTask.trialUnitDistribution[0] / 2){
 				numSpecial = 1;
 			}
-			else if (i < ( Config_CoinTask.trialChunkDistribution[0] + Config_CoinTask.trialChunkDistribution[1] ) / 2){
+			else if (i < ( Config_CoinTask.trialUnitDistribution[0] + Config_CoinTask.trialUnitDistribution[1] ) / 2){
 				numSpecial = 2;
 			}
 			else{
@@ -75,20 +76,20 @@ public class TrialController : MonoBehaviour {
 			Trial trial = new Trial(numSpecial);
 			Trial counterTrial = trial.GetCounterSelf();
 			
-			trialChunk.Add(trial);
-			trialChunk.Add(counterTrial);
+			trialUnit.Add(trial);
+			trialUnit.Add(counterTrial);
 		}
 
-		return trialChunk;
+		return trialUnit;
 
 	}
 
-	Trial PickRandomTrial(List<Trial> trialChunk){
-		if (trialChunk.Count > 0) {
-			int randomTrialIndex = Random.Range (0, trialChunk.Count);
-			Trial randomTrial = trialChunk [randomTrialIndex];
+	Trial PickRandomTrial(List<Trial> trialUnit){
+		if (trialUnit.Count > 0) {
+			int randomTrialIndex = Random.Range (0, trialUnit.Count);
+			Trial randomTrial = trialUnit [randomTrialIndex];
 
-			trialChunk.RemoveAt (randomTrialIndex);
+			trialUnit.RemoveAt (randomTrialIndex);
 			return randomTrial;
 		} 
 		else {
@@ -134,10 +135,10 @@ public class TrialController : MonoBehaviour {
 
 
 			//RUN THE REST OF THE BLOCKS
-			for( int i = 0; i < ListOfTrialChunks.Count; i++){
-				List<Trial> currentTrialChunk = ListOfTrialChunks[i];
-				while (currentTrialChunk.Count > 0) {
-					Trial nextTrial = PickRandomTrial (currentTrialChunk);
+			for( int i = 0; i < ListOfTrialUnits.Count; i++){
+				List<Trial> currentTrialUnit = ListOfTrialUnits[i];
+				while (currentTrialUnit.Count > 0) {
+					Trial nextTrial = PickRandomTrial (currentTrialUnit);
 
 					yield return StartCoroutine (RunTrial ( nextTrial ));
 
@@ -145,7 +146,18 @@ public class TrialController : MonoBehaviour {
 
 					Debug.Log ("TRIALS COMPLETED: " + totalTrialCount);
 				}
-				Debug.Log ("TRIAL CHUNK: " + i);
+
+				//FINISHED A TRIAL UNIT, SHOW UI
+
+				unitCompletedUI.Play(i, exp.scoreController.score, ListOfTrialUnits.Count);
+				trialLogger.LogInstructionEvent();
+				yield return StartCoroutine(exp.WaitForActionButton());
+
+				unitCompletedUI.Stop();
+
+				exp.scoreController.Reset();
+
+				Debug.Log ("TRIAL Unit: " + i);
 			}
 
 			yield return 0;

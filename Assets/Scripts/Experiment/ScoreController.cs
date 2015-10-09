@@ -155,4 +155,13 @@ public class ScoreController : MonoBehaviour {
 
 	}
 
+	public void Reset(){
+		score = 0;
+		scoreTextScore = 0;
+		amountLeftToAdd = 0;
+		scoreText.text = "$ " + 0;
+
+		scoreLogger.LogScoreReset ();
+	}
+
 }

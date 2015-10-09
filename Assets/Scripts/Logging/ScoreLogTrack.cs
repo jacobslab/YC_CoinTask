@@ -14,14 +14,26 @@ public class ScoreLogTrack : LogTrack {
 	}
 
 	public void LogTreasureOpenScoreAdded(int scoreAdded){
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "SCORE_ADDED_TREASURE" + separator + scoreAdded);
+		if (ExperimentSettings_CoinTask.isLogging) {
+			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_ADDED_TREASURE" + separator + scoreAdded);
+		}
 	}
 
 	public void LogTimeBonusAdded(int scoreAdded){
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "SCORE_ADDED_TIME" + separator + scoreAdded);
+		if (ExperimentSettings_CoinTask.isLogging) {
+			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_ADDED_TIME" + separator + scoreAdded);
+		}
 	}
 
 	public void LogMemoryScoreAdded(int scoreAdded){
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "SCORE_ADDED_MEMORY" + separator + scoreAdded);
+		if (ExperimentSettings_CoinTask.isLogging) {
+			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_ADDED_MEMORY" + separator + scoreAdded);
+		}
+	}
+
+	public void LogScoreReset(){
+		if (ExperimentSettings_CoinTask.isLogging) {
+			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_RESET");
+		}
 	}
 }
