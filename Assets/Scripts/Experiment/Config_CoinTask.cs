@@ -71,7 +71,7 @@ public class Config_CoinTask : MonoBehaviour {
 	/*public static int numDefaultObjectsEasy = 15;
 	public static int numDefaultObjectsMedium = 15;
 	public static int numDefaultObjectsHard = 15;*/
-	public static int numDefaultObjects = 10;
+	public static int numDefaultObjects = 4;
 
 	//THERE MUST ALWAYS BE FEWER SPECIAL OBJECTS THAN DEFAULT OBJECTS ------> now randomizing 1-3 special.
 	/*public static int numSpecialObjectsEasy = 2;

@@ -40,7 +40,6 @@ public class DefaultItem : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision){
-		Debug.Log ("OH HEY TREASURE COLLISION");
 		if (collision.gameObject.tag == "Player" && (tag == "DefaultObject" || tag == "DefaultSpecialObject") && !isOpen ) {
 
 			//open the object
@@ -114,9 +113,6 @@ public class DefaultItem : MonoBehaviour {
 		GetComponent<TreasureChestLogTrack> ().LogOpening (closePivotName, GetIsSpecial()); 
 		
 		Quaternion origRotation = top.rotation;
-		//top.RotateAround(pivotPos, -transform.right, angleToOpen); //rotate to get the desired rotation
-
-		Debug.Log("TOP ROT: " + top.rotation + "ANGLE LEFT: " + angleToOpen);
 
 
 		float angleChange = 8.0f;
