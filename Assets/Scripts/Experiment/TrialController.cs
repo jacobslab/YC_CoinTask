@@ -26,8 +26,7 @@ public class TrialController : MonoBehaviour {
 
 	[HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
 
-
-	List<Trial> TrialList;
+	List<List<Trial>> ListOfTrialChunks;
 
 	void Start(){
 		InitTrials ();
@@ -35,80 +34,61 @@ public class TrialController : MonoBehaviour {
 	}
 
 	void InitTrials(){
-		TrialList = new List<Trial> ();
+		ListOfTrialChunks = new List<List<Trial>> ();
 
-		Vector3 specialObjDistribution = GetSpecialObjectDistribution ();
+		int numTestTrials = Config_CoinTask.numTestTrials;
+
+		int numTrialsPerChunk = (int)(Config_CoinTask.trialChunkDistribution [0] + Config_CoinTask.trialChunkDistribution [1] + Config_CoinTask.trialChunkDistribution [2]);
+
+		if (numTestTrials % numTrialsPerChunk != 0) {
+			Debug.Log("CANNOT EXECUTE THIS TRIAL DISTRIBUTION");
+		}
+
+		int numTrialChunks = numTestTrials / numTrialsPerChunk;
+		for (int i = 0; i < numTrialChunks; i++) {
+			ListOfTrialChunks.Add(GenerateTrialChunk());
+		}
 
 		if(Config_CoinTask.doPracticeTrial){
 			practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract);	//2 special objects for practice trial
 		}
 
-		GenerateTrials((int)specialObjDistribution.x, 1); //one special
-		GenerateTrials((int)specialObjDistribution.y, 2); //two special
-		GenerateTrials((int)specialObjDistribution.z, 3); //three special
-
 	}
 
-	//ASSUMES NUMTRIALS IS EVEN
-	void GenerateTrials(int numTrials, int numSpecial){
-		for(int j = 0; j < numTrials / 2; j++){ //divide by two because we are adding a trial and a counter trial at the same time
-			Trial one = new Trial(numSpecial);
-			
-			Trial counterOne = one.GetCounterSelf();
-			
-			TrialList.Add(one);
-			TrialList.Add(counterOne);
-		}
+	List<Trial> GenerateTrialChunk(){
+		List<Trial> trialChunk = new List<Trial> ();
+		int numTrials = (int)(Config_CoinTask.trialChunkDistribution [0] + Config_CoinTask.trialChunkDistribution [1] + Config_CoinTask.trialChunkDistribution [2]);
 
-		if ((float)numTrials % 2.0f != 0) {
-			Debug.Log("ODD NUMBER OF TRIALS.");
-		}
-	}
+		int numSpecial = 1;
+		for (int i = 0; i < numTrials / 2; i++) { //divide by two because we're adding a regular and a counterbalanced trial
 
-	Vector3 GetSpecialObjectDistribution(){
-		//dist.x = 1 object trials, dist.y = 2 object trials, dist.z = 3 object trials
-		Vector3 distribution = Vector3.zero;
-
-		int numTestTrials = Config_CoinTask.numTestTrials;
-
-		int numTrialsLeft = 0; //number of trials to assign to 1 or 3 objects
-
-		if ((float)numTestTrials % 2.0f == 0) {
-			distribution.y = numTestTrials / 2;
-			numTrialsLeft = numTestTrials / 2;
-		} 
-		else {
-			Debug.Log("TRIAL DISTRIBUTION WILL NOT WORK PROPERLY.");
-			/*distribution.y = (numTestTrials + 1) / 2;
-			numTrialsLeft = numTestTrials - (int)distribution.y;*/
-		}
-		
-		if( (numTrialsLeft % 2) == 0 ){
-			distribution.x = numTrialsLeft / 2;
-			distribution.z = numTrialsLeft / 2;
-		}
-		else {
-			Debug.Log("TRIAL DISTRIBUTION WILL NOT WORK PROPERLY.");
-			/*int fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
-			if (fiftyFiftyChance == 0) { //more 1 trials
-				distribution.x = ( (numTrialsLeft - 1) / 2 ) + 1;
-				distribution.z = ( (numTrialsLeft - 1) / 2 );
+			if(i < Config_CoinTask.trialChunkDistribution[0] / 2){
+				numSpecial = 1;
 			}
-			else { //more 3 trials
-				distribution.x = ( (numTrialsLeft - 1) / 2 );
-				distribution.z = ( (numTrialsLeft - 1) / 2 ) + 1;
-			}*/
+			else if (i < ( Config_CoinTask.trialChunkDistribution[0] + Config_CoinTask.trialChunkDistribution[1] ) / 2){
+				numSpecial = 2;
+			}
+			else{
+				numSpecial = 3;
+			}
+
+			Trial trial = new Trial(numSpecial);
+			Trial counterTrial = trial.GetCounterSelf();
+			
+			trialChunk.Add(trial);
+			trialChunk.Add(counterTrial);
 		}
 
-		return distribution;
+		return trialChunk;
+
 	}
 
-	Trial PickRandomTrial(){
-		if (TrialList.Count > 0) {
-			int randomTrialIndex = Random.Range (0, TrialList.Count);
-			Trial randomTrial = TrialList [randomTrialIndex];
+	Trial PickRandomTrial(List<Trial> trialChunk){
+		if (trialChunk.Count > 0) {
+			int randomTrialIndex = Random.Range (0, trialChunk.Count);
+			Trial randomTrial = trialChunk [randomTrialIndex];
 
-			TrialList.RemoveAt (randomTrialIndex);
+			trialChunk.RemoveAt (randomTrialIndex);
 			return randomTrial;
 		} 
 		else {
@@ -154,14 +134,18 @@ public class TrialController : MonoBehaviour {
 
 
 			//RUN THE REST OF THE BLOCKS
-			while (TrialList.Count > 0) {
-				Trial nextTrial = PickRandomTrial ();
+			for( int i = 0; i < ListOfTrialChunks.Count; i++){
+				List<Trial> currentTrialChunk = ListOfTrialChunks[i];
+				while (currentTrialChunk.Count > 0) {
+					Trial nextTrial = PickRandomTrial (currentTrialChunk);
 
-				yield return StartCoroutine (RunTrial ( nextTrial ));
+					yield return StartCoroutine (RunTrial ( nextTrial ));
 
-				totalTrialCount += 1;
+					totalTrialCount += 1;
 
-				Debug.Log ("TRIALS COMPLETED: " + totalTrialCount);
+					Debug.Log ("TRIALS COMPLETED: " + totalTrialCount);
+				}
+				Debug.Log ("TRIAL CHUNK: " + i);
 			}
 
 			yield return 0;
