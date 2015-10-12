@@ -10,7 +10,7 @@ public class ObjectController : MonoBehaviour {
 	public GameObject InGameDefaultObject;
 
 	public GameObject DefaultObject; //the prefab used to instantiate the other default objects.
-	public GameObject BombObject;
+	public GameObject ExplosiveObject;
 	public List<GameObject> CurrentTrialSpecialObjects;
 
 
@@ -71,9 +71,9 @@ public class ObjectController : MonoBehaviour {
 		return null;
 	}
 
-	public IEnumerator ThrowBomb(Vector3 from, Vector3 to){
-		GameObject newBomb = Instantiate (BombObject, from, BombObject.transform.rotation) as GameObject;
-		yield return StartCoroutine( newBomb.GetComponent<Bomb>().ThrowSelf(from, to) );
+	public IEnumerator ThrowExplosive(Vector3 from, Vector3 to){
+		GameObject newExplosive = Instantiate (ExplosiveObject, from, ExplosiveObject.transform.rotation) as GameObject;
+		yield return StartCoroutine( newExplosive.GetComponent<Explosive>().ThrowSelf(from, to) );
 	}
 
 

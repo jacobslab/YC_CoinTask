@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Bomb : MonoBehaviour {
+public class Explosive : MonoBehaviour {
 
-	public ParticleSystem FuseParticles;
-	public EllipsoidParticleEmitter ExplosionParticles;
-	public AudioSource FuseSound;
+	//public ParticleSystem FuseParticles;
+	//public EllipsoidParticleEmitter ExplosionParticleEmitter;
+	public ParticleSystem ExplosionParticles;
+	float particleHeightOffset = 4.0f;
+	//public AudioSource FuseSound;
 
 	float totalTravelTime = 1.2f;
 	Rigidbody myRigidbody;
@@ -21,7 +23,9 @@ public class Bomb : MonoBehaviour {
 
 
 	public IEnumerator ThrowSelf (Vector3 startPos, Vector3 endPos) {
-		FuseParticles.Play();
+		/*if (FuseParticles != null) {
+			FuseParticles.Play ();
+		}*/
 
 		myRigidbody = GetComponent<Rigidbody> ();
 
@@ -49,8 +53,15 @@ public class Bomb : MonoBehaviour {
 			yield return 0;
 		}
 
-		FuseParticles.Stop();
-		Instantiate(ExplosionParticles, transform.position, transform.rotation);
+		/*if (FuseParticles != null) {
+			FuseParticles.Stop ();
+		}*/
+		ParticleSystem explosionParticles = Instantiate(ExplosionParticles, transform.position + Vector3.up*particleHeightOffset, transform.rotation) as ParticleSystem;
+		GetComponent<SpawnableObject> ().TurnVisible (false);
+		while (explosionParticles.isPlaying) {
+			yield return 0;
+		}
+
 
 		Destroy (gameObject);
 	}

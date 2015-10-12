@@ -402,7 +402,7 @@ public class TrialController : MonoBehaviour {
 				//throw bomb to selected location
 				exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't actually want its visuals showing up as we wait
 				//if(chosenSelectorSizes[i] != EnvironmentPositionSelector.SelectionRadiusType.none){
-				yield return StartCoroutine( exp.objectController.ThrowBomb( exp.player.transform.position, chosenPosition ) );
+				yield return StartCoroutine( exp.objectController.ThrowExplosive( exp.player.transform.position, chosenPosition ) );
 				//}
 
 			}
