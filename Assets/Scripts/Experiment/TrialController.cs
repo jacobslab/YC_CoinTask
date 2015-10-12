@@ -253,9 +253,13 @@ public class TrialController : MonoBehaviour {
 
 		exp.player.controls.ShouldLockControls = true;
 
-		trialLogger.LogInstructionEvent ();
-		yield return StartCoroutine (exp.ShowSingleInstruction ("Drive around and open the treasure chests. Pay attention to the surprise object locations!"+
-		                                                        "\n\nFinish quickly enough and you will receive a time bonus on your score!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
+		//only show this instruction if it's the very first trial, practice or not
+		if (isPracticeTrial || (!Config_CoinTask.doPracticeTrial && numRealTrials == 0)) {
+			trialLogger.LogInstructionEvent ();
+			yield return StartCoroutine (exp.ShowSingleInstruction ("Drive around and open the treasure chests. Pay attention to the surprise object locations!" +
+				"\n\nFinish quickly enough and you will receive a time bonus on your score!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
+		}
+
 		trialLogger.LogTrialNavigationStarted ();
 
 		//start a game timer

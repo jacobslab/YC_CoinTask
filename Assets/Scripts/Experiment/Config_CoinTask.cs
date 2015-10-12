@@ -89,10 +89,9 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float pauseAtSpecialObjectTime = 0.5f;
 
 
-	public static string initialInstructions = "In this game, you will pick up coins in a field. In a few locations, the coin will turn into a surprise object!" + 
-		"\n" + "\nAfter you have collected all of the coins, you will be asked to select the location in the field of the surprise objects." + 
-			"\n" + "\nYou will get points for how well you remember the object locations and how quickly you complete the level." +
-			"\n" + "\nWe will now show you what the environment looks like. Press the button to continue."; 
+	public static string initialInstructions = "Welcome to Treasure Island!" + 
+		"\n" + "\nUse the left joystick to navigate the environment." + 
+			"\n" + "\nTo take a look around, press 'X'."; 
 
 	public static float minObjselectionUITime = 0.5f;
 	public static float minInitialInstructionsTime = 0.0f; //TODO: change back to 5.0f
