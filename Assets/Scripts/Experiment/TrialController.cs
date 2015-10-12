@@ -529,23 +529,25 @@ public class TrialController : MonoBehaviour {
 		}
 	}
 
-	public IEnumerator WaitForSpecialAnimation(GameObject specialObject){
+	public IEnumerator WaitForTreasureAnimation(GameObject treasureChest, GameObject specialObject){
 		//lock the avatar controls
 		exp.player.controls.ShouldLockControls = true;
 		exp.player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 
-		yield return StartCoroutine (exp.player.controls.RotateTowardSpecialObject (specialObject));
+		yield return StartCoroutine (exp.player.controls.RotateTowardSpecialObject (treasureChest));
 		yield return new WaitForSeconds (Config_CoinTask.pauseAtSpecialObjectTime);
 		
 		//unlock the avatar controls
 		Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;
 
 		//turn the special object invisible
-		specialObject.GetComponent<SpawnableObject> ().TurnVisible (false);
+		if(specialObject != null){
+			specialObject.GetComponent<SpawnableObject> ().TurnVisible (false);
+		}
 
 
 		//only after the pause should we increment the number of coins collected...
 		//...because the trial controller waits for this to move on to the next part of the trial.
-		Experiment_CoinTask.Instance.trialController.IncrementNumDefaultObjectsCollected();
+		IncrementNumDefaultObjectsCollected();
 	}
 }

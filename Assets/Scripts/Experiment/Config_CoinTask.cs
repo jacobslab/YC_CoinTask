@@ -86,7 +86,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 
 	public static float rotateToSpecialObjectTime = 1.0f;
-	public static float pauseAtSpecialObjectTime = 1.0f;
+	public static float pauseAtSpecialObjectTime = 0.5f;
 
 
 	public static string initialInstructions = "In this game, you will pick up coins in a field. In a few locations, the coin will turn into a surprise object!" + 

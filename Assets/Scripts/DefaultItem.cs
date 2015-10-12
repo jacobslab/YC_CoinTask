@@ -34,9 +34,7 @@ public class DefaultItem : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(shouldDie && (SpecialParticles.isPlaying == false && DefaultParticles.isPlaying == false)){//(defaultCollisionSound.isPlaying == false && specialCollisionSound.isPlaying == false)){
-			Destroy(gameObject); //once audio has finished playing, destroy the item!
-		}
+		
 	}
 
 	void OnCollisionEnter(Collision collision){
@@ -54,15 +52,26 @@ public class DefaultItem : MonoBehaviour {
 
 			}
 			else{
-				shouldDie = true;
-
-				Experiment_CoinTask.Instance.scoreController.AddDefaultPoints();
-
-				DefaultParticles.Play();
-				defaultCollisionSound.Play();
-				Experiment_CoinTask.Instance.trialController.IncrementNumDefaultObjectsCollected();
+				StartCoroutine(RunDefaultCollision());
 			}
 		}
+	}
+
+	IEnumerator RunDefaultCollision(){
+		shouldDie = true;
+		
+		Experiment_CoinTask.Instance.scoreController.AddDefaultPoints();
+		
+		DefaultParticles.Play();
+		defaultCollisionSound.Play();
+
+		yield return StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForTreasureAnimation(gameObject, null));
+
+		while(SpecialParticles.isPlaying && DefaultParticles.isPlaying){
+			yield return 0;
+		}
+
+		Destroy(gameObject); //once audio & particles have finished playing, destroy the item!
 	}
 
 	IEnumerator SpawnSpecialObject(Vector3 specialSpawnPos){
@@ -80,7 +89,7 @@ public class DefaultItem : MonoBehaviour {
 		specialCollisionSound.Play ();
 
 		//tell the trial controller to wait for the animation
-		yield return StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForSpecialAnimation(specialObject));
+		yield return StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForTreasureAnimation(gameObject, specialObject));
 
 		//should destroy the chest after the special object time
 		Destroy(gameObject);
