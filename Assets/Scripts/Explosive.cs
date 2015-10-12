@@ -56,11 +56,7 @@ public class Explosive : MonoBehaviour {
 		/*if (FuseParticles != null) {
 			FuseParticles.Stop ();
 		}*/
-		ParticleSystem explosionParticles = Instantiate(ExplosionParticles, transform.position + Vector3.up*particleHeightOffset, transform.rotation) as ParticleSystem;
-		GetComponent<SpawnableObject> ().TurnVisible (false);
-		while (explosionParticles.isPlaying) {
-			yield return 0;
-		}
+		Instantiate(ExplosionParticles, transform.position + Vector3.up*particleHeightOffset, transform.rotation);
 
 
 		Destroy (gameObject);
