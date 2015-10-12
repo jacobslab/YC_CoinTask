@@ -6,7 +6,7 @@ public class Explosive : MonoBehaviour {
 	//public ParticleSystem FuseParticles;
 	//public EllipsoidParticleEmitter ExplosionParticleEmitter;
 	public ParticleSystem ExplosionParticles;
-	float particleHeightOffset = 4.0f;
+	float particleHeightOffset = 3.0f;
 	//public AudioSource FuseSound;
 
 	float totalTravelTime = 1.2f;
