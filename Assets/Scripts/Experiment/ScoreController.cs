@@ -36,8 +36,8 @@ public class ScoreController : MonoBehaviour {
 	static int memoryScoreWrongDoubleDown = -116;
 	public static int MemoryScoreWrongDoubleDown { get { return memoryScoreWrongDoubleDown; } }
 
-	int defaultObjectPoints = 0;
-	int specialObjectPoints = 50;
+	static int specialObjectPoints = 50;
+	public static int SpecialObjectPoints { get { return specialObjectPoints; } }
 
 
 
@@ -99,11 +99,6 @@ public class ScoreController : MonoBehaviour {
 			yield return 0;
 
 		}
-	}
-
-	public void AddDefaultPoints(){
-		AddToScore(defaultObjectPoints);
-		scoreLogger.LogTreasureOpenScoreAdded (defaultObjectPoints);
 	}
 
 	public void AddSpecialPoints(){

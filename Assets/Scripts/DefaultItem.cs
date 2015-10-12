@@ -60,8 +60,6 @@ public class DefaultItem : MonoBehaviour {
 	IEnumerator RunDefaultCollision(){
 		shouldDie = true;
 		
-		Experiment_CoinTask.Instance.scoreController.AddDefaultPoints();
-		
 		DefaultParticles.Play();
 		defaultCollisionSound.Play();
 
