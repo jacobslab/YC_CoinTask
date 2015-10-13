@@ -18,7 +18,10 @@ public class PlayerControls : MonoBehaviour{
 
 	float RotationSpeed = 50.0f;
 	
-	float smoothMoveSpeed = 35.0f;
+	float maxTimeToMove = 5.0f; //5 seconds to move across the furthest field distance
+	float minTimeToMove = 3.0f; //3 seconds to move across the closest field distance
+	float furthestTravelDist; //distance between far start pos and close start tower; set in start
+	float closestTravelDist; //distance between close start pos and close start tower; set in start
 
 
 
@@ -31,6 +34,10 @@ public class PlayerControls : MonoBehaviour{
 		else{
 			GetComponent<Collider>().enabled = true;
 		}
+
+		furthestTravelDist = (startPositionTransform1.position - towerPositionTransform2.position).magnitude; //close start, far tower
+		closestTravelDist = (startPositionTransform1.position - towerPositionTransform1.position).magnitude; //close start, close tower
+
 	}
 	
 	// Update is called once per frame
@@ -118,7 +125,7 @@ public class PlayerControls : MonoBehaviour{
 		float travelDistance = (origPosition - targetPosition).magnitude;
 
 
-		float timeToTravel = travelDistance / smoothMoveSpeed;
+		float timeToTravel = GetTimeToTravel (travelDistance);//travelDistance / smoothMoveSpeed;
 
 
 		float tElapsed = 0.0f;
@@ -160,6 +167,27 @@ public class PlayerControls : MonoBehaviour{
 		GetComponent<Collider> ().enabled = true;
 
 		yield return 0;
+	}
+
+	float GetTimeToTravel(float distanceFromTarget){
+		//on the very first trial, you may not have explored very far!
+		//Then you get sent back to a home base, and not a tower -- which is much closer.
+		if (distanceFromTarget < closestTravelDist) {
+
+			float percentDistanceDifference = distanceFromTarget / closestTravelDist;
+			float timeToTravel = percentDistanceDifference * minTimeToMove; //do a linear relationship here
+
+			return timeToTravel;
+		}
+		else {
+			float minMaxDistanceDifference = furthestTravelDist - closestTravelDist;
+			float percentDistanceDifference = (distanceFromTarget - closestTravelDist) / minMaxDistanceDifference;
+		
+			float minMaxTimeDifference = maxTimeToMove - minTimeToMove;
+			float timeToTravel = minTimeToMove + percentDistanceDifference * minMaxTimeDifference;
+		
+			return timeToTravel;
+		}
 	}
 	
 	bool CheckPositionsCloseEnough(Vector3 position1, Vector3 position2, float epsilon){
