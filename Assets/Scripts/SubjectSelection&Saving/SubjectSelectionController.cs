@@ -64,27 +64,30 @@ public class SubjectSelectionController : MonoBehaviour {
 				//now get rid of input text
 				SubjectInputField.text = "";
 
-				GameObject newSubjectButton = AddSubjectButton(newSubject.name);
+				if(!ExperimentSettings_CoinTask.Instance.isPilot){
+					GameObject newSubjectButton = AddSubjectButton(newSubject.name);
+				}
 
-				ChooseSubject(newSubjectButton.GetComponent<SubjectButton>());
+				ChooseSubject(newSubject.name);
 
 			}
 		}
 	}
 
 	void GenerateSubjectButtons(){
-		subjectButtonObjList = new List<GameObject>();
+		if (!ExperimentSettings_CoinTask.Instance.isPilot) {
+			subjectButtonObjList = new List<GameObject> ();
 
-		//float distanceBetweenButtons = subjectButtonPrefab.GetComponent<RectTransform>().rect.width;
+			//float distanceBetweenButtons = subjectButtonPrefab.GetComponent<RectTransform>().rect.width;
 
-		//TODO: sort alphabetically or arrange alphabetically
-		int buttonCount = 0;
-		foreach(KeyValuePair<string, Subject> entry in SubjectReaderWriter.subjectDict)
-		{
-			GameObject newButton = AddSubjectButton(entry.Key);
-			//newButton.transform.position += Vector3.right*distanceBetweenButtons*buttonCount;
+			//TODO: sort alphabetically or arrange alphabetically
+			int buttonCount = 0;
+			foreach (KeyValuePair<string, Subject> entry in SubjectReaderWriter.subjectDict) {
+				GameObject newButton = AddSubjectButton (entry.Key);
+				//newButton.transform.position += Vector3.right*distanceBetweenButtons*buttonCount;
 
-			buttonCount++;
+				buttonCount++;
+			}
 		}
 	}
 
@@ -136,15 +139,21 @@ public class SubjectSelectionController : MonoBehaviour {
 		return newSubjectButton;
 	}
 
+	//required for when you click a subject button in the main menu
 	public void ChooseSubject(SubjectButton subjectButton) {
-		Subject buttonSubject;
-		SubjectReaderWriter.subjectDict.TryGetValue( subjectButton.subjectName, out buttonSubject);
-		if(buttonSubject != null){
-			ExperimentSettings_CoinTask.currentSubject = buttonSubject;
+		ChooseSubject (subjectButton.subjectName);
+	}
+
+	//for more standard subject selection, by name
+	void ChooseSubject(string subjectName) {
+		Subject subjectToChoose;
+		SubjectReaderWriter.subjectDict.TryGetValue( subjectName, out subjectToChoose);
+		if(subjectToChoose != null){
+			ExperimentSettings_CoinTask.currentSubject = subjectToChoose;
 		}
-
+		
 		SetSubjectStatText(ExperimentSettings_CoinTask.currentSubject.name, ExperimentSettings_CoinTask.currentSubject.score.ToString(), ExperimentSettings_CoinTask.currentSubject.trials.ToString());
-
+		
 		Debug.Log("chose subject! " + ExperimentSettings_CoinTask.currentSubject.name);
 	}
 

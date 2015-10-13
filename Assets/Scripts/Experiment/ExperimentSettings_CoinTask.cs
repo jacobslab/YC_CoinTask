@@ -19,8 +19,14 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		}
 	}
 
+
+
+	//subject selection controller
+	public SubjectSelectionController subjectSelectionController;
+
+	//TOGGLES
 	public static bool isOculus = false;
-	public static bool isJoystickInput = false;
+	public static bool isJoystickInput = true;
 	public static bool isReplay = false;
 	public static bool isLogging = true; //if not in replay mode, should log things! or can be toggled off in main menu.
 
@@ -42,6 +48,11 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public Text endCongratsText;
 	public Text endScoreText;
 	public Text endSessionText;
+
+
+	public GameObject nonPilotOptions;
+	public bool isPilot { get { return GetIsPilot (); } }
+
 
 
 	//SINGLETON
@@ -82,6 +93,13 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		if (NumTreasureChestsInputField != null) {
 			UpdateNumTreasureChests ();
 		}
+	}
+
+	bool GetIsPilot(){
+		if (nonPilotOptions.activeSelf) {
+			return false;
+		}
+		return true;
 	}
 
 	//set the number of treasure chests/default objects
