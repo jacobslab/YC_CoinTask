@@ -149,9 +149,8 @@ public class TrialController : MonoBehaviour {
 				}
 
 				//FINISHED A TRIAL UNIT, SHOW UI
-
-				unitCompletedUI.Play(i, exp.scoreController.score, ListOfTrialUnits.Count);
 				trialLogger.LogInstructionEvent();
+				unitCompletedUI.Play(i, exp.scoreController.score, ListOfTrialUnits.Count);
 				yield return StartCoroutine(exp.WaitForActionButton());
 
 				unitCompletedUI.Stop();
@@ -321,6 +320,7 @@ public class TrialController : MonoBehaviour {
 			//set layer of object & children to PlayerUI
 			specialObjUICopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI");
 
+			trialLogger.LogInstructionEvent();
 			yield return StartCoroutine( doYouRememberUI.Play(specialObjUICopy) );
 
 			yield return StartCoroutine (exp.WaitForActionButton());
@@ -353,6 +353,7 @@ public class TrialController : MonoBehaviour {
 				//disable position selection
 				exp.environmentController.myPositionSelector.EnableSelection (false);
 
+				trialLogger.LogInstructionEvent();
 				yield return StartCoroutine( doubleDownUI.Play() );
 
 				yield return StartCoroutine (exp.WaitForActionButton());
@@ -507,7 +508,8 @@ public class TrialController : MonoBehaviour {
 			currTrialNum++;
 		}
 
-		scoreRecapUI.Play (currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
+		trialLogger.LogInstructionEvent();
+		scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
 		yield return StartCoroutine (exp.WaitForActionButton ());
 		scoreRecapUI.Stop ();
 
