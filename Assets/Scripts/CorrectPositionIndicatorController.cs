@@ -9,6 +9,8 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 	public Color RightScoreColor;
 	public Color WrongScorecolor;
 
+	public Renderer PointsScoredBackground;
+
 	LineRenderer toTargetLine;
 	float lineHeight = 0.3f;
 	Vector3 startPos { get { return GetStartPos(); } }
@@ -67,9 +69,9 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 
 	public void SetPointsText(int points){
 		if (points < 0) {
-			PointsScoredText.color = WrongScorecolor;
+			PointsScoredBackground.material.color = WrongScorecolor;
 		} else {
-			PointsScoredText.color = RightScoreColor;
+			PointsScoredBackground.material.color = RightScoreColor;
 		}
 
 		PointsScoredText.text = "";
