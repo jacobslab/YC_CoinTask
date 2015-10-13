@@ -52,7 +52,11 @@ public class SimpleTimer : MonoBehaviour {
 		seconds = 0;
 	}
 
-	public int GetSeconds(){
+	public int GetSecondsInt(){
 		return Mathf.CeilToInt(seconds);
+	}
+
+	public float GetSecondsFloat(){
+		return seconds;
 	}
 }

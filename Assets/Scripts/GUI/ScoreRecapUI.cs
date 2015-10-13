@@ -16,21 +16,25 @@ public class ScoreRecapUI : MonoBehaviour {
 	public TextMesh TotalTrialScoreText;
 	public TextMesh TrialNumText;
 
+	public Transform CentralContent;
+
+	Vector3 centralContentOrigPos;
+
 	// Use this for initialization
 	void Start () {
 		Enable (false);
+		centralContentOrigPos = CentralContent.position;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
-
-	//TODO: play this from the trial controller!
-	public void Play(int currentTrialIndex, int currentTrialScore, int maxNumTrials, List<SpawnableObject> objectFoundVisuals, List<int> objectScores, int timeBonus, float time){
+	
+	public void Play(int numTrialsComplete, int currentTrialScore, int maxNumTrials, List<int> objectScores, List<GameObject> specialObjects, int timeBonus, float time){
 		Enable (true);
 
-		ResetText ();
+		Reset();
 
 		if (objectScores.Count > ObjectLocationScores.Length) {
 			Debug.Log ("TOO MANY OBJECTS WERE FOUND. NOT ENOUGH TEXT MESHES.");
@@ -39,25 +43,33 @@ public class ScoreRecapUI : MonoBehaviour {
 			int trialScore = 0;
 			for (int i = 0; i < objectScores.Count; i++) {
 				//put objects in the right places
-				objectFoundVisuals [i].gameObject.transform.position = ObjectLocationScores [i].transform.position + ObjectVisualOffset;
+				//objectFoundVisuals [i].gameObject.transform.position = ObjectLocationScores [i].transform.position + ObjectVisualOffset;
 
 				//set object score text & object names
-				ObjectLocationScores [i].text = objectScores [i].ToString ();
-				ObjectNames [i].text = objectFoundVisuals [i].GetName () + ":";
+				string currObjectScore = FormatScore(objectScores[i]);
+				ObjectLocationScores [ObjectLocationScores.Length - 1 - i].text = currObjectScore;
+				ObjectNames [ObjectNames.Length - 1 - i].text = specialObjects [i].GetComponent<SpawnableObject>().GetName () + ":";
 
 				trialScore += objectScores [i];
 			}
 
-			TimeBonusLabel.text = time + "seconds:";
-			TimeBonusText.text = timeBonus.ToString ();
+			//adjust positioning of the central content based on how many objects there were. or weren't.
+			if(ObjectLocationScores.Length > 2){
+			float distanceBetweenObjectText = ObjectLocationScores[0].transform.position.y - ObjectLocationScores[1].transform.position.y;
+				int spaceToMoveMult = ObjectLocationScores.Length - objectScores.Count;
+				CentralContent.transform.position += Vector3.up * ( Mathf.Abs(distanceBetweenObjectText) * spaceToMoveMult );
+			}
 
-			int objectPickupScore = ObjectLocationScores.Length * ScoreController.SpecialObjectPoints;
-			ObjectPickupScore.text = objectPickupScore.ToString();
-			ObjectPickupScoreLabel.text = "Objects x" + ObjectLocationScores.Length + ":";
+			TimeBonusLabel.text = time.ToString("0.00") + " seconds:"; //the "0.00" parameter should format it to a two decimal place number
+			TimeBonusText.text = FormatScore(timeBonus);
 
-			TrialNumText.text = "trial " + (currentTrialIndex + 1) + "/" + maxNumTrials + " completed";
+			int objectPickupScore = objectScores.Count * ScoreController.SpecialObjectPoints;
+			ObjectPickupScore.text = FormatScore(objectPickupScore);
+			ObjectPickupScoreLabel.text = "Objects x" + objectScores.Count + ":";
 
-			TotalTrialScoreText.text = (trialScore + timeBonus + objectPickupScore).ToString();
+			TrialNumText.text = "trial " + (numTrialsComplete) + "/" + maxNumTrials + " completed";
+
+			TotalTrialScoreText.text = FormatScore(trialScore + timeBonus + objectPickupScore);
 
 		}
 
@@ -67,7 +79,18 @@ public class ScoreRecapUI : MonoBehaviour {
 		Enable (false);
 	}
 
-	void ResetText(){
+	string FormatScore(int score){
+		string scoreText = score.ToString ();
+		if(score > 0){
+			scoreText = "+" + scoreText;
+		}
+
+		return scoreText;
+	}
+
+	void Reset(){
+		CentralContent.position = centralContentOrigPos;
+
 		for (int i = 0; i < ObjectLocationScores.Length; i++) {
 			ObjectLocationScores[i].text = "";
 			ObjectNames[i].text = "";

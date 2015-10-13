@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -59,19 +59,19 @@ public class TimerBar : MonoBehaviour {
 	void Update () {
 		if (myTimer.IsRunning) {
 
-			if (myTimer.GetSeconds () <= ScoreController.TimeBonusTimeMin) { //make top bar smaller
+			if (myTimer.GetSecondsInt () <= ScoreController.TimeBonusTimeMin) { //make top bar smaller
 				if(timeState != TimeState.minTime){
 					SetState(TimeState.minTime, topBonusUI.GetComponentInChildren<Text> ().text, topBonusUI.position);
 				}
 				MoveBar (topBar, 0);
 			} 
-			else if (myTimer.GetSeconds () <= ScoreController.TimeBonusTimeMed) { //make mid bar smaller
+			else if (myTimer.GetSecondsInt () <= ScoreController.TimeBonusTimeMed) { //make mid bar smaller
 				if(timeState != TimeState.medTime){
 					SetState(TimeState.medTime, topMidBonusUI.GetComponentInChildren<Text> ().text, topMidBonusUI.position);
 				}
 				MoveBar (midBar, 1);
 			} 
-			else if (myTimer.GetSeconds () <= ScoreController.TimeBonusTimeBig) { //make bottom bar smaller
+			else if (myTimer.GetSecondsInt () <= ScoreController.TimeBonusTimeBig) { //make bottom bar smaller
 				if(timeState != TimeState.maxTime){
 					SetState(TimeState.maxTime, bottomMidBonusUI.GetComponentInChildren<Text> ().text, bottomMidBonusUI.position);
 				}

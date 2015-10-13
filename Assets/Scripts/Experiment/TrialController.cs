@@ -11,6 +11,7 @@ public class TrialController : MonoBehaviour {
 	public QuestionUI doYouRememberUI;
 	public QuestionUI doubleDownUI;
 	public UnitCompleteUI unitCompletedUI;
+	public ScoreRecapUI scoreRecapUI;
 
 	TrialLogTrack trialLogger;
 
@@ -276,7 +277,7 @@ public class TrialController : MonoBehaviour {
 
 		//Add time bonus
 		trialTimer.StopTimer ();
-		timeBonus = exp.scoreController.CalculateTimeBonus (trialTimer.GetSeconds());
+		timeBonus = exp.scoreController.CalculateTimeBonus (trialTimer.GetSecondsInt());
 
 		//reset num default objects collected
 		numDefaultObjectsCollected = 0;
@@ -397,6 +398,9 @@ public class TrialController : MonoBehaviour {
 
 		List<GameObject> CorrectPositionIndicators = new List<GameObject> ();
 		List<GameObject> ChosenPositionIndicators = new List<GameObject> ();
+		List<GameObject> specialObjectListRecallOrder = new List<GameObject>();
+
+		List<int> objectScores = new List<int> ();
 		
 		for (int i = 0; i < specialObjectOrder.Count; i++){
 
@@ -415,6 +419,8 @@ public class TrialController : MonoBehaviour {
 
 			//turn on each special object & scale up for better visibility
 			GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
+			specialObjectListRecallOrder.Add(specialObj);
+
 			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
 			specialSpawnable.TurnVisible(true);
 			specialSpawnable.Scale(2.0f);
@@ -470,11 +476,15 @@ public class TrialController : MonoBehaviour {
 
 				correctPosController.SetPointsText(points);
 				memoryScore += points;
+
+				objectScores.Add(points);
 			}
 			else{
 				CorrectPositionIndicatorController correctPosController = correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>();
 				correctPosController.EnableDoubleDownVisuals(false);
 				correctPosController.SetPointsText(0);
+
+				objectScores.Add(0);
 			}
 		
 			
@@ -490,9 +500,18 @@ public class TrialController : MonoBehaviour {
 		
 		//once all objects have been located, tell them their official score based on memory and time bonus, wait for button press
 		trialLogger.LogInstructionEvent ();
-		yield return StartCoroutine (exp.ShowSingleInstruction ("You scored " + memoryScore + " memory points and a " + timeBonus + " point time bonus! Continue to the next trial.", true, true, false, Config_CoinTask.minDefaultInstructionTime));
-		
-		
+		//yield return StartCoroutine (exp.ShowSingleInstruction ("You scored " + memoryScore + " memory points and a " + timeBonus + " point time bonus! Continue to the next trial.", true, true, false, Config_CoinTask.minDefaultInstructionTime));
+
+		int currTrialNum = numRealTrials;
+		if (Config_CoinTask.doPracticeTrial) {
+			currTrialNum++;
+		}
+
+		scoreRecapUI.Play (currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
+		yield return StartCoroutine (exp.WaitForActionButton ());
+		scoreRecapUI.Stop ();
+
+
 		//delete all indicators & special objects
 		DestroyGameObjectList (CorrectPositionIndicators);
 		DestroyGameObjectList (ChosenPositionIndicators);

@@ -60,7 +60,7 @@ public class TimeBonusUIController : MonoBehaviour {
 	}
 
 	void UpdateTimeState(){
-		int seconds = trialTimer.GetSeconds ();
+		int seconds = trialTimer.GetSecondsInt ();
 		
 		if (seconds == 0) {
 			ResetBonusText();
