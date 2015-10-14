@@ -49,7 +49,7 @@ public class ObjectLogTrack : LogTrack {
 
 				//log all basic properties -- easier for replay, when there are UI copies of objects...
 				//...then the main object reappears -- but the position was not being set properly.
-				if(lastVisibility && !firstLog){
+				if(lastVisibility && firstLog){
 					LogPosition();
 					LogRotation();
 					LogScale();
