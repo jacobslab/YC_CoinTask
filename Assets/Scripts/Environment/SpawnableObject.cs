@@ -21,6 +21,12 @@ public class SpawnableObject : MonoBehaviour {
 		myLogTrack = GetComponent<ObjectLogTrack> ();
 		origScale = transform.localScale;
 	}
+
+	void Start(){
+		if (tag == "SpecialObject") {
+			StartCoroutine(AnimateScaleUp());
+		}
+	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -98,6 +104,32 @@ public class SpawnableObject : MonoBehaviour {
 		}
 
 		myLogTrack.LogShadowSettings (shadowMode);
+	}
+
+	public IEnumerator AnimateScaleUp(){
+		float timeToScaleUp = 0.3f;
+
+		float fullScaleMult = 1.0f;
+		float smallScaleMult = 0.5f;
+		Vector3 fullScale = transform.localScale * fullScaleMult;
+		Vector3 smallScale = fullScale * smallScaleMult;
+
+		float scaleMultDifference = fullScaleMult - smallScaleMult;
+
+
+		transform.localScale = smallScale;
+
+		float currentTime = 0.0f;
+
+		while (currentTime < timeToScaleUp) {
+			currentTime += Time.deltaTime;
+			float scaleMult = smallScaleMult + ( scaleMultDifference * (currentTime / timeToScaleUp) );
+			transform.localScale = fullScale * scaleMult;
+			yield return 0;
+		}
+
+		transform.localScale = fullScale;
+
 	}
 
 }

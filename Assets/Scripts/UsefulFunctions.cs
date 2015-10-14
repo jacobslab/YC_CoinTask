@@ -55,4 +55,18 @@ public class UsefulFunctions {
 		}
 		obj.transform.LookAt(lookAtPos);
 	}
+
+
+	public static bool CheckVectorsCloseEnough(Vector3 position1, Vector3 position2, float epsilon){
+		float xDiff = Mathf.Abs (position1.x - position2.x);
+		float yDiff = Mathf.Abs (position1.y - position2.y);
+		float zDiff = Mathf.Abs (position1.z - position2.z);
+		
+		if (xDiff < epsilon && yDiff < epsilon && zDiff < epsilon) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }

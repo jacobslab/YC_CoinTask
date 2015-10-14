@@ -1,5 +1,5 @@
 Spencer Novich,score 0,block 0
-Corey Novich,score 130,block 0
+Corey Novich,score 100,block 0
 Scott Novich,score 0,block 0
 Corey,score 0,block 0
 hi,score 0,block 0

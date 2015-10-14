@@ -136,7 +136,7 @@ public class PlayerControls : MonoBehaviour{
 
 		float angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
 		float angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
-		bool arePositionsCloseEnough = CheckPositionsCloseEnough(transform.position, targetPosition, epsilon);
+		bool arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
 		//while ( ( angleDiffY >= epsilon ) || ( angleDiffX >= epsilon ) || (!arePositionsCloseEnough) ){
 		while(tElapsed < timeToTravel){
 			totalTimeElapsed += Time.deltaTime;
@@ -154,7 +154,7 @@ public class PlayerControls : MonoBehaviour{
 			//calculate new differences
 			angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
 			angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
-			arePositionsCloseEnough = CheckPositionsCloseEnough(transform.position, targetPosition, epsilon);
+			arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
 			yield return 0;
 		}
 		
@@ -187,19 +187,6 @@ public class PlayerControls : MonoBehaviour{
 			float timeToTravel = minTimeToMove + percentDistanceDifference * minMaxTimeDifference;
 		
 			return timeToTravel;
-		}
-	}
-	
-	bool CheckPositionsCloseEnough(Vector3 position1, Vector3 position2, float epsilon){
-		float xDiff = Mathf.Abs (position1.x - position2.x);
-		float yDiff = Mathf.Abs (position1.y - position2.y);
-		float zDiff = Mathf.Abs (position1.z - position2.z);
-		
-		if (xDiff < epsilon && yDiff < epsilon && zDiff < epsilon) {
-			return true;
-		}
-		else {
-			return false;
 		}
 	}
 
