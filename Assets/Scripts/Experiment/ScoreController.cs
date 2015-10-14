@@ -71,9 +71,10 @@ public class ScoreController : MonoBehaviour {
 	}
 
 	IEnumerator UpdateScoreText(){
-		float timeBetweenUpdates = 0.05f;
+		float timeBetweenUpdates = 0.01f;
 
-		int increment = 1;
+		int increment = 3;
+		int incrementMult = 1;
 
 		while (true) {
 
@@ -81,15 +82,21 @@ public class ScoreController : MonoBehaviour {
 			while (absAmountLeftToAdd > 0) {
 
 				if (amountLeftToAdd < 0) {
-					increment = -1;
+					incrementMult = -1;
 				}
 				else{
-					increment = 1;
+					incrementMult = 1;
 				}
 
-				scoreTextScore += increment;
+				if(absAmountLeftToAdd > increment){
+					amountLeftToAdd -= (increment*incrementMult);
+					scoreTextScore += (increment*incrementMult);
+				} else {
+					scoreTextScore += absAmountLeftToAdd;
+					amountLeftToAdd = 0;
+				}
+
 				scoreText.text = "$ " + (scoreTextScore);
-				amountLeftToAdd -= increment;
 
 				absAmountLeftToAdd = Mathf.Abs (amountLeftToAdd);
 

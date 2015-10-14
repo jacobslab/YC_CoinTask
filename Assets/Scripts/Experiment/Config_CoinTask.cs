@@ -91,7 +91,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public static string initialInstructions = "Welcome to Treasure Island!" + 
 		"\n" + "\nUse the left joystick to navigate the environment." + 
-			"\n" + "\nTo take a look around, press 'X'."; 
+			"\n" + "\nTo take a look around, press (X)."; 
 
 	public static float minObjselectionUITime = 0.5f;
 	public static float minInitialInstructionsTime = 0.0f; //TODO: change back to 5.0f

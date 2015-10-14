@@ -233,15 +233,13 @@ public class TrialController : MonoBehaviour {
 
 		//move player to home location & rotation
 		trialLogger.LogTransportationToHomeEvent ();
-		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot));//PlayerControls.toStartTime) );
+		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot));
 
 		//exp.player.TurnOnVisuals (true);
 
 		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
 			//Spawn the first default object
 			CreateNextDefaultObject (0);
-			//THE FOLLOWING IS FOR DEBUGGING PURPOSES.
-			//exp.objectController.SpawnDefaultObjects (currentTrial.DefaultObjectLocationsXZ, currentTrial.SpecialObjectLocationsXZ);
 		}
 		else{
 			exp.objectController.SpawnDefaultObjects (currentTrial.DefaultObjectLocationsXZ, currentTrial.SpecialObjectLocationsXZ);
@@ -257,7 +255,11 @@ public class TrialController : MonoBehaviour {
 		if (isPracticeTrial || (!Config_CoinTask.doPracticeTrial && numRealTrials == 0)) {
 			trialLogger.LogInstructionEvent ();
 			yield return StartCoroutine (exp.ShowSingleInstruction ("Drive around and open the treasure chests. Pay attention to the surprise object locations!" +
-				"\n\nFinish quickly enough and you will receive a time bonus on your score!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
+				"\n\nFinish quickly enough and you will receive a time bonus on your score!" +
+			    "\n\nPress (X) to start!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
+		} else {
+			trialLogger.LogInstructionEvent ();
+			yield return StartCoroutine (exp.ShowSingleInstruction ("Press (X) to start!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
 		}
 
 		trialLogger.LogTrialNavigationStarted ();
