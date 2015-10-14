@@ -104,7 +104,7 @@ public class Trial {
 		}
 
 		//flip the tower positions
-		if (avatarStartPos == exp.player.controls.towerPositionTransform1.position) {
+		if (avatarTowerPos == exp.player.controls.towerPositionTransform1.position) {
 			counterTrial.avatarTowerPos = exp.player.controls.towerPositionTransform2.position;
 			counterTrial.avatarTowerRot = exp.player.controls.towerPositionTransform2.rotation;
 		}
