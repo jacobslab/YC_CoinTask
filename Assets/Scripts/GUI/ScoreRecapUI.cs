@@ -16,14 +16,14 @@ public class ScoreRecapUI : MonoBehaviour {
 	public TextMesh TotalTrialScoreText;
 	public TextMesh TrialNumText;
 
-	public Transform CentralContent;
+	public Transform ObjectScoreContent; //this may have to be moved/realigned depending on how many objects were in the trial
 
 	Vector3 centralContentOrigPos;
 
 	// Use this for initialization
 	void Start () {
 		Enable (false);
-		centralContentOrigPos = CentralContent.position;
+		centralContentOrigPos = ObjectScoreContent.position;
 	}
 	
 	// Update is called once per frame
@@ -55,9 +55,9 @@ public class ScoreRecapUI : MonoBehaviour {
 
 			//adjust positioning of the central content based on how many objects there were. or weren't.
 			if(ObjectLocationScores.Length > 2){
-			float distanceBetweenObjectText = ObjectLocationScores[0].transform.position.y - ObjectLocationScores[1].transform.position.y;
+				float distanceBetweenObjectText = ObjectLocationScores[0].transform.position.y - ObjectLocationScores[1].transform.position.y;
 				int spaceToMoveMult = ObjectLocationScores.Length - objectScores.Count;
-				CentralContent.transform.position += Vector3.up * ( Mathf.Abs(distanceBetweenObjectText) * spaceToMoveMult );
+				ObjectScoreContent.transform.position += Vector3.up * ( Mathf.Abs(distanceBetweenObjectText) * spaceToMoveMult );
 			}
 
 			//TimeBonusLabel.text = time.ToString("0.00") + " seconds:"; //the "0.00" parameter should format it to a two decimal place number
@@ -89,7 +89,7 @@ public class ScoreRecapUI : MonoBehaviour {
 	}
 
 	void Reset(){
-		CentralContent.position = centralContentOrigPos;
+		ObjectScoreContent.position = centralContentOrigPos;
 
 		for (int i = 0; i < ObjectLocationScores.Length; i++) {
 			ObjectLocationScores[i].text = "";

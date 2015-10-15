@@ -17,4 +17,7 @@ haiii,score 48,block 0
 heyoooo,score 440,block 0
 gfd,score 0,block 0
 fds,score 180,block 0
-meee,score 130,block 1
+meee,score 130,block 0
+hallo,score 0,block 0
+hia,score 0,block 0
+sdfd,score 390,block 3
