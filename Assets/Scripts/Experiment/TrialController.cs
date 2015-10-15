@@ -463,14 +463,27 @@ public class TrialController : MonoBehaviour {
 					chosenPositionIndicator.SetActive(false);
 				}*/
 				ChosenPositionIndicators.Add(chosenPositionIndicator);
-
-				//connect the chosen and correct indicators via a line
-				SetConnectingLines( correctPositionIndicator, chosenPosition);//, chosenRadiusSize );
 				
 				//calculate the memory points and display them
 				exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
 				//exp.environmentController.myPositionSelector.SetRadiusSize( chosenRadiusSize );
 				int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position, doubleDownResponses[i] );
+
+				//change chosen indicator color to reflect right or wrong
+				ChosenIndicatorController chosenIndicatorController = chosenPositionIndicator.GetComponent<ChosenIndicatorController>();
+				Color chosenPositionColor = chosenIndicatorController.RightColor;
+				if(points > 0){
+					chosenIndicatorController.ChangeToRightColor();
+				}
+				else if (points < 0){
+					chosenIndicatorController.ChangeToWrongColor();
+					chosenPositionColor = chosenIndicatorController.WrongColor;
+				}
+
+
+				//connect the chosen and correct indicators via a line
+				SetConnectingLines( correctPositionIndicator, chosenPosition, chosenPositionColor);//, chosenRadiusSize );
+
 
 				CorrectPositionIndicatorController correctPosController = correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>();
 				if(doubleDownResponses[i] == true){
@@ -527,14 +540,14 @@ public class TrialController : MonoBehaviour {
 		yield return 0;
 	}
 
-	void SetConnectingLines( GameObject correctPositionIndicator, Vector3 chosenPosition){//, EnvironmentPositionSelector.SelectionRadiusType chosenRadiusSize ){
+	void SetConnectingLines( GameObject correctPositionIndicator, Vector3 chosenPosition, Color chosenIndicatorColor){//, EnvironmentPositionSelector.SelectionRadiusType chosenRadiusSize ){
 
 		//render a line between the special object and its corresponding chosen position
 		LineRenderer positionConnector = correctPositionIndicator.GetComponent<LineRenderer>();
 		Vector3 correctPosition = correctPositionIndicator.transform.position;
 		//if(chosenRadiusSize != EnvironmentPositionSelector.SelectionRadiusType.none){
 
-			correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>().SetLineTarget(chosenPosition);
+			correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>().SetLineTarget(chosenPosition, chosenIndicatorColor);
 			
 		//}
 		/*else {

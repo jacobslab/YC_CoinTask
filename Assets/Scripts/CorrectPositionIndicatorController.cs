@@ -11,6 +11,7 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 
 	public Renderer PointsScoredBackground;
 
+	public Color lineRendererStartColor;
 	LineRenderer toTargetLine;
 	float lineHeight = 0.3f;
 	Vector3 startPos { get { return GetStartPos(); } }
@@ -40,7 +41,7 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 	
 	}
 
-	public void SetLineTarget(Vector3 targetPos){
+	public void SetLineTarget(Vector3 targetPos, Color targetColor){
 
 		if (toTargetLine == null) {
 			toTargetLine = GetComponent<LineRenderer> ();
@@ -49,9 +50,14 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 		Vector3 endPos = new Vector3 (targetPos.x, transform.position.y + lineHeight, targetPos.z); //use the current object's height
 		toTargetLine.SetPosition(1, endPos);
 
+		toTargetLine.SetColors (lineRendererStartColor, targetColor);
+
+
 		//log whenever the points change/are set.
 		lineLogTrack.LogPoint (startPos, 0);
 		lineLogTrack.LogPoint (endPos, 1);
+
+		//TODO: log line renderer colors
 	}
 
 	Vector3 GetStartPos(){

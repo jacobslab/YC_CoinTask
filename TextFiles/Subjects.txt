@@ -18,10 +18,10 @@ heyoooo,score 440,block 0
 gfd,score 0,block 0
 fds,score 180,block 0
 meee,score 130,block 0
-hallo,score 0,block 0
+hallo,score -26,block 4
 hia,score 0,block 0
 sdfd,score 390,block 0
 sdfs,score 370,block 0
 fsd,score 960,block 0
 blah,score 300,block 0
-mememe,score 80,block 1
+mememe,score 80,block 0
