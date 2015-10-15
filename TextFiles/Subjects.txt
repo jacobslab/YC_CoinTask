@@ -11,9 +11,10 @@ Hello,score 0,block 0
 Hi,score 232,block 0
 meeee,score 84,block 0
 heyo,score 0,block 0
-hiii,score 0,block 0
+hiii,score 260,block 0
 hellooooo,score 28,block 0
 haiii,score 48,block 0
 heyoooo,score 440,block 0
 gfd,score 0,block 0
-fds,score 180,block 1
+fds,score 180,block 0
+meee,score 130,block 1

@@ -45,11 +45,21 @@ public class AnswerSelector : MonoBehaviour {
 	}
 
 	void CheckForInput(){
-		if (Input.GetAxis ("Horizontal") > 0.3f) {
-			Move(1);
+		//keyboard input
+		if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			Move (1);
 		}
-		else if (Input.GetAxis ("Horizontal") < -0.3f){
+		else if (Input.GetKeyDown (KeyCode.LeftArrow)){
 			Move (-1);
+		}
+		else {
+			//joystick input
+			if (Input.GetAxis ("Horizontal") > 0.3f) {
+				Move(1);
+			}
+			else if (Input.GetAxis ("Horizontal") < -0.3f){
+				Move (-1);
+			}
 		}
 	}
 
