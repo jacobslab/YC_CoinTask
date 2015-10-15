@@ -89,9 +89,8 @@ public class PlayerControls : MonoBehaviour{
 		float horizontalAxisInput = Input.GetAxis ("Horizontal");
 		if (Mathf.Abs (horizontalAxisInput) > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
 
-			//GetComponent<Rigidbody> ().angularVelocity = Vector3.up * horizontalAxisInput * RotationSpeed;
 			float percent = horizontalAxisInput / 1.0f;
-			Turn (percent * RotationSpeed * Time.deltaTime);
+			Turn (percent * RotationSpeed * Time.deltaTime); //framerate independent!
 		} else {
 			SetTilt(0.0f, 1.0f);
 		}

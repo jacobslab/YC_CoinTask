@@ -5,7 +5,7 @@ Corey,score 0,block 0
 hi,score 210,block 0
 CoreyN,score 50,block 0
 hey hey hey,score 0,block 0
-me,score 130,block 0
+me,score 240,block 0
 Me,score 2276,block 0
 Hello,score 0,block 0
 Hi,score 232,block 0
@@ -20,4 +20,8 @@ fds,score 180,block 0
 meee,score 130,block 0
 hallo,score 0,block 0
 hia,score 0,block 0
-sdfd,score 390,block 3
+sdfd,score 390,block 0
+sdfs,score 370,block 0
+fsd,score 960,block 0
+blah,score 300,block 0
+mememe,score 80,block 1
