@@ -60,12 +60,12 @@ public class ScoreRecapUI : MonoBehaviour {
 				CentralContent.transform.position += Vector3.up * ( Mathf.Abs(distanceBetweenObjectText) * spaceToMoveMult );
 			}
 
-			TimeBonusLabel.text = time.ToString("0.00") + " seconds:"; //the "0.00" parameter should format it to a two decimal place number
+			//TimeBonusLabel.text = time.ToString("0.00") + " seconds:"; //the "0.00" parameter should format it to a two decimal place number
 			TimeBonusText.text = FormatScore(timeBonus);
 
 			int objectPickupScore = objectScores.Count * ScoreController.SpecialObjectPoints;
 			ObjectPickupScore.text = FormatScore(objectPickupScore);
-			ObjectPickupScoreLabel.text = "Objects x" + objectScores.Count + ":";
+			ObjectPickupScoreLabel.text = "objects x" + objectScores.Count + ":";
 
 			TrialNumText.text = "trial " + (numTrialsComplete) + "/" + maxNumTrials + " completed";
 

@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UnitCompleteUI : MonoBehaviour {
+public class BlockCompleteUI : MonoBehaviour {
 	
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } } 
 
-	public TextMesh[] UnitScores;
-	public TextMesh UnitText; // ie: 3/4 complete
+	public TextMesh[] BlockScores;
+	public TextMesh BlockText; // ie: 3/4 complete
 
 	// Use this for initialization
 	void Start () {
@@ -18,15 +18,15 @@ public class UnitCompleteUI : MonoBehaviour {
 	
 	}
 
-	public void Play(int currentUnitIndex, int currentUnitScore, int maxNumUnits){
+	public void Play(int currentBlockIndex, int currentBlockScore, int maxNumBlocks){
 		Enable (true);
-		if (currentUnitIndex < UnitScores.Length) {
-			UnitScores[currentUnitIndex].text = currentUnitScore.ToString();
+		if (currentBlockIndex < BlockScores.Length) {
+			BlockScores[currentBlockIndex].text = currentBlockScore.ToString();
 		} else {
-			Debug.Log("NOT ENOUGH UNIT SCORE TEXTMESHES");
+			Debug.Log("NOT ENOUGH BLOCK SCORE TEXTMESHES");
 		}
 
-		UnitText.text = "unit " + (currentUnitIndex + 1) + "/" + maxNumUnits + " completed";
+		BlockText.text = "block " + (currentBlockIndex + 1) + "/" + maxNumBlocks + " completed";
 	}
 
 	public void Stop(){
