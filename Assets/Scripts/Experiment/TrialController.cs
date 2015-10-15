@@ -109,8 +109,8 @@ public class TrialController : MonoBehaviour {
 			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 
 			//let player explore until the button is pressed again
-			trialLogger.LogBeginningExplorationEvent();
-			yield return StartCoroutine (exp.WaitForActionButton ());
+			//trialLogger.LogBeginningExplorationEvent();
+			//yield return StartCoroutine (exp.WaitForActionButton ());
 			
 			//get the number of blocks so far -- floor half the number of trials recorded
 			int totalTrialCount = ExperimentSettings_CoinTask.currentSubject.trials;
@@ -123,9 +123,11 @@ public class TrialController : MonoBehaviour {
 
 			
 			//run practice trials
-			isPracticeTrial = true;
+			if(Config_CoinTask.doPracticeTrial){
+				isPracticeTrial = true;
+			}
 			
-			if (isPracticeTrial && Config_CoinTask.doPracticeTrial) {
+			if (isPracticeTrial) {
 
 				yield return StartCoroutine (RunTrial ( practiceTrial ));
 
@@ -252,12 +254,13 @@ public class TrialController : MonoBehaviour {
 		exp.player.controls.ShouldLockControls = true;
 
 		//only show this instruction if it's the very first trial, practice or not
-		if (isPracticeTrial || (!Config_CoinTask.doPracticeTrial && numRealTrials == 0)) {
+		/*if (isPracticeTrial || (!Config_CoinTask.doPracticeTrial && numRealTrials == 0)) {
 			trialLogger.LogInstructionEvent ();
 			yield return StartCoroutine (exp.ShowSingleInstruction ("Drive around and open the treasure chests. Pay attention to the surprise object locations!" +
 				"\n\nFinish quickly enough and you will receive a time bonus on your score!" +
 			    "\n\nPress (X) to start!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
-		} else {
+		} else {*/
+		if (!isPracticeTrial || (Config_CoinTask.doPracticeTrial && numRealTrials != 0)){
 			trialLogger.LogInstructionEvent ();
 			yield return StartCoroutine (exp.ShowSingleInstruction ("Press (X) to start!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
 		}

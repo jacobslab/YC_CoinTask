@@ -56,7 +56,7 @@ public class Config_CoinTask : MonoBehaviour {
 	//public static int numEasyLearningTrialsPract = 1;	//TODO
 	//public static int numHardLearningTrialsPract = 1;	//TODO
 	public static int numTrialsPract = 1;
-	public static bool doPracticeTrial = true;
+	public static bool doPracticeTrial = false;
 	public static int numSpecialObjectsPract = 2;
 
 
@@ -90,8 +90,11 @@ public class Config_CoinTask : MonoBehaviour {
 
 
 	public static string initialInstructions = "Welcome to Treasure Island!" + 
-		"\n" + "\nUse the left joystick to navigate the environment." + 
-			"\n" + "\nTo take a look around, press (X)."; 
+		"\n\nUse the left joystick to drive around and open treasure chests." + 
+			"\n\nPay attention to special object locations!" + 
+			"\n\nFinish quickly and you will receive a time bonus!" +
+			"\n\nPress (X) to start!";
+
 
 	public static float minObjselectionUITime = 0.5f;
 	public static float minInitialInstructionsTime = 0.0f; //TODO: change back to 5.0f
