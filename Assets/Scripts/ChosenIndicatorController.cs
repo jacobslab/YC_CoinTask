@@ -22,6 +22,7 @@ public class ChosenIndicatorController : MonoBehaviour {
 	
 	}
 
+	//TODO: attach these to a delegate method for when the score is calculated????
 	public void ChangeToRightColor(){
 		colorChanger.ChangeColor (RightColor);
 	}
