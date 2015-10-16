@@ -533,6 +533,25 @@ public class Replay : MonoBehaviour {
 									objInScene.GetComponent<LineRenderer>().SetPosition(positionIndex, new Vector3(posX, posY, posZ));
 								}
 
+								else if (loggedProperty == "LINE_RENDERER_COLOR"){
+
+									float startR = float.Parse(splitLine[i+2]);
+									float startG = float.Parse(splitLine[i+3]);
+									float startB = float.Parse(splitLine[i+4]);
+									float startA = float.Parse(splitLine[i+5]);
+									Color startColor = new Color(startR, startG, startB, startA);
+
+									//string positionIndex = int.Parse(splitLine[i+7]);
+									float endR = float.Parse(splitLine[i+6]);
+									float endG = float.Parse(splitLine[i+7]);
+									float endB = float.Parse(splitLine[i+8]);
+									float endA = float.Parse(splitLine[i+9]);
+									Color endColor = new Color(endR, endG, endB, endA);
+
+									
+									objInScene.GetComponent<LineRenderer>().SetColors(startColor, endColor);
+								}
+
 								//POSITION SELECTOR SIZE
 								/*else if (loggedProperty == "SELECTOR_SIZE"){
 									string selectionSize = splitLine[i+2];

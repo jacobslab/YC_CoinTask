@@ -27,4 +27,5 @@ blah,score 300,block 0
 mememe,score 80,block 0
 Coreyyyy,score 170,block 0
 bahhhh,score 160,block 0
-ohhai,score 260,block 1
+ohhai,score 260,block 0
+coreyyyy,score 224,block 2

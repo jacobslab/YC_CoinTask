@@ -50,14 +50,15 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 		Vector3 endPos = new Vector3 (targetPos.x, transform.position.y + lineHeight, targetPos.z); //use the current object's height
 		toTargetLine.SetPosition(1, endPos);
 
-		toTargetLine.SetColors (lineRendererStartColor, targetColor);
-
-
 		//log whenever the points change/are set.
 		lineLogTrack.LogPoint (startPos, 0);
 		lineLogTrack.LogPoint (endPos, 1);
 
-		//TODO: log line renderer colors
+
+		toTargetLine.SetColors (lineRendererStartColor, targetColor);
+		//log line renderer colors
+		lineLogTrack.LogColors (lineRendererStartColor, targetColor);
+
 	}
 
 	Vector3 GetStartPos(){
