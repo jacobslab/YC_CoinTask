@@ -572,13 +572,23 @@ public class TrialController : MonoBehaviour {
 		}
 	}
 
-	public IEnumerator WaitForTreasureAnimation(GameObject treasureChest, GameObject specialObject){
+	public IEnumerator WaitForPlayerRotationToTreasure(GameObject treasureChest){
+		//lock the avatar controls
+		exp.player.controls.ShouldLockControls = true;
+		exp.player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+		
+		yield return StartCoroutine (exp.player.controls.RotateTowardSpecialObject (treasureChest));
+
+		//unlock the avatar controls
+		Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;
+	}
+
+	public IEnumerator WaitForTreasurePause( GameObject specialObject){
 		//lock the avatar controls
 		exp.player.controls.ShouldLockControls = true;
 		exp.player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 
-		yield return StartCoroutine (exp.player.controls.RotateTowardSpecialObject (treasureChest));
-		yield return new WaitForSeconds (Config_CoinTask.pauseAtSpecialObjectTime);
+		yield return new WaitForSeconds (Config_CoinTask.pauseAtTreasureTime);
 		
 		//unlock the avatar controls
 		Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Config_CoinTask : MonoBehaviour {
@@ -85,8 +85,8 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float minDriveTimeBetweenObjects = 0.5f; //half a second driving between objects
 
 
-	public static float rotateToSpecialObjectTime = 1.0f;
-	public static float pauseAtSpecialObjectTime = 0.5f;
+	public static float rotateToSpecialObjectTime = 0.5f;
+	public static float pauseAtTreasureTime = 1.5f;
 
 
 	public static string initialInstructions = "Welcome to Treasure Island!" + 

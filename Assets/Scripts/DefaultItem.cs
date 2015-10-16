@@ -40,21 +40,30 @@ public class DefaultItem : MonoBehaviour {
 	void OnCollisionEnter(Collision collision){
 		if (collision.gameObject.tag == "Player" && (tag == "DefaultObject" || tag == "DefaultSpecialObject") && !isOpen ) {
 
-			//open the object
-			StartCoroutine( Open(Experiment_CoinTask.Instance.player.gameObject) );
+			StartCoroutine(RunCollision());
 
-
-			//if it was a special spot and this is the default object...
-			//...we should spawn the special object!
-			if (tag == "DefaultSpecialObject") {
-
-				StartCoroutine(SpawnSpecialObject(specialObjectSpawnPoint.position));
-
-			}
-			else{
-				StartCoroutine(RunDefaultCollision());
-			}
 		}
+	}
+
+	IEnumerator RunCollision(){
+
+		yield return StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForPlayerRotationToTreasure(gameObject));
+
+		//open the object
+		StartCoroutine( Open(Experiment_CoinTask.Instance.player.gameObject) );
+
+		//if it was a special spot and this is the default object...
+		//...we should spawn the special object!
+		if (tag == "DefaultSpecialObject") {
+			
+			yield return StartCoroutine(SpawnSpecialObject(specialObjectSpawnPoint.position));
+			
+		}
+		else{
+			yield return StartCoroutine(RunDefaultCollision());
+		}
+
+
 	}
 
 	IEnumerator RunDefaultCollision(){
@@ -62,8 +71,8 @@ public class DefaultItem : MonoBehaviour {
 		
 		DefaultParticles.Play();
 		defaultCollisionSound.Play();
-
-		yield return StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForTreasureAnimation(gameObject, null));
+	
+		yield return StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForTreasurePause(null));
 
 		while(SpecialParticles.isPlaying && DefaultParticles.isPlaying){
 			yield return 0;
@@ -87,7 +96,7 @@ public class DefaultItem : MonoBehaviour {
 		specialCollisionSound.Play ();
 
 		//tell the trial controller to wait for the animation
-		yield return StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForTreasureAnimation(gameObject, specialObject));
+		yield return StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForTreasurePause(specialObject));
 
 		//should destroy the chest after the special object time
 		Destroy(gameObject);
