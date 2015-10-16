@@ -2,10 +2,10 @@ Spencer Novich,score 0,block 0
 Corey Novich,score 14,block 0
 Scott Novich,score 0,block 0
 Corey,score 0,block 0
-hi,score 210,block 0
+hi,score 300,block 2
 CoreyN,score 50,block 0
 hey hey hey,score 0,block 0
-me,score 164,block 1
+me,score 164,block 0
 Me,score 2276,block 0
 Hello,score 0,block 0
 Hi,score 232,block 0
