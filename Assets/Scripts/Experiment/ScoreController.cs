@@ -30,6 +30,12 @@ public class ScoreController : MonoBehaviour {
 	static int memoryScoreWrong = -16;
 	public static int MemoryScoreWrong { get { return memoryScoreWrong; } }
 
+	static int memoryScoreRightNotRemembered = 25;
+	public static int MemoryScoreRightNotRemembered { get { return memoryScoreRightNotRemembered; } }
+	
+	static int memoryScoreWrongNotRemembered = 0;
+	public static int MemoryScoreWrongNotRemembered { get { return memoryScoreWrongNotRemembered; } }
+
 	static int memoryScoreDoubleDown = 150;
 	public static int MemoryScoreDoubleDown { get { return memoryScoreDoubleDown; } }
 
@@ -113,22 +119,32 @@ public class ScoreController : MonoBehaviour {
 		scoreLogger.LogTreasureOpenScoreAdded (specialObjectPoints);
 	}
 
-	public int CalculateMemoryPoints (Vector3 correctPosition, bool doubledDown){
+	public int CalculateMemoryPoints (Vector3 correctPosition, bool didRemember, bool doubledDown){
 		int memoryPoints = 0;
 		if (exp.environmentController.myPositionSelector.GetRadiusOverlap (correctPosition)) {
-			if(!doubledDown){
-				memoryPoints = memoryScoreRight;
+			if(!didRemember){
+				memoryPoints = memoryScoreRightNotRemembered;
 			}
 			else{
-				memoryPoints = memoryScoreDoubleDown;
+				if(!doubledDown){
+					memoryPoints = memoryScoreRight;
+				}
+				else{
+					memoryPoints = memoryScoreDoubleDown;
+				}
 			}
 		}
 		else{ //wrong
-			if(!doubledDown){
-				memoryPoints = memoryScoreWrong;
+			if(!didRemember){
+				memoryPoints = memoryScoreWrongNotRemembered;
 			}
 			else{
-				memoryPoints = memoryScoreWrongDoubleDown;
+				if(!doubledDown){
+					memoryPoints = memoryScoreWrong;
+				}
+				else{
+					memoryPoints = memoryScoreWrongDoubleDown;
+				}
 			}
 		}
 
