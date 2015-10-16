@@ -91,8 +91,10 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public static string initialInstructions = "Welcome to Treasure Island!" + 
 		"\n\nUse the left joystick to drive around and open treasure chests." + 
-			"\n\nPay attention to special object locations!" + 
-			"\n\nFinish quickly and you will receive a time bonus!" +
+			"\n\nPay attention to special object locations! We will ask you to remember them later." + 
+			"\n\nWhen we ask you about an object, if you are more than 50% sure of its location, you should say you remember where it is." + 
+			"\n\nIf you you remember where an object is, you will be asked to 'double down' for more points. Do this if you are over 75% sure, as you risk losing points too!" + 
+			"\n\nFinish quickly and you will receive a time bonus of up to 30 points!" +
 			"\n\nPress (X) to start!";
 
 
