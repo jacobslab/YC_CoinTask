@@ -196,26 +196,31 @@ public class PlayerControls : MonoBehaviour{
 		transform.LookAt(targetPosition);
 		Quaternion desiredRotation = transform.rotation;
 		
-		
+		float angleDifference = origRotation.eulerAngles.y - desiredRotation.eulerAngles.y;
+		angleDifference = Mathf.Abs (angleDifference);
+		if (angleDifference > 180.0f) {
+			angleDifference = 360.0f - angleDifference;
+		}
+
+
+		float rotationSpeed = 0.05f;
+		float totalTimeToRotate = angleDifference * rotationSpeed;
+
 		//rotate to look at target
 		transform.rotation = origRotation;
-		
-		float ELAPSEDTIME = 0.0f;
-		
-		float rotateRate = 1.0f / Config_CoinTask.rotateToSpecialObjectTime;
+
 		float tElapsed = 0.0f;
-		float rotationEpsilon = 0.01f;
-		while (Mathf.Abs(transform.rotation.eulerAngles.y - desiredRotation.eulerAngles.y) >= rotationEpsilon){
+		while (tElapsed < totalTimeToRotate){
 
-			float currRotY = transform.rotation.eulerAngles.y;
+			tElapsed += (Time.deltaTime );
+			float turnPercent = tElapsed / totalTimeToRotate;
 
-			tElapsed += (Time.deltaTime * rotateRate);
-			ELAPSEDTIME += Time.deltaTime;
+			float beforeRotY = transform.rotation.eulerAngles.y; //y angle before the rotation
 
-			//will spherically interpolate the rotation for config.spinTime seconds
-			transform.rotation = Quaternion.Slerp(origRotation, desiredRotation, tElapsed); //SLERP ALWAYS TAKES THE SHORTEST PATH.
+			//will spherically interpolate the rotation
+			transform.rotation = Quaternion.Slerp(origRotation, desiredRotation, turnPercent); //SLERP ALWAYS TAKES THE SHORTEST PATH.
 
-			float angleRotated = transform.rotation.eulerAngles.y - currRotY;
+			float angleRotated = transform.rotation.eulerAngles.y - beforeRotY;
 			SetTilt(angleRotated, Time.deltaTime);
 
 			yield return 0;
@@ -225,7 +230,7 @@ public class PlayerControls : MonoBehaviour{
 		
 		transform.rotation = desiredRotation;
 		
-		Debug.Log ("TIME ELAPSED WHILE ROTATING: " + ELAPSEDTIME);
+		Debug.Log ("TIME ELAPSED WHILE ROTATING: " + tElapsed);
 	}
 
 	//returns the angle between the facing angle of the player and an XZ position
