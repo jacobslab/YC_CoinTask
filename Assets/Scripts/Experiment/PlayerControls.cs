@@ -16,7 +16,7 @@ public class PlayerControls : MonoBehaviour{
 	public Transform startPositionTransform1;
 	public Transform startPositionTransform2;
 
-	float RotationSpeed = 60.0f;
+	float RotationSpeed = 50.0f;
 	
 	float maxTimeToMove = 3.75f; //seconds to move across the furthest field distance
 	float minTimeToMove = 1.5f; //seconds to move across the closest field distance

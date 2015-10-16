@@ -32,8 +32,6 @@ public class QuestionUI : MonoBehaviour {
 		Answers.gameObject.SetActive (false);
 		myAnswerSelector.SetShouldCheckForInput(false);
 
-		yield return new WaitForSeconds (Config_CoinTask.minObjselectionUITime);
-
 		Answers.gameObject.SetActive (true);
 		myAnswerSelector.SetShouldCheckForInput (true);
 
@@ -65,8 +63,6 @@ public class QuestionUI : MonoBehaviour {
 		ObjectNameTextMesh.text = selectedObjectSpawnable.GetName ();
 
 		UsefulFunctions.FaceObject (objectToSelect, exp.player.gameObject, false); //make UI copy face the player
-
-		yield return new WaitForSeconds (Config_CoinTask.minObjselectionUITime);
 
 		Answers.gameObject.SetActive (true);
 		myAnswerSelector.SetShouldCheckForInput (true);
