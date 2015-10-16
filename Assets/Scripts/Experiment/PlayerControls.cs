@@ -16,10 +16,10 @@ public class PlayerControls : MonoBehaviour{
 	public Transform startPositionTransform1;
 	public Transform startPositionTransform2;
 
-	float RotationSpeed = 50.0f;
+	float RotationSpeed = 60.0f;
 	
-	float maxTimeToMove = 5.0f; //5 seconds to move across the furthest field distance
-	float minTimeToMove = 3.0f; //3 seconds to move across the closest field distance
+	float maxTimeToMove = 3.75f; //seconds to move across the furthest field distance
+	float minTimeToMove = 1.5f; //seconds to move across the closest field distance
 	float furthestTravelDist; //distance between far start pos and close start tower; set in start
 	float closestTravelDist; //distance between close start pos and close start tower; set in start
 
@@ -52,6 +52,7 @@ public class PlayerControls : MonoBehaviour{
 			}
 			else{
 				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+				SetTilt(0.0f, 1.0f);
 			}
 		}
 	}
