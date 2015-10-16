@@ -329,9 +329,9 @@ public class TrialController : MonoBehaviour {
 			yield return StartCoroutine( doYouRememberUI.Play(specialObjUICopy) );
 
 			yield return StartCoroutine (exp.WaitForActionButton());
-			bool response = doYouRememberUI.myAnswerSelector.IsYesPosition();
-			rememberResponses.Add(response);
-			trialLogger.LogRememberResponse(response);
+			bool rememberResponse = doYouRememberUI.myAnswerSelector.IsYesPosition();
+			rememberResponses.Add(rememberResponse);
+			trialLogger.LogRememberResponse(rememberResponse);
 
 			//IF THEY SAID 'YES, I REMEMBER', SELECT LOCATION
 			//if(response == true){
@@ -360,13 +360,13 @@ public class TrialController : MonoBehaviour {
 
 			trialLogger.LogInstructionEvent();
 
-			if(response == true){
+			if(rememberResponse == true){
 				yield return StartCoroutine( doubleDownUI.Play() );
 
 				yield return StartCoroutine (exp.WaitForActionButton());
-				response = doubleDownUI.myAnswerSelector.IsYesPosition();
-				trialLogger.LogDoubleDownResponse(response);
-				doubleDownResponses.Add(response);
+				bool doubleDownResponse = doubleDownUI.myAnswerSelector.IsYesPosition();
+				trialLogger.LogDoubleDownResponse(doubleDownResponse);
+				doubleDownResponses.Add(doubleDownResponse);
 			}
 			else{
 				//if you chose not to remember, you should not get to double down.
@@ -378,7 +378,7 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
 			}
 
-			if(response == true){
+			if(rememberResponse == true){
 				doubleDownUI.Stop();
 			}
 			//}
