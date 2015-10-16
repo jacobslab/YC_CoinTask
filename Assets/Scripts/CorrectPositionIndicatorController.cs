@@ -2,8 +2,6 @@
 using System.Collections;
 
 public class CorrectPositionIndicatorController : MonoBehaviour {
-
-	public GameObject DoubleDownVisuals;
 	public TextMesh PointsScoredText;
 
 	public Color RightScoreColor;
@@ -32,8 +30,6 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 
 	void Start(){
 		PointsScoredText.name += GetComponent<SpawnableObject> ().IDstring; //if it has an ID, it can log itself and be replayed when there are multiple correct position indicators in the scene at once.
-
-		DoubleDownVisuals.name += GetComponent<SpawnableObject> ().IDstring; //if it has an ID, it can log itself and be replayed when there are multiple correct position indicators in the scene at once.
 	}
 	
 	// Update is called once per frame
@@ -63,15 +59,6 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 
 	Vector3 GetStartPos(){
 		return new Vector3 (transform.position.x, transform.position.y + lineHeight, transform.position.z);
-	}
-
-	public void EnableDoubleDownVisuals(bool shouldEnable){
-		if (!shouldEnable) {
-			DoubleDownVisuals.GetComponent<TextMesh> ().text = "";
-		} else {
-			DoubleDownVisuals.GetComponent<TextMesh> ().text = "x2!";
-		}
-		UsefulFunctions.EnableChildren (DoubleDownVisuals.transform, shouldEnable);
 	}
 
 	public void SetPointsText(int points){

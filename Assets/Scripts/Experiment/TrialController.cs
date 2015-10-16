@@ -486,12 +486,6 @@ public class TrialController : MonoBehaviour {
 
 
 				CorrectPositionIndicatorController correctPosController = correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>();
-				if(doubleDownResponses[i] == true){
-					correctPosController.EnableDoubleDownVisuals(true);
-				}
-				else{
-					correctPosController.EnableDoubleDownVisuals(false);
-				}
 
 				correctPosController.SetPointsText(points);
 				memoryScore += points;
@@ -500,7 +494,6 @@ public class TrialController : MonoBehaviour {
 			}
 			else{
 				CorrectPositionIndicatorController correctPosController = correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>();
-				correctPosController.EnableDoubleDownVisuals(false);
 				correctPosController.SetPointsText(0);
 
 				objectScores.Add(0);
