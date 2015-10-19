@@ -42,7 +42,7 @@ public class ScoreController : MonoBehaviour {
 	static int memoryScoreWrongVerySure = -350;
 	public static int MemoryScoreWrongVerySure { get { return memoryScoreWrongVerySure; } }
 
-	static int specialObjectPoints = 50;
+	static int specialObjectPoints = 0;
 	public static int SpecialObjectPoints { get { return specialObjectPoints; } }
 
 	static int boxSwapperPoints = 50;

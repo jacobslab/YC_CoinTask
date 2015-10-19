@@ -8,7 +8,6 @@ public class ScoreRecapUI : MonoBehaviour {
 
 	public TextMesh[] ObjectLocationScores;
 	public TextMesh[] ObjectNames;
-	public TextMesh ObjectPickupScore;
 	public Vector3 ObjectVisualOffset;
 	public TextMesh TimeBonusText;
 	public TextMesh TotalTrialScoreText;
@@ -60,12 +59,10 @@ public class ScoreRecapUI : MonoBehaviour {
 
 			TimeBonusText.text = FormatScore(timeBonus);
 
-			int objectPickupScore = objectScores.Count * ScoreController.SpecialObjectPoints;
-			ObjectPickupScore.text = FormatScore(objectPickupScore);
 
 			TrialNumText.text = "trial " + (numTrialsComplete) + "/" + maxNumTrials + " completed";
 
-			TotalTrialScoreText.text = FormatScore(trialScore + timeBonus + objectPickupScore);
+			TotalTrialScoreText.text = FormatScore(trialScore + timeBonus);
 
 		}
 
