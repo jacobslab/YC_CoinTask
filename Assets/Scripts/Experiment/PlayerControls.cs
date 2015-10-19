@@ -203,7 +203,7 @@ public class PlayerControls : MonoBehaviour{
 		}
 
 
-		float rotationSpeed = 0.05f;
+		float rotationSpeed = 0.03f;
 		float totalTimeToRotate = angleDifference * rotationSpeed;
 
 		//rotate to look at target

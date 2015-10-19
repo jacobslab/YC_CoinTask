@@ -5,7 +5,9 @@ using System.Collections.Generic;
 public class BoxSwapper : MonoBehaviour {
 
 	public GameObject boxSelector;
-	Quaternion boxSelectorOrigRot;
+	public GameObject boxSelectorVisuals;
+	public TextMesh boxSelectorText;
+	Quaternion boxSelectorVisualsOrigRot;
 	int selectedBoxIndex = 0;
 	bool shouldSelect = false;
 
@@ -19,12 +21,13 @@ public class BoxSwapper : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		boxSelectorOrigRot = boxSelector.transform.rotation;
+		boxSelectorVisualsOrigRot = boxSelectorVisuals.transform.rotation;
 	}
 
 	public void Init(){
 		boxSelector.SetActive (false);
-		boxSelector.transform.rotation = boxSelectorOrigRot;
+		boxSelectorText.text = "";
+		boxSelectorVisuals.transform.rotation = boxSelectorVisualsOrigRot;
 		InitBoxPositions();
 		InitRewardPosition();
 	}
@@ -120,10 +123,13 @@ public class BoxSwapper : MonoBehaviour {
 		}
 
 		yield return 0;
-		if(IsSelectedBoxCorrect()){
-			Debug.Log("You got the reward!");
-			Experiment_CoinTask.Instance.scoreController.AddBoxSwapperPoints();
-			StartCoroutine(SpinSelector());
+		if (IsSelectedBoxCorrect ()) {
+			Debug.Log ("You got the reward!");
+			Experiment_CoinTask.Instance.scoreController.AddBoxSwapperPoints ();
+			StartCoroutine (SpinSelector ());
+			boxSelectorText.text = "+" + ScoreController.BoxSwapperPoints + "!";
+		} else {
+			boxSelectorText.text = "+0";
 		}
 
 		rewardObject.transform.position = boxes[boxRewardIndex].transform.position;
@@ -242,7 +248,7 @@ public class BoxSwapper : MonoBehaviour {
 	IEnumerator SpinSelector(){
 		float angle = 6.0f;
 		while (true) {
-			boxSelector.transform.RotateAround(boxSelector.transform.position, Vector3.up, angle);
+			boxSelectorVisuals.transform.RotateAround(boxSelectorVisuals.transform.position, Vector3.up, angle);
 			yield return 0;
 		}
 	}
