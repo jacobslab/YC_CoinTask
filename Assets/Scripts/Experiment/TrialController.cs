@@ -295,18 +295,19 @@ public class TrialController : MonoBehaviour {
 		currentDefaultObject = null; //set to null so that arrows stop showing up...
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot));//PlayerControls.toTowerTime) );
 
-		//show instructions for location selection 
-		trialLogger.LogRecallPhaseStarted();
-
 
 		//RUN DISTRACTOR GAME
 		//TODO: LOG THIS
+		trialLogger.LogDistractorGameStarted ();
 		yield return StartCoroutine(exp.boxGameController.RunGame());
+
 
 
 		//jitter before the first object is shown
 		yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
 
+		//show instructions for location selection 
+		trialLogger.LogRecallPhaseStarted();
 
 		//ask player to locate each object individually
 		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );

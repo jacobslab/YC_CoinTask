@@ -133,6 +133,13 @@ public class TrialLogTrack : LogTrack {
 		}
 	}
 
+	public void LogDistractorGameStarted(){
+		if (ExperimentSettings_CoinTask.isLogging) {
+			subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "DISTRACTOR_GAME_STARTED");
+			Debug.Log ("Logged distractor game started event.");
+		}
+	}
+
 	public void LogRecallPhaseStarted(){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "RECALL_PHASE_STARTED");
