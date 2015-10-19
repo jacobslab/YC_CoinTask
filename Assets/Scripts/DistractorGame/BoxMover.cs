@@ -6,6 +6,7 @@ public class BoxMover : MonoBehaviour {
 	float moveTime = Config_CoinTask.boxMoveTime;
 
 	int boxLocationIndex = 0;
+	public int BoxLocationIndex { get { return boxLocationIndex; } }
 
 	public enum MoveType{
 		moveOverArc,

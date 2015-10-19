@@ -155,6 +155,8 @@ public class BoxSwapper : MonoBehaviour {
 		rewardObject.transform.parent = boxes[boxRewardIndex].transform;
 
 		for(int swapNum = 0; swapNum < numTimes; swapNum++){
+			int stationaryBoxIndex = -1; //a bool to make sure no more than one box stays stationary at one time.
+
 			List<Vector3> boxPositions = new List<Vector3>();
 			boxPositions.Add(boxStartPositions[0].position);
 			boxPositions.Add(boxStartPositions[1].position);
@@ -165,31 +167,54 @@ public class BoxSwapper : MonoBehaviour {
 			moveTypes.Add(BoxMover.MoveType.moveStraight);
 			moveTypes.Add(BoxMover.MoveType.moveUnderArc);
 
+			List<int> newLocationIndices = new List<int>();
+			List<Vector3> moveToPositions = new List<Vector3>();
+
 			for(int i = 0; i < boxes.Length; i++){
 				int randomPosIndex = Random.Range(0, boxPositions.Count);
-				int randomMoveTypeIndex = Random.Range(0, moveTypes.Count);
 				BoxMover currBoxMover = boxes[i].GetComponent<BoxMover>();
 
-				int newLocationIndex = 0;
-				if(boxPositions[randomPosIndex] == boxStartPositions[0].position){
-					newLocationIndex = 0;
+				int newLocationIndex = GetLocationIndex(boxPositions[randomPosIndex]);
+
+				//set movetype of any stationary box first!
+				if(currBoxMover.BoxLocationIndex == newLocationIndex && stationaryBoxIndex == -1){ //allow for one box to be stationary
+					stationaryBoxIndex = i;
+					currBoxMover.SetMoveType(BoxMover.MoveType.moveStraight);
+					moveTypes.Remove(BoxMover.MoveType.moveStraight);
 				}
-				else if(boxPositions[randomPosIndex] == boxStartPositions[1].position){
-					newLocationIndex = 1;
-				}
-				else if(boxPositions[randomPosIndex] == boxStartPositions[2].position){
-					newLocationIndex = 2;
+				else if(currBoxMover.BoxLocationIndex == newLocationIndex && stationaryBoxIndex != -1){ //a box is already stationary!
+					//NOTE: this assumes ONLY 3 boxes total! This case would only happen on the second box, thus, allowing us to know that there were only 2 indices (0,1) available anyway.
+						//...Only happens on the second box because if two boxes are stationary, then the third MUST be stationary as well.
+					if(randomPosIndex == 0){
+						randomPosIndex = 1;
+					}
+					else{
+						randomPosIndex = 0;
+					}
+
+					newLocationIndex = GetLocationIndex(boxPositions[randomPosIndex]);
+
 				}
 
-				//set movetype
-				currBoxMover.SetMoveType(moveTypes[randomMoveTypeIndex]);
-				moveTypes.RemoveAt(randomMoveTypeIndex);
+				newLocationIndices.Add(newLocationIndex);
+				moveToPositions.Add(boxPositions[randomPosIndex]);
+				boxPositions.RemoveAt(randomPosIndex);
+			}
+
+			//go back through boxes and set the rest of the move types
+			for(int i = 0; i < boxes.Length; i++){
+				BoxMover currBoxMover = boxes[i].GetComponent<BoxMover>();
+				if(stationaryBoxIndex != i){
+					int randomMoveTypeIndex = Random.Range(0, moveTypes.Count);
+
+					currBoxMover.SetMoveType(moveTypes[randomMoveTypeIndex]);
+					moveTypes.RemoveAt(randomMoveTypeIndex);
+				}
 
 				//move first, based on current location index
-				currBoxMover.Move(boxPositions[randomPosIndex]);
+				currBoxMover.Move(moveToPositions[i]);
 				//now that we've moved, set the location index for the new, moved to position
-				currBoxMover.SetBoxLocationIndex(newLocationIndex);
-				boxPositions.RemoveAt(randomPosIndex);
+				currBoxMover.SetBoxLocationIndex(newLocationIndices[i]);
 			}
 
 			yield return new WaitForSeconds(Config_CoinTask.boxMoveTime);
@@ -199,7 +224,21 @@ public class BoxSwapper : MonoBehaviour {
 		rewardObject.transform.parent = rewardObject.transform.parent.parent; //set it equal to the box's parent.
 	}
 
+	int GetLocationIndex(Vector3 position){
+		if(position == boxStartPositions[0].position){
+			return 0;
+		}
+		else if(position == boxStartPositions[1].position){
+			return 1;
+		}
+		else if(position == boxStartPositions[2].position){
+			return 2;
+		}
 
+		return -1;
+	}
+	
+	
 	IEnumerator SpinSelector(){
 		float angle = 6.0f;
 		while (true) {

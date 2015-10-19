@@ -262,6 +262,7 @@ public class TrialController : MonoBehaviour {
 			    "\n\nPress (X) to start!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
 		} else {*/
 
+		//TODO: negate this so there's only an IF instead of an IF-ELSE with nothing in the IF.
 		if(isPracticeTrial || (!Config_CoinTask.doPracticeTrial && numRealTrials == 1 && trial.avatarStartPos == exp.player.controls.startPositionTransform1.position)){
 
 		}
