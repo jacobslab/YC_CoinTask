@@ -299,6 +299,11 @@ public class TrialController : MonoBehaviour {
 		trialLogger.LogRecallPhaseStarted();
 
 
+		//RUN DISTRACTOR GAME
+		//TODO: LOG THIS
+		yield return StartCoroutine(exp.boxGameController.RunGame());
+
+
 		//jitter before the first object is shown
 		yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
 
@@ -478,7 +483,7 @@ public class TrialController : MonoBehaviour {
 			if(points > 0){
 				chosenIndicatorController.ChangeToRightColor();
 			}
-			else if (points < 0){
+			else if (points <= 0){
 				chosenIndicatorController.ChangeToWrongColor();
 				chosenPositionColor = chosenIndicatorController.WrongColor;
 			}

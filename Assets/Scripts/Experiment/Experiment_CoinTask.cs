@@ -21,6 +21,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//session controller
 	public TrialController trialController;
 
+	//DISTRACTOR GAME
+	public BoxSwapGameController boxGameController;
+
 	//score controller
 	public ScoreController scoreController;
 

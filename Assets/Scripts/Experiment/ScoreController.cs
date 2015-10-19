@@ -45,6 +45,9 @@ public class ScoreController : MonoBehaviour {
 	static int specialObjectPoints = 50;
 	public static int SpecialObjectPoints { get { return specialObjectPoints; } }
 
+	static int boxSwapperPoints = 50;
+	public static int BoxSwapperPoints { get { return boxSwapperPoints; } }
+
 
 
 
@@ -112,6 +115,11 @@ public class ScoreController : MonoBehaviour {
 			yield return 0;
 
 		}
+	}
+
+	public void AddBoxSwapperPoints(){
+		AddToScore(boxSwapperPoints);
+		scoreLogger.LogBoxSwapperPoints(boxSwapperPoints);
 	}
 
 	public void AddSpecialPoints(){

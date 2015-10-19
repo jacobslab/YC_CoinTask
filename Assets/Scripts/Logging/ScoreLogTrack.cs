@@ -13,6 +13,12 @@ public class ScoreLogTrack : LogTrack {
 	
 	}
 
+	public void LogBoxSwapperPoints(int scoreAdded){
+		if (ExperimentSettings_CoinTask.isLogging) {
+			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_ADDED_BOX_SWAPPER" + separator + scoreAdded);
+		}
+	}
+
 	public void LogTreasureOpenScoreAdded(int scoreAdded){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_ADDED_TREASURE" + separator + scoreAdded);

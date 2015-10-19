@@ -62,7 +62,7 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 	}
 
 	public void SetPointsText(int points){
-		if (points < 0) {
+		if (points <= 0) {
 			PointsScoredText.color = WrongScorecolor;
 		} else {
 			PointsScoredText.color = RightScoreColor;
