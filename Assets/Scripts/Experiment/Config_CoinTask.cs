@@ -91,13 +91,16 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float pauseAtTreasureTime = 1.5f;
 
 
-	public static string initialInstructions = "Welcome to Treasure Island!" + 
-		"\n\nUse the left joystick to drive around and open treasure chests." + 
-			"\n\nPay attention to special object locations! We will ask you to remember them later." + 
-			"\n\nWhen we ask you about an object, if you are more than 50% sure of its location, you should say you remember where it is." + 
-			"\n\nIf you you remember where an object is, you will be asked to 'double down' for more points. Do this if you are over 75% sure, as you risk losing points too!" + 
-			"\n\nFinish quickly and you will receive a time bonus of up to 30 points!" +
-			"\n\nPress (X) to start!";
+	public static string initialInstructions1 = "Welcome to Treasure Island!" + 
+		"\n\nYou are going on a treasure hunt." + 
+			"\n\nUse the joystick to control your movement." + 
+			"\n\nDrive into treasure chests to open them. Remember where each object is located!";
+
+	public static string initialInstructions2 = "TIPS FOR MAXIMIZING YOUR SCORE" + 
+		"\n\nGet a time bonus by driving to the chests quickly." + 
+			"\n\nIf you are more than 50% sure of an object's location, you should say you remember." + 
+			"\n\nIf you say you are very sure, you should be at least 75% accurate." + 
+			"\n\nPress (X) to begin!";
 
 
 	public static float minObjselectionUITime = 0.5f;

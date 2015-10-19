@@ -106,7 +106,8 @@ public class TrialController : MonoBehaviour {
 		if (!ExperimentSettings_CoinTask.isReplay) {
 			//show instructions for exploring, wait for the action button
 			trialLogger.LogInstructionEvent();
-			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 
 			//let player explore until the button is pressed again
 			//trialLogger.LogBeginningExplorationEvent();
@@ -260,7 +261,11 @@ public class TrialController : MonoBehaviour {
 				"\n\nFinish quickly enough and you will receive a time bonus on your score!" +
 			    "\n\nPress (X) to start!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
 		} else {*/
-		if (!isPracticeTrial || (Config_CoinTask.doPracticeTrial && numRealTrials != 0)){
+
+		if(isPracticeTrial || (!Config_CoinTask.doPracticeTrial && numRealTrials == 1 && trial.avatarStartPos == exp.player.controls.startPositionTransform1.position)){
+
+		}
+		else{
 			trialLogger.LogInstructionEvent ();
 			yield return StartCoroutine (exp.ShowSingleInstruction ("Press (X) to start!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
 		}
@@ -347,7 +352,7 @@ public class TrialController : MonoBehaviour {
 			doYouRememberUI.Stop();
 
 			//show single selection instruction and wait for selection button press
-			string selectObjectText = "Select the location of the " + specialItemName + ".";
+			string selectObjectText = "Select the location of the " + specialItemName + " (X).";
 			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 
 			//log the chosen position and correct position
