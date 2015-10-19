@@ -5,7 +5,9 @@ using System.Collections.Generic;
 public class BoxSwapper : MonoBehaviour {
 
 	public GameObject boxSelector;
+	Quaternion boxSelectorOrigRot;
 	int selectedBoxIndex = 0;
+	bool shouldSelect = false;
 
 	public GameObject rewardObject;
 	int boxRewardIndex = 0;
@@ -15,14 +17,14 @@ public class BoxSwapper : MonoBehaviour {
 
 	float startBoxHeight = 2.0f;
 
-	bool shouldSelect = false;
-
 	// Use this for initialization
 	void Start () {
-
+		boxSelectorOrigRot = boxSelector.transform.rotation;
 	}
 
 	public void Init(){
+		boxSelector.SetActive (false);
+		boxSelector.transform.rotation = boxSelectorOrigRot;
 		InitBoxPositions();
 		InitRewardPosition();
 	}
@@ -103,6 +105,8 @@ public class BoxSwapper : MonoBehaviour {
 		bool actionButtonPressed = false;
 		shouldSelect = true;
 
+		boxSelector.SetActive (true);
+
 		while(!actionButtonPressed){
 			if(Input.GetKeyDown(KeyCode.Space)){
 				actionButtonPressed = true;
@@ -115,6 +119,7 @@ public class BoxSwapper : MonoBehaviour {
 		if(IsSelectedBoxCorrect()){
 			Debug.Log("You got the reward!");
 			Experiment_CoinTask.Instance.scoreController.AddBoxSwapperPoints();
+			StartCoroutine(SpinSelector());
 		}
 
 		rewardObject.transform.position = boxes[boxRewardIndex].transform.position;
@@ -176,6 +181,14 @@ public class BoxSwapper : MonoBehaviour {
 		}
 		else if(box.transform.position == boxStartPositions[2].position){
 			boxMover.myMoveType = BoxMover.MoveType.moveOverArc;
+		}
+	}
+
+	IEnumerator SpinSelector(){
+		float angle = 6.0f;
+		while (true) {
+			boxSelector.transform.RotateAround(boxSelector.transform.position, Vector3.up, angle);
+			yield return 0;
 		}
 	}
 }
