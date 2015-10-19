@@ -9,7 +9,7 @@ public class TrialController : MonoBehaviour {
 
 	public SimpleTimer trialTimer;
 	public QuestionUI doYouRememberUI;
-	public QuestionUI doubleDownUI;
+	public QuestionUI areYouSureUI;
 	public BlockCompleteUI blockCompletedUI;
 	public ScoreRecapUI scoreRecapUI;
 
@@ -313,7 +313,7 @@ public class TrialController : MonoBehaviour {
 		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
 		List<Vector3> chosenPositions = new List<Vector3> (); //chosen positions will be in the same order as the random special object order
 		List<bool> rememberResponses = new List<bool> (); //keep track of whether or not the player remembered each object
-		List<bool> doubleDownResponses = new List<bool> (); //keep track of whether or not the player wanted to double down on each object
+		List<bool> areYouSureResponses = new List<bool> (); //keep track of whether or not the player wanted to double down on each object
 		//List<EnvironmentPositionSelector.SelectionRadiusType> chosenSelectorSizes = new List<EnvironmentPositionSelector.SelectionRadiusType> (); //chosen sizes will be in the same order as the random special object order
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
 
@@ -367,16 +367,16 @@ public class TrialController : MonoBehaviour {
 			trialLogger.LogInstructionEvent();
 
 			if(rememberResponse == true){
-				yield return StartCoroutine( doubleDownUI.Play() );
+				yield return StartCoroutine( areYouSureUI.Play() );
 
 				yield return StartCoroutine (exp.WaitForActionButton());
-				bool doubleDownResponse = doubleDownUI.myAnswerSelector.IsYesPosition();
-				trialLogger.LogDoubleDownResponse(doubleDownResponse);
-				doubleDownResponses.Add(doubleDownResponse);
+				bool areYouSureResponse = areYouSureUI.myAnswerSelector.IsYesPosition();
+				trialLogger.LogAreYouSureResponse(areYouSureResponse);
+				areYouSureResponses.Add(areYouSureResponse);
 			}
 			else{
 				//if you chose not to remember, you should not get to double down.
-				doubleDownResponses.Add(false);
+				areYouSureResponses.Add(false);
 			}
 
 			if(i <= exp.objectController.CurrentTrialSpecialObjects.Count - 1){
@@ -385,7 +385,7 @@ public class TrialController : MonoBehaviour {
 			}
 
 			if(rememberResponse == true){
-				doubleDownUI.Stop();
+				areYouSureUI.Stop();
 			}
 			//}
 
@@ -398,7 +398,7 @@ public class TrialController : MonoBehaviour {
 				}
 
 				doYouRememberUI.Stop();
-				doubleDownResponses.Add(false);
+				areYouSureResponses.Add(false);
 
 				//add a placeholder vector position here...
 				chosenPositions.Add(Vector3.zero);
@@ -407,14 +407,14 @@ public class TrialController : MonoBehaviour {
 		}
 
 		trialLogger.LogFeedbackStarted();
-		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses, doubleDownResponses) );
+		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses, areYouSureResponses) );
 		
 		//increment subject's trial count
 		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
 
 	}
 
-	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<bool> rememberResponses, List<bool> doubleDownResponses){//, List<EnvironmentPositionSelector.SelectionRadiusType> chosenSelectorSizes){
+	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<bool> rememberResponses, List<bool> areYouSureResponses){//, List<EnvironmentPositionSelector.SelectionRadiusType> chosenSelectorSizes){
 		memoryScore = 0;
 
 		List<GameObject> CorrectPositionIndicators = new List<GameObject> ();
@@ -476,7 +476,7 @@ public class TrialController : MonoBehaviour {
 			//calculate the memory points and display them
 			exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
 			//exp.environmentController.myPositionSelector.SetRadiusSize( chosenRadiusSize );
-			int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position, rememberResponses[i], doubleDownResponses[i] );
+			int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position, rememberResponses[i], areYouSureResponses[i] );
 
 			//change chosen indicator color to reflect right or wrong
 			ChosenIndicatorController chosenIndicatorController = chosenPositionIndicator.GetComponent<ChosenIndicatorController>();
@@ -562,7 +562,7 @@ public class TrialController : MonoBehaviour {
 		if (doYouRememberUI.isPlaying) {
 			trialLogger.LogAnswerPositionMoved( isYesPosition, true );
 		} 
-		else if (doubleDownUI.isPlaying) {
+		else if (areYouSureUI.isPlaying) {
 			trialLogger.LogAnswerPositionMoved( isYesPosition, false );
 		}
 	}

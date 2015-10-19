@@ -5,7 +5,7 @@ Corey,score 0,block 0
 hi,score 250,block 0
 CoreyN,score 50,block 0
 hey hey hey,score 0,block 0
-me,score 227,block 2
+me,score -80,block 1
 Me,score 2276,block 0
 Hello,score 0,block 0
 Hi,score 232,block 0

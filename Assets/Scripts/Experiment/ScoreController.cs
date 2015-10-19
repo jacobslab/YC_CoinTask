@@ -24,23 +24,23 @@ public class ScoreController : MonoBehaviour {
 	public static int TimeBonusBig { get { return timeBonusBig; } }
 	
 
-	static int memoryScoreRight = 50;
+	static int memoryScoreRight = 100;
 	public static int MemoryScoreRight { get { return memoryScoreRight; } }
 
-	static int memoryScoreWrong = -16;
+	static int memoryScoreWrong = -50;
 	public static int MemoryScoreWrong { get { return memoryScoreWrong; } }
 
-	static int memoryScoreRightNotRemembered = 25;
+	static int memoryScoreRightNotRemembered = 50;
 	public static int MemoryScoreRightNotRemembered { get { return memoryScoreRightNotRemembered; } }
 	
 	static int memoryScoreWrongNotRemembered = 0;
 	public static int MemoryScoreWrongNotRemembered { get { return memoryScoreWrongNotRemembered; } }
 
-	static int memoryScoreDoubleDown = 150;
-	public static int MemoryScoreDoubleDown { get { return memoryScoreDoubleDown; } }
+	static int memoryScoreRightVerySure = 200;
+	public static int MemoryScoreRightVerySure { get { return memoryScoreRightVerySure; } }
 
-	static int memoryScoreWrongDoubleDown = -116;
-	public static int MemoryScoreWrongDoubleDown { get { return memoryScoreWrongDoubleDown; } }
+	static int memoryScoreWrongVerySure = -350;
+	public static int MemoryScoreWrongVerySure { get { return memoryScoreWrongVerySure; } }
 
 	static int specialObjectPoints = 50;
 	public static int SpecialObjectPoints { get { return specialObjectPoints; } }
@@ -48,6 +48,10 @@ public class ScoreController : MonoBehaviour {
 	static int boxSwapperPoints = 50;
 	public static int BoxSwapperPoints { get { return boxSwapperPoints; } }
 
+
+
+	public TextMesh verySureScoreExplanation;
+	public TextMesh notVerySureScoreExplanation;
 
 
 
@@ -65,6 +69,8 @@ public class ScoreController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		verySureScoreExplanation.text = "win " + memoryScoreRightVerySure + "/" + "lose " + memoryScoreWrongVerySure;
+		notVerySureScoreExplanation.text = "win " + memoryScoreRight + "/" + "lose " + memoryScoreWrong;
 		StartCoroutine (UpdateScoreText());
 	}
 	
@@ -138,7 +144,7 @@ public class ScoreController : MonoBehaviour {
 					memoryPoints = memoryScoreRight;
 				}
 				else{
-					memoryPoints = memoryScoreDoubleDown;
+					memoryPoints = memoryScoreRightVerySure;
 				}
 			}
 		}
@@ -151,7 +157,7 @@ public class ScoreController : MonoBehaviour {
 					memoryPoints = memoryScoreWrong;
 				}
 				else{
-					memoryPoints = memoryScoreWrongDoubleDown;
+					memoryPoints = memoryScoreWrongVerySure;
 				}
 			}
 		}

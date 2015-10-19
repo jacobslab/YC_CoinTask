@@ -68,7 +68,8 @@ public class TrialLogTrack : LogTrack {
 
 
 
-	public void LogDoubleDownResponse(bool response){
+	public void LogAreYouSureResponse(bool response){
+		//TODO: CHANGE THE "DOUBLE DOWN" TO ARE YOU SURE OR SOMETHING.
 		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "DOUBLE_DOWN_RESPONSE" + separator + response);
 		Debug.Log ("DOUBLE DOWN LOGGED: " + response);
 	}
@@ -90,6 +91,7 @@ public class TrialLogTrack : LogTrack {
 			Debug.Log ("REMEMBER MOVEMENT LOGGED: " + answerPosition);
 		}
 		else{
+			//TODO: CHANGE THE "DOUBLE DOWN" TO ARE YOU SURE OR SOMETHING.
 			subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "DOUBLE_DOWN_ANSWER_MOVEMENT" + separator + answerPosition);
 			Debug.Log ("DOUBLE DOWN MOVEMENT LOGGED: " + answerPosition);
 		}
