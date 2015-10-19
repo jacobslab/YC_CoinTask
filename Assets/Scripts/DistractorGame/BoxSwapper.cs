@@ -39,6 +39,43 @@ public class BoxSwapper : MonoBehaviour {
 		rewardObject.transform.position = boxStartPositions[randomPosIndex].transform.position;
 	}
 
+	public IEnumerator LowerBoxes(){
+		float currTime = 0.0f;
+		float moveDownTime = 1.0f;
+		
+		float moveAmount = -startBoxHeight / moveDownTime;
+		
+		while(currTime < moveDownTime){
+			currTime += Time.deltaTime;
+			for(int i = 0; i < boxes.Length; i++){
+				boxes[i].transform.position += (Vector3.up*moveAmount*Time.deltaTime);
+			}
+			yield return 0;
+		}
+
+	}
+
+	//TODO: combine with LowerBoxes() because they're basically the same function.
+	public IEnumerator RaiseBoxes(){
+		float currTime = 0.0f;
+		float moveDownTime = 1.0f;
+		
+		float moveAmount = startBoxHeight / moveDownTime;
+		
+		while(currTime < moveDownTime){
+			currTime += Time.deltaTime;
+			for(int i = 0; i < boxes.Length; i++){
+				boxes[i].transform.position += (Vector3.up*moveAmount*Time.deltaTime);
+			}
+			yield return 0;
+		}
+
+		float liftPause = 1.0f;
+		yield return new WaitForSeconds (liftPause);
+		
+		InitBoxPositions();
+	}
+
 	// Update is called once per frame
 	void Update () {
 		if(shouldSelect){
@@ -75,7 +112,7 @@ public class BoxSwapper : MonoBehaviour {
 		}
 
 		yield return 0;
-		if(boxRewardIndex == selectedBoxIndex){
+		if(IsSelectedBoxCorrect()){
 			Debug.Log("You got the reward!");
 			Experiment_CoinTask.Instance.scoreController.AddBoxSwapperPoints();
 		}
@@ -84,42 +121,30 @@ public class BoxSwapper : MonoBehaviour {
 		rewardObject.SetActive(true);
 	}
 
-	public IEnumerator LowerBoxes(){
-		float currTime = 0.0f;
-		float moveDownTime = 1.0f;
-
-		float moveAmount = -startBoxHeight / moveDownTime;
-
-		while(currTime < moveDownTime){
-			currTime += Time.deltaTime;
-			for(int i = 0; i < boxes.Length; i++){
-				boxes[i].transform.position += (Vector3.up*moveAmount*Time.deltaTime);
+	bool IsSelectedBoxCorrect(){
+		int minDistanceBoxIndex = 0;
+		float minDistance = 0;
+		for (int i = 0; i < boxes.Length; i++) {
+			float distance = (boxSelector.transform.position - boxes[i].transform.position).magnitude;
+			if(i == 0){
+				minDistance = distance;
 			}
-			yield return 0;
+			else if(minDistance > distance){
+				minDistance = distance;
+				minDistanceBoxIndex = i;
+			}
+			
 		}
-
-		rewardObject.SetActive(false);
+		if (minDistanceBoxIndex == boxRewardIndex) {
+			return true;
+		}
+		return false;
 	}
 
-	//TODO: combine with LowerBoxes() because they're basically the same function.
-	public IEnumerator RaiseBoxes(){
-		float currTime = 0.0f;
-		float moveDownTime = 1.0f;
-		
-		float moveAmount = startBoxHeight / moveDownTime;
-		
-		while(currTime < moveDownTime){
-			currTime += Time.deltaTime;
-			for(int i = 0; i < boxes.Length; i++){
-				boxes[i].transform.position += (Vector3.up*moveAmount*Time.deltaTime);
-			}
-			yield return 0;
-		}
-
-		InitBoxPositions();
-	}
 
 	public IEnumerator SwapBoxes(int numTimes){
+		rewardObject.transform.parent = boxes[boxRewardIndex].transform;
+
 		for(int swapNum = 0; swapNum < numTimes; swapNum++){
 			List<Vector3> boxPositions = new List<Vector3>();
 			boxPositions.Add(boxStartPositions[0].position);
@@ -137,6 +162,8 @@ public class BoxSwapper : MonoBehaviour {
 
 			yield return new WaitForSeconds(1.0f);
 		}
+
+		rewardObject.transform.parent = rewardObject.transform.parent.parent; //set it equal to the box's parent.
 	}
 
 	void SetBoxMoveType(BoxMover box){
