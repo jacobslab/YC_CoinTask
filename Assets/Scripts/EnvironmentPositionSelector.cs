@@ -26,6 +26,10 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	bool shouldSelect;
 	float selectionMovementSpeed = 80.0f;
 
+	void Awake(){
+		PositionSelectorVisuals.transform.localScale = new Vector3 (Config_CoinTask.selectionDiameter, PositionSelectorVisuals.transform.localScale.y, Config_CoinTask.selectionDiameter);
+	}
+
 	// Use this for initialization
 	void Start () {
 		EnableSelection(false);
