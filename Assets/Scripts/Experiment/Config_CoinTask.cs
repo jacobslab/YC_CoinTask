@@ -3,6 +3,11 @@ using System.Collections;
 
 public class Config_CoinTask : MonoBehaviour {
 
+	//BOX SWAP MINIGAME VARIABLES
+	public static float boxMoveTime = 1.0f;
+
+
+
 //GENERIC EXPERIMENT VARIABLES
 
 	/*

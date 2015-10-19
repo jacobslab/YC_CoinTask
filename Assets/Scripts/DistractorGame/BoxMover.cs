@@ -3,7 +3,9 @@ using System.Collections;
 
 public class BoxMover : MonoBehaviour {
 
-	float moveTime = 1.0f;
+	float moveTime = Config_CoinTask.boxMoveTime;
+
+	int boxLocationIndex = 0;
 
 	public enum MoveType{
 		moveOverArc,
@@ -23,17 +25,36 @@ public class BoxMover : MonoBehaviour {
 	
 	}
 
+	public void SetBoxLocationIndex (int newBoxLocationIndex){
+		boxLocationIndex = newBoxLocationIndex;
+		//SetMoveType ();
+	}
+
+	public void SetMoveType(MoveType newMoveType){
+		myMoveType = newMoveType;
+		/*if(boxLocationIndex == 0){
+			myMoveType = BoxMover.MoveType.moveUnderArc;
+		}
+		else if(boxLocationIndex == 1){
+			myMoveType = BoxMover.MoveType.moveStraight;
+		}
+		else if(boxLocationIndex == 2){
+			myMoveType = BoxMover.MoveType.moveOverArc;
+		}*/
+		
+		Debug.Log ("SET BOX MOVE TYPE: " + myMoveType);
+	}
+
 	public void Move(Vector3 targetPos){
 		switch (myMoveType){
 			case MoveType.moveStraight:
 				StartCoroutine(MoveStraight(targetPos));
 				break;
 			case MoveType.moveOverArc:
-				StartCoroutine(MoveArc(targetPos));
+				StartCoroutine(MoveArc(targetPos, 1));
 				break;
 			case MoveType.moveUnderArc:
-			//TODO: GET RID OF MOVE UNDER ARC? OR IMPLEMENT IT?
-				StartCoroutine(MoveArc(targetPos));
+				StartCoroutine(MoveArc(targetPos, -1));
 				break;
 		}
 	}
@@ -54,13 +75,18 @@ public class BoxMover : MonoBehaviour {
 		transform.position = targetPos;
 	}
 
-	IEnumerator MoveArc(Vector3 targetPos){
+	IEnumerator MoveArc(Vector3 targetPos, int arcDirection){
 		Vector3 origPos = transform.position;
 
 		Vector3 totalDistance = targetPos - transform.position;
 		
 		Vector3 acceleration = Physics.gravity;
 		Vector3 initVelocity = (totalDistance - (acceleration*moveTime*moveTime) ) / moveTime;
+
+		if(arcDirection > 0){
+			initVelocity = new Vector3 (initVelocity.x, -initVelocity.y, initVelocity.z);
+			acceleration *= -1;
+		}
 
 		float currentTime = 0.0f;
 		while( currentTime < moveTime ){
@@ -72,4 +98,5 @@ public class BoxMover : MonoBehaviour {
 
 		transform.position = targetPos;
 	}
+
 }

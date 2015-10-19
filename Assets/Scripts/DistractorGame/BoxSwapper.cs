@@ -33,6 +33,10 @@ public class BoxSwapper : MonoBehaviour {
 		boxes[0].transform.position = boxStartPositions[0].position + Vector3.up*startBoxHeight;
 		boxes[1].transform.position = boxStartPositions[1].position + Vector3.up*startBoxHeight;
 		boxes[2].transform.position = boxStartPositions[2].position + Vector3.up*startBoxHeight;
+
+		boxes [0].GetComponent<BoxMover> ().SetBoxLocationIndex(0);
+		boxes [1].GetComponent<BoxMover> ().SetBoxLocationIndex(1);
+		boxes [2].GetComponent<BoxMover> ().SetBoxLocationIndex(2);
 	}
 
 	void InitRewardPosition(){
@@ -156,33 +160,45 @@ public class BoxSwapper : MonoBehaviour {
 			boxPositions.Add(boxStartPositions[1].position);
 			boxPositions.Add(boxStartPositions[2].position);
 
+			List<BoxMover.MoveType> moveTypes = new List<BoxMover.MoveType>();
+			moveTypes.Add(BoxMover.MoveType.moveOverArc);
+			moveTypes.Add(BoxMover.MoveType.moveStraight);
+			moveTypes.Add(BoxMover.MoveType.moveUnderArc);
+
 			for(int i = 0; i < boxes.Length; i++){
 				int randomPosIndex = Random.Range(0, boxPositions.Count);
+				int randomMoveTypeIndex = Random.Range(0, moveTypes.Count);
 				BoxMover currBoxMover = boxes[i].GetComponent<BoxMover>();
-				SetBoxMoveType(currBoxMover);
 
+				int newLocationIndex = 0;
+				if(boxPositions[randomPosIndex] == boxStartPositions[0].position){
+					newLocationIndex = 0;
+				}
+				else if(boxPositions[randomPosIndex] == boxStartPositions[1].position){
+					newLocationIndex = 1;
+				}
+				else if(boxPositions[randomPosIndex] == boxStartPositions[2].position){
+					newLocationIndex = 2;
+				}
+
+				//set movetype
+				currBoxMover.SetMoveType(moveTypes[randomMoveTypeIndex]);
+				moveTypes.RemoveAt(randomMoveTypeIndex);
+
+				//move first, based on current location index
 				currBoxMover.Move(boxPositions[randomPosIndex]);
+				//now that we've moved, set the location index for the new, moved to position
+				currBoxMover.SetBoxLocationIndex(newLocationIndex);
 				boxPositions.RemoveAt(randomPosIndex);
 			}
 
-			yield return new WaitForSeconds(1.0f);
+			yield return new WaitForSeconds(Config_CoinTask.boxMoveTime);
+			yield return 0; //wait an extra frame to make sure the boxes get into the correct positions
 		}
 
 		rewardObject.transform.parent = rewardObject.transform.parent.parent; //set it equal to the box's parent.
 	}
 
-	void SetBoxMoveType(BoxMover box){
-		BoxMover boxMover = box.GetComponent<BoxMover>();
-		if(box.transform.position == boxStartPositions[0].position){
-			boxMover.myMoveType = BoxMover.MoveType.moveUnderArc;
-		}
-		else if(box.transform.position == boxStartPositions[1].position){
-			boxMover.myMoveType = BoxMover.MoveType.moveStraight;
-		}
-		else if(box.transform.position == boxStartPositions[2].position){
-			boxMover.myMoveType = BoxMover.MoveType.moveOverArc;
-		}
-	}
 
 	IEnumerator SpinSelector(){
 		float angle = 6.0f;
