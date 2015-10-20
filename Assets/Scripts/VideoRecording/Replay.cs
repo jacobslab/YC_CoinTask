@@ -317,6 +317,23 @@ public class Replay : MonoBehaviour {
 									}
 								}
 
+								else if(loggedProperty == "OBJECT_COLOR"){
+									Renderer renderer = objInScene.GetComponent<Renderer>();
+									if(renderer != null){
+										float r = float.Parse(splitLine[i+2]);
+										float g = float.Parse(splitLine[i+3]);
+										float b = float.Parse(splitLine[i+4]);
+										float a = float.Parse(splitLine[i+5]);
+
+										Color color = new Color(r, g, b, a);
+
+										renderer.material.color = color;
+									}
+									else{
+										Debug.Log("no renderer!");
+									}
+								}
+
 								//SHADOW CAST CHANGE
 								else if (loggedProperty == "SHADOW_SETTING"){
 									string shadowSetting = splitLine[i+2];
