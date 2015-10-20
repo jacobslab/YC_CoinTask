@@ -241,7 +241,6 @@ public class PlayerControls : MonoBehaviour{
 
 		float origYRot = origRotation.eulerAngles.y;
 
-		//transform.RotateAround(transform.position, Vector3.up, -origYRot);
 		transform.position = new Vector3( objectPos.x, origPosition.y, objectPos.y );
 		transform.RotateAround(origPosition, Vector3.up, -origYRot);
 

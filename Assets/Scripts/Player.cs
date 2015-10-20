@@ -6,7 +6,6 @@ public class Player : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
 	public PlayerControls controls;
-	//public TileSelector tileSelector;
 	public EnvironmentPositionSelector positionSelector;
 	public GameObject visuals;
 

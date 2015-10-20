@@ -6,45 +6,6 @@ public class Config_CoinTask : MonoBehaviour {
 	//BOX SWAP MINIGAME VARIABLES
 	public static float boxMoveTime = 1.0f;
 
-
-
-//GENERIC EXPERIMENT VARIABLES
-
-	/*
-	number of sessions
-	heading offsets (min, max)
-	object to use vs obj to use
-	one object version? (true/false)
-	autodrive to destination
-	wait at object time
-	drive time
-	drive speed
-	spin time
-	visible during spin
-	pause before spin time
-	should maximize learning angle
-	minimum degree between learning trials
-	do massed objects
-	randomize test order
-	randomize learn order
-	object buffer variables
-	distance between various objects (wallbuffer)
-	object buffer ( distance objects in a block must be from each other)
-	avatar object buffer
-	stimulation variables (default to not doing stimulation)
-	doStim
-	stimFreq
-	stimDuration
-	doBreak
-	Test session variables
-	doTestSession (not yet implemented???)
-	Practice variables
-	doPracticeBlock
-	*/
-
-	//session information
-	//public static int numSessions;
-
 	//stimulation variables
 	public static bool shouldDoStim;	//TODO
 	public static int stimFrequency;	//TODO
@@ -58,30 +19,19 @@ public class Config_CoinTask : MonoBehaviour {
 	public static Vector3 trialBlockDistribution = new Vector3 (2, 4, 2); //instead of 1,2,1 because there must be TWICE as many trials in order to counterbalance them
 	
 	//practice settings
-	//public static int numEasyLearningTrialsPract = 1;	//TODO
-	//public static int numHardLearningTrialsPract = 1;	//TODO
 	public static int numTrialsPract = 1;
 	public static bool doPracticeTrial = false;
 	public static int numSpecialObjectsPract = 2;
 
 
-//SPECIFIC COIN TASK VARIABLES:
-
+	//SPECIFIC COIN TASK VARIABLES:
 	public static float randomJitterMin = 0.0f;
 	public static float randomJitterMax = 0.2f;
 
 
 
 	//DEFAULT OBJECTS
-	/*public static int numDefaultObjectsEasy = 15;
-	public static int numDefaultObjectsMedium = 15;
-	public static int numDefaultObjectsHard = 15;*/
 	public static int numDefaultObjects = 4;
-
-	//THERE MUST ALWAYS BE FEWER SPECIAL OBJECTS THAN DEFAULT OBJECTS ------> now randomizing 1-3 special.
-	/*public static int numSpecialObjectsEasy = 2;
-	public static int numSpecialObjectsMedium = 4;
-	public static int numSpecialObjectsHard = 6;*/
 
 	public static float selectionDiameter = 20.0f;
 

@@ -16,21 +16,6 @@ public class PositionSelectorLogTrack : LogTrack {
 		LogSelectorSize ();
 	}
 
-	/*public void LogSelectorSize(){
-		if (ExperimentSettings_CoinTask.isLogging) {
-			string selectorSize = "NONE";
-			float selectorDiameter = 0.0f;
-			if (envPosSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.big) {
-				selectorSize = "BIG";
-				selectorDiameter = Config_CoinTask.bigSelectionSize;
-			} else if (envPosSelector.currentRadiusType == EnvironmentPositionSelector.SelectionRadiusType.small) {
-				selectorSize = "SMALL";
-				selectorDiameter = Config_CoinTask.smallSelectionSize;
-			} 
-			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SELECTOR_SIZE" + separator + selectorSize + separator + "DIAMETER" + separator + selectorDiameter);
-		}
-	}*/
-
 	public void LogSelectorSize(){
 		float diameter = Config_CoinTask.selectionDiameter;
 		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SELECTOR_SIZE" + separator + "DIAMETER" + separator + diameter);

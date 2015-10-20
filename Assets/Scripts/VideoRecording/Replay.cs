@@ -233,11 +233,6 @@ public class Replay : MonoBehaviour {
 
 								objInScene = GameObject.Find(objName);
 
-								//DEBUG.
-								if(objName == "ExplosionParticles"){
-									int a = 0;
-								}
-
 								if(objInScene != null){
 									objsInSceneDict.Add(objName, objInScene);
 								}
@@ -353,10 +348,6 @@ public class Replay : MonoBehaviour {
 									}
 								}
 								else if(loggedProperty == "DESTROYED"){
-									//DEBUG.
-									if(objName == "ExplosionParticles"){
-										int a = 0;
-									}
 									Debug.Log("Destroying object! " + objInScene.name);
 									objsInSceneDict.Remove( objName );
 									GameObject.Destroy(objInScene);
@@ -552,20 +543,6 @@ public class Replay : MonoBehaviour {
 									objInScene.GetComponent<LineRenderer>().SetColors(startColor, endColor);
 								}
 
-								//POSITION SELECTOR SIZE
-								/*else if (loggedProperty == "SELECTOR_SIZE"){
-									string selectionSize = splitLine[i+2];
-									EnvironmentPositionSelector.SelectionRadiusType selectionSizeType = EnvironmentPositionSelector.SelectionRadiusType.none;
-									if(selectionSize == "SMALL"){
-										selectionSizeType = EnvironmentPositionSelector.SelectionRadiusType.small;
-									}
-									else if(selectionSize == "BIG"){
-										selectionSizeType = EnvironmentPositionSelector.SelectionRadiusType.big;
-									}
-
-									objInScene.GetComponent<EnvironmentPositionSelector>().SetRadiusSize(selectionSizeType);
-								}*/
-
 							}
 							else{
 								Debug.Log("REPLAY: No obj in scene named " + objName);
@@ -583,13 +560,11 @@ public class Replay : MonoBehaviour {
 			currentLogFileLine = fileReader.ReadLine ();
 
 			if(hasFinishedSettingFrame){ //
-				//yield return new WaitForFixedUpdate();	 //REPLAY BASED ON FIXEDUPDATE FOR FRAMERATE INDEPENDENCE (logging was also logged via FixedUpdate())
 				yield return 0; //WHILE LOGGED ON FIXED UPDATE, REPLAY ON UPDATE TO GET A CONSTANT #RENDERED FRAMES
 
 				hasFinishedSettingFrame = false;
 
 			}
-			//}
 		}
 
 		//take the last screenshot

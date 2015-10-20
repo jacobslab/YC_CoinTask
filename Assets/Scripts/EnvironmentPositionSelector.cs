@@ -15,14 +15,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	public Color VisualsDefaultColor;
 	public Color VisualsSelectColor;
-
-	/*public enum SelectionRadiusType{
-		big,
-		small,
-		none
-	}
-	public SelectionRadiusType currentRadiusType;
-*/
+	
 	bool shouldSelect;
 	float selectionMovementSpeed = 80.0f;
 
@@ -38,11 +31,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (shouldSelect) {
-			//GetRadiusSelectionInput();
-
-			//if(currentRadiusType != SelectionRadiusType.none){
-				GetMovementInput();
-			//}
+			GetMovementInput();
 		}
 	}
 
@@ -69,12 +58,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		}
 	}
 
-	/*void GetRadiusSelectionInput(){
-		if (Input.GetButtonDown("A Button")) {
-			ChangeRadiusSize();
-		}
-	}*/
-
 	bool CheckPositionsClose(float epsilon, Vector3 pos1, Vector3 pos2){
 		float distance = (pos1 - pos2).magnitude;
 		if (distance < epsilon) {
@@ -92,12 +75,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		bool wouldBeInWallsVert = exp.environmentController.CheckWithinWallsVert (PositionSelector.transform.position + (vertAmountVec), Config_CoinTask.objectToWallBuffer);
 		bool wouldBeInWallsHoriz = exp.environmentController.CheckWithinWallsHoriz (PositionSelector.transform.position + (horizAmountVec), Config_CoinTask.objectToWallBuffer); 
 
-		if (amountVertical != 0) {
-			int a = 0;
-		}
-		if (amountHorizontal != 0) {
-			int a = 0;
-		}
 
 		if (wouldBeInWallsVert) {
 			PositionSelector.transform.position += vertAmountVec;
@@ -128,70 +105,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		}
 	}
 
-	//TODO: put these size change functions in a separate script so that the visuals control their own size -- will be easier for duplication of indicators
-	/*void ChangeRadiusSize(){
-		if (currentRadiusType == SelectionRadiusType.none) { //none --> big
-			SetRadiusSizeBig();
-		}
-		else if(currentRadiusType == SelectionRadiusType.big){ //big --> small
-			SetRadiusSizeSmall();
-		}
-		else if (currentRadiusType == SelectionRadiusType.small){ //small --> none
-			SetRadiusSizeNone();
-		}
-
-		logTrack.LogSelectorSize();
-
-	}*/
-
-	/*public void SetRadiusSize (SelectionRadiusType newRadiusType){
-		if (newRadiusType == SelectionRadiusType.none) {
-			SetRadiusSizeNone();
-		} 
-		else if (newRadiusType == SelectionRadiusType.small) {
-			SetRadiusSizeSmall();
-		} 
-		else if (newRadiusType == SelectionRadiusType.big) {
-			SetRadiusSizeBig();
-		}
-	}*/
-
-	/*void SetRadiusSizeBig(){
-
-		float radiusSize = 0.0f;
-
-		PositionSelectorVisuals.GetComponent<VisibilityToggler>().TurnVisible(true);
-		radiusSize = Config_CoinTask.bigSelectionSize;
-		currentRadiusType = SelectionRadiusType.big;
-		SetRadiusSize (radiusSize);
-		
-		SetRadiusText();
-	}
-
-	void SetRadiusSizeSmall(){
-
-		float radiusSize = 0.0f;
-
-		PositionSelectorVisuals.GetComponent<VisibilityToggler>().TurnVisible(true);
-		radiusSize = Config_CoinTask.smallSelectionSize;
-		currentRadiusType = SelectionRadiusType.small;
-		SetRadiusSize (radiusSize);
-		
-		SetRadiusText();
-	}
-
-	void SetRadiusSizeNone(){
-
-		PositionSelectorVisuals.GetComponent<VisibilityToggler>().TurnVisible(false);
-		currentRadiusType = SelectionRadiusType.none;
-		
-		SetRadiusText();
-	}
-
-	void SetRadiusSize( float size ){
-		PositionSelectorVisuals.transform.localScale = new Vector3 (size, PositionSelectorVisuals.transform.localScale.y, size);
-	}*/
-
 
 
 	public bool GetRadiusOverlap(Vector3 correctPosition){
@@ -214,10 +127,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	}
 
 	void EnableSelectionIndicator(bool shouldEnable){
-		//if (currentRadiusType != SelectionRadiusType.none) {
-			PositionSelectorVisuals.GetComponent<VisibilityToggler> ().TurnVisible (shouldEnable);
-		//}
-		//SetRadiusText ();
+		PositionSelectorVisuals.GetComponent<VisibilityToggler> ().TurnVisible (shouldEnable);
 	}
 	
 }

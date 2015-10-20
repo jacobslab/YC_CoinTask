@@ -33,15 +33,6 @@ public class BoxMover : MonoBehaviour {
 
 	public void SetMoveType(MoveType newMoveType){
 		myMoveType = newMoveType;
-		/*if(boxLocationIndex == 0){
-			myMoveType = BoxMover.MoveType.moveUnderArc;
-		}
-		else if(boxLocationIndex == 1){
-			myMoveType = BoxMover.MoveType.moveStraight;
-		}
-		else if(boxLocationIndex == 2){
-			myMoveType = BoxMover.MoveType.moveOverArc;
-		}*/
 		
 		Debug.Log ("SET BOX MOVE TYPE: " + myMoveType);
 	}
