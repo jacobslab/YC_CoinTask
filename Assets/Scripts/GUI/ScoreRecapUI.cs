@@ -6,6 +6,8 @@ public class ScoreRecapUI : MonoBehaviour {
 	
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } } 
 
+
+	public ParticleSystem funParticles;
 	public TextMesh[] ObjectLocationScores;
 	public TextMesh[] ObjectNames;
 	public Vector3 ObjectVisualOffset;
@@ -32,6 +34,9 @@ public class ScoreRecapUI : MonoBehaviour {
 		Enable (true);
 
 		Reset();
+
+		funParticles.Stop ();
+		funParticles.Play ();
 
 		if (objectScores.Count > ObjectLocationScores.Length) {
 			Debug.Log ("TOO MANY OBJECTS WERE FOUND. NOT ENOUGH TEXT MESHES.");

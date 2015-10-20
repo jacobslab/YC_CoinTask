@@ -5,6 +5,9 @@ public class BlockCompleteUI : MonoBehaviour {
 	
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } } 
 
+
+	public ParticleSystem funParticles;
+
 	public TextMesh[] BlockScores;
 	public TextMesh BlockText; // ie: 3/4 complete
 
@@ -20,6 +23,10 @@ public class BlockCompleteUI : MonoBehaviour {
 
 	public void Play(int currentBlockIndex, int currentBlockScore, int maxNumBlocks){
 		Enable (true);
+
+		funParticles.Stop ();
+		funParticles.Play ();
+
 		if (currentBlockIndex < BlockScores.Length) {
 			BlockScores[currentBlockIndex].text = currentBlockScore.ToString();
 		} else {
