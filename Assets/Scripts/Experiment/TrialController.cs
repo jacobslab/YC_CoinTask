@@ -254,11 +254,7 @@ public class TrialController : MonoBehaviour {
 		exp.player.controls.ShouldLockControls = true;
 
 
-		//TODO: negate this so there's only an IF instead of an IF-ELSE with nothing in the IF.
-		if(isPracticeTrial || (!Config_CoinTask.doPracticeTrial && numRealTrials == 1 && trial.avatarStartPos == exp.player.controls.startPositionTransform1.position)){
-
-		}
-		else{
+		if(numRealTrials > 1 || trial.avatarStartPos != exp.player.controls.startPositionTransform1.position){ //note: if numRealTrials > 1, not a practice trial.
 			trialLogger.LogInstructionEvent ();
 			yield return StartCoroutine (exp.ShowSingleInstruction ("Press (X) to start!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
 		}
