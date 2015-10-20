@@ -18,7 +18,7 @@ public class BoxSwapGameController : MonoBehaviour {
 	}
 	
 	public IEnumerator RunGame(){
-		GameContents.SetActive(true);
+		Enable (true);
 
 		boxSwapper.Init();
 
@@ -31,6 +31,16 @@ public class BoxSwapGameController : MonoBehaviour {
 
 		yield return StartCoroutine(boxSwapper.RaiseBoxes());
 
-		GameContents.SetActive(false);
+		Enable (false);
+	}
+
+	void Enable(bool shouldEnable){
+		GetComponent<EnableChildrenLogTrack>().LogChildrenEnabled(shouldEnable);
+
+		//DON'T NEED TO USE USEFULFUNCTIONS.ENABLECHILDREN BECAUSE OF THE 'CONTENTS' SETUP.
+		//...but it will be used for replay.
+		//UsefulFunctions.EnableChildren( transform, shouldEnable );
+
+		GameContents.SetActive(shouldEnable);
 	}
 }
