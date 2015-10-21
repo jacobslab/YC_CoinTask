@@ -17,8 +17,8 @@ public class TextMeshLogTrack : LogTrack {
 		myText = GetComponent<TextMesh> ();
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	//log on late update so that everything for that frame gets set first
+	void LateUpdate () {
 		if (myText == null) {
 			Debug.Log("Text is null! Did you mean to add a regular TextLogTrack instead?");
 		}

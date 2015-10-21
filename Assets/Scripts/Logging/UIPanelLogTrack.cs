@@ -16,8 +16,8 @@ public class UIPanelLogTrack : LogTrack {
 		myPanelImage = GetComponent<Image> ();
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	//log on late update so that everything for that frame gets set first
+	void LateUpdate () {
 		if(ExperimentSettings_CoinTask.isLogging && (currentPanelColor != myPanelImage.color || !firstLog) ){ //if the color has changed, or it's the first log
 			firstLog = true;
 			LogPanel();

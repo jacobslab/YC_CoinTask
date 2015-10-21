@@ -13,8 +13,8 @@ public class AudioLogTrack : LogTrack {
 		spawnableObject = GetComponent<SpawnableObject> ();
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	//log on late update so that everything for that frame gets set first
+	void LateUpdate () {
 		if (ExperimentSettings_CoinTask.isLogging) {
 			LogAudio ();
 		}
@@ -33,11 +33,11 @@ public class AudioLogTrack : LogTrack {
 		}
 	}
 
-	public void LogAudioPlaying(AudioClip audioClip, Vector3 audioLocation){
+	void LogAudioPlaying(AudioClip audioClip, Vector3 audioLocation){
 		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "AUDIO_PLAYING" + separator + audioSource.name + separator + audioClip.name + separator + "IS_LOOPING" + separator + audioSource.loop + separator + audioLocation.x + separator + audioLocation.y + separator + audioLocation.z);
 	}
 
-	public void LogAudioOver(AudioClip audioClip, Vector3 audioLocation){
+	void LogAudioOver(AudioClip audioClip, Vector3 audioLocation){
 		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "AUDIO_STOPPED" + separator + audioSource.name + separator + audioClip.name + separator + "IS_LOOPING" + separator + audioSource.loop + separator + audioLocation.x + separator + audioLocation.y + separator + audioLocation.z);
 	}
 

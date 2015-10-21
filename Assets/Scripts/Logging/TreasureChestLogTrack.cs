@@ -9,11 +9,6 @@ public class TreasureChestLogTrack : LogTrack { //currently a treasure chest.
 	void Start () {
 		spawnableObject = GetComponent<SpawnableObject> ();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-
-	}
 
 	public void LogOpening(string closerPivotName, bool isSpecial){ //the closer pivot is used as the object reference for opening the chest later --> thus, it will open with the opposite pivot
 		if (ExperimentSettings_CoinTask.isLogging) {

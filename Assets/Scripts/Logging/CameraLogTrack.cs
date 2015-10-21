@@ -16,8 +16,8 @@ public class CameraLogTrack : LogTrack {
 		}
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	//log on late update so that everything for that frame gets set first
+	void LateUpdate () {
 		if(ExperimentSettings_CoinTask.isLogging){
 			if(lastEnabled != myCamera.enabled){
 				LogCamera ();

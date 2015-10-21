@@ -6,8 +6,8 @@ public class TrialLogTrack : LogTrack {
 
 	bool firstLog = false;
 
-	// Update is called once per frame
-	void Update () {
+	//log on late update so that everything for that frame gets set first
+	void LateUpdate () {
 		//just log the environment info on the first frame
 		if (ExperimentSettings_CoinTask.isLogging && !firstLog) {
 			LogEnvironmentDimensions ();

@@ -16,7 +16,7 @@ public class PositionSelectorLogTrack : LogTrack {
 		LogSelectorSize ();
 	}
 
-	public void LogSelectorSize(){
+	void LogSelectorSize(){
 		float diameter = Config_CoinTask.selectionDiameter;
 		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SELECTOR_SIZE" + separator + "DIAMETER" + separator + diameter);
 	}

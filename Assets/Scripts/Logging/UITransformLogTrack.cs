@@ -20,8 +20,8 @@ public class UITransformLogTrack : LogTrack {
 
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	//log on late update so that everything for that frame gets set first
+	void LateUpdate () {
 		if(ExperimentSettings_CoinTask.isLogging && (lastScale != transform.localScale || lastPosition != transform.position || !firstLog) ){ //if the text has changed, log it!
 			Log ();
 			if(!firstLog){

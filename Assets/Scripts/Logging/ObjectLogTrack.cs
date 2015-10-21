@@ -20,6 +20,7 @@ public class ObjectLogTrack : LogTrack {
 		visibilityToggler = GetComponent<VisibilityToggler> ();
 	}
 
+	//log on late update so that everything for that frame gets set first
 	void LateUpdate(){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			Log ();

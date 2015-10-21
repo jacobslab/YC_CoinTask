@@ -7,11 +7,6 @@ public class ScoreLogTrack : LogTrack {
 	void Start () {
 	
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
 	public void LogBoxSwapperPoints(int scoreAdded){
 		if (ExperimentSettings_CoinTask.isLogging) {

@@ -16,8 +16,8 @@ public class ParticleLogTrack : LogTrack {
 		spawnableObject = GetComponent<SpawnableObject> ();
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	//log on late update so that everything for that frame gets set first
+	void LateUpdate () {
 		if (ExperimentSettings_CoinTask.isLogging) {
 			LogParticles ();
 		}
@@ -50,21 +50,21 @@ public class ParticleLogTrack : LogTrack {
 	}
 
 	//for logging the particle system
-	public void LogParticleSystemPlaying(Vector3 systemLocation){
+	void LogParticleSystemPlaying(Vector3 systemLocation){
 		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_SYSTEM_PLAYING" + separator + particleSystem.name + separator + "IS_LOOPING" + separator + particleSystem.loop + separator + systemLocation.x + separator + systemLocation.y + separator + systemLocation.z);
 	}
 
-	public void LogParticleSystemOver(Vector3 systemLocation){
+	void LogParticleSystemOver(Vector3 systemLocation){
 		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_SYSTEM_STOPPED" + separator + particleSystem.name + separator + "IS_LOOPING" + separator + particleSystem.loop + separator + systemLocation.x + separator + systemLocation.y + separator + systemLocation.z);
 	}
 
 	//for logging the particle emitter
 	//note: emitters do not have a looping property
-	public void LogParticleEmitterPlaying(Vector3 emitterLocation){
+	void LogParticleEmitterPlaying(Vector3 emitterLocation){
 		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_EMITTER_PLAYING" + separator + particleEmitter.name + separator + emitterLocation.x + separator + emitterLocation.y + separator + emitterLocation.z);
 	}
 	
-	public void LogParticleEmitterOver(Vector3 emitterLocation){
+	void LogParticleEmitterOver(Vector3 emitterLocation){
 		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_EMITTER_STOPPED" + separator + particleEmitter.name + separator + emitterLocation.x + separator + emitterLocation.y + separator + emitterLocation.z);
 	}
 

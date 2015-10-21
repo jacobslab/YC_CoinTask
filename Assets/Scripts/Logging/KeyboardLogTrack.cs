@@ -10,7 +10,7 @@ public class KeyboardLogTrack : LogTrack {
 	
 	}
 
-	void Update(){
+	void Update(){ //can be called in update because we are checking for input. other logtracks use LateUpdate because things like positions must be finished updating before they are logged.
 		if(ExperimentSettings_CoinTask.isLogging){
 			LogKeyboard();
 		}

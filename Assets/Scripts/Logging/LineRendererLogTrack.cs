@@ -9,11 +9,6 @@ public class LineRendererLogTrack : LogTrack {
 	void Start () {
 	
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
 	//currently just logs one point at a time.
 	public void LogPoint(Vector3 position, int positionIndex){

@@ -15,8 +15,9 @@ public class ObjectColorLogTrack: LogTrack {
 		myRenderer = GetComponent<Renderer> ();
 		spawnableObject = GetComponent<SpawnableObject> ();
 	}
-	
-	void Update(){
+
+	//log on late update so that everything for that frame gets set first
+	void LateUpdate(){ 
 		if (ExperimentSettings_CoinTask.isLogging) {
 			Log ();
 		}
