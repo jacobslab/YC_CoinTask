@@ -25,7 +25,6 @@ public class BoxSwapper : MonoBehaviour {
 	}
 
 	public void Init(){
-		rewardObject.GetComponent<VisibilityToggler> ().TurnVisible (false);
 		boxSelector.GetComponent<VisibilityToggler> ().TurnVisible (false);
 		boxSelectorText.text = "";
 		boxSelectorVisuals.transform.rotation = boxSelectorVisualsOrigRot;
@@ -88,38 +87,74 @@ public class BoxSwapper : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(shouldSelect){
-			GetSelectionInput();
+
+	}
+
+	IEnumerator GetSelectionInput(){
+		bool isInput = false;
+		float delayTime = 0.3f;
+		float currDelayTime = 0.0f;
+
+		while (shouldSelect) {
+
+			if (!isInput) {
+				if (Input.GetAxis ("Horizontal") > 0) {
+					MoveSelector (1);
+					isInput = true;
+				} else if (Input.GetAxis ("Horizontal") < 0) {
+					MoveSelector (-1);
+					isInput = true;
+				} else if (Input.GetAxis ("Horizontal") == 0) {
+					isInput = false;
+				}
+
+			}
+
+			else{
+				if(currDelayTime < delayTime){
+					currDelayTime += Time.deltaTime;
+				}
+				else{
+					currDelayTime = 0.0f;
+					isInput = false;
+				}
+
+			}
+		
+			Debug.Log("IS INPUT " + isInput);
+
+			yield return 0;
 		}
 	}
 
-	void GetSelectionInput(){
-		if(Input.GetKeyDown(KeyCode.RightArrow)){
-			selectedBoxIndex++;
-			if(selectedBoxIndex > boxStartPositions.Length - 1){
-				selectedBoxIndex = boxStartPositions.Length - 1;
-			}
+	void MoveSelector(int amount){
+		selectedBoxIndex += amount;
+		if (selectedBoxIndex > boxStartPositions.Length - 1) {
+			selectedBoxIndex = boxStartPositions.Length - 1;
 		}
-		else if (Input.GetKeyDown(KeyCode.LeftArrow)){
-			selectedBoxIndex--;
-			if(selectedBoxIndex < 0){
-				selectedBoxIndex = 0;
-			}
+		else if (selectedBoxIndex < 0) {
+			selectedBoxIndex = 0;
 		}
-		boxSelector.transform.position = boxStartPositions[selectedBoxIndex].transform.position;
+
+		boxSelector.transform.position = boxStartPositions [selectedBoxIndex].transform.position;
+
 	}
 
 	public IEnumerator WaitForBoxSelection(){
 		bool actionButtonPressed = false;
 		shouldSelect = true;
 
+		StartCoroutine (GetSelectionInput ());
+
 		boxSelector.GetComponent<VisibilityToggler> ().TurnVisible (true);
 
 		while(!actionButtonPressed){
-			if(Input.GetKeyDown(KeyCode.Space)){
+	
+			if(Input.GetAxis("ActionButton") != 0f){
 				actionButtonPressed = true;
 				shouldSelect = false;
 			}
+
 			yield return 0;
 		}
 
@@ -134,7 +169,6 @@ public class BoxSwapper : MonoBehaviour {
 		}
 
 		rewardObject.transform.position = boxes[boxRewardIndex].transform.position;
-		rewardObject.GetComponent<VisibilityToggler> ().TurnVisible (true);
 	}
 
 	bool IsSelectedBoxCorrect(){
