@@ -10,6 +10,7 @@ public class BoxSwapper : MonoBehaviour {
 	Quaternion boxSelectorVisualsOrigRot;
 	int selectedBoxIndex = 0;
 	bool shouldSelect = false;
+	bool showingFeedback = false;
 
 	public GameObject rewardObject;
 	int boxRewardIndex = 0;
@@ -19,12 +20,15 @@ public class BoxSwapper : MonoBehaviour {
 
 	float startBoxHeight = 2.0f;
 
+
 	// Use this for initialization
 	void Start () {
 		boxSelectorVisualsOrigRot = boxSelectorVisuals.transform.rotation;
 	}
 
 	public void Init(){
+		showingFeedback = false;
+
 		boxSelector.GetComponent<VisibilityToggler> ().TurnVisible (false);
 		boxSelectorText.text = "";
 		boxSelectorVisuals.transform.rotation = boxSelectorVisualsOrigRot;
@@ -159,6 +163,9 @@ public class BoxSwapper : MonoBehaviour {
 		}
 
 		yield return 0;
+
+		showingFeedback = true;
+
 		if (IsSelectedBoxCorrect ()) {
 			Debug.Log ("You got the reward!");
 			Experiment_CoinTask.Instance.scoreController.AddBoxSwapperPoints ();
@@ -282,7 +289,7 @@ public class BoxSwapper : MonoBehaviour {
 	
 	IEnumerator SpinSelector(){
 		float angle = 6.0f;
-		while (true) {
+		while (showingFeedback) {
 			boxSelectorVisuals.transform.RotateAround(boxSelectorVisuals.transform.position, Vector3.up, angle);
 			yield return 0;
 		}
