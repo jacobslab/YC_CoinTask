@@ -304,16 +304,16 @@ public class Replay : MonoBehaviour {
 								}
 
 								else if(loggedProperty == "VISIBILITY"){
-									SpawnableObject spawnedObj = objInScene.GetComponent<SpawnableObject>();
-									if(spawnedObj != null){
+									VisibilityToggler visibilityToggler = objInScene.GetComponent<VisibilityToggler>();
+									if(visibilityToggler != null){
 										bool visibleState = true;
 										if(splitLine[i+2] == "false" || splitLine[i+2] == "False"){
 											visibleState = false;
 										}
-										spawnedObj.TurnVisible(visibleState);
+										visibilityToggler.TurnVisible(visibleState);
 									}
 									else{
-										Debug.Log("no spawnable object!");
+										Debug.Log("no visibility toggler!");
 									}
 								}
 

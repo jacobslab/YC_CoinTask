@@ -25,7 +25,8 @@ public class BoxSwapper : MonoBehaviour {
 	}
 
 	public void Init(){
-		boxSelector.SetActive (false);
+		rewardObject.GetComponent<VisibilityToggler> ().TurnVisible (false);
+		boxSelector.GetComponent<VisibilityToggler> ().TurnVisible (false);
 		boxSelectorText.text = "";
 		boxSelectorVisuals.transform.rotation = boxSelectorVisualsOrigRot;
 		InitBoxPositions();
@@ -112,7 +113,7 @@ public class BoxSwapper : MonoBehaviour {
 		bool actionButtonPressed = false;
 		shouldSelect = true;
 
-		boxSelector.SetActive (true);
+		boxSelector.GetComponent<VisibilityToggler> ().TurnVisible (true);
 
 		while(!actionButtonPressed){
 			if(Input.GetKeyDown(KeyCode.Space)){
@@ -133,7 +134,7 @@ public class BoxSwapper : MonoBehaviour {
 		}
 
 		rewardObject.transform.position = boxes[boxRewardIndex].transform.position;
-		rewardObject.SetActive(true);
+		rewardObject.GetComponent<VisibilityToggler> ().TurnVisible (true);
 	}
 
 	bool IsSelectedBoxCorrect(){

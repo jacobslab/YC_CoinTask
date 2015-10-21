@@ -3,6 +3,7 @@ using System.Collections;
 
 public class ObjectLogTrack : LogTrack {
 	SpawnableObject spawnableObject;
+	VisibilityToggler visibilityToggler;
 	string nameToLog { get { return GetNameToLog (); } }
 
 	bool firstLog = false; //should log spawned on the first log
@@ -16,9 +17,10 @@ public class ObjectLogTrack : LogTrack {
 
 	void Awake(){
 		spawnableObject = GetComponent<SpawnableObject> ();
+		visibilityToggler = GetComponent<VisibilityToggler> ();
 	}
 
-	void Update(){
+	void LateUpdate(){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			Log ();
 		}
@@ -41,8 +43,8 @@ public class ObjectLogTrack : LogTrack {
 		if (lastScale != transform.localScale || !firstLog) {
 			LogScale ();
 		}
-		if (spawnableObject != null) {
-			if (lastVisibility != spawnableObject.isVisible || !firstLog) {
+		if (visibilityToggler != null) {
+			if (lastVisibility != visibilityToggler.GetVisibility() || !firstLog) {
 				LogVisibility ();
 
 				firstLog = true; //set this to true so we don't log the other properties twice on the first log...
@@ -80,8 +82,8 @@ public class ObjectLogTrack : LogTrack {
 	}
 	
 	void LogVisibility(){
-		lastVisibility = spawnableObject.isVisible;
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "VISIBILITY" + separator + spawnableObject.isVisible);
+		lastVisibility = visibilityToggler.GetVisibility();
+		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "VISIBILITY" + separator + lastVisibility);
 	}
 
 	public void LogShadowSettings(UnityEngine.Rendering.ShadowCastingMode shadowMode){
