@@ -72,6 +72,13 @@ public class SpawnableObject : MonoBehaviour {
 		}
 
 		gameObject.name = GetName () + IDstring;
+
+		//set the first layer of children...
+		//TODO: do this recursively.
+		//...in case one of the children gets logged or something!
+		for (int i = 0; i < transform.childCount; i++) {
+			transform.GetChild (i).name += IDstring;
+		}
 	}
 
 	public void Scale(float scaleMult){

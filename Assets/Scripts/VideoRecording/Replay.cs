@@ -251,9 +251,20 @@ public class Replay : MonoBehaviour {
 									
 									if(objInScene != null){ //if it did grab the prefab...
 										objInScene = exp.objectController.SpawnObject(objInScene, Vector3.zero); //position and rotation should be set next...
-										objInScene.name = objInScene.GetComponent<SpawnableObject>().GetName();
-										objInScene.name += objID;
-										objInScene.GetComponent<SpawnableObject>().IDstring = objID;
+										SpawnableObject objInSceneSpawnable = objInScene.GetComponent<SpawnableObject>();
+										objInScene.name = objInSceneSpawnable.GetName();
+
+										//ID's are in the format 000 - 999
+										char[] splitNum = objID.ToCharArray();
+										if(splitNum.Length > 0){
+											int numHundreds = int.Parse(splitNum[0].ToString());
+											int numTens = int.Parse(splitNum[1].ToString());
+											int numOnes = int.Parse(splitNum[2].ToString());
+											int objIDint = (numHundreds*100) + (numTens*10) + numOnes;
+
+											objInSceneSpawnable.SetNameID(objIDint);
+										}
+
 										objsInSceneDict.Add(objName, objInScene);
 									}
 
