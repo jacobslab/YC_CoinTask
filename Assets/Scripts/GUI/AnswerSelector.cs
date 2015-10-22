@@ -10,6 +10,8 @@ public class AnswerSelector : MonoBehaviour {
 	public Transform[] positionTransforms; //should be put in order of left to right
 	public GameObject selectorVisuals;
 
+	public AudioSource selectionSwitchAudio;
+
 	int currPositionIndex = 0;
 	int yesIndex = 0;
 	int noIndex = 1;
@@ -80,13 +82,23 @@ public class AnswerSelector : MonoBehaviour {
 	void Move(int indicesToMove){
 		int oldPositionIndex = currPositionIndex;
 
+		bool isMoved = true;
+
 		currPositionIndex += indicesToMove;
 
 		if (currPositionIndex < 0) {
 			currPositionIndex = 0;
+			isMoved = false;
 		}
 		else if (currPositionIndex > positionTransforms.Length - 1){
 			currPositionIndex = positionTransforms.Length - 1;
+			isMoved = false;
+		}
+
+		//play audio if the selector moved
+		if (isMoved) {
+			selectionSwitchAudio.Stop();
+			selectionSwitchAudio.Play();
 		}
 
 		//TODO: make nice smooth movement with a coroutine.
