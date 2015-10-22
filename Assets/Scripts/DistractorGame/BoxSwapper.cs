@@ -4,9 +4,16 @@ using System.Collections.Generic;
 
 public class BoxSwapper : MonoBehaviour {
 
+	public AudioSource swapSound;
+	public AudioSource selectorSwitchSound;
+	public AudioSource correctAnswerSound;
+	public AudioSource wrongAnswerSound;
+
+
 	public GameObject boxSelector;
 	public GameObject boxSelectorVisuals;
 	public TextMesh boxSelectorText;
+
 	Quaternion boxSelectorVisualsOrigRot;
 	int selectedBoxIndex = 0;
 	bool shouldSelect = false;
@@ -124,20 +131,28 @@ public class BoxSwapper : MonoBehaviour {
 				}
 
 			}
-		
-			Debug.Log("IS INPUT " + isInput);
 
 			yield return 0;
 		}
 	}
 
 	void MoveSelector(int amount){
+
+		bool moved = true;
+
 		selectedBoxIndex += amount;
 		if (selectedBoxIndex > boxStartPositions.Length - 1) {
 			selectedBoxIndex = boxStartPositions.Length - 1;
+			moved = false;
 		}
 		else if (selectedBoxIndex < 0) {
 			selectedBoxIndex = 0;
+			moved = false;
+		}
+
+		if (moved) {
+			selectorSwitchSound.Stop ();
+			selectorSwitchSound.Play ();
 		}
 
 		boxSelector.transform.position = boxStartPositions [selectedBoxIndex].transform.position;
@@ -168,10 +183,16 @@ public class BoxSwapper : MonoBehaviour {
 
 		if (IsSelectedBoxCorrect ()) {
 			Debug.Log ("You got the reward!");
+			correctAnswerSound.Stop ();
+			correctAnswerSound.Play ();
+
 			Experiment_CoinTask.Instance.scoreController.AddBoxSwapperPoints ();
 			StartCoroutine (SpinSelector ());
 			boxSelectorText.text = "+" + ScoreController.BoxSwapperPoints + "!";
 		} else {
+			wrongAnswerSound.Stop ();
+			wrongAnswerSound.Play ();
+
 			boxSelectorText.text = "+0";
 		}
 
@@ -219,6 +240,9 @@ public class BoxSwapper : MonoBehaviour {
 			List<Vector3> moveToPositions = new List<Vector3>();
 
 			for(int i = 0; i < boxes.Length; i++){
+				swapSound.Stop ();
+				swapSound.Play ();
+
 				int randomPosIndex = Random.Range(0, boxPositions.Count);
 				BoxMover currBoxMover = boxes[i].GetComponent<BoxMover>();
 
