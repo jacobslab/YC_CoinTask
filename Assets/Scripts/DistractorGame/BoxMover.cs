@@ -58,8 +58,9 @@ public class BoxMover : MonoBehaviour {
 
 		while(currentTime < moveTime){
 			currentTime += Time.deltaTime;
+			float timePercent = currentTime / moveTime;
 
-			transform.position = Vector3.Lerp(origPos, targetPos, currentTime);
+			transform.position = Vector3.Lerp(origPos, targetPos, timePercent);
 
 			yield return 0;
 		}
@@ -72,7 +73,7 @@ public class BoxMover : MonoBehaviour {
 
 		Vector3 totalDistance = targetPos - transform.position;
 		
-		Vector3 acceleration = Physics.gravity;
+		Vector3 acceleration = Config_CoinTask.boxAcceleration;
 		Vector3 initVelocity = (totalDistance - (acceleration*moveTime*moveTime) ) / moveTime;
 
 		if(arcDirection > 0){

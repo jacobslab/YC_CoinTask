@@ -4,7 +4,8 @@ using System.Collections;
 public class Config_CoinTask : MonoBehaviour {
 
 	//BOX SWAP MINIGAME VARIABLES
-	public static float boxMoveTime = 1.0f;
+	public static float boxMoveTime = 0.5f;
+	public static Vector3 boxAcceleration = Physics.gravity * 3.0f;
 
 	//stimulation variables
 	public static bool shouldDoStim;	//TODO

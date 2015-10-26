@@ -6,7 +6,7 @@ public class BoxSwapGameController : MonoBehaviour {
 
 	public GameObject GameContents;
 
-	float timeBeforeLoweringBoxes = 1.0f;
+	float timeBeforeLoweringBoxes = 0.75f;
 
 	void Awake(){
 		GameContents.SetActive(false);
@@ -24,12 +24,15 @@ public class BoxSwapGameController : MonoBehaviour {
 
 		yield return new WaitForSeconds(timeBeforeLoweringBoxes);
 
-		yield return StartCoroutine(boxSwapper.LowerBoxes());
-		yield return StartCoroutine(boxSwapper.SwapBoxes(5));
+		yield return StartCoroutine(boxSwapper.RaiseOrLowerBoxes(-1, false));
+		yield return StartCoroutine(boxSwapper.SwapBoxes(4));
 
 		yield return StartCoroutine(boxSwapper.WaitForBoxSelection());
 
-		yield return StartCoroutine(boxSwapper.RaiseBoxes());
+		yield return StartCoroutine(boxSwapper.RaiseOrLowerBoxes(1, true));
+
+		float raisePause = 0.75f;
+		yield return new WaitForSeconds (raisePause);
 
 		Enable (false);
 	}
