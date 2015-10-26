@@ -5,6 +5,7 @@ public class BoxSwapGameController : MonoBehaviour {
 	public BoxSwapper boxSwapper;
 
 	public GameObject GameContents;
+	public GameObject GameBackground;
 
 	float timeBeforeLoweringBoxes = 0.75f;
 
@@ -21,6 +22,12 @@ public class BoxSwapGameController : MonoBehaviour {
 		Enable (true);
 
 		boxSwapper.Init();
+
+		Color gameBackgroundColor = GameBackground.GetComponent<Renderer> ().material.color;
+		Color gameBackgroundColorTransparent = new Color (gameBackgroundColor.r, gameBackgroundColor.g, gameBackgroundColor.b, 0.0f);
+		ColorChanger backgroundColorChanger = GameBackground.GetComponent<ColorChanger> ();
+		backgroundColorChanger.ChangeColor (gameBackgroundColorTransparent);
+		StartCoroutine(backgroundColorChanger.LerpChangeColor (gameBackgroundColor, 0.4f));
 
 		yield return new WaitForSeconds(timeBeforeLoweringBoxes);
 
