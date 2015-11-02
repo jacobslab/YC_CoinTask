@@ -33,9 +33,6 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//environment controller
 	public EnvironmentController environmentController;
 
-	//environment map visuals
-	public EnvironmentMap environmentMap;
-
 	//avatar
 	public Player player;
 
