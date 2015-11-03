@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Config_CoinTask : MonoBehaviour {
 	//JUICE
-	public static bool isJuice = false;
+	public static bool isJuice = true;
 
 
 	//BOX SWAP MINIGAME VARIABLES

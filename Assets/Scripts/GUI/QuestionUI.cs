@@ -46,12 +46,7 @@ public class QuestionUI : MonoBehaviour {
 		Answers.gameObject.SetActive (false);
 		myAnswerSelector.SetShouldCheckForInput (false);
 
-		ObjectParticles.Stop ();
-		ObjectParticles.Play ();
-
-		ObjectSound.Stop ();
-		ObjectSound.Play ();
-		Debug.Log ("PLAYING OBJECT SOUND? " + ObjectSound.isPlaying);
+		PlayObjectJuice ();
 
 		selectedObject = objectToSelect;
 		selectedObject.transform.position = ObjectPositionTransform.position;
@@ -68,6 +63,16 @@ public class QuestionUI : MonoBehaviour {
 		myAnswerSelector.SetShouldCheckForInput (true);
 
 		yield return 0;
+	}
+
+	void PlayObjectJuice(){
+		if (Config_CoinTask.isJuice) {
+			ObjectParticles.Stop ();
+			ObjectParticles.Play ();
+			
+			ObjectSound.Stop ();
+			ObjectSound.Play ();
+		}
 	}
 
 	public void Stop(){

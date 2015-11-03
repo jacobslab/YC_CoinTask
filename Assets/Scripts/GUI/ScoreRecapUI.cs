@@ -35,8 +35,7 @@ public class ScoreRecapUI : MonoBehaviour {
 
 		Reset();
 
-		funParticles.Stop ();
-		funParticles.Play ();
+		PlayJuice ();
 
 		if (objectScores.Count > ObjectLocationScores.Length) {
 			Debug.Log ("TOO MANY OBJECTS WERE FOUND. NOT ENOUGH TEXT MESHES.");
@@ -71,6 +70,13 @@ public class ScoreRecapUI : MonoBehaviour {
 
 		}
 
+	}
+
+	void PlayJuice(){
+		if (Config_CoinTask.isJuice) {
+			funParticles.Stop ();
+			funParticles.Play ();
+		}
 	}
 
 	public void Stop(){
