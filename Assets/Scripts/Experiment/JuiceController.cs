@@ -39,18 +39,18 @@ public class JuiceController : MonoBehaviour {
 	//CALLED IN EXPERIMENT --> AWAKE()
 	public void Init(){
 		ToggleJuice += Toggle;
-		ToggleJuice (Config_CoinTask.isJuicy);
+		ToggleJuice (Config_CoinTask.isJuice);
 	}
 
-	public void Toggle (bool isJuicy){
-		if (!isJuicy) {
+	public void Toggle (bool isJuice){
+		if (!isJuice) {
 			SetSkybox (defaultSkybox);
 		} else {
 			SetSkybox(juicySkybox);
 		}
 		
-		SetEnvironmentJuicy(isJuicy);
-		SetSoundtrackJuicy (isJuicy);
+		SetEnvironmentJuicy(isJuice);
+		SetSoundtrackJuicy (isJuice);
 	}
 
 	void SetSkybox(Material skyMat){

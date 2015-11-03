@@ -69,8 +69,7 @@ public class DefaultItem : MonoBehaviour {
 	IEnumerator RunDefaultCollision(){
 		shouldDie = true;
 		
-		DefaultParticles.Play();
-		defaultCollisionSound.Play();
+		PlayJuice (false);
 	
 		yield return StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForTreasurePause(null));
 
@@ -79,6 +78,20 @@ public class DefaultItem : MonoBehaviour {
 		}
 
 		Destroy(gameObject); //once audio & particles have finished playing, destroy the item!
+	}
+
+	void PlayJuice(bool isSpecial){
+		if (Config_CoinTask.isJuice) {
+			if(isSpecial){
+				SpecialParticles.Stop(); //reset the particles just in case.
+				SpecialParticles.Play();
+				specialCollisionSound.Play ();
+			}
+			else{
+				DefaultParticles.Play();
+				defaultCollisionSound.Play();
+			}
+		}
 	}
 
 	IEnumerator SpawnSpecialObject(Vector3 specialSpawnPos){
@@ -91,9 +104,7 @@ public class DefaultItem : MonoBehaviour {
 		//set special object text
 		SetSpecialObjectText (specialObject.GetComponent<SpawnableObject> ().GetName ());
 
-		SpecialParticles.Stop(); //reset the particles just in case.
-		SpecialParticles.Play();
-		specialCollisionSound.Play ();
+		PlayJuice (true);
 
 		//tell the trial controller to wait for the animation
 		yield return StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForTreasurePause(specialObject));
@@ -138,13 +149,16 @@ public class DefaultItem : MonoBehaviour {
 			directionMult = -1.0f;
 		}
 
-		while (directionMult*angleToOpen > 0) {
-			top.RotateAround (pivotPos, -directionMult*transform.right, angleChange);
-			angleToOpen -= directionMult*angleChange;
-			yield return 0;
+		if (Config_CoinTask.isJuice) {
+			//animate if juice!
+			while (directionMult*angleToOpen > 0) {
+				top.RotateAround (pivotPos, -directionMult * transform.right, angleChange);
+				angleToOpen -= directionMult * angleChange;
+				yield return 0;
+			}
+		} else {
+			top.RotateAround (pivotPos, transform.right, -angleToOpen);
 		}
-
-		Quaternion desiredRotation = top.transform.rotation;
 		
 		yield return 0;
 	}
