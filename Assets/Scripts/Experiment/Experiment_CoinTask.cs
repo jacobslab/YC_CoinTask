@@ -7,6 +7,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//clock!
 	public GameClock theGameClock;
 
+	//juice controller
+	public JuiceController juiceController;
+
 	//instructions
 	public InstructionsController instructionsController;
 	//public InstructionsController inGameInstructionsController;
@@ -69,6 +72,8 @@ public class Experiment_CoinTask : MonoBehaviour {
 			return;
 		}
 		_instance = this;
+
+		juiceController.Init ();
 
 		if (ExperimentSettings_CoinTask.isLogging) {
 			InitLogging();

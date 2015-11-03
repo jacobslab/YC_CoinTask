@@ -291,9 +291,8 @@ public class ObjectController : MonoBehaviour {
 	}
 
 	public float GetMaxDefaultObjectColliderBoundXZ(){
-		//create an active instance in order to retrieve the collider bounds. otherwise the bounds will be zero.
-		//there might be a less computationally expensive way to do this -- perhaps instead put a default object in the scene and keep it there for this, turn it off when not being used.
-		//GameObject activeDefaultObj = Instantiate (DefaultObject, transform.position, Quaternion.identity) as GameObject;
+
+		InGameDefaultObject.SetActive (true);
 
 		Collider defaultCollider = InGameDefaultObject.GetComponent<Collider> ();
 		Vector3 bounds = defaultCollider.bounds.size;
@@ -302,7 +301,7 @@ public class ObjectController : MonoBehaviour {
 			maxBound = bounds.z;
 		}
 
-		//Destroy (activeDefaultObj);
+		InGameDefaultObject.SetActive (false);
 
 		return maxBound;
 	}

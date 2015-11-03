@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections;
 
 public class Config_CoinTask : MonoBehaviour {
+	//JUICE
+	public static bool isJuicy = false;
+
 
 	//BOX SWAP MINIGAME VARIABLES
 	public static float boxMoveTime = 0.5f;
