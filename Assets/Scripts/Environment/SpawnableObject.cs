@@ -114,29 +114,32 @@ public class SpawnableObject : MonoBehaviour {
 	}
 
 	public IEnumerator AnimateScaleUp(){
-		float timeToScaleUp = 0.3f;
+		if (Config_CoinTask.isJuice) {
+			float timeToScaleUp = 0.3f;
 
-		float fullScaleMult = 1.0f;
-		float smallScaleMult = 0.5f;
-		Vector3 fullScale = transform.localScale * fullScaleMult;
-		Vector3 smallScale = fullScale * smallScaleMult;
+			float fullScaleMult = 1.0f;
+			float smallScaleMult = 0.5f;
+			Vector3 fullScale = transform.localScale * fullScaleMult;
+			Vector3 smallScale = fullScale * smallScaleMult;
 
-		float scaleMultDifference = fullScaleMult - smallScaleMult;
+			float scaleMultDifference = fullScaleMult - smallScaleMult;
 
 
-		transform.localScale = smallScale;
+			transform.localScale = smallScale;
 
-		float currentTime = 0.0f;
+			float currentTime = 0.0f;
 
-		while (currentTime < timeToScaleUp) {
-			currentTime += Time.deltaTime;
-			float scaleMult = smallScaleMult + ( scaleMultDifference * (currentTime / timeToScaleUp) );
-			transform.localScale = fullScale * scaleMult;
+			while (currentTime < timeToScaleUp) {
+				currentTime += Time.deltaTime;
+				float scaleMult = smallScaleMult + (scaleMultDifference * (currentTime / timeToScaleUp));
+				transform.localScale = fullScale * scaleMult;
+				yield return 0;
+			}
+
+			transform.localScale = fullScale;
+		} else {
 			yield return 0;
 		}
-
-		transform.localScale = fullScale;
-
 	}
 
 }
