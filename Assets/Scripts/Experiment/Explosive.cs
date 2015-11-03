@@ -27,38 +27,43 @@ public class Explosive : MonoBehaviour {
 			FuseParticles.Play ();
 		}*/
 
-		myRigidbody = GetComponent<Rigidbody> ();
+		if (Config_CoinTask.isJuice) {
 
-		float randomTorqueX = Random.Range (-10.0f, 10.0f);
-		float randomTorquey = Random.Range (-40.0f, 40.0f);
-		float randomTorqueZ = Random.Range (-10.0f, 10.0f);
-		myRigidbody.AddTorque (randomTorqueX, 0.0f, randomTorqueZ);
+			myRigidbody = GetComponent<Rigidbody> ();
 
-		Vector3 totalDistance = endPos - startPos;
+			float randomTorqueX = Random.Range (-10.0f, 10.0f);
+			float randomTorquey = Random.Range (-40.0f, 40.0f);
+			float randomTorqueZ = Random.Range (-10.0f, 10.0f);
+			myRigidbody.AddTorque (randomTorqueX, 0.0f, randomTorqueZ);
+
+			Vector3 totalDistance = endPos - startPos;
 		
-		Vector3 acceleration = Physics.gravity;
-		Vector3 initVelocity = (totalDistance - (acceleration * totalTravelTime * totalTravelTime)) / totalTravelTime;
+			Vector3 acceleration = Physics.gravity;
+			Vector3 initVelocity = (totalDistance - (acceleration * totalTravelTime * totalTravelTime)) / totalTravelTime;
 
-		transform.position = startPos;
+			transform.position = startPos;
 
-		float currentTime = 0;
+			float currentTime = 0;
 
-		while (currentTime < totalTravelTime) {
-			currentTime += Time.deltaTime;
+			while (currentTime < totalTravelTime) {
+				currentTime += Time.deltaTime;
 
-			Vector3 nextPosition = startPos + (initVelocity * currentTime) + (acceleration * currentTime * currentTime);
+				Vector3 nextPosition = startPos + (initVelocity * currentTime) + (acceleration * currentTime * currentTime);
 
-			transform.position = nextPosition;
+				transform.position = nextPosition;
 
-			yield return 0;
+				yield return 0;
+			}
+
+			/*if (FuseParticles != null) {
+				FuseParticles.Stop ();
+			}*/
+			Instantiate (ExplosionParticles, transform.position + Vector3.up * particleHeightOffset, transform.rotation);
+
 		}
 
-		/*if (FuseParticles != null) {
-			FuseParticles.Stop ();
-		}*/
-		Instantiate(ExplosionParticles, transform.position + Vector3.up*particleHeightOffset, transform.rotation);
-
-
 		Destroy (gameObject);
+
+		yield return 0;
 	}
 }
