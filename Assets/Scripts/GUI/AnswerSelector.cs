@@ -41,8 +41,10 @@ public class AnswerSelector : MonoBehaviour {
 			selectorVisuals.transform.position = positionTransforms[0].position;
 			currPositionIndex = 0;
 
-			StopCoroutine(selectorVisuals.GetComponent<TextMeshColorCycler>().CycleColors());
-			StartCoroutine(selectorVisuals.GetComponent<TextMeshColorCycler>().CycleColors());
+			if(Config_CoinTask.isJuice){
+				StopCoroutine(selectorVisuals.GetComponent<TextMeshColorCycler>().CycleColors());
+				StartCoroutine(selectorVisuals.GetComponent<TextMeshColorCycler>().CycleColors());
+			}
 		}
 	}
 
@@ -97,8 +99,7 @@ public class AnswerSelector : MonoBehaviour {
 
 		//play audio if the selector moved
 		if (isMoved) {
-			selectionSwitchAudio.Stop();
-			selectionSwitchAudio.Play();
+			AudioController.PlayAudio(selectionSwitchAudio);
 		}
 
 		//TODO: make nice smooth movement with a coroutine.
