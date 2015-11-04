@@ -73,9 +73,9 @@ public class DefaultItem : MonoBehaviour {
 	
 		yield return StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForTreasurePause(null));
 
-		while(SpecialParticles.isPlaying && DefaultParticles.isPlaying){
+		/*while(SpecialParticles.isPlaying && DefaultParticles.isPlaying){
 			yield return 0;
-		}
+		}*/
 
 		Destroy(gameObject); //once audio & particles have finished playing, destroy the item!
 	}
@@ -83,12 +83,11 @@ public class DefaultItem : MonoBehaviour {
 	void PlayJuice(bool isSpecial){
 		if (Config_CoinTask.isJuice) {
 			if(isSpecial){
-				SpecialParticles.Stop(); //reset the particles just in case.
-				SpecialParticles.Play();
+				JuiceController.PlayParticles (SpecialParticles);
 				AudioController.PlayAudio(specialCollisionSound);
 			}
 			else{
-				DefaultParticles.Play();
+				JuiceController.PlayParticles (DefaultParticles);
 				AudioController.PlayAudio(defaultCollisionSound);
 			}
 		}

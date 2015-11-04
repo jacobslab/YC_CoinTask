@@ -48,11 +48,16 @@ public class JuiceController : MonoBehaviour {
 		RenderSettings.skybox = skyMat;
 	}
 
-	void SetEnvironmentJuice(bool isJuicy){
-		juicyEnvironment.SetActive (isJuicy);
-		defaultEnvironment.SetActive (!isJuicy);
+	void SetEnvironmentJuice(bool isJuice){
+		juicyEnvironment.SetActive (isJuice);
+		defaultEnvironment.SetActive (!isJuice);
 	}
 
-
+	public static void PlayParticles(ParticleSystem particles){
+		if (Config_CoinTask.isJuice) {
+			particles.Stop();
+			particles.Play();
+		}
+	}
 
 }

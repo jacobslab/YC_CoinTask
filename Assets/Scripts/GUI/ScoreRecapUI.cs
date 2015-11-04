@@ -74,8 +74,7 @@ public class ScoreRecapUI : MonoBehaviour {
 
 	void PlayJuice(){
 		if (Config_CoinTask.isJuice) {
-			funParticles.Stop ();
-			funParticles.Play ();
+			JuiceController.PlayParticles (funParticles);
 		}
 	}
 

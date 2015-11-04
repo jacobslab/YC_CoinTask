@@ -46,6 +46,7 @@ public class AudioController : MonoBehaviour {
 		PlayAudio (currentSong);
 	}
 
+	//TODO: move to juice controller?
 	public static void PlayAudio(AudioSource audio){
 		if (Config_CoinTask.isJuice) {
 			audio.Stop ();
