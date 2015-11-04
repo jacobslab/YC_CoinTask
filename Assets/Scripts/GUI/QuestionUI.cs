@@ -69,10 +69,8 @@ public class QuestionUI : MonoBehaviour {
 		if (Config_CoinTask.isJuice) {
 			ObjectParticles.Stop ();
 			ObjectParticles.Play ();
-			
-			ObjectSound.Stop ();
-			ObjectSound.Play ();
 		}
+		AudioController.PlayAudio (ObjectSound);
 	}
 
 	public void Stop(){

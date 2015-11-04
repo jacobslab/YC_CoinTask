@@ -85,11 +85,11 @@ public class DefaultItem : MonoBehaviour {
 			if(isSpecial){
 				SpecialParticles.Stop(); //reset the particles just in case.
 				SpecialParticles.Play();
-				specialCollisionSound.Play ();
+				AudioController.PlayAudio(specialCollisionSound);
 			}
 			else{
 				DefaultParticles.Play();
-				defaultCollisionSound.Play();
+				AudioController.PlayAudio(defaultCollisionSound);
 			}
 		}
 	}

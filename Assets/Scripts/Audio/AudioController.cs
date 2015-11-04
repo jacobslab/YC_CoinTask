@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SoundtrackController : MonoBehaviour {
+public class AudioController : MonoBehaviour {
 
 	public AudioSource[] MainGameSongs;
 	AudioSource currentSong;
@@ -9,6 +9,12 @@ public class SoundtrackController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		if (Config_CoinTask.isSoundtrack) {
+			InitSoundtrack ();
+		}
+	}
+
+	void InitSoundtrack(){
 		if (MainGameSongs.Length > 0) {
 			currentSong = MainGameSongs[0];
 		}
@@ -16,6 +22,12 @@ public class SoundtrackController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (Config_CoinTask.isSoundtrack) {
+			CheckIfSongOver ();
+		}
+	}
+
+	void CheckIfSongOver(){
 		if (currentSong != null) {
 			if (!currentSong.isPlaying) {
 				PlayNextSong ();
@@ -31,6 +43,14 @@ public class SoundtrackController : MonoBehaviour {
 		}
 
 		currentSong = MainGameSongs [currentSongIndex];
-		currentSong.Play ();
+		PlayAudio (currentSong);
 	}
+
+	public static void PlayAudio(AudioSource audio){
+		if (Config_CoinTask.isJuice) {
+			audio.Stop ();
+			audio.Play (); 
+		}
+	}
+
 }

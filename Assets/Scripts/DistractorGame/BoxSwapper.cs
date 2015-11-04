@@ -60,7 +60,7 @@ public class BoxSwapper : MonoBehaviour {
 		boxRewardIndex = randomPosIndex;
 		rewardObject.transform.position = boxStartPositions[randomPosIndex].transform.position;
 	}
-	
+
 	public IEnumerator RaiseOrLowerBoxes(int direction, bool initBoxPositions){
 		float currTime = 0.0f;
 		
@@ -134,8 +134,7 @@ public class BoxSwapper : MonoBehaviour {
 		}
 
 		if (moved) {
-			selectorSwitchSound.Stop ();
-			selectorSwitchSound.Play ();
+			AudioController.PlayAudio(selectorSwitchSound);
 		}
 
 		boxSelector.transform.position = boxStartPositions [selectedBoxIndex].transform.position;
@@ -166,15 +165,13 @@ public class BoxSwapper : MonoBehaviour {
 
 		if (IsSelectedBoxCorrect ()) {
 			Debug.Log ("You got the reward!");
-			correctAnswerSound.Stop ();
-			correctAnswerSound.Play ();
+			AudioController.PlayAudio(correctAnswerSound);
 
 			Experiment_CoinTask.Instance.scoreController.AddBoxSwapperPoints ();
 			StartCoroutine (SpinSelector ());
 			boxSelectorText.text = "+" + ScoreController.BoxSwapperPoints + "!";
 		} else {
-			wrongAnswerSound.Stop ();
-			wrongAnswerSound.Play ();
+			AudioController.PlayAudio(wrongAnswerSound);
 
 			boxSelectorText.text = "+0";
 		}
@@ -223,8 +220,7 @@ public class BoxSwapper : MonoBehaviour {
 			List<Vector3> moveToPositions = new List<Vector3>();
 
 			for(int i = 0; i < boxes.Length; i++){
-				swapSound.Stop ();
-				swapSound.Play ();
+				AudioController.PlayAudio(swapSound);
 
 				int randomPosIndex = Random.Range(0, boxPositions.Count);
 				BoxMover currBoxMover = boxes[i].GetComponent<BoxMover>();
@@ -295,10 +291,12 @@ public class BoxSwapper : MonoBehaviour {
 	
 	
 	IEnumerator SpinSelector(){
-		float angle = 6.0f;
-		while (showingFeedback) {
-			boxSelectorVisuals.transform.RotateAround(boxSelectorVisuals.transform.position, Vector3.up, angle);
-			yield return 0;
+		if (Config_CoinTask.isJuice) {
+			float angle = 6.0f;
+			while (showingFeedback) {
+				boxSelectorVisuals.transform.RotateAround (boxSelectorVisuals.transform.position, Vector3.up, angle);
+				yield return 0;
+			}
 		}
 	}
 }

@@ -25,6 +25,10 @@ public class EnvironmentController : MonoBehaviour {
 	
 	}
 
+	public static void SetSkybox(Material skyboxMat){
+		RenderSettings.skybox = skyboxMat;
+	}
+
 	public Vector3 GetEnvironmentCenter(){
 		float centerX = (WallsXPos.position.x + WallsXNeg.position.x + WallsZNeg.position.x + WallsZPos.position.x) / 4.0f;
 		float centerZ = (WallsXPos.position.z + WallsXNeg.position.z + WallsZNeg.position.z + WallsZPos.position.z) / 4.0f;

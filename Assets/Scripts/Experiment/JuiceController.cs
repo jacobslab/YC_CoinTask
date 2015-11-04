@@ -15,16 +15,8 @@ public class JuiceController : MonoBehaviour {
 	public GameObject juicyEnvironment;
 	public GameObject defaultEnvironment;
 
-	//soundtrack
-	public SoundtrackController soundtrackController;
-
-	//SOUND
-	//fx
-	//special object sound
-	//treasure chest open sound
-	//correct distractor sound
-	//box swap sounds
-	//answer selector sounds
+	//soundtrack & sound
+		//AudioController deals with juice directly
 
 	//PARTICLES
 	//special object particles
@@ -32,8 +24,8 @@ public class JuiceController : MonoBehaviour {
 	//fireworks and coins in GUI
 
 	//ANIMATIONS
-	//treasure chest opening
-	//object small to large
+	//treasure chest opening -- taken care of in DefaultObject.cs
+	//object small to large -- taken care of in SpawnableObject.cs
 
 	//MAKE SURE THIS HAPPENS BEFORE THE FIRST LOG & OTHER CALCULATIONS.
 	//CALLED IN EXPERIMENT --> AWAKE()
@@ -49,21 +41,16 @@ public class JuiceController : MonoBehaviour {
 			SetSkybox(juicySkybox);
 		}
 		
-		SetEnvironmentJuicy(isJuice);
-		SetSoundtrackJuicy (isJuice);
+		SetEnvironmentJuice(isJuice);
 	}
 
 	void SetSkybox(Material skyMat){
 		RenderSettings.skybox = skyMat;
 	}
 
-	void SetEnvironmentJuicy(bool isJuicy){
+	void SetEnvironmentJuice(bool isJuicy){
 		juicyEnvironment.SetActive (isJuicy);
 		defaultEnvironment.SetActive (!isJuicy);
-	}
-
-	void SetSoundtrackJuicy(bool isJuicy){
-		soundtrackController.enabled = isJuicy;
 	}
 
 
