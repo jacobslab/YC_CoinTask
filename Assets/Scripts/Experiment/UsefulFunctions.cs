@@ -69,4 +69,12 @@ public class UsefulFunctions {
 			return false;
 		}
 	}
+
+	public static float GetDistance(Vector3 startPos, Vector3 endPos){
+		return (startPos - endPos).magnitude;
+	}
+
+	public static float GetDistance(Vector2 startPos, Vector2 endPos){
+		return (startPos - endPos).magnitude;
+	}
 }

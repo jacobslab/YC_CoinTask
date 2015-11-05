@@ -175,25 +175,26 @@ public class TrialController : MonoBehaviour {
 		}
 	}
 
-	void CreateNextDefaultObject ( int index ){
+	void CreateNextDefaultObject ( int currentIndex ){
 		if (currentTrial != null) {
-			SetUpNextDefaultObject (index);
-			if (index < currentTrial.DefaultObjectLocationsXZ.Count) {
+			//SetUpNextDefaultObject (currentIndex);
+			if (currentIndex < currentTrial.DefaultObjectLocationsXZ.Count) {
 
-				Vector2 positionXZ = currentTrial.DefaultObjectLocationsXZ [index];
-				currentDefaultObject = exp.objectController.SpawnDefaultObject (positionXZ, currentTrial.SpecialObjectLocationsXZ, index);
+				Vector2 positionXZ = currentTrial.DefaultObjectLocationsXZ [currentIndex];
+				currentDefaultObject = exp.objectController.SpawnDefaultObject (positionXZ, currentTrial.SpecialObjectLocationsXZ, currentIndex);
 			} else {
 				Debug.Log ("Can't create a default object at that index. Index is too big.");
 			}
 		}
 	}
-
-	//will put the default object most in the player's field of view at the next position in the default object position list
+	
 	void SetUpNextDefaultObject (int currentIndex){
 		//look through the objects from the current index to the end of the list -- only these haven't been spawned yet
-		float minAngleBetweenChestAndPlayer = 0;
 		int minIndex = currentIndex;
 
+		/*
+		//will put the default object most in the player's field of view at the next position in the default object position list
+		float minAngleBetweenChestAndPlayer = 0;
 		for (int i = currentIndex; i < currentTrial.DefaultObjectLocationsXZ.Count; i++) {
 			Vector2 currChestPositionXZ = currentTrial.DefaultObjectLocationsXZ [i];
 			float angleBetweenChestAndPlayer = exp.player.controls.GetYAngleBetweenFacingDirAndObjectXZ( currChestPositionXZ ) ;
@@ -214,7 +215,7 @@ public class TrialController : MonoBehaviour {
 			Vector2 tempCurrPosition = currentTrial.DefaultObjectLocationsXZ[currentIndex];
 			currentTrial.DefaultObjectLocationsXZ[currentIndex] = currentTrial.DefaultObjectLocationsXZ[minIndex];
 			currentTrial.DefaultObjectLocationsXZ[minIndex] = tempCurrPosition;
-		}
+		}*/
 
 	}
 

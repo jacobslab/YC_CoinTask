@@ -34,6 +34,25 @@ public class Trial {
 
 		numSpecialObjects = numSpecial;
 
+		switch (ObjectController.objectMode) {
+		case ObjectController.ObjectMode.ai:		//2-4 filled, 1&5 empty
+			numSpecialObjects = 3;
+			break;
+		case ObjectController.ObjectMode.aii:	//2-4 filled with 2 or 3 objects, 1&5 empty
+			numSpecialObjects = Random.Range(2,4); //[inclusive, exclusive]
+			break;
+		case ObjectController.ObjectMode.bi:		//first four filled w/ 3 objects, 5 empty
+			numSpecialObjects = 3;
+			break;
+		case ObjectController.ObjectMode.bii:	//first four filled w/ 2 or 3 objects, 5 empty
+			numSpecialObjects = Random.Range(2,4); //[inclusive, exclusive]
+			break;
+		}
+
+		Debug.Log("NUM SPECIAL: " + numSpecialObjects);
+
+
+
 		int fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
 		if (fiftyFiftyChance == 0) {
 			avatarStartPos = exp.player.controls.startPositionTransform1.position;//new Vector3 (exp.player.controls.startPositionTransform1.position.x, exp.player.transform.position.y, exp.player.controls.startPositionTransform1.z);
@@ -60,7 +79,7 @@ public class Trial {
 		numDefaultObjects = Config_CoinTask.numDefaultObjects;
 
 		//init default and special locations
-		DefaultObjectLocationsXZ = exp.objectController.GenerateDefaultObjectPositions (numDefaultObjects);
+		DefaultObjectLocationsXZ = exp.objectController.GenerateOrderedDefaultObjectPositions (numDefaultObjects, avatarStartPos);
 		SpecialObjectLocationsXZ = exp.objectController.GenerateSpecialObjectPositions (DefaultObjectLocationsXZ, numSpecialObjects);
 
 	}

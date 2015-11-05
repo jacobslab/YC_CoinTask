@@ -36,7 +36,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 
 	//DEFAULT OBJECTS
-	public static int numDefaultObjects = 4;
+	public static int numDefaultObjects = 5;
 
 	public static float selectionDiameter = 20.0f;
 

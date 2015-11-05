@@ -4,6 +4,19 @@ using System.Collections.Generic;
 
 public class ObjectController : MonoBehaviour {
 
+	public enum ObjectMode{
+		ai,		//2-4 filled, 1&5 empty
+		aii,	//2-4 filled with 2 or 3 objects, 1&5 empty
+		bi,		//first four filled w/ 3 objects, 5 empty
+		bii		//first four filled w/ 2 or 3 objects, 5 empty
+	}
+
+	public static ObjectMode objectMode = ObjectMode.ai;
+
+
+
+
+
 	//instantiated somewhere (hidden) in the scene at all times. for calculating default object bounds --> requires an active object, and we don't want to instantiate one every time we ask for the bounds.
 	//this object does *not* need to be logged.
 	//it should also have a special name in the scene.
@@ -156,7 +169,7 @@ public class ObjectController : MonoBehaviour {
 		}
 	}
 
-	public List<Vector2> GenerateDefaultObjectPositions (int numDefaultObjects){
+	public List<Vector2> GenerateOrderedDefaultObjectPositions (int numDefaultObjects, Vector3 distancePos){ //ORDERED BY DISTANCE TO PLAYER START POS
 		List<Vector2> defaultPositions = new List<Vector2> ();
 
 		for (int i = 0; i < numDefaultObjects; i++) {
@@ -201,7 +214,57 @@ public class ObjectController : MonoBehaviour {
 
 		}
 
+		//insertion sort by distance
+		Vector2 distancePosXZ = new Vector2 (distancePos.x, distancePos.z);
+		defaultPositions = SortByNextClosest(defaultPositions, distancePosXZ);
+
 		return defaultPositions;
+	}
+
+	List<Vector2> SortByNextClosest(List<Vector2> positions, Vector2 distancePos){
+
+		//INSERTION SORT
+		/*for (int i = 1; i < positions.Count; i++) {
+			int j = i;
+			while(j > 0 && UsefulFunctions.GetDistance(positions[j - 1], distancePos) > UsefulFunctions.GetDistance(positions[j], distancePos)){
+				//swap
+				Vector3 tempPos = positions[j - 1];
+				positions[j - 1] = positions[j];
+				positions[j] = tempPos;
+			}
+		}*/
+
+		List<Vector2> sortedPositions = new List<Vector2>();
+		int numPositions = positions.Count;
+
+		Vector2 closestPos = GetClosest (distancePos, positions);
+		sortedPositions.Add (closestPos);
+		positions.Remove (closestPos);
+		for (int i = 1; i < numPositions; i++) {
+			closestPos = GetClosest (closestPos, positions);
+			sortedPositions.Add (closestPos);
+			positions.Remove (closestPos);
+		}
+
+		return sortedPositions;
+	}
+
+	Vector2 GetClosest(Vector2 position, List<Vector2> otherPositions){
+		float minDist = 0.0f;
+		int minDistIndex = 0;
+		for (int i = 0; i< otherPositions.Count; i++) {
+			float dist = UsefulFunctions.GetDistance(position, otherPositions[i]);
+			if(i == 0){
+				minDist = dist;
+				minDistIndex = i;
+			}
+			else if(dist < minDist){
+				minDist = dist;
+				minDistIndex = i;
+			}
+		}
+
+		return otherPositions [minDistIndex];
 	}
 
 	//also fills the out float smallestDistance for informing how close the object is to overlap.
@@ -226,35 +289,63 @@ public class ObjectController : MonoBehaviour {
 		return isFarEnough;
 	}
 
-	public List<Vector2> GenerateSpecialObjectPositions (List<Vector2> defaultObjectLocationsXZ, int numSpecialObjects){
+	public List<Vector2> GenerateSpecialObjectPositions (List<Vector2> orderedDefaultObjectLocationsXZ, int numSpecialObjects){
 		List<Vector2> specialPositions = new List<Vector2> ();
-		List<Vector2> defaultPositionsCopy = new List<Vector2> ();
-		
-		//copy the list so we can delete from it...
-		for (int i = 0; i < defaultObjectLocationsXZ.Count; i++) {
-			Vector2 currPosition = defaultObjectLocationsXZ[i];
-			Vector2 positionCopy = new Vector2(currPosition.x, currPosition.y);
-			defaultPositionsCopy.Add(positionCopy);
-		}
 
 
 		int specialIndex;
+
+		int startIndex = 0;
+		int numDefaultToChooseFrom = 3;
+
+		switch (objectMode) {
+		case ObjectMode.ai:		//2-4 filled, 1&5 empty
+			startIndex = 1;
+			numDefaultToChooseFrom = 3; //there are three positions to fill
+			break;
+		case ObjectMode.aii:	//2-4 filled with 2 or 3 objects, 1&5 empty
+			startIndex = 1;
+			numDefaultToChooseFrom = 3; //there are three potential positions to fill
+			break;
+		case ObjectMode.bi:		//first four filled w/ 3 objects, 5 empty
+			startIndex = 0;
+			numDefaultToChooseFrom = 4;
+			break;
+		case ObjectMode.bii:	//first four filled w/ 2 or 3 objects, 5 empty
+			startIndex = 0;
+			numDefaultToChooseFrom = 4;
+			break;
+		}
+
+
+		List<Vector2> orderedDefaultPositionsCopy = new List<Vector2> ();
+		
+		//copy the list (ONLY THE POSITIONS WE WANT TO FILL so we can delete from it...
+		for (int i = startIndex; i < numDefaultToChooseFrom + startIndex; i++) {
+			Vector2 currPosition = orderedDefaultObjectLocationsXZ[i];
+			Vector2 positionCopy = new Vector2(currPosition.x, currPosition.y);
+			orderedDefaultPositionsCopy.Add(positionCopy);
+		}
+
+
+
+
 		for (int i = 0; i < numSpecialObjects; i++) {
 
 			//if number of special objects exceeds the number of free spots, we'll get stuck.
 			//...so exit the loop instead.
-			if(i >= defaultObjectLocationsXZ.Count){
+			if(i >= numDefaultToChooseFrom){
 				break;
 			}
 
-			List<int> randomIndices = UsefulFunctions.GetRandomIndexOrder( defaultPositionsCopy.Count );
+			List<int> randomIndices = UsefulFunctions.GetRandomIndexOrder( orderedDefaultPositionsCopy.Count );
 			int randomIndex = randomIndices[0];
-			Vector2 currPosition = defaultPositionsCopy[randomIndex];
+			Vector2 currPosition = orderedDefaultPositionsCopy[randomIndex];
 
 			if(i != 0){
 				for(int j = 1; j < randomIndices.Count; j++){
 					randomIndex = randomIndices[j];
-					currPosition = defaultPositionsCopy[randomIndex];
+					currPosition = orderedDefaultPositionsCopy[randomIndex];
 					
 					//check against all other special item locations...
 					bool isDistanceBigEnough = true;
@@ -283,7 +374,7 @@ public class ObjectController : MonoBehaviour {
 			
 			//remove it from the parameter list so that no two special objects are in the same spot.
 			//this will not change the original list, as the list was passed by copy.
-			defaultPositionsCopy.RemoveAt(randomIndex);
+			orderedDefaultPositionsCopy.RemoveAt(randomIndex);
 
 		}
 		

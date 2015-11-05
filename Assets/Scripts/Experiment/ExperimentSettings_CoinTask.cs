@@ -34,9 +34,13 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public Toggle joystickInputToggle; //only exists in main menu -- make sure to null check
 	public Toggle loggingToggle; //only exists in main menu -- make sure to null check
 
-	public Toggle easyToggle;
-	public Toggle mediumToggle;
-	public Toggle hardToggle;
+	public Toggle aiToggle;
+	public Toggle aiiToggle;
+	public Toggle biToggle;
+	public Toggle biiToggle;
+
+
+
 	//TODO: will probably want to refactor this later, as practice difficulty etc. are used in Trial.cs and TrialController.cs
 	//difficulty setting system needs to be decided on!
 	public static Trial.DifficultySetting difficultySetting = Trial.DifficultySetting.easy;
@@ -91,7 +95,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	// Update is called once per frame
 	void Update () {
 		if (NumTreasureChestsInputField != null) {
-			UpdateNumTreasureChests ();
+			//UpdateNumTreasureChests ();
 		}
 	}
 
@@ -103,33 +107,42 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	}
 
 	//set the number of treasure chests/default objects
-	void UpdateNumTreasureChests(){
+	/*void UpdateNumTreasureChests(){
 		int inputNum = int.Parse (NumTreasureChestsInputField.text);
 		Config_CoinTask.numDefaultObjects = inputNum;
-	}
+	}*/
 
-	public void ChangeDifficulty(){
-		if(difficultySetting == Trial.DifficultySetting.easy){
-			//switch to medium
-			difficultySetting = Trial.DifficultySetting.medium;
-			easyToggle.isOn = false;
-			mediumToggle.isOn = true;
-			hardToggle.isOn = false;
+	public void ChangeObjectMode(){
+		if(ObjectController.objectMode == ObjectController.ObjectMode.bii){
+			ObjectController.objectMode = ObjectController.ObjectMode.ai;
+			aiToggle.isOn = true;
+			aiiToggle.isOn = false;
+			biToggle.isOn = false;
+			biiToggle.isOn = false;
 		}
-		else if (difficultySetting == Trial.DifficultySetting.medium){
-			//switch to hard
-			difficultySetting = Trial.DifficultySetting.hard;
-			easyToggle.isOn = false;
-			mediumToggle.isOn = false;
-			hardToggle.isOn = true;
+		else if (ObjectController.objectMode == ObjectController.ObjectMode.ai){
+			ObjectController.objectMode = ObjectController.ObjectMode.aii;
+			aiToggle.isOn = false;
+			aiiToggle.isOn = true;
+			biToggle.isOn = false;
+			biiToggle.isOn = false;
 		}
-		else if(difficultySetting == Trial.DifficultySetting.hard){
-			//switch to easy
-			difficultySetting = Trial.DifficultySetting.easy;
-			easyToggle.isOn = true;
-			mediumToggle.isOn = false;
-			hardToggle.isOn = false;
+		else if(ObjectController.objectMode == ObjectController.ObjectMode.aii){
+			ObjectController.objectMode = ObjectController.ObjectMode.bi;
+			aiToggle.isOn = false;
+			aiiToggle.isOn = false;
+			biToggle.isOn = true;
+			biiToggle.isOn = false;
 		}
+		else if(ObjectController.objectMode == ObjectController.ObjectMode.bi){
+			ObjectController.objectMode = ObjectController.ObjectMode.bii;
+			aiToggle.isOn = false;
+			aiiToggle.isOn = false;
+			biToggle.isOn = false;
+			biiToggle.isOn = true;
+		}
+
+		Debug.Log ("DIFFICULTY MODE: " + ObjectController.objectMode);
 	}
 
 	public void SetReplayTrue(){
