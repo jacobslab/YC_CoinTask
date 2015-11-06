@@ -337,6 +337,7 @@ public class TrialController : MonoBehaviour {
 			//IF THEY SAID 'YES, I REMEMBER', SELECT LOCATION
 			//if(response == true){
 			//enable position selection, turn off fancy selection UI
+			exp.environmentController.myPositionSelector.Reset();
 			exp.environmentController.myPositionSelector.EnableSelection (true);
 
 			doYouRememberUI.Stop();

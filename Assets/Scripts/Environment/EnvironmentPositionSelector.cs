@@ -42,6 +42,17 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		
 	}
 
+	public void Reset(){
+		PositionSelector.transform.position = GetStartPosition();
+	}
+
+	Vector3 GetStartPosition(){
+		Vector3 envCenter = exp.environmentController.GetEnvironmentCenter ();
+		Vector3 newStartPos = new Vector3 (envCenter.x, PositionSelectorVisuals.transform.position.y, envCenter.z);
+
+		return newStartPos;
+	}
+
 	void GetMovementInput(){
 		float verticalAxisInput = Input.GetAxis ("Vertical");
 		float horizontalAxisInput = Input.GetAxis ("Horizontal");
