@@ -48,7 +48,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	Vector3 GetStartPosition(){
 		Vector3 envCenter = exp.environmentController.GetEnvironmentCenter ();
-		Vector3 newStartPos = new Vector3 (envCenter.x, PositionSelectorVisuals.transform.position.y, envCenter.z);
+		Vector3 newStartPos = new Vector3 (envCenter.x, PositionSelector.transform.position.y, envCenter.z);
 
 		return newStartPos;
 	}
