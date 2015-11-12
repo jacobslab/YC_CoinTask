@@ -24,6 +24,10 @@ public class PlayerControls : MonoBehaviour{
 	float closestTravelDist; //distance between close start pos and close start tower; set in start
 
 
+	//PAUSE CONTROL
+	bool isPaused = false;
+	bool controlsLockedBeforePause = false;
+
 
 	// Use this for initialization
 	void Start () {
@@ -57,21 +61,21 @@ public class PlayerControls : MonoBehaviour{
 		}
 	}
 
-	
-	//based on amount difference of y rotation, tilt in z axis
-	void SetTilt(float amountTurned, float turnTime){
-		if (Config_CoinTask.isAvatarTilting) {
-			float turnRate = 0.0f;
-			if (turnTime != 0.0f) {
-				turnRate = amountTurned / turnTime;
+
+	public void Pause(bool shouldPause){
+		if (shouldPause) {
+			if(!isPaused){
+				isPaused = true;
+				controlsLockedBeforePause = ShouldLockControls;
 			}
-
-			float tiltAngle = turnRate * Config_CoinTask.turnAngleMult;
-
-			tiltAngle *= -1; //tilt in opposite direction of the difference
-			TiltableTransform.rotation = Quaternion.Euler (transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, tiltAngle);	
+		} 
+		else if(isPaused){
+			isPaused = false;
+			ShouldLockControls = controlsLockedBeforePause;
 		}
+		
 	}
+
 
 	void GetInput()
 	{
@@ -99,14 +103,31 @@ public class PlayerControls : MonoBehaviour{
 	}
 
 	void Move( float amount ){
-		transform.position += transform.forward * amount;
+		if (!isPaused) {
+			transform.position += transform.forward * amount;
+		}
 	}
 	
 	void Turn( float amount ){
 		transform.RotateAround (transform.position, Vector3.up, amount );
 		SetTilt (amount, Time.deltaTime);
 	}
-	
+
+	//based on amount difference of y rotation, tilt in z axis
+	void SetTilt(float amountTurned, float turnTime){
+		if (Config_CoinTask.isAvatarTilting) {
+			float turnRate = 0.0f;
+			if (turnTime != 0.0f) {
+				turnRate = amountTurned / turnTime;
+			}
+			
+			float tiltAngle = turnRate * Config_CoinTask.turnAngleMult;
+			
+			tiltAngle *= -1; //tilt in opposite direction of the difference
+			TiltableTransform.rotation = Quaternion.Euler (transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, tiltAngle);	
+		}
+	}
+
 
 	public IEnumerator SmoothMoveTo(Vector3 targetPosition, Quaternion targetRotation){
 
@@ -139,22 +160,24 @@ public class PlayerControls : MonoBehaviour{
 		bool arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
 		//while ( ( angleDiffY >= epsilon ) || ( angleDiffX >= epsilon ) || (!arePositionsCloseEnough) ){
 		while(tElapsed < timeToTravel){
-			totalTimeElapsed += Time.deltaTime;
+			if(!isPaused){
+				totalTimeElapsed += Time.deltaTime;
 
-			//tElapsed += (Time.deltaTime * moveAndRotateRate);
+				//tElapsed += (Time.deltaTime * moveAndRotateRate);
 
-			tElapsed += Time.deltaTime;
+				tElapsed += Time.deltaTime;
 
-			float percentageTime = tElapsed / timeToTravel;
+				float percentageTime = tElapsed / timeToTravel;
 
-			//will spherically interpolate the rotation for config.spinTime seconds
-			transform.rotation = Quaternion.Slerp(origRotation, targetRotation, percentageTime); //SLERP ALWAYS TAKES THE SHORTEST PATH.
-			transform.position = Vector3.Lerp(origPosition, targetPosition, percentageTime);
+				//will spherically interpolate the rotation for config.spinTime seconds
+				transform.rotation = Quaternion.Slerp(origRotation, targetRotation, percentageTime); //SLERP ALWAYS TAKES THE SHORTEST PATH.
+				transform.position = Vector3.Lerp(origPosition, targetPosition, percentageTime);
 
-			//calculate new differences
-			angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
-			angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
-			arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
+				//calculate new differences
+				angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
+				angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
+				arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
+			}
 			yield return 0;
 		}
 		
@@ -211,18 +234,18 @@ public class PlayerControls : MonoBehaviour{
 
 		float tElapsed = 0.0f;
 		while (tElapsed < totalTimeToRotate){
+			if(!isPaused){
+				tElapsed += (Time.deltaTime );
+				float turnPercent = tElapsed / totalTimeToRotate;
 
-			tElapsed += (Time.deltaTime );
-			float turnPercent = tElapsed / totalTimeToRotate;
+				float beforeRotY = transform.rotation.eulerAngles.y; //y angle before the rotation
 
-			float beforeRotY = transform.rotation.eulerAngles.y; //y angle before the rotation
+				//will spherically interpolate the rotation
+				transform.rotation = Quaternion.Slerp(origRotation, desiredRotation, turnPercent); //SLERP ALWAYS TAKES THE SHORTEST PATH.
 
-			//will spherically interpolate the rotation
-			transform.rotation = Quaternion.Slerp(origRotation, desiredRotation, turnPercent); //SLERP ALWAYS TAKES THE SHORTEST PATH.
-
-			float angleRotated = transform.rotation.eulerAngles.y - beforeRotY;
-			SetTilt(angleRotated, Time.deltaTime);
-
+				float angleRotated = transform.rotation.eulerAngles.y - beforeRotY;
+				SetTilt(angleRotated, Time.deltaTime);
+			}
 			yield return 0;
 		}
 		

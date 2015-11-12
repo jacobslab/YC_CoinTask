@@ -151,7 +151,7 @@ public class BoxSwapper : MonoBehaviour {
 
 		while(!actionButtonPressed){
 	
-			if(Input.GetAxis("ActionButton") != 0f){
+			if(Input.GetAxis("Action Button") != 0f){
 				actionButtonPressed = true;
 				shouldSelect = false;
 			}

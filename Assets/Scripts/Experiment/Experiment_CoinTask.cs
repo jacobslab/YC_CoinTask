@@ -42,6 +42,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//public bool isOculus = false;
 
 
+
 	//state enum
 	public ExperimentState currentState = ExperimentState.instructionsState;
 
@@ -208,11 +209,11 @@ public class Experiment_CoinTask : MonoBehaviour {
 	
 	public IEnumerator WaitForActionButton(){
 		bool hasPressedButton = false;
-		while(Input.GetAxis("ActionButton") != 0f){
+		while(Input.GetAxis("Action Button") != 0f){
 			yield return 0;
 		}
 		while(!hasPressedButton){
-			if(Input.GetAxis("ActionButton") == 1.0f){
+			if(Input.GetAxis("Action Button") == 1.0f){
 				hasPressedButton = true;
 			}
 			yield return 0;
@@ -231,7 +232,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 		trialController.GetComponent<TrialLogTrack>().LogWaitForJitterEnded(currentTime);
 	}
-	
+
 
 	public void OnExit(){ //call in scene controller when switching to another scene!
 		if (ExperimentSettings_CoinTask.isLogging) {

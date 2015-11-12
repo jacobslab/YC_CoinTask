@@ -141,12 +141,12 @@ public class InstructionsController : MonoBehaviour {
 
 		while (timePassed < timePerInstruction) {
 			//want to make sure its a new button press
-			if(Input.GetAxis("ActionButton") == 0.0f){
+			if(Input.GetAxis("Action Button") == 0.0f){
 				actionButtonUp = true;
 			}
 
 			//if button pressed after action button was up -- skip the instruction
-			if(Input.GetAxis("ActionButton") == 1.0f && actionButtonUp){
+			if(Input.GetAxis("Action Button") == 1.0f && actionButtonUp){
 				timePassed += timePerInstruction; // will skip instruction!
 			}
 

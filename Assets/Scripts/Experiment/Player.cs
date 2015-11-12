@@ -18,6 +18,7 @@ public class Player : MonoBehaviour {
 	EnableChildrenLogTrack rightArrowEnableLog;
 	public GameObject leftArrows;
 	EnableChildrenLogTrack leftArrowEnableLog;
+	
 
 	// Use this for initialization
 	void Start () {

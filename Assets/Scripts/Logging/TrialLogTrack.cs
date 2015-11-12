@@ -52,7 +52,6 @@ public class TrialLogTrack : LogTrack {
 	}
 
 
-
 	//TODO: move to an experiment logger
 	public void LogWaitForJitterStarted(float jitter){
 		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "RANDOM_JITTER_STARTED" + separator + jitter);
@@ -99,6 +98,11 @@ public class TrialLogTrack : LogTrack {
 
 
 	//THE FOLLOWING ARE EVENTS
+
+	public void LogPauseEvent(bool isPaused){
+		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "TASK_PAUSED" + separator + isPaused);
+		Debug.Log ("Logged pause event. isPaused: " + isPaused);
+	}
 
 	public void LogInstructionEvent(){
 		if (ExperimentSettings_CoinTask.isLogging) {

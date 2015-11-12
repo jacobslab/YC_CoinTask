@@ -4,14 +4,20 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 
 public class TrialController : MonoBehaviour {
-	
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
+	//PAUSE
+	public bool isPaused = false;
+
+	//TIMER
 	public SimpleTimer trialTimer;
+
+	//UI
 	public QuestionUI doYouRememberUI;
 	public QuestionUI areYouSureUI;
 	public BlockCompleteUI blockCompletedUI;
 	public ScoreRecapUI scoreRecapUI;
+	public UIScreen PauseUI;
 
 	TrialLogTrack trialLogger;
 
@@ -99,6 +105,44 @@ public class TrialController : MonoBehaviour {
 		}
 	}
 
+
+	
+	void Update(){
+		GetPauseInput ();
+	}
+
+	bool isPauseButtonPressed = false;
+	void GetPauseInput(){
+		//if (Input.GetAxis ("Pause Button") > 0) {
+		if(Input.GetKeyDown(KeyCode.B) || Input.GetKey(KeyCode.JoystickButton2)){ //B JOYSTICK BUTTON TODO: move to input manager.
+			Debug.Log("PAUSE BUTTON PRESSED");
+			if(!isPauseButtonPressed){
+				isPauseButtonPressed = true;
+				Debug.Log ("PAUSE OR UNPAUSE");
+				TogglePause (); //pause
+			}
+		} 
+		else{
+			isPauseButtonPressed = false;
+		}
+	}
+
+	public void TogglePause(){
+		isPaused = !isPaused;
+		trialLogger.LogPauseEvent (isPaused);
+
+		if (isPaused) {
+			//exp.player.controls.Pause(true);
+			PauseUI.Play ();
+			Time.timeScale = 0.0f;
+		} 
+		else {
+			Time.timeScale = 1.0f;
+			//exp.player.controls.Pause(false);
+			//exp.player.controls.ShouldLockControls = false;
+			PauseUI.Stop ();
+		}
+	}
 
 
 	//FILL THIS IN DEPENDING ON EXPERIMENT SPECIFICATIONS
