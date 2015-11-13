@@ -18,6 +18,7 @@ public class TrialController : MonoBehaviour {
 	public BlockCompleteUI blockCompletedUI;
 	public ScoreRecapUI scoreRecapUI;
 	public CanvasGroup PauseUI;
+	public GoText goText;
 
 	TrialLogTrack trialLogger;
 
@@ -304,16 +305,20 @@ public class TrialController : MonoBehaviour {
 			yield return StartCoroutine (exp.ShowSingleInstruction ("Press (X) to start!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
 		}
 
+		//START NAVIGATION --> TODO: make this its own function. or a delegate. ...clean it up.
 		trialLogger.LogTrialNavigationStarted ();
+
+		goText.Play ();
 
 		//start a game timer
 		trialTimer.ResetTimer ();
 		trialTimer.StartTimer ();
 
-		//unlock avatar controls, wait for player to collect all default objects
+		//unlock avatar controls
 		exp.player.controls.ShouldLockControls = false;
-		int numDefaultObjectsToCollect = currentTrial.DefaultObjectLocationsXZ.Count;
 
+		//wait for player to collect all default objects
+		int numDefaultObjectsToCollect = currentTrial.DefaultObjectLocationsXZ.Count;
 		while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
 			yield return 0;
 		}

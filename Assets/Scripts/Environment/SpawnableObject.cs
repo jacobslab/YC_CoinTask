@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 
 [RequireComponent (typeof (VisibilityToggler))]
 [RequireComponent (typeof (ObjectLogTrack))]
+[RequireComponent (typeof (ScaleAnimator))]
 public class SpawnableObject : MonoBehaviour {
 
 	VisibilityToggler myVisibilityToggler;
@@ -24,7 +25,7 @@ public class SpawnableObject : MonoBehaviour {
 
 	void Start(){
 		if (tag == "SpecialObject") {
-			StartCoroutine(AnimateScaleUp());
+			ScaleUp();
 		}
 	}
 	
@@ -113,33 +114,12 @@ public class SpawnableObject : MonoBehaviour {
 		myLogTrack.LogShadowSettings (shadowMode);
 	}
 
-	public IEnumerator AnimateScaleUp(){
-		if (Config_CoinTask.isJuice) {
-			float timeToScaleUp = 0.3f;
-
-			float fullScaleMult = 1.0f;
-			float smallScaleMult = 0.5f;
-			Vector3 fullScale = transform.localScale * fullScaleMult;
-			Vector3 smallScale = fullScale * smallScaleMult;
-
-			float scaleMultDifference = fullScaleMult - smallScaleMult;
-
-
-			transform.localScale = smallScale;
-
-			float currentTime = 0.0f;
-
-			while (currentTime < timeToScaleUp) {
-				currentTime += Time.deltaTime;
-				float scaleMult = smallScaleMult + (scaleMultDifference * (currentTime / timeToScaleUp));
-				transform.localScale = fullScale * scaleMult;
-				yield return 0;
-			}
-
-			transform.localScale = fullScale;
-		} else {
-			yield return 0;
-		}
+	void ScaleUp(){
+		float timeToScaleUp = 0.3f;
+		
+		float fullScaleMult = 1.0f;
+		float smallScaleMult = 0.5f;
+		StartCoroutine( GetComponent<ScaleAnimator>().AnimateScaleUp(timeToScaleUp, fullScaleMult, smallScaleMult) );
 	}
 
 }

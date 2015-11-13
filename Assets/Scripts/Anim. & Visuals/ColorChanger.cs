@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class ColorChanger : MonoBehaviour {
+	public bool isTextMesh;
 
 	public Renderer[] renderers;
 
@@ -20,11 +21,22 @@ public class ColorChanger : MonoBehaviour {
 
 		float timeMult = 1.0f / time;
 
-		Color origColor = renderers [0].material.color;
+		Color origColor = new Color ();
+
+		if (isTextMesh) {
+			origColor = GetComponent<TextMesh>().color;
+		}
+		else if (renderers.Length > 0) {
+			origColor = renderers [0].material.color;
+		}
+
 		while(currentTime < 1.0f){
 			currentTime += Time.deltaTime*timeMult;
 			for (int i = 0; i < renderers.Length; i++) {
 				renderers[i].material.color = Color.Lerp(origColor, newColor, currentTime);
+			}
+			if(isTextMesh){
+				GetComponent<TextMesh>().color = Color.Lerp(origColor, newColor, currentTime);
 			}
 			yield return 0;
 		}
@@ -34,6 +46,9 @@ public class ColorChanger : MonoBehaviour {
 	public void ChangeColor(Color newColor){
 		for (int i = 0; i < renderers.Length; i++) {
 			renderers[i].material.color = newColor;
+		}
+		if(isTextMesh){
+			GetComponent<TextMesh>().color = newColor;
 		}
 	}
 }
