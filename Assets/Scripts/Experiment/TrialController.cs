@@ -17,7 +17,7 @@ public class TrialController : MonoBehaviour {
 	public QuestionUI areYouSureUI;
 	public BlockCompleteUI blockCompletedUI;
 	public ScoreRecapUI scoreRecapUI;
-	public UIScreen PauseUI;
+	public CanvasGroup PauseUI;
 
 	TrialLogTrack trialLogger;
 
@@ -133,14 +133,14 @@ public class TrialController : MonoBehaviour {
 
 		if (isPaused) {
 			//exp.player.controls.Pause(true);
-			PauseUI.Play ();
+			PauseUI.alpha = 1.0f;
 			Time.timeScale = 0.0f;
 		} 
 		else {
 			Time.timeScale = 1.0f;
 			//exp.player.controls.Pause(false);
 			//exp.player.controls.ShouldLockControls = false;
-			PauseUI.Stop ();
+			PauseUI.alpha = 0.0f;
 		}
 	}
 

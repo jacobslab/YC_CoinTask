@@ -24,8 +24,8 @@ public class UIScreen : MonoBehaviour {
 	}
 	
 	void Enable(bool shouldEnable){
-		GetComponent<EnableChildrenLogTrack>().LogChildrenEnabled(shouldEnable);
-		
+		//GetComponent<EnableChildrenLogTrack>().LogChildrenEnabled(shouldEnable);
+		//TODO: FIX WEIRD AABB ERROR WHEN PAUSE UI CALLS THIS.
 		UsefulFunctions.EnableChildren( transform, shouldEnable );
 	}
 }

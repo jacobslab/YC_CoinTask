@@ -151,8 +151,10 @@ public class DefaultItem : MonoBehaviour {
 		if (Config_CoinTask.isJuice) {
 			//animate if juice!
 			while (directionMult*angleToOpen > 0) {
-				top.RotateAround (pivotPos, -directionMult * transform.right, angleChange);
-				angleToOpen -= directionMult * angleChange;
+				if(!Experiment_CoinTask.Instance.trialController.isPaused){
+					top.RotateAround (pivotPos, -directionMult * transform.right, angleChange);
+					angleToOpen -= directionMult * angleChange;
+				}
 				yield return 0;
 			}
 		} else {
