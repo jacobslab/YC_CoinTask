@@ -345,6 +345,18 @@ public class Replay : MonoBehaviour {
 									}
 								}
 
+								else if(loggedProperty == "CANVAS_GROUP_ALPHA"){
+									CanvasGroup canvasGroup = objInScene.GetComponent<CanvasGroup>();
+									if(canvasGroup != null){
+										float alpha = float.Parse(splitLine[i+2]);
+										
+										canvasGroup.alpha = alpha;
+									}
+									else{
+										Debug.Log("no canvas group!");
+									}
+								}
+
 								//SHADOW CAST CHANGE
 								else if (loggedProperty == "SHADOW_SETTING"){
 									string shadowSetting = splitLine[i+2];
