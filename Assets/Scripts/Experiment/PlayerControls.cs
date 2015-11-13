@@ -80,7 +80,7 @@ public class PlayerControls : MonoBehaviour{
 			Debug.Log("HORIZ AXIS INPUT: " + horizontalAxisInput);
 		} 
 		else {
-			if(!exp.trialController.isPaused){
+			if(!TrialController.isPaused){
 
 				//resets the player back to center if the game gets paused on a tilt
 				//NOTE: after pause is glitchy on keyboard --> unity seems to be retaining some of the horizontal axis input despite there being none. fine with controller though.
@@ -120,7 +120,7 @@ public class PlayerControls : MonoBehaviour{
 
 	//based on amount difference of y rotation, tilt in z axis
 	void SetTilt(float amountTurned, float turnTime){
-		if (!exp.trialController.isPaused) {
+		if (!TrialController.isPaused) {
 			if (Config_CoinTask.isAvatarTilting) {
 				float turnRate = 0.0f;
 				if (turnTime != 0.0f) {

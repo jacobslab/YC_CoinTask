@@ -41,8 +41,6 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 	//public bool isOculus = false;
 
-
-
 	//state enum
 	public ExperimentState currentState = ExperimentState.instructionsState;
 

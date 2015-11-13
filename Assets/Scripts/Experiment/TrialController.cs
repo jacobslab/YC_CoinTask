@@ -6,8 +6,8 @@ using System.Collections.Generic;
 public class TrialController : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
-	//PAUSE
-	public bool isPaused = false;
+	//paused?!
+	public static bool isPaused = false;
 
 	//TIMER
 	public SimpleTimer trialTimer;
