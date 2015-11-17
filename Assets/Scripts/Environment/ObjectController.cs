@@ -8,7 +8,8 @@ public class ObjectController : MonoBehaviour {
 		ai,		//2-4 filled, 1&5 empty
 		aii,	//2-4 filled with 2 or 3 objects, 1&5 empty
 		bi,		//first four filled w/ 3 objects, 5 empty
-		bii		//first four filled w/ 2 or 3 objects, 5 empty
+		bii,	//first four filled w/ 2 or 3 objects, 5 empty
+		ci		//3/5 filled at random
 	}
 
 	public static ObjectMode objectMode = ObjectMode.ai;
@@ -315,12 +316,16 @@ public class ObjectController : MonoBehaviour {
 			startIndex = 0;
 			numDefaultToChooseFrom = 4;
 			break;
+		case ObjectMode.ci:	//3 random filled
+			startIndex = 0;
+			numDefaultToChooseFrom = 5;
+			break;
 		}
 
 
 		List<Vector2> orderedDefaultPositionsCopy = new List<Vector2> ();
 		
-		//copy the list (ONLY THE POSITIONS WE WANT TO FILL so we can delete from it...
+		//copy the list (ONLY THE POSITIONS WE WANT TO FILL) so we can delete from it...
 		for (int i = startIndex; i < numDefaultToChooseFrom + startIndex; i++) {
 			Vector2 currPosition = orderedDefaultObjectLocationsXZ[i];
 			Vector2 positionCopy = new Vector2(currPosition.x, currPosition.y);

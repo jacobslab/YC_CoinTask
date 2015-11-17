@@ -47,7 +47,10 @@ public class Trial {
 		case ObjectController.ObjectMode.bii:	//first four filled w/ 2 or 3 objects, 5 empty
 			numSpecialObjects = Random.Range(2,4); //[inclusive, exclusive]
 			break;
-		}
+		case ObjectController.ObjectMode.ci:	//first four filled w/ 2 or 3 objects, 5 empty
+			numSpecialObjects = 3; //[inclusive, exclusive]
+			break;
+	}
 
 		Debug.Log("NUM SPECIAL: " + numSpecialObjects);
 
