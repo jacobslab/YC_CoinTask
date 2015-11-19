@@ -29,6 +29,6 @@ public class CanvasGroupLogTrack : LogTrack {
 	void LogAlpha(){
 		currentAlpha = myCanvasGroup.alpha;
 
-		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "CANVAS_GROUP_ALPHA" + separator + currentAlpha );
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "CANVAS_GROUP_ALPHA" + separator + currentAlpha );
 	}
 }

@@ -18,15 +18,15 @@ public class PositionSelectorLogTrack : LogTrack {
 
 	void LogSelectorSize(){
 		float diameter = Config_CoinTask.selectionDiameter;
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SELECTOR_SIZE" + separator + "DIAMETER" + separator + diameter);
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SELECTOR_SIZE" + separator + "DIAMETER" + separator + diameter);
 	}
 
 	public void LogPositionChosen(Vector3 chosenPosition, Vector3 correctPosition, SpawnableObject specialSpawnable){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			//log chosen position
-			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "CHOSEN_TEST_POSITION" + separator + chosenPosition.x + separator + chosenPosition.y + separator + chosenPosition.z + separator + specialSpawnable.GetName());
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "CHOSEN_TEST_POSITION" + separator + chosenPosition.x + separator + chosenPosition.y + separator + chosenPosition.z + separator + specialSpawnable.GetName());
 			//log correct position
-			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "CORRECT_TEST_POSITION" + separator + correctPosition.x + separator + correctPosition.y + separator + correctPosition.z + separator + specialSpawnable.GetName());
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "CORRECT_TEST_POSITION" + separator + correctPosition.x + separator + correctPosition.y + separator + correctPosition.z + separator + specialSpawnable.GetName());
 		}
 	}
 	

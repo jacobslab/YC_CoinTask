@@ -26,13 +26,13 @@ public class LogitechControllerLogTrack : LogTrack {
 
 		for (int i = 0; i < numJoystickAxesUsed; i++) {
 			if(joystickInput[i] != 0){
-				subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Joystick" + i + separator + joystickInput [i]);
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Joystick" + i + separator + joystickInput [i]);
 			}
 		}
 
 		for (int i = 0; i < numButtons; i++) {
 			if(buttonInput[i] == true){
-				subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Button" + i + separator + buttonInput [i]);
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Button" + i + separator + buttonInput [i]);
 			}
 		}
 	}

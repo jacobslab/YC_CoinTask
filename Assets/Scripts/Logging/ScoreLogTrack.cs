@@ -10,31 +10,31 @@ public class ScoreLogTrack : LogTrack {
 
 	public void LogBoxSwapperPoints(int scoreAdded){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_ADDED_BOX_SWAPPER" + separator + scoreAdded);
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_ADDED_BOX_SWAPPER" + separator + scoreAdded);
 		}
 	}
 
 	public void LogTreasureOpenScoreAdded(int scoreAdded){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_ADDED_TREASURE" + separator + scoreAdded);
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_ADDED_TREASURE" + separator + scoreAdded);
 		}
 	}
 
 	public void LogTimeBonusAdded(int scoreAdded){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_ADDED_TIME" + separator + scoreAdded);
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_ADDED_TIME" + separator + scoreAdded);
 		}
 	}
 
 	public void LogMemoryScoreAdded(int scoreAdded){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_ADDED_MEMORY" + separator + scoreAdded);
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_ADDED_MEMORY" + separator + scoreAdded);
 		}
 	}
 
 	public void LogScoreReset(){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_RESET");
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_RESET");
 		}
 	}
 }

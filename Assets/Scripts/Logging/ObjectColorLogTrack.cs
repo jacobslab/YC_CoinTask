@@ -36,7 +36,7 @@ public class ObjectColorLogTrack: LogTrack {
 	
 	void LogColor(){
 		lastColor = myRenderer.material.color;
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "OBJECT_COLOR" + separator + lastColor.r + separator + lastColor.g + separator + lastColor.b + separator + lastColor.a);
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "OBJECT_COLOR" + separator + lastColor.r + separator + lastColor.g + separator + lastColor.b + separator + lastColor.a);
 	}
 
 	

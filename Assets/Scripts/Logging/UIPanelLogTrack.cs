@@ -26,7 +26,7 @@ public class UIPanelLogTrack : LogTrack {
 
 	void LogPanel(){
 		currentPanelColor = myPanelImage.color;
-		subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name 
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name 
 		                   + separator + "PANEL" + separator + myPanelImage.color.r + separator + myPanelImage.color.g + separator + myPanelImage.color.b + separator + myPanelImage.color.a);
 	}
 }

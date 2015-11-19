@@ -34,6 +34,14 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public Toggle joystickInputToggle; //only exists in main menu -- make sure to null check
 	public Toggle loggingToggle; //only exists in main menu -- make sure to null check
 
+	//EEG, STIM/SYNC TOGGLES
+	public static bool isSystem2;
+	public static bool isSyncbox;
+
+	public Toggle system2Toggle;
+	public Toggle syncboxToggle;
+
+
 	public Toggle aiToggle;
 	public Toggle aiiToggle;
 	public Toggle biToggle;
@@ -81,6 +89,8 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	// Use this for initialization
 	void Start () {
 		SetOculus();
+		SetSystem2();
+		SetSyncBox();
 		if(Application.loadedLevelName == "EndMenu"){
 			if(currentSubject != null){
 				endCongratsText.text = "Congratulations " + currentSubject.name + "!";
@@ -198,6 +208,18 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public void SetOculus(){
 		if(oculusToggle){
 			isOculus = oculusToggle.isOn;
+		}
+	}
+
+	public void SetSystem2(){
+		if(system2Toggle){
+			isSystem2 = system2Toggle.isOn;
+		}
+	}
+
+	public void SetSyncBox(){
+		if(syncboxToggle){
+			isSyncbox = syncboxToggle.isOn;
 		}
 	}
 	

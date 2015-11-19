@@ -64,43 +64,43 @@ public class ObjectLogTrack : LogTrack {
 	}
 
 	void LogSpawned(){
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "SPAWNED" + separator + gameObject.tag);
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "SPAWNED" + separator + gameObject.tag);
 	}
 
 	void LogPosition(){
 		lastPosition = transform.position;
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "POSITION" + separator + transform.position.x + separator + transform.position.y + separator + transform.position.z);
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "POSITION" + separator + transform.position.x + separator + transform.position.y + separator + transform.position.z);
 	}
 	
 	void LogRotation(){
 		lastRotation = transform.rotation;
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "ROTATION" + separator + transform.rotation.eulerAngles.x + separator + transform.rotation.eulerAngles.y + separator + transform.rotation.eulerAngles.z);
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "ROTATION" + separator + transform.rotation.eulerAngles.x + separator + transform.rotation.eulerAngles.y + separator + transform.rotation.eulerAngles.z);
 	}
 
 	void LogScale(){
 		lastScale = transform.localScale;
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "SCALE" + separator + transform.localScale.x + separator + transform.localScale.y + separator + transform.localScale.z);
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "SCALE" + separator + transform.localScale.x + separator + transform.localScale.y + separator + transform.localScale.z);
 	}
 	
 	void LogVisibility(){
 		lastVisibility = visibilityToggler.GetVisibility();
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "VISIBILITY" + separator + lastVisibility);
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "VISIBILITY" + separator + lastVisibility);
 	}
 
 	public void LogShadowSettings(UnityEngine.Rendering.ShadowCastingMode shadowMode){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "SHADOW_SETTING" + separator + shadowMode);
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "SHADOW_SETTING" + separator + shadowMode);
 		}
 	}
 
 	public void LogLayerChange(){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "LAYER_CHANGE" + separator + gameObject.layer);
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "LAYER_CHANGE" + separator + gameObject.layer);
 		}
 	}
 
 	void LogDestroy(){
-		subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "DESTROYED");
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "DESTROYED");
 	}
 
 	void OnDestroy(){

@@ -21,7 +21,7 @@ public class KeyboardLogTrack : LogTrack {
 		for (int i = 0; i < Keys.Length; i++) {
 			keyName = Keys[i];
 			if (Input.GetKey (keyName.ToLower())) {
-				subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "Keyboard" + separator + keyName);
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "Keyboard" + separator + keyName);
 			}
 		}
 	}

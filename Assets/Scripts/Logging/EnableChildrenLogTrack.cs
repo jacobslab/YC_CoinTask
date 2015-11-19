@@ -13,7 +13,7 @@ public class EnableChildrenLogTrack : LogTrack {
 
 	public void LogChildrenEnabled ( bool areEnabled ) {
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (exp.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "ENABLED_CHILDREN" + separator + areEnabled);
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "ENABLED_CHILDREN" + separator + areEnabled);
 		}
 	}
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class Config_CoinTask : MonoBehaviour {
+
 	//JUICE
 	public static bool isJuice = true;
 	public static bool isSoundtrack = false; //WON'T PLAY IF ISJUICE IS FALSE.

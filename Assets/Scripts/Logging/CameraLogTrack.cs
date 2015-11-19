@@ -27,7 +27,7 @@ public class CameraLogTrack : LogTrack {
 
 	void LogCamera(){
 		if(myCamera != null){
-			subjectLog.Log (Experiment_CoinTask.Instance.theGameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "CAMERA_ENABLED" + separator + myCamera.enabled);
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "CAMERA_ENABLED" + separator + myCamera.enabled);
 			lastEnabled = myCamera.enabled;
 		}
 	}

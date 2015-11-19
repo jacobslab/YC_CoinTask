@@ -76,8 +76,6 @@ public class PlayerControls : MonoBehaviour{
 
 			float percent = horizontalAxisInput / 1.0f;
 			Turn (percent * RotationSpeed * Time.deltaTime); //framerate independent!
-
-			Debug.Log("HORIZ AXIS INPUT: " + horizontalAxisInput);
 		} 
 		else {
 			if(!TrialController.isPaused){
