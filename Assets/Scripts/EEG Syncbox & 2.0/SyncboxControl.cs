@@ -34,7 +34,31 @@ public class SyncboxControl : MonoBehaviour {
 	public TextMesh DownCircle;
 	public Color DownColor;
 	public Color UpColor;
+
+	public bool isUSBOpen = false; //TODO: set to true.
+
 	bool isToggledOn = false;
+
+
+	//SINGLETON
+	private static SyncboxControl _instance;
+	
+	public static SyncboxControl Instance{
+		get{
+			return _instance;
+		}
+	}
+	
+	void Awake(){
+		
+		if (_instance != null) {
+			UnityEngine.Debug.Log("Instance already exists!");
+			Destroy(transform.gameObject);
+			return;
+		}
+		_instance = this;
+		
+	}
 
 
 	// Use this for initialization
@@ -44,10 +68,23 @@ public class SyncboxControl : MonoBehaviour {
 			//Debug.Log ("OH HAYYYY");
 			//Debug.Log(PrintANumber());
 			//Debug.Log (LJUSB_GetLibraryVersion ());
-			Debug.Log(Marshal.PtrToStringAuto (OpenUSB()));
-			//Debug.Log(Marshal.PtrToStringAuto (CloseUSB()));
-			StartCoroutine (Pulse ());
+			StartCoroutine(ConnectSyncbox());
 		}
+	}
+
+	IEnumerator ConnectSyncbox(){
+		while(!isUSBOpen){
+			string usbOpenFeedback = Marshal.PtrToStringAuto (OpenUSB());
+			Debug.Log(usbOpenFeedback);
+			if(usbOpenFeedback != "didn't open USB..."){
+				isUSBOpen = true;
+			}
+
+			yield return 0;
+		}
+
+		//Debug.Log(Marshal.PtrToStringAuto (CloseUSB()));
+		StartCoroutine (Pulse ());
 	}
 	
 	// Update is called once per frame

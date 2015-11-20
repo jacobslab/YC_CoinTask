@@ -19,7 +19,7 @@ public class TCPServer : MonoBehaviour {
 
 
 	ThreadedServer myServer;
-	bool isConnected { get { return GetIsConnected(); } }
+	public bool isConnected { get { return GetIsConnected(); } }
 
 
 
@@ -36,7 +36,7 @@ public class TCPServer : MonoBehaviour {
 	}
 	
 	void Awake(){
-		
+
 		if (_instance != null) {
 			UnityEngine.Debug.Log("Instance already exists!");
 			Destroy(transform.gameObject);

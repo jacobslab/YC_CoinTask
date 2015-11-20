@@ -6,6 +6,9 @@ using System.Collections.Generic;
 public class TrialController : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
+	//hardware connection
+	bool isConnectingToHardware = false;
+
 	//paused?!
 	public static bool isPaused = false;
 
@@ -18,6 +21,7 @@ public class TrialController : MonoBehaviour {
 	public BlockCompleteUI blockCompletedUI;
 	public ScoreRecapUI scoreRecapUI;
 	public CanvasGroup PauseUI;
+	public CanvasGroup ConnectionUI;
 	public GoText goText;
 
 	TrialLogTrack trialLogger;
@@ -109,7 +113,9 @@ public class TrialController : MonoBehaviour {
 
 	
 	void Update(){
-		GetPauseInput ();
+		if(!isConnectingToHardware){
+			GetPauseInput ();
+		}
 	}
 
 	bool isPauseButtonPressed = false;
@@ -149,6 +155,15 @@ public class TrialController : MonoBehaviour {
 	//FILL THIS IN DEPENDING ON EXPERIMENT SPECIFICATIONS
 	public IEnumerator RunExperiment(){
 		if (!ExperimentSettings_CoinTask.isReplay) {
+			exp.player.controls.ShouldLockControls = true;
+
+			if(ExperimentSettings_CoinTask.isSystem2 || ExperimentSettings_CoinTask.isSyncbox){
+				yield return StartCoroutine( WaitForEEGHardwareConnection() );
+			}
+			else{
+				ConnectionUI.alpha = 0.0f;
+			}
+
 			//show instructions for exploring, wait for the action button
 			trialLogger.LogInstructionEvent();
 			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
@@ -211,6 +226,24 @@ public class TrialController : MonoBehaviour {
 			yield return 0;
 		}
 		
+	}
+
+	IEnumerator WaitForEEGHardwareConnection(){
+		isConnectingToHardware = true;
+
+		ConnectionUI.alpha = 1.0f;
+		if(ExperimentSettings_CoinTask.isSystem2){
+			while(!TCPServer.Instance.isConnected){
+				yield return 0;
+			}
+		}
+		else if (ExperimentSettings_CoinTask.isSyncbox){
+			while(!SyncboxControl.Instance.isUSBOpen){
+				yield return 0;
+			}
+		}
+		ConnectionUI.alpha = 0.0f;
+		isConnectingToHardware = false;
 	}
 
 	public void IncrementNumDefaultObjectsCollected(){
