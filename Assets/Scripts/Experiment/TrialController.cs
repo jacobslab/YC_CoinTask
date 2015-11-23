@@ -233,12 +233,14 @@ public class TrialController : MonoBehaviour {
 
 		ConnectionUI.alpha = 1.0f;
 		if(ExperimentSettings_CoinTask.isSystem2){
-			while(!TCPServer.Instance.isConnected){
+			while(!TCPServer.Instance.isConnected || !TCPServer.Instance.canStartGame){
+				Debug.Log("Waiting for system 2 connection...");
 				yield return 0;
 			}
 		}
 		else if (ExperimentSettings_CoinTask.isSyncbox){
 			while(!SyncboxControl.Instance.isUSBOpen){
+				Debug.Log("Waiting for sync box to open...");
 				yield return 0;
 			}
 		}

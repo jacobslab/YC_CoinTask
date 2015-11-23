@@ -20,6 +20,7 @@ public class TCPServer : MonoBehaviour {
 
 	ThreadedServer myServer;
 	public bool isConnected { get { return GetIsConnected(); } }
+	public bool canStartGame { get { return GetCanStartGame(); } }
 
 
 
@@ -79,6 +80,12 @@ public class TCPServer : MonoBehaviour {
 	}
 
 	void Update(){
+		if (Input.GetKeyDown (KeyCode.A)) {
+			myServer.isServerConnected = true;
+		}
+		if (Input.GetKeyDown (KeyCode.S)) {
+			myServer.canStartGame = true;
+		}
 
 	}
 
@@ -88,6 +95,10 @@ public class TCPServer : MonoBehaviour {
 
 	bool GetIsConnected(){
 		return myServer.isServerConnected;
+	}
+
+	bool GetCanStartGame(){
+		return myServer.canStartGame;
 	}
 
 	void OnApplicationQuit(){
@@ -113,6 +124,7 @@ public class ThreadedServer : ThreadedJob{
 
 	public bool isServerConnected = false;
 	public bool isSynced = false;
+	public bool canStartGame = false;
 	Stopwatch clockAlignmentStopwatch;
 	int numClockAlignmentTries = 0;
 	const int timeBetweenClockAlignmentTriesMS = 500;//500; //half a second
@@ -514,6 +526,10 @@ public class ThreadedServer : ThreadedJob{
 				case "SYNCED":
 					//Control PC is done with clock alignment
 					isSynced = true;
+					break;
+				case "START":
+					//Control PC is done with clock alignment
+					canStartGame = true;
 					break;
 				case "EXIT":
 					//Control PC is exiting. If heartbeat is active, this is a premature abort.
