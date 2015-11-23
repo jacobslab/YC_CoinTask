@@ -13,7 +13,7 @@ public class TCP_Config : MonoBehaviour {
 	public static char MSG_SEPARATOR = '~';
 	public static char MSG_END = ']';
 
-	public static string ExpName = "TreasureHunt1";
+	public static string ExpName = "TH1";
 	public static string SubjectName = ExperimentSettings_CoinTask.currentSubject.name;
 
 	public enum EventType {
