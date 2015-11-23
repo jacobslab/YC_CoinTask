@@ -84,7 +84,7 @@ public class SyncboxControl : MonoBehaviour {
 		}
 
 		//Debug.Log(Marshal.PtrToStringAuto (CloseUSB()));
-		StartCoroutine (Pulse ());
+		StartCoroutine (TestPulse ());
 	}
 	
 	// Update is called once per frame
@@ -104,7 +104,7 @@ public class SyncboxControl : MonoBehaviour {
 			ToggleOff ();
 		}
 		if(Input.GetKeyDown(KeyCode.S)){
-			SetSyncPulse();
+			DoSyncPulse();
 			//SetStimPulse();
 		}
 	}
@@ -139,17 +139,18 @@ public class SyncboxControl : MonoBehaviour {
 		isToggledOn = false;
 	}
 
+
 	//ex: a 10 ms pulse every second — until the duration is over...
-	void SetSyncPulse(){
+	void DoSyncPulse(){
 		//Debug.Log(Marshal.PtrToStringAuto (SyncPulse()));
 		Debug.Log (SyncPulse ());
 	}
 
-	void SetStimPulse(){
+	void DoStimPulse(){
 		Debug.Log(Marshal.PtrToStringAuto (StimPulse (1.0f, 10, false)));
 	}
 
-	IEnumerator Pulse (){
+	IEnumerator TestPulse (){
 		yield return new WaitForSeconds(TCP_Config.numSecondsBeforeAlignment);
 		while (true) {
 			if(ShouldPulse){
