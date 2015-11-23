@@ -13,7 +13,6 @@ public class Explosive : MonoBehaviour {
 
 	float totalTravelTime = 1.2f;
 	float timeToBreak = 1.1f;
-	float breakTime = 1.0f; //amount of time between particles starting and breakable getting deleted
 	Rigidbody myRigidbody;
 
 	// Use this for initialization
@@ -73,11 +72,9 @@ public class Explosive : MonoBehaviour {
 
 		}
 
-		if (shouldWaitForBreak) {
-			yield return new WaitForSeconds(breakTime);
+		if (!shouldWaitForBreak) { //alternatively, if it should wait for break, the breakable should deal with its own destruction.
+			Destroy (gameObject);
 		}
-
-		Destroy (gameObject);
 
 		yield return 0;
 	}
