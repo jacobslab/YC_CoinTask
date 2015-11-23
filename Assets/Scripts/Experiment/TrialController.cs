@@ -51,7 +51,7 @@ public class TrialController : MonoBehaviour {
 
 		int numTestTrials = Config_CoinTask.numTestTrials;
 
-		int numTrialsPerBlock = (int)(Config_CoinTask.trialBlockDistribution [0] + Config_CoinTask.trialBlockDistribution [1] + Config_CoinTask.trialBlockDistribution [2]);
+		int numTrialsPerBlock = (int)(Config_CoinTask.trialBlockDistribution [0] + Config_CoinTask.trialBlockDistribution [1]);
 
 		if (numTestTrials % numTrialsPerBlock != 0) {
 			Debug.Log("CANNOT EXECUTE THIS TRIAL DISTRIBUTION");
@@ -70,15 +70,12 @@ public class TrialController : MonoBehaviour {
 
 	List<Trial> GenerateTrialBlock(){
 		List<Trial> trialBlock = new List<Trial> ();
-		int numTrials = (int)(Config_CoinTask.trialBlockDistribution [0] + Config_CoinTask.trialBlockDistribution [1] + Config_CoinTask.trialBlockDistribution [2]);
+		int numTrials = (int)(Config_CoinTask.trialBlockDistribution [0] + Config_CoinTask.trialBlockDistribution [1]);
 
 		int numSpecial = 1;
 		for (int i = 0; i < numTrials / 2; i++) { //divide by two because we're adding a regular and a counterbalanced trial
 
-			if(i < Config_CoinTask.trialBlockDistribution[0] / 2){
-				numSpecial = 1;
-			}
-			else if (i < ( Config_CoinTask.trialBlockDistribution[0] + Config_CoinTask.trialBlockDistribution[1] ) / 2){
+			if(i < Config_CoinTask.trialBlockDistribution[0] / 2){ //divide by two because we're adding a regular and a counterbalanced trial
 				numSpecial = 2;
 			}
 			else{

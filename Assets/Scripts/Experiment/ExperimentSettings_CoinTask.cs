@@ -46,7 +46,6 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public Toggle aiiToggle;
 	public Toggle biToggle;
 	public Toggle biiToggle;
-	public Toggle ciToggle;
 
 
 
@@ -124,13 +123,12 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	}*/
 
 	public void ChangeObjectMode(){
-		if(ObjectController.objectMode == ObjectController.ObjectMode.ci){
+		if(ObjectController.objectMode == ObjectController.ObjectMode.bii){
 			ObjectController.objectMode = ObjectController.ObjectMode.ai;
 			aiToggle.isOn = true;
 			aiiToggle.isOn = false;
 			biToggle.isOn = false;
 			biiToggle.isOn = false;
-			ciToggle.isOn = false;
 		}
 		else if (ObjectController.objectMode == ObjectController.ObjectMode.ai){
 			ObjectController.objectMode = ObjectController.ObjectMode.aii;
@@ -138,7 +136,6 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			aiiToggle.isOn = true;
 			biToggle.isOn = false;
 			biiToggle.isOn = false;
-			ciToggle.isOn = false;
 		}
 		else if(ObjectController.objectMode == ObjectController.ObjectMode.aii){
 			ObjectController.objectMode = ObjectController.ObjectMode.bi;
@@ -146,7 +143,6 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			aiiToggle.isOn = false;
 			biToggle.isOn = true;
 			biiToggle.isOn = false;
-			ciToggle.isOn = false;
 		}
 		else if(ObjectController.objectMode == ObjectController.ObjectMode.bi){
 			ObjectController.objectMode = ObjectController.ObjectMode.bii;
@@ -154,15 +150,6 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			aiiToggle.isOn = false;
 			biToggle.isOn = false;
 			biiToggle.isOn = true;
-			ciToggle.isOn = false;
-		}
-		else if(ObjectController.objectMode == ObjectController.ObjectMode.bii){
-			ObjectController.objectMode = ObjectController.ObjectMode.ci;
-			aiToggle.isOn = false;
-			aiiToggle.isOn = false;
-			biToggle.isOn = false;
-			biiToggle.isOn = false;
-			ciToggle.isOn = true;
 		}
 
 		Debug.Log ("DIFFICULTY MODE: " + ObjectController.objectMode);

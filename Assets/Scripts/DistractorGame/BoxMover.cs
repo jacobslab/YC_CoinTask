@@ -34,7 +34,7 @@ public class BoxMover : MonoBehaviour {
 	public void SetMoveType(MoveType newMoveType){
 		myMoveType = newMoveType;
 		
-		Debug.Log ("SET BOX MOVE TYPE: " + myMoveType);
+		//Debug.Log ("SET BOX MOVE TYPE: " + myMoveType);
 	}
 
 	public void Move(Vector3 targetPos){

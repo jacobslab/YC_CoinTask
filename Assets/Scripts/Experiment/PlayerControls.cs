@@ -185,7 +185,7 @@ public class PlayerControls : MonoBehaviour{
 			yield return 0;
 		}
 		
-		Debug.Log ("TOTAL TIME ELAPSED FOR SMOOTH MOVE: " + totalTimeElapsed);
+		//Debug.Log ("TOTAL TIME ELAPSED FOR SMOOTH MOVE: " + totalTimeElapsed);
 
 		transform.rotation = targetRotation;
 		transform.position = targetPosition;
@@ -256,7 +256,7 @@ public class PlayerControls : MonoBehaviour{
 		
 		transform.rotation = desiredRotation;
 		
-		Debug.Log ("TIME ELAPSED WHILE ROTATING: " + tElapsed);
+		//Debug.Log ("TIME ELAPSED WHILE ROTATING: " + tElapsed);
 	}
 
 	//returns the angle between the facing angle of the player and an XZ position

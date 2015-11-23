@@ -22,7 +22,7 @@ public class Config_CoinTask : MonoBehaviour {
 	//doTestSession (not implemented in the panda3d version )
 
 	public static int numTestTrials = 32; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
-	public static Vector3 trialBlockDistribution = new Vector3 (2, 4, 2); //instead of 1,2,1 because there must be TWICE as many trials in order to counterbalance them
+	public static Vector2 trialBlockDistribution = new Vector2 (4, 4); //4 2-item trials, 4 3-item trials
 	
 	//practice settings
 	public static int numTrialsPract = 1;

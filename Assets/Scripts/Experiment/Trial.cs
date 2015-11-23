@@ -34,6 +34,8 @@ public class Trial {
 
 		numSpecialObjects = numSpecial;
 
+
+		/*
 		switch (ObjectController.objectMode) {
 		case ObjectController.ObjectMode.ai:		//2-4 filled, 1&5 empty
 			numSpecialObjects = 3;
@@ -50,7 +52,10 @@ public class Trial {
 		case ObjectController.ObjectMode.ci:	//first four filled w/ 2 or 3 objects, 5 empty
 			numSpecialObjects = 3; //[inclusive, exclusive]
 			break;
-	}
+
+		}
+		*/
+
 
 		Debug.Log("NUM SPECIAL: " + numSpecialObjects);
 
@@ -78,8 +83,26 @@ public class Trial {
 			avatarTowerRot = exp.player.controls.towerPositionTransform2.rotation;
 		}
 
+
 		int numDefaultObjects = 0;
 		numDefaultObjects = Config_CoinTask.numDefaultObjects;
+
+		//TODO: pick 4 or 5 chests.
+		switch (ObjectController.objectMode) {
+		case ObjectController.ObjectMode.ai:		//2-4 filled, 1&5 empty
+			numDefaultObjects = 5;
+			break;
+		case ObjectController.ObjectMode.aii:	//2-4 filled with 2 or 3 objects, 1&5 empty
+			numDefaultObjects = 4;
+			break;
+		case ObjectController.ObjectMode.bi:		//first four filled w/ 3 objects, 5 empty
+			numDefaultObjects = 5;
+			break;
+		case ObjectController.ObjectMode.bii:	//first four filled w/ 2 or 3 objects, 5 empty
+			numDefaultObjects = 4;
+			break;
+			
+		}
 
 		//init default and special locations
 		DefaultObjectLocationsXZ = exp.objectController.GenerateOrderedDefaultObjectPositions (numDefaultObjects, avatarStartPos);

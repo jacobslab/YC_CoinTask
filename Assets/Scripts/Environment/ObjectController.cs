@@ -5,11 +5,10 @@ using System.Collections.Generic;
 public class ObjectController : MonoBehaviour {
 
 	public enum ObjectMode{
-		ai,		//2-4 filled, 1&5 empty
-		aii,	//2-4 filled with 2 or 3 objects, 1&5 empty
-		bi,		//first four filled w/ 3 objects, 5 empty
-		bii,	//first four filled w/ 2 or 3 objects, 5 empty
-		ci		//3/5 filled at random
+		ai,		//2-3 filled, 5th empty (5 chests total)
+		aii,	//2-3 filled, 4th empty (4 chests total)
+		bi,		//2-3 filled, 5 chests total
+		bii,	//2-3 filled, 4 chests total
 	}
 
 	public static ObjectMode objectMode = ObjectMode.ai;
@@ -297,28 +296,25 @@ public class ObjectController : MonoBehaviour {
 		int specialIndex;
 
 		int startIndex = 0;
-		int numDefaultToChooseFrom = 3;
+		int numDefaultToChooseFrom = 3;	
+
 
 		switch (objectMode) {
-		case ObjectMode.ai:		//2-4 filled, 1&5 empty
-			startIndex = 1;
-			numDefaultToChooseFrom = 3; //there are three positions to fill
+		case ObjectMode.ai:		//2-3 filled, 5th empty (5 chests total)
+			startIndex = 0;
+			numDefaultToChooseFrom = 4; //there are three positions to fill
 			break;
-		case ObjectMode.aii:	//2-4 filled with 2 or 3 objects, 1&5 empty
-			startIndex = 1;
+		case ObjectMode.aii:	//2-3 filled, 4th empty (4 chests total)
+			startIndex = 0;
 			numDefaultToChooseFrom = 3; //there are three potential positions to fill
 			break;
-		case ObjectMode.bi:		//first four filled w/ 3 objects, 5 empty
+		case ObjectMode.bi:		//2-3 filled, 5 chests total
 			startIndex = 0;
-			numDefaultToChooseFrom = 4;
+			numDefaultToChooseFrom = 5; //there are five potential positions to fill
 			break;
-		case ObjectMode.bii:	//first four filled w/ 2 or 3 objects, 5 empty
+		case ObjectMode.bii:	//2-3 filled, 4 chests total
 			startIndex = 0;
-			numDefaultToChooseFrom = 4;
-			break;
-		case ObjectMode.ci:	//3 random filled
-			startIndex = 0;
-			numDefaultToChooseFrom = 5;
+			numDefaultToChooseFrom = 4; //there are four potential positions to fill
 			break;
 		}
 
