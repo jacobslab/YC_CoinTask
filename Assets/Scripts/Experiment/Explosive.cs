@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Explosive : MonoBehaviour {
 
+	public bool isBreakable = false;
+
 	//public ParticleSystem FuseParticles;
 	//public EllipsoidParticleEmitter ExplosionParticleEmitter;
 	public ParticleSystem ExplosionParticles;
@@ -10,6 +12,8 @@ public class Explosive : MonoBehaviour {
 	//public AudioSource FuseSound;
 
 	float totalTravelTime = 1.2f;
+	float timeToBreak = 1.1f;
+	float breakTime = 1.0f; //amount of time between particles starting and breakable getting deleted
 	Rigidbody myRigidbody;
 
 	// Use this for initialization
@@ -26,6 +30,8 @@ public class Explosive : MonoBehaviour {
 		/*if (FuseParticles != null) {
 			FuseParticles.Play ();
 		}*/
+
+		bool shouldWaitForBreak = isBreakable;
 
 		if (Config_CoinTask.isJuice) {
 
@@ -52,6 +58,11 @@ public class Explosive : MonoBehaviour {
 
 				transform.position = nextPosition;
 
+				if(currentTime > timeToBreak && isBreakable){
+					isBreakable = false;
+					GetComponent<Breakable>().Break();
+				}
+
 				yield return 0;
 			}
 
@@ -60,6 +71,10 @@ public class Explosive : MonoBehaviour {
 			}*/
 			Instantiate (ExplosionParticles, transform.position + Vector3.up * particleHeightOffset, transform.rotation);
 
+		}
+
+		if (shouldWaitForBreak) {
+			yield return new WaitForSeconds(breakTime);
 		}
 
 		Destroy (gameObject);
