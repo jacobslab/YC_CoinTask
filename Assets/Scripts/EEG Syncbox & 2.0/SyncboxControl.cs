@@ -103,24 +103,44 @@ public class SyncboxControl : MonoBehaviour {
 			ToggleOff ();
 		}
 		if(Input.GetKeyDown(KeyCode.S)){
-			DoSyncPulse();
-			//SetStimPulse();
+			//DoSyncPulse();
+			DoStimPulse();
 		}
 	}
 
 
 	//LOGGING
-	void LogSYNCBOX(long time, bool isOn){
+	void LogTEST(long time, bool isOn){
 		if(ExperimentSettings_CoinTask.isLogging){
 			if(isOn){
-				exp.eegLog.Log(time, exp.eegLog.GetFrameCount(), "SYNCBOX ON");
+				exp.eegLog.Log(time, exp.eegLog.GetFrameCount(), "LED ON");
 			}
 			else{
-				exp.eegLog.Log(time, exp.eegLog.GetFrameCount(), "SYNCBOX OFF");
+				exp.eegLog.Log(time, exp.eegLog.GetFrameCount(), "LED OFF");
 			}
 		}
 	}
 
+	void LogSYNCStarted(long time, float duration){
+		if (ExperimentSettings_CoinTask.isLogging) {
+			exp.eegLog.Log (time, exp.eegLog.GetFrameCount (), "SYNC PULSE STARTED" + Logger_Threading.LogTextSeparator + duration);
+		}
+	}
+
+	void LogSYNCPulseInfo(long time, float timeBeforePulseSeconds){
+		if (ExperimentSettings_CoinTask.isLogging) {
+			exp.eegLog.Log (time, exp.eegLog.GetFrameCount (), "SYNC PULSE INFO" + Logger_Threading.LogTextSeparator + timeBeforePulseSeconds*1000); //log milliseconds
+		}
+	}
+
+	void LogSTIM(long time, float duration){
+		if (ExperimentSettings_CoinTask.isLogging) {
+			exp.eegLog.Log (time, exp.eegLog.GetFrameCount (), "STIM PULSE" + Logger_Threading.LogTextSeparator + duration);
+		}
+	}
+
+
+	//TOGGLING
 
 	void ToggleOn(){
 		if (!isToggledOn) {
@@ -141,12 +161,19 @@ public class SyncboxControl : MonoBehaviour {
 
 	//ex: a 10 ms pulse every second — until the duration is over...
 	void DoSyncPulse(){
-		//Debug.Log(Marshal.PtrToStringAuto (SyncPulse()));
-		Debug.Log (SyncPulse ());
+		float duration = 1.0f; //TODO: implement a duration or something for a series of sync pulses
+		LogSYNCStarted (GameClock.SystemTime_Milliseconds, duration);
+		float timeBeforePulse = SyncPulse ();
+		LogSYNCPulseInfo (GameClock.SystemTime_Milliseconds, timeBeforePulse);
+		Debug.Log (timeBeforePulse);
 	}
 
 	void DoStimPulse(){
-		Debug.Log(Marshal.PtrToStringAuto (StimPulse (1.0f, 10, false)));
+		//TODO: move these to a config file or something.
+		float durationSeconds = 1.0f;
+		float freqHz = 10;
+		LogSTIM (GameClock.SystemTime_Milliseconds, durationSeconds);
+		Debug.Log(Marshal.PtrToStringAuto (StimPulse (durationSeconds, freqHz, false)));
 	}
 
 	IEnumerator TestPulse (){
@@ -154,10 +181,10 @@ public class SyncboxControl : MonoBehaviour {
 		while (true) {
 			if(ShouldPulse){
 				ToggleOn();
-				LogSYNCBOX(GameClock.SystemTime_Milliseconds, true);
+				LogTEST(GameClock.SystemTime_Milliseconds, true);
 				yield return new WaitForSeconds(PulseOnSeconds);
 				ToggleOff();
-				LogSYNCBOX(GameClock.SystemTime_Milliseconds, false);
+				LogTEST(GameClock.SystemTime_Milliseconds, false);
 				yield return new WaitForSeconds(PulseOffSeconds);
 			}
 			else{
