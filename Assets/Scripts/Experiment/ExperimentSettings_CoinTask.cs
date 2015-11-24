@@ -26,12 +26,10 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 	//TOGGLES
 	public static bool isOculus = false;
-	public static bool isJoystickInput = true;
 	public static bool isReplay = false;
 	public static bool isLogging = true; //if not in replay mode, should log things! or can be toggled off in main menu.
 
 	public Toggle oculusToggle; //only exists in main menu -- make sure to null check
-	public Toggle joystickInputToggle; //only exists in main menu -- make sure to null check
 	public Toggle loggingToggle; //only exists in main menu -- make sure to null check
 
 	//EEG, STIM/SYNC TOGGLES
@@ -184,12 +182,6 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			}
 		}
 
-	}
-
-	public void SetJoystickInput(){
-		if (joystickInputToggle) {
-			isJoystickInput = joystickInputToggle.isOn;
-		}
 	}
 
 	public void SetOculus(){
