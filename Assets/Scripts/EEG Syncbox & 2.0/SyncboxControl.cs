@@ -60,7 +60,6 @@ public class SyncboxControl : MonoBehaviour {
 		
 	}
 
-
 	// Use this for initialization
 	void Start () {
 		if(ExperimentSettings_CoinTask.isSyncbox){
