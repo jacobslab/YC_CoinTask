@@ -34,6 +34,8 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float randomJitterMin = 0.0f;
 	public static float randomJitterMax = 0.2f;
 
+	//FEEDBACK SETTINGS:
+	public static float feedbackTimeBetweenObjects = 0.5f;
 
 
 	//DEFAULT OBJECTS

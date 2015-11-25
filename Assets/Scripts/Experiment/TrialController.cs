@@ -506,6 +506,11 @@ public class TrialController : MonoBehaviour {
 			//throw bomb to selected location
 			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't actually want its visuals showing up as we wait
 
+			//wait between objects.
+			if(i != 0){
+				yield return new WaitForSeconds(Config_CoinTask.feedbackTimeBetweenObjects);
+			}
+
 			yield return StartCoroutine( exp.objectController.ThrowExplosive( exp.player.transform.position, chosenPosition ) );
 
 
@@ -566,8 +571,6 @@ public class TrialController : MonoBehaviour {
 			memoryScore += points;
 
 			objectScores.Add(points);
-		
-
 		}
 		
 		//disable original selector
