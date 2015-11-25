@@ -76,10 +76,10 @@ public class TrialController : MonoBehaviour {
 		for (int i = 0; i < numTrials / 2; i++) { //divide by two because we're adding a regular and a counterbalanced trial
 
 			if(i < Config_CoinTask.trialBlockDistribution[0] / 2){ //divide by two because we're adding a regular and a counterbalanced trial
-				numSpecial = 2;
+				numSpecial = Config_CoinTask.numSpecialType1;
 			}
 			else{
-				numSpecial = 3;
+				numSpecial = Config_CoinTask.numSpecialType2;
 			}
 
 			Trial trial = new Trial(numSpecial);
@@ -463,22 +463,6 @@ public class TrialController : MonoBehaviour {
 			if(rememberResponse == true){
 				areYouSureUI.Stop();
 			}
-			//}
-
-			//IF THEY SAID 'NO, I DON'T REMEMBER', DON'T SELECT LOCATION
-			/*else{
-
-				if(i <= exp.objectController.CurrentTrialSpecialObjects.Count - 1){
-					//jitter if it's not the last object to be shown
-					yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
-				}
-
-				doYouRememberUI.Stop();
-				areYouSureResponses.Add(false);
-
-				//add a placeholder vector position here...
-				chosenPositions.Add(Vector3.zero);
-			}*/
 
 		}
 

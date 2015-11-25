@@ -4,18 +4,6 @@ using System.Collections.Generic;
 
 public class ObjectController : MonoBehaviour {
 
-	public enum ObjectMode{
-		ai,		//2-3 filled, 5th empty (5 chests total)
-		aii,	//2-3 filled, 4th empty (4 chests total)
-		bi,		//2-3 filled, 5 chests total
-		bii,	//2-3 filled, 4 chests total
-	}
-
-	public static ObjectMode objectMode = ObjectMode.ai;
-
-
-
-
 
 	//instantiated somewhere (hidden) in the scene at all times. for calculating default object bounds --> requires an active object, and we don't want to instantiate one every time we ask for the bounds.
 	//this object does *not* need to be logged.
@@ -295,34 +283,11 @@ public class ObjectController : MonoBehaviour {
 
 		int specialIndex;
 
-		int startIndex = 0;
-		int numDefaultToChooseFrom = 3;	
-
-
-		switch (objectMode) {
-		case ObjectMode.ai:		//2-3 filled, 5th empty (5 chests total)
-			startIndex = 0;
-			numDefaultToChooseFrom = 4; //there are three positions to fill
-			break;
-		case ObjectMode.aii:	//2-3 filled, 4th empty (4 chests total)
-			startIndex = 0;
-			numDefaultToChooseFrom = 3; //there are three potential positions to fill
-			break;
-		case ObjectMode.bi:		//2-3 filled, 5 chests total
-			startIndex = 0;
-			numDefaultToChooseFrom = 5; //there are five potential positions to fill
-			break;
-		case ObjectMode.bii:	//2-3 filled, 4 chests total
-			startIndex = 0;
-			numDefaultToChooseFrom = 4; //there are four potential positions to fill
-			break;
-		}
-
-
 		List<Vector2> orderedDefaultPositionsCopy = new List<Vector2> ();
+		int numDefault = orderedDefaultObjectLocationsXZ.Count;
 		
 		//copy the list (ONLY THE POSITIONS WE WANT TO FILL) so we can delete from it...
-		for (int i = startIndex; i < numDefaultToChooseFrom + startIndex; i++) {
+		for (int i = 0; i < numDefault; i++) {
 			Vector2 currPosition = orderedDefaultObjectLocationsXZ[i];
 			Vector2 positionCopy = new Vector2(currPosition.x, currPosition.y);
 			orderedDefaultPositionsCopy.Add(positionCopy);
@@ -335,7 +300,7 @@ public class ObjectController : MonoBehaviour {
 
 			//if number of special objects exceeds the number of free spots, we'll get stuck.
 			//...so exit the loop instead.
-			if(i >= numDefaultToChooseFrom){
+			if(i >= numDefault){
 				break;
 			}
 

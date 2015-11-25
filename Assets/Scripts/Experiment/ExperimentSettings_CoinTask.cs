@@ -40,18 +40,6 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public Toggle syncboxToggle;
 
 
-	public Toggle aiToggle;
-	public Toggle aiiToggle;
-	public Toggle biToggle;
-	public Toggle biiToggle;
-
-
-
-	//TODO: will probably want to refactor this later, as practice difficulty etc. are used in Trial.cs and TrialController.cs
-	//difficulty setting system needs to be decided on!
-	public static Trial.DifficultySetting difficultySetting = Trial.DifficultySetting.easy;
-
-
 	public InputField NumTreasureChestsInputField; //Frames Per Second
 
 
@@ -114,45 +102,6 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		return true;
 	}
 
-	//set the number of treasure chests/default objects
-	/*void UpdateNumTreasureChests(){
-		int inputNum = int.Parse (NumTreasureChestsInputField.text);
-		Config_CoinTask.numDefaultObjects = inputNum;
-	}*/
-
-	public void ChangeObjectMode(){
-		if(ObjectController.objectMode == ObjectController.ObjectMode.bii){
-			ObjectController.objectMode = ObjectController.ObjectMode.ai;
-			aiToggle.isOn = true;
-			aiiToggle.isOn = false;
-			biToggle.isOn = false;
-			biiToggle.isOn = false;
-		}
-		else if (ObjectController.objectMode == ObjectController.ObjectMode.ai){
-			ObjectController.objectMode = ObjectController.ObjectMode.aii;
-			aiToggle.isOn = false;
-			aiiToggle.isOn = true;
-			biToggle.isOn = false;
-			biiToggle.isOn = false;
-		}
-		else if(ObjectController.objectMode == ObjectController.ObjectMode.aii){
-			ObjectController.objectMode = ObjectController.ObjectMode.bi;
-			aiToggle.isOn = false;
-			aiiToggle.isOn = false;
-			biToggle.isOn = true;
-			biiToggle.isOn = false;
-		}
-		else if(ObjectController.objectMode == ObjectController.ObjectMode.bi){
-			ObjectController.objectMode = ObjectController.ObjectMode.bii;
-			aiToggle.isOn = false;
-			aiiToggle.isOn = false;
-			biToggle.isOn = false;
-			biiToggle.isOn = true;
-		}
-
-		Debug.Log ("DIFFICULTY MODE: " + ObjectController.objectMode);
-	}
-
 	public void SetReplayTrue(){
 		isReplay = true;
 		isLogging = false;
@@ -161,10 +110,6 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 	//TODO: use this.
 	public static bool isOneByOneReveal = true;
-	public Toggle treasureRevealToggle;
-	public void SetTreasureRevealMode(){
-		isOneByOneReveal = treasureRevealToggle.isOn;
-	}
 
 	public void SetReplayFalse(){
 		isReplay = false;
