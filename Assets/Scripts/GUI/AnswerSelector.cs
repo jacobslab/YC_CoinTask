@@ -9,6 +9,13 @@ public class AnswerSelector : MonoBehaviour {
 
 	public Transform[] positionTransforms; //should be put in order of left to right
 	public GameObject selectorVisuals;
+	public ColorChanger yesExplanationColorChanger;
+	public ColorChanger noExplanationColorChanger;
+	public TextMesh yesExplanationText;
+	public TextMesh noExplanationText;
+
+	float explanationLerpTime = 0.2f;
+	float resetExplanationLerpTime = 0.0f;
 
 	public AudioSource selectionSwitchAudio;
 
@@ -19,6 +26,7 @@ public class AnswerSelector : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		ResetSelectorPosition ();
+		SetExplanationText(resetExplanationLerpTime);
 	}
 	
 	// Update is called once per frame
@@ -107,6 +115,40 @@ public class AnswerSelector : MonoBehaviour {
 
 		if (currPositionIndex != oldPositionIndex) {
 			exp.trialController.LogAnswerSelectorPositionChanged (IsYesPosition ());
+		}
+
+		SetExplanationText(explanationLerpTime);
+	}
+
+	void SetExplanationText(float colorLerpTime){
+		if(IsYesPosition()){
+			SetYesExplanationActive(colorLerpTime);
+		}
+		else if(IsNoPosition()){
+			SetNoExplanationActive(colorLerpTime);
+		}
+	}
+
+	//TODO: combine these next two methods.
+	void SetYesExplanationActive(float colorLerpTime){
+		//TODO: REFACTOR.
+		if(yesExplanationText && noExplanationText && yesExplanationColorChanger && noExplanationColorChanger){
+			yesExplanationColorChanger.StopLerping();
+			noExplanationColorChanger.StopLerping();
+
+			StartCoroutine(yesExplanationColorChanger.LerpChangeColor( new Color(yesExplanationText.color.r, yesExplanationText.color.g, yesExplanationText.color.b, 1.0f), colorLerpTime));
+			StartCoroutine(noExplanationColorChanger.LerpChangeColor( new Color(noExplanationText.color.r, noExplanationText.color.g, noExplanationText.color.b, 0.0f), colorLerpTime));
+		}
+	}
+
+	void SetNoExplanationActive(float colorLerpTime){
+		//TODO: REFACTOR.
+		if(yesExplanationText && noExplanationText && yesExplanationColorChanger && noExplanationColorChanger){
+			yesExplanationColorChanger.StopLerping();
+			noExplanationColorChanger.StopLerping();
+
+			StartCoroutine(yesExplanationColorChanger.LerpChangeColor( new Color(yesExplanationText.color.r, yesExplanationText.color.g, yesExplanationText.color.b, 0.0f), colorLerpTime));
+			StartCoroutine(noExplanationColorChanger.LerpChangeColor( new Color(noExplanationText.color.r, noExplanationText.color.g, noExplanationText.color.b, 1.0f), colorLerpTime));
 		}
 	}
 }
