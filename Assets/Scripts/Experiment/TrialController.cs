@@ -38,7 +38,7 @@ public class TrialController : MonoBehaviour {
 	Trial practiceTrial;
 
 	[HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
-
+	
 	List<List<Trial>> ListOfTrialBlocks;
 
 	void Start(){
@@ -51,16 +51,24 @@ public class TrialController : MonoBehaviour {
 
 		int numTestTrials = Config_CoinTask.numTestTrials;
 
-		int numTrialsPerBlock = (int)(Config_CoinTask.trialBlockDistribution [0] + Config_CoinTask.trialBlockDistribution [1]);
+		//int numTrialsPerBlock = (int)(Config_CoinTask.trialBlockDistribution [0] + Config_CoinTask.trialBlockDistribution [1]);
 
-		if (numTestTrials % numTrialsPerBlock != 0) {
+		if (numTestTrials % Config_CoinTask.numTrialsPerBlock != 0) {
 			Debug.Log("CANNOT EXECUTE THIS TRIAL DISTRIBUTION");
 		}
 
-		int numTrialBlocks = numTestTrials / numTrialsPerBlock;
-		for (int i = 0; i < numTrialBlocks; i++) {
+		//generate all trials, two & three object, including counter-balanced trials
+		List<Trial> ListOfTwoItemTrials = GenerateTrials(Config_CoinTask.numTwoItemTrials, 2);
+		List<Trial> ListOfThreeItemTrials = GenerateTrials(Config_CoinTask.numThreeItemTrials, 3);
+
+		//generate blocks from trials
+		int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
+		GenerateTrialBlocks(ListOfTwoItemTrials, ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
+
+
+		/*for (int i = 0; i < numTrialBlocks; i++) {
 			ListOfTrialBlocks.Add(GenerateTrialBlock());
-		}
+		}*/
 
 		if(Config_CoinTask.doPracticeTrial){
 			practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract);	//2 special objects for practice trial
@@ -68,6 +76,37 @@ public class TrialController : MonoBehaviour {
 
 	}
 
+	List<Trial> GenerateTrials(int numTrialsToGenerate, int numSpecial){
+		List<Trial> trialList = new List<Trial>();
+		for(int i = 0; i < numTrialsToGenerate / 2; i++){ //we're adding trial and a counter trial
+			Trial trial = new Trial(numSpecial);
+			Trial counterTrial = trial.GetCounterSelf();
+			
+			trialList.Add(trial);
+			trialList.Add(counterTrial);
+		}
+
+		return trialList;
+	}
+
+	void GenerateTrialBlocks(List<Trial> twoItemTrials, List<Trial> threeItemTrials, int numBlocks, int numTrialsPerBlock){
+		for(int i = 0; i < numBlocks; i++){
+			List<Trial> newBlock = new List<Trial>();
+			for(int j = 0; j < numTrialsPerBlock / 2; j++){ //half two item, half one item
+				int randomTwoItemIndex = Random.Range (0, twoItemTrials.Count);
+				int randomThreeItemIndex = Random.Range (0, threeItemTrials.Count);
+
+				newBlock.Add(twoItemTrials[randomTwoItemIndex]);
+				newBlock.Add(threeItemTrials[randomThreeItemIndex]);
+
+				twoItemTrials.RemoveAt(randomTwoItemIndex);
+				threeItemTrials.RemoveAt(randomThreeItemIndex);
+			}
+			ListOfTrialBlocks.Add(newBlock);
+		}
+	}
+
+	/*
 	List<Trial> GenerateTrialBlock(){
 		List<Trial> trialBlock = new List<Trial> ();
 		int numTrials = (int)(Config_CoinTask.trialBlockDistribution [0] + Config_CoinTask.trialBlockDistribution [1]);
@@ -91,7 +130,7 @@ public class TrialController : MonoBehaviour {
 
 		return trialBlock;
 
-	}
+	}*/
 
 	Trial PickRandomTrial(List<Trial> trialBlock){
 		if (trialBlock.Count > 0) {

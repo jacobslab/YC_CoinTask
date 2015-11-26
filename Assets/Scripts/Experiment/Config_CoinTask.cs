@@ -21,12 +21,15 @@ public class Config_CoinTask : MonoBehaviour {
 	//test session variables
 	//doTestSession (not implemented in the panda3d version )
 
-	public static int numTestTrials = 32; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
+	public static int numTestTrials = 40; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
 	
 	//practice settings
 	public static int numTrialsPract = 1;
 	public static bool doPracticeTrial = false;
 	public static int numSpecialObjectsPract = 2;
+	public static int numTwoItemTrials = 20;
+	public static int numThreeItemTrials = 20;
+	public static int numTrialsPerBlock = 8;
 
 
 	//SPECIFIC COIN TASK VARIABLES:
@@ -39,9 +42,6 @@ public class Config_CoinTask : MonoBehaviour {
 
 	//OBJECTS
 	public static int numDefaultObjects = 4;
-	public static Vector2 trialBlockDistribution = new Vector2 (4, 4); //4 2-item trials, 4 3-item trials
-	public static int numSpecialType1 = 2;
-	public static int numSpecialType2 = 3;
 
 	public static float selectionDiameter = 20.0f;
 
