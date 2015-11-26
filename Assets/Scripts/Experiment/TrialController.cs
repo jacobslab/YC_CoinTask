@@ -561,7 +561,7 @@ public class TrialController : MonoBehaviour {
 		exp.environmentController.myPositionSelector.EnableSelection(false);
 		
 		//wait for selection button press
-		yield return StartCoroutine (exp.ShowSingleInstruction ("Press the button to continue.", false, true, false, Config_CoinTask.minDefaultInstructionTime));
+		yield return StartCoroutine (exp.ShowSingleInstruction ("Press (X) to continue.", false, true, false, Config_CoinTask.minDefaultInstructionTime));
 
 		int currTrialNum = numRealTrials;
 		if (Config_CoinTask.doPracticeTrial) {

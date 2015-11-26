@@ -141,7 +141,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 			yield return 0; //thus, should wait for the button press before ending the experiment
 		}*/
 		
-		yield return StartCoroutine(ShowSingleInstruction("You have finished your trials! \nPress the button to proceed.", true, true, false, 0.0f));
+		yield return StartCoroutine(ShowSingleInstruction("You have finished your trials! \nPress (X) to proceed.", true, true, false, 0.0f));
 		instructionsController.SetInstructionsColorful(); //want to keep a dark screen before transitioning to the end!
 		instructionsController.DisplayText("...loading end screen...");
 		EndExperiment();
