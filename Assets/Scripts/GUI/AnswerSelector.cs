@@ -26,7 +26,6 @@ public class AnswerSelector : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		ResetSelectorPosition ();
-		SetExplanationText(resetExplanationLerpTime);
 	}
 	
 	// Update is called once per frame
@@ -54,6 +53,8 @@ public class AnswerSelector : MonoBehaviour {
 				StartCoroutine(selectorVisuals.GetComponent<TextMeshColorCycler>().CycleColors());
 			}
 		}
+
+		SetExplanationText(resetExplanationLerpTime);
 	}
 
 	void CheckForInput(){
