@@ -170,10 +170,13 @@ public class BoxSwapper : MonoBehaviour {
 			Experiment_CoinTask.Instance.scoreController.AddBoxSwapperPoints ();
 			StartCoroutine (SpinSelector ());
 			boxSelectorText.text = "+" + ScoreController.BoxSwapperPoints + "!";
+
 		} else {
 			AudioController.PlayAudio(wrongAnswerSound);
 
-			boxSelectorText.text = "+0";
+			boxSelectorText.text = "+" + ScoreController.BoxSwapperNegPoints;
+
+			Experiment_CoinTask.Instance.scoreController.RemoveBoxSwapperPoints ();
 		}
 
 		rewardObject.transform.position = boxes[boxRewardIndex].transform.position;

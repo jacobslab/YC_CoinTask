@@ -12,6 +12,7 @@ public class ScoreRecapUI : MonoBehaviour {
 	public TextMesh[] ObjectNames;
 	public Vector3 ObjectVisualOffset;
 	public TextMesh TimeBonusText;
+	public TextMesh BoxSwapText;
 	public TextMesh TotalTrialScoreText;
 	public TextMesh TrialNumText;
 
@@ -28,6 +29,10 @@ public class ScoreRecapUI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public void SetBoxSwapBonusText(int boxSwapBonus){
+		BoxSwapText.text = FormatScore(boxSwapBonus);
 	}
 	
 	public void Play(int numTrialsComplete, int currentTrialScore, int maxNumTrials, List<int> objectScores, List<GameObject> specialObjects, int timeBonus, float time){
@@ -66,7 +71,7 @@ public class ScoreRecapUI : MonoBehaviour {
 
 			TrialNumText.text = "trial " + (numTrialsComplete) + "/" + maxNumTrials + " completed";
 
-			TotalTrialScoreText.text = FormatScore(trialScore + timeBonus);
+			TotalTrialScoreText.text = FormatScore(trialScore + timeBonus + ScoreController.LastBoxSwapScore);
 
 		}
 

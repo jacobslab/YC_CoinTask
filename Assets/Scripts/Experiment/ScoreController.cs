@@ -45,8 +45,15 @@ public class ScoreController : MonoBehaviour {
 	static int specialObjectPoints = 0;
 	public static int SpecialObjectPoints { get { return specialObjectPoints; } }
 
-	static int boxSwapperPoints = 50;
+	static int boxSwapperPoints = 200;
 	public static int BoxSwapperPoints { get { return boxSwapperPoints; } }
+
+	static int boxSwapperNegPoints = 0;
+	public static int BoxSwapperNegPoints { get { return boxSwapperNegPoints; } }
+
+	static int lastBoxSwapScore = 0;
+	public static int LastBoxSwapScore { get { return lastBoxSwapScore; } }
+
 
 
 
@@ -107,7 +114,7 @@ public class ScoreController : MonoBehaviour {
 					amountLeftToAdd -= (increment*incrementMult);
 					scoreTextScore += (increment*incrementMult);
 				} else {
-					scoreTextScore += absAmountLeftToAdd;
+					scoreTextScore += amountLeftToAdd;
 					amountLeftToAdd = 0;
 				}
 
@@ -123,10 +130,21 @@ public class ScoreController : MonoBehaviour {
 		}
 	}
 
+	//TODO: combine these two methods. add a bool as a parameter.
 	public void AddBoxSwapperPoints(){
+		lastBoxSwapScore = boxSwapperPoints;
 		AddToScore(boxSwapperPoints);
 		scoreLogger.LogBoxSwapperPoints(boxSwapperPoints);
+		Experiment_CoinTask.Instance.trialController.scoreRecapUI.SetBoxSwapBonusText(boxSwapperPoints);
 	}
+
+	public void RemoveBoxSwapperPoints(){
+		lastBoxSwapScore = boxSwapperNegPoints;
+		AddToScore(boxSwapperNegPoints);
+		scoreLogger.LogBoxSwapperPoints(boxSwapperNegPoints);
+		Experiment_CoinTask.Instance.trialController.scoreRecapUI.SetBoxSwapBonusText(boxSwapperNegPoints);
+	}
+
 
 	public void AddSpecialPoints(){
 		AddToScore(specialObjectPoints);
