@@ -304,7 +304,15 @@ public class ObjectController : MonoBehaviour {
 				break;
 			}
 
-			List<int> randomIndices = UsefulFunctions.GetRandomIndexOrder( orderedDefaultPositionsCopy.Count );
+			int numDefaultPositions = orderedDefaultPositionsCopy.Count;
+
+			//If there are only two special objects, DONT allow the last chest to have an object.
+			//This will make the treasure chests less predictable when there are two and three item trials.
+			if(numSpecialObjects == 2){
+				numDefaultPositions -= 1;
+			}
+
+			List<int> randomIndices = UsefulFunctions.GetRandomIndexOrder( numDefaultPositions );
 			int randomIndex = randomIndices[0];
 			Vector2 currPosition = orderedDefaultPositionsCopy[randomIndex];
 

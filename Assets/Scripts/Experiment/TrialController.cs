@@ -66,10 +66,6 @@ public class TrialController : MonoBehaviour {
 		GenerateTrialBlocks(ListOfTwoItemTrials, ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
 
 
-		/*for (int i = 0; i < numTrialBlocks; i++) {
-			ListOfTrialBlocks.Add(GenerateTrialBlock());
-		}*/
-
 		if(Config_CoinTask.doPracticeTrial){
 			practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract);	//2 special objects for practice trial
 		}
@@ -105,32 +101,6 @@ public class TrialController : MonoBehaviour {
 			ListOfTrialBlocks.Add(newBlock);
 		}
 	}
-
-	/*
-	List<Trial> GenerateTrialBlock(){
-		List<Trial> trialBlock = new List<Trial> ();
-		int numTrials = (int)(Config_CoinTask.trialBlockDistribution [0] + Config_CoinTask.trialBlockDistribution [1]);
-
-		int numSpecial = 1;
-		for (int i = 0; i < numTrials / 2; i++) { //divide by two because we're adding a regular and a counterbalanced trial
-
-			if(i < Config_CoinTask.trialBlockDistribution[0] / 2){ //divide by two because we're adding a regular and a counterbalanced trial
-				numSpecial = Config_CoinTask.numSpecialType1;
-			}
-			else{
-				numSpecial = Config_CoinTask.numSpecialType2;
-			}
-
-			Trial trial = new Trial(numSpecial);
-			Trial counterTrial = trial.GetCounterSelf();
-			
-			trialBlock.Add(trial);
-			trialBlock.Add(counterTrial);
-		}
-
-		return trialBlock;
-
-	}*/
 
 	Trial PickRandomTrial(List<Trial> trialBlock){
 		if (trialBlock.Count > 0) {
@@ -303,37 +273,6 @@ public class TrialController : MonoBehaviour {
 			}
 		}
 	}
-	
-	void SetUpNextDefaultObject (int currentIndex){
-		//look through the objects from the current index to the end of the list -- only these haven't been spawned yet
-		int minIndex = currentIndex;
-
-		/*
-		//will put the default object most in the player's field of view at the next position in the default object position list
-		float minAngleBetweenChestAndPlayer = 0;
-		for (int i = currentIndex; i < currentTrial.DefaultObjectLocationsXZ.Count; i++) {
-			Vector2 currChestPositionXZ = currentTrial.DefaultObjectLocationsXZ [i];
-			float angleBetweenChestAndPlayer = exp.player.controls.GetYAngleBetweenFacingDirAndObjectXZ( currChestPositionXZ ) ;
-			angleBetweenChestAndPlayer = Mathf.Abs(angleBetweenChestAndPlayer);
-			if (i == currentIndex){
-				minAngleBetweenChestAndPlayer = angleBetweenChestAndPlayer;
-			}
-			else {
-				if(minAngleBetweenChestAndPlayer > angleBetweenChestAndPlayer){
-					minAngleBetweenChestAndPlayer = angleBetweenChestAndPlayer;
-					minIndex = i;
-				}
-			}
-		}
-
-		//now that we have the index, let's swap the current index's value with the min index's value
-		if (minIndex != currentIndex) {
-			Vector2 tempCurrPosition = currentTrial.DefaultObjectLocationsXZ[currentIndex];
-			currentTrial.DefaultObjectLocationsXZ[currentIndex] = currentTrial.DefaultObjectLocationsXZ[minIndex];
-			currentTrial.DefaultObjectLocationsXZ[minIndex] = tempCurrPosition;
-		}*/
-
-	}
 
 	//INDIVIDUAL TRIALS -- implement for repeating the same thing over and over again
 	//could also create other IEnumerators for other types of trials
@@ -412,7 +351,6 @@ public class TrialController : MonoBehaviour {
 
 
 		//RUN DISTRACTOR GAME
-		//TODO: LOG THIS
 		trialLogger.LogDistractorGameStarted ();
 		yield return StartCoroutine(exp.boxGameController.RunGame());
 
