@@ -123,30 +123,34 @@ public class AnswerSelector : MonoBehaviour {
 
 	void SetExplanationText(float colorLerpTime){
 		if(IsYesPosition()){
-			SetYesExplanationActive(colorLerpTime);
+			StartCoroutine(SetYesExplanationActive(colorLerpTime));
 		}
 		else if(IsNoPosition()){
-			SetNoExplanationActive(colorLerpTime);
+			StartCoroutine(SetNoExplanationActive(colorLerpTime));
 		}
 	}
 
 	//TODO: combine these next two methods.
-	void SetYesExplanationActive(float colorLerpTime){
+	IEnumerator SetYesExplanationActive(float colorLerpTime){
 		//TODO: REFACTOR.
 		if(yesExplanationText && noExplanationText && yesExplanationColorChanger && noExplanationColorChanger){
 			yesExplanationColorChanger.StopLerping();
 			noExplanationColorChanger.StopLerping();
+
+			yield return 0;
 
 			StartCoroutine(yesExplanationColorChanger.LerpChangeColor( new Color(yesExplanationText.color.r, yesExplanationText.color.g, yesExplanationText.color.b, 1.0f), colorLerpTime));
 			StartCoroutine(noExplanationColorChanger.LerpChangeColor( new Color(noExplanationText.color.r, noExplanationText.color.g, noExplanationText.color.b, 0.0f), colorLerpTime));
 		}
 	}
 
-	void SetNoExplanationActive(float colorLerpTime){
+	IEnumerator SetNoExplanationActive(float colorLerpTime){
 		//TODO: REFACTOR.
 		if(yesExplanationText && noExplanationText && yesExplanationColorChanger && noExplanationColorChanger){
 			yesExplanationColorChanger.StopLerping();
 			noExplanationColorChanger.StopLerping();
+
+			yield return 0;
 
 			StartCoroutine(yesExplanationColorChanger.LerpChangeColor( new Color(yesExplanationText.color.r, yesExplanationText.color.g, yesExplanationText.color.b, 0.0f), colorLerpTime));
 			StartCoroutine(noExplanationColorChanger.LerpChangeColor( new Color(noExplanationText.color.r, noExplanationText.color.g, noExplanationText.color.b, 1.0f), colorLerpTime));
