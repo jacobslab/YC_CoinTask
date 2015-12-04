@@ -135,14 +135,14 @@ public class ScoreController : MonoBehaviour {
 		lastBoxSwapScore = boxSwapperPoints;
 		AddToScore(boxSwapperPoints);
 		scoreLogger.LogBoxSwapperPoints(boxSwapperPoints);
-		Experiment_CoinTask.Instance.trialController.scoreRecapUI.SetBoxSwapBonusText(boxSwapperPoints);
+		Experiment_CoinTask.Instance.uiController.scoreRecapUI.SetBoxSwapBonusText(boxSwapperPoints);
 	}
 
 	public void RemoveBoxSwapperPoints(){
 		lastBoxSwapScore = boxSwapperNegPoints;
 		AddToScore(boxSwapperNegPoints);
 		scoreLogger.LogBoxSwapperPoints(boxSwapperNegPoints);
-		Experiment_CoinTask.Instance.trialController.scoreRecapUI.SetBoxSwapBonusText(boxSwapperNegPoints);
+		Experiment_CoinTask.Instance.uiController.scoreRecapUI.SetBoxSwapBonusText(boxSwapperNegPoints);
 	}
 
 

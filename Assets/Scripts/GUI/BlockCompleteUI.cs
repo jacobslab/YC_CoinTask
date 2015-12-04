@@ -24,8 +24,10 @@ public class BlockCompleteUI : MonoBehaviour {
 	public void Play(int currentBlockIndex, int currentBlockScore, int maxNumBlocks){
 		Enable (true);
 
-		funParticles.Stop ();
-		funParticles.Play ();
+		if (funParticles != null) {
+			funParticles.Stop ();
+			funParticles.Play ();
+		}
 
 		if (currentBlockIndex < BlockScores.Length) {
 			BlockScores[currentBlockIndex].text = currentBlockScore.ToString();

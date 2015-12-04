@@ -15,15 +15,6 @@ public class TrialController : MonoBehaviour {
 	//TIMER
 	public SimpleTimer trialTimer;
 
-	//UI
-	public QuestionUI doYouRememberUI;
-	public QuestionUI areYouSureUI;
-	public BlockCompleteUI blockCompletedUI;
-	public ScoreRecapUI scoreRecapUI;
-	public CanvasGroup PauseUI;
-	public CanvasGroup ConnectionUI;
-	public GoText goText;
-
 	TrialLogTrack trialLogger;
 
 	bool isPracticeTrial = false;
@@ -146,14 +137,14 @@ public class TrialController : MonoBehaviour {
 
 		if (isPaused) {
 			//exp.player.controls.Pause(true);
-			PauseUI.alpha = 1.0f;
+			exp.uiController.PauseUI.alpha = 1.0f;
 			Time.timeScale = 0.0f;
 		} 
 		else {
 			Time.timeScale = 1.0f;
 			//exp.player.controls.Pause(false);
 			//exp.player.controls.ShouldLockControls = false;
-			PauseUI.alpha = 0.0f;
+			exp.uiController.PauseUI.alpha = 0.0f;
 		}
 	}
 
@@ -167,11 +158,12 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine( WaitForEEGHardwareConnection() );
 			}
 			else{
-				ConnectionUI.alpha = 0.0f;
+				exp.uiController.ConnectionUI.alpha = 0.0f;
 			}
 
 			//show instructions for exploring, wait for the action button
 			trialLogger.LogInstructionEvent();
+			yield return StartCoroutine(exp.uiController.pirateController.PlayWelcomingPirate());
 			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 
@@ -219,10 +211,11 @@ public class TrialController : MonoBehaviour {
 
 				//FINISHED A TRIAL BLOCK, SHOW UI
 				trialLogger.LogInstructionEvent();
-				blockCompletedUI.Play(i, exp.scoreController.score, ListOfTrialBlocks.Count);
+				StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
+				exp.uiController.blockCompletedUI.Play(i, exp.scoreController.score, ListOfTrialBlocks.Count);
 				yield return StartCoroutine(exp.WaitForActionButton());
 
-				blockCompletedUI.Stop();
+				exp.uiController.blockCompletedUI.Stop();
 
 				exp.scoreController.Reset();
 
@@ -237,7 +230,7 @@ public class TrialController : MonoBehaviour {
 	IEnumerator WaitForEEGHardwareConnection(){
 		isConnectingToHardware = true;
 
-		ConnectionUI.alpha = 1.0f;
+		exp.uiController.ConnectionUI.alpha = 1.0f;
 		if(ExperimentSettings_CoinTask.isSystem2){
 			while(!TCPServer.Instance.isConnected || !TCPServer.Instance.canStartGame){
 				Debug.Log("Waiting for system 2 connection...");
@@ -250,7 +243,7 @@ public class TrialController : MonoBehaviour {
 				yield return 0;
 			}
 		}
-		ConnectionUI.alpha = 0.0f;
+		exp.uiController.ConnectionUI.alpha = 0.0f;
 		isConnectingToHardware = false;
 	}
 
@@ -318,7 +311,7 @@ public class TrialController : MonoBehaviour {
 		//START NAVIGATION --> TODO: make this its own function. or a delegate. ...clean it up.
 		trialLogger.LogTrialNavigationStarted ();
 
-		goText.Play ();
+		exp.uiController.goText.Play ();
 
 		//start a game timer
 		trialTimer.ResetTimer ();
@@ -385,10 +378,10 @@ public class TrialController : MonoBehaviour {
 			specialObjUICopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI");
 
 			trialLogger.LogInstructionEvent();
-			yield return StartCoroutine( doYouRememberUI.Play(specialObjUICopy) );
+			yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy) );
 
 			yield return StartCoroutine (exp.WaitForActionButton());
-			bool rememberResponse = doYouRememberUI.myAnswerSelector.IsYesPosition();
+			bool rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.IsYesPosition();
 			rememberResponses.Add(rememberResponse);
 			trialLogger.LogRememberResponse(rememberResponse);
 
@@ -398,7 +391,7 @@ public class TrialController : MonoBehaviour {
 			exp.environmentController.myPositionSelector.Reset();
 			exp.environmentController.myPositionSelector.EnableSelection (true);
 
-			doYouRememberUI.Stop();
+			exp.uiController.doYouRememberUI.Stop();
 
 			//show single selection instruction and wait for selection button press
 			string selectObjectText = "Select the location of the " + specialItemName + " (X).";
@@ -420,10 +413,10 @@ public class TrialController : MonoBehaviour {
 			trialLogger.LogInstructionEvent();
 
 			if(rememberResponse == true){
-				yield return StartCoroutine( areYouSureUI.Play() );
+				yield return StartCoroutine( exp.uiController.areYouSureUI.Play() );
 
 				yield return StartCoroutine (exp.WaitForActionButton());
-				bool areYouSureResponse = areYouSureUI.myAnswerSelector.IsYesPosition();
+				bool areYouSureResponse = exp.uiController.areYouSureUI.myAnswerSelector.IsYesPosition();
 				trialLogger.LogAreYouSureResponse(areYouSureResponse);
 				areYouSureResponses.Add(areYouSureResponse);
 			}
@@ -438,7 +431,7 @@ public class TrialController : MonoBehaviour {
 			}
 
 			if(rememberResponse == true){
-				areYouSureUI.Stop();
+				exp.uiController.areYouSureUI.Stop();
 			}
 
 		}
@@ -546,9 +539,9 @@ public class TrialController : MonoBehaviour {
 		}
 
 		trialLogger.LogInstructionEvent();
-		scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
+		exp.uiController.scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
 		yield return StartCoroutine (exp.WaitForActionButton ());
-		scoreRecapUI.Stop ();
+		exp.uiController.scoreRecapUI.Stop ();
 
 
 		//delete all indicators & special objects
@@ -577,10 +570,10 @@ public class TrialController : MonoBehaviour {
 	}
 
 	public void LogAnswerSelectorPositionChanged(bool isYesPosition){
-		if (doYouRememberUI.isPlaying) {
+		if (exp.uiController.doYouRememberUI.isPlaying) {
 			trialLogger.LogAnswerPositionMoved( isYesPosition, true );
 		} 
-		else if (areYouSureUI.isPlaying) {
+		else if (exp.uiController.areYouSureUI.isPlaying) {
 			trialLogger.LogAnswerPositionMoved( isYesPosition, false );
 		}
 	}

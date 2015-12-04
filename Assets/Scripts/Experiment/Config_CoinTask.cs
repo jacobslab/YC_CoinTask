@@ -66,13 +66,10 @@ public class Config_CoinTask : MonoBehaviour {
 			"\n\nIf you are more than 50% sure of an object's location, you should say you remember." + 
 			"\n\nIf you say you are very sure, you should be at least 75% accurate." + 
 			"\n\nPress (X) to begin!";
-
-
-	public static float minObjselectionUITime = 0.5f;
+	
 	public static float minInitialInstructionsTime = 0.0f; //TODO: change back to 5.0f
 	public static float minDefaultInstructionTime = 0.0f; //time each learning trial instruction should be displayed for
 	public static float minScoreMapTime = 0.0f;
-
 
 	//tilt variables
 	public static bool isAvatarTilting = true;

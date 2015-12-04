@@ -27,12 +27,16 @@ public class InstructionsController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		TurnOffInstructions ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public void SetInstructionsBlank(){
+		SetText ("");
 	}
 
 	public void TurnOffInstructions(){
@@ -47,10 +51,6 @@ public class InstructionsController : MonoBehaviour {
 		else{
 			text.text = newText;
 		}
-	}
-
-	public void SetInstructionsBlank(){
-		SetText ("");
 	}
 
 	public void SetInstructionsColorful(){
