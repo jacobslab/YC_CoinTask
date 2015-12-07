@@ -34,14 +34,20 @@ public class ColorChanger : MonoBehaviour {
 			origColor = renderers [0].material.color;
 		}
 
-		while(currentTime < 1.0f && shouldBeLerping){
-			currentTime += Time.deltaTime*timeMult;
-			for (int i = 0; i < renderers.Length; i++) {
-				renderers[i].material.color = Color.Lerp(origColor, newColor, currentTime);
+		if (time > 0) {
+			while (currentTime < 1.0f && shouldBeLerping) {
+				currentTime += Time.deltaTime * timeMult;
+				for (int i = 0; i < renderers.Length; i++) {
+					renderers [i].material.color = Color.Lerp (origColor, newColor, currentTime);
+				}
+				if (isTextMesh) {
+					GetComponent<TextMesh> ().color = Color.Lerp (origColor, newColor, currentTime);
+				}
+				yield return 0;
 			}
-			if(isTextMesh){
-				GetComponent<TextMesh>().color = Color.Lerp(origColor, newColor, currentTime);
-			}
+		} 
+		else {
+			ChangeColor(newColor);
 			yield return 0;
 		}
 	}

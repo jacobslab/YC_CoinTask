@@ -23,6 +23,10 @@ public class AnswerSelector : MonoBehaviour {
 	int yesIndex = 0;
 	int noIndex = 1;
 
+	void Awake(){
+
+	}
+
 	// Use this for initialization
 	void Start () {
 		ResetSelectorPosition ();
@@ -53,8 +57,14 @@ public class AnswerSelector : MonoBehaviour {
 				StartCoroutine(selectorVisuals.GetComponent<TextMeshColorCycler>().CycleColors());
 			}
 		}
+		ResetExplanationText ();
+	}
 
-		SetExplanationText(resetExplanationLerpTime);
+	void ResetExplanationText(){
+		if (yesExplanationText && noExplanationText) {
+			yesExplanationColorChanger.ChangeColor (new Color (yesExplanationText.color.r, yesExplanationText.color.g, yesExplanationText.color.b, 1.0f)); 
+			noExplanationColorChanger.ChangeColor (new Color (noExplanationText.color.r, noExplanationText.color.g, noExplanationText.color.b, 0.0f)); 
+		}
 	}
 
 	void CheckForInput(){

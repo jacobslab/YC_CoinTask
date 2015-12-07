@@ -224,6 +224,9 @@ public class TrialController : MonoBehaviour {
 
 			yield return 0;
 		}
+
+		StartCoroutine(exp.uiController.pirateController.PlayEndingPirate ());
+		yield return StartCoroutine(exp.ShowSingleInstruction("You have finished your trials! \nPress (X) to proceed.", true, true, false, 0.0f));
 		
 	}
 
@@ -302,6 +305,8 @@ public class TrialController : MonoBehaviour {
 
 		exp.player.controls.ShouldLockControls = true;
 
+		//reset game timer
+		trialTimer.ResetTimer ();
 
 		if(numRealTrials > 1 || trial.avatarStartPos != exp.player.controls.startPositionTransform1.position){ //note: if numRealTrials > 1, not a practice trial.
 			trialLogger.LogInstructionEvent ();
@@ -314,7 +319,6 @@ public class TrialController : MonoBehaviour {
 		exp.uiController.goText.Play ();
 
 		//start a game timer
-		trialTimer.ResetTimer ();
 		trialTimer.StartTimer ();
 
 		//unlock avatar controls
@@ -452,7 +456,9 @@ public class TrialController : MonoBehaviour {
 		List<GameObject> specialObjectListRecallOrder = new List<GameObject>();
 
 		List<int> objectScores = new List<int> ();
-		
+
+		float indicatorHeightIncrement = 0.3f;
+
 		for (int i = 0; i < specialObjectOrder.Count; i++){
 
 			Vector3 chosenPosition = chosenPositions[i];
@@ -484,7 +490,8 @@ public class TrialController : MonoBehaviour {
 			//create an indicator for each chosen position
 			//spawn the indicator at the height of the original indicator
 			exp.environmentController.myPositionSelector.EnableSelection (true); //turn on selector for spawning indicator
-			Vector3 chosenIndicatorPosition = new Vector3(chosenPosition.x, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.position.y, chosenPosition.z);
+			float chosenIndicatorHeight = exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.position.y;
+			Vector3 chosenIndicatorPosition = new Vector3(chosenPosition.x, chosenIndicatorHeight, chosenPosition.z);
 			GameObject chosenPositionIndicator = Instantiate (exp.environmentController.myPositionSelector.PositionSelectorVisuals, chosenIndicatorPosition, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.rotation) as GameObject;
 
 			chosenPositionIndicator.GetComponent<SpawnableObject>().SetNameID(i);
