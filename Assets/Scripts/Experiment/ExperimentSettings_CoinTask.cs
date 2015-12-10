@@ -42,12 +42,6 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 	public InputField NumTreasureChestsInputField; //Frames Per Second
 
-
-	public Text endCongratsText;
-	public Text endScoreText;
-	public Text endSessionText;
-
-
 	public GameObject nonPilotOptions;
 	public bool isPilot { get { return GetIsPilot (); } }
 
@@ -76,16 +70,6 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		SetOculus();
 		SetSystem2();
 		SetSyncBox();
-		if(Application.loadedLevelName == "EndMenu"){
-			if(currentSubject != null){
-				endCongratsText.text = "Congratulations " + currentSubject.name + "!";
-				endScoreText.text = currentSubject.score.ToString();
-				endSessionText.text = currentSubject.trials.ToString();
-			}
-			else{
-				Debug.Log("Current subject is null!");
-			}
-		}
 	}
 	
 	// Update is called once per frame
