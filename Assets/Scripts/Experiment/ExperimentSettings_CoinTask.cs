@@ -46,7 +46,6 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public bool isPilot { get { return GetIsPilot (); } }
 
 
-
 	//SINGLETON
 	private static ExperimentSettings_CoinTask _instance;
 	
@@ -64,6 +63,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			return;
 		}
 		_instance = this;
+
 	}
 	// Use this for initialization
 	void Start () {

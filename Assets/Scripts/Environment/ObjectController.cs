@@ -296,6 +296,26 @@ public class ObjectController : MonoBehaviour {
 
 
 
+
+
+
+		int numDefaultPositions = orderedDefaultPositionsCopy.Count;
+		
+		//If there are only two special objects, DONT allow the last chest to have an object.
+		//This will make the treasure chests less predictable when there are two and three item trials.
+		if(numSpecialObjects == 2){
+			numDefaultPositions -= 1;
+		}
+		
+		List<int> randomIndices = UsefulFunctions.GetRandomIndexOrder( numDefaultPositions );
+		//DON'T allow 1,1,1,0 special object arrangement. For predictability.
+		if( numSpecialObjects == 3){
+			while(randomIndices[randomIndices.Count - 1] == 3){ //if the last random index (which will be the empty chest) is the last chest, try again. 
+				randomIndices = UsefulFunctions.GetRandomIndexOrder( numDefaultPositions );
+			}
+		}
+		
+		
 		for (int i = 0; i < numSpecialObjects; i++) {
 
 			//if number of special objects exceeds the number of free spots, we'll get stuck.
@@ -304,7 +324,7 @@ public class ObjectController : MonoBehaviour {
 				break;
 			}
 
-			int numDefaultPositions = orderedDefaultPositionsCopy.Count;
+			/*int numDefaultPositions = orderedDefaultPositionsCopy.Count;
 
 			//If there are only two special objects, DONT allow the last chest to have an object.
 			//This will make the treasure chests less predictable when there are two and three item trials.
@@ -313,10 +333,19 @@ public class ObjectController : MonoBehaviour {
 			}
 
 			List<int> randomIndices = UsefulFunctions.GetRandomIndexOrder( numDefaultPositions );
-			int randomIndex = randomIndices[0];
+			//DON'T allow 1,1,1,0 special object arrangement. For predictability.
+			if( numSpecialObjects == 3){
+				while(randomIndices[randomIndices.Count - 1] == 3){ //if the last random index (which will be the empty chest) is the last chest, try again. 
+					randomIndices = UsefulFunctions.GetRandomIndexOrder( numDefaultPositions );
+				}
+			}
+*/
+			int randomIndex = randomIndices[i];
 			Vector2 currPosition = orderedDefaultPositionsCopy[randomIndex];
 
-			if(i != 0){
+
+
+			/*if(i != 0){
 				for(int j = 1; j < randomIndices.Count; j++){
 					randomIndex = randomIndices[j];
 					currPosition = orderedDefaultPositionsCopy[randomIndex];
@@ -340,7 +369,7 @@ public class ObjectController : MonoBehaviour {
 					}
 				}
 
-			}
+			}*/
 
 
 
@@ -348,7 +377,7 @@ public class ObjectController : MonoBehaviour {
 			
 			//remove it from the parameter list so that no two special objects are in the same spot.
 			//this will not change the original list, as the list was passed by copy.
-			orderedDefaultPositionsCopy.RemoveAt(randomIndex);
+			//orderedDefaultPositionsCopy.RemoveAt(randomIndex);
 
 		}
 		
