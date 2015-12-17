@@ -68,7 +68,13 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		}
 		_instance = this;
 
-		defaultLoggingPathDisplay.text = defaultLoggingPath;
+		if(Directory.Exists(defaultLoggingPath)){
+			defaultLoggingPathDisplay.text = defaultLoggingPath;
+		}
+		else{
+			defaultLoggingPath = "TextFiles/";
+			defaultLoggingPathDisplay.text = defaultLoggingPath;
+		}
 
 	}
 	// Use this for initialization
