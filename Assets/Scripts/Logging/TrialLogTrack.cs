@@ -6,10 +6,9 @@ public class TrialLogTrack : LogTrack {
 
 	bool firstLog = false;
 
-	//log on late update so that everything for that frame gets set first
-	void LateUpdate () {
-		//just log the environment info on the first frame
+	void Update(){
 		if (ExperimentSettings_CoinTask.isLogging && !firstLog) {
+			LogVersion();
 			LogEnvironmentDimensions ();
 			firstLog = true;
 		}
@@ -20,6 +19,11 @@ public class TrialLogTrack : LogTrack {
 		if (ExperimentSettings_CoinTask.isLogging) {
 			LogTrial (trialNumber, numTreasureChests, numSpecialObjects, isSequential);
 		}
+	}
+
+	void LogVersion(){
+		Debug.Log ("LOGGED VERSION");
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Experiment Info" + separator + "VERSION" + separator + Config_CoinTask.BuildVersion.ToString());
 	}
 
 	//LOGGED ON THE START OF THE TRIAL.

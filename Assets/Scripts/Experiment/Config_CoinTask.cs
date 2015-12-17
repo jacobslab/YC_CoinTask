@@ -3,6 +3,18 @@ using System.Collections;
 
 public class Config_CoinTask : MonoBehaviour {
 
+	public enum Version
+	{
+		Pilot_001,
+		Pilot_002,
+		ECOG_001,
+		FMRI_001
+	}
+
+	public static Version BuildVersion = Version.Pilot_002;
+
+
+
 	//JUICE
 	public static bool isJuice = true;
 	public static bool isSoundtrack = false; //WON'T PLAY IF ISJUICE IS FALSE.
