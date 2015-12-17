@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.IO;
 
 public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main menu AND experiment
 
@@ -15,7 +16,6 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		get{ return _currentSubject; } 
 		set{ 
 			_currentSubject = value;
-			//fileName = "TextFiles/" + _currentSubject.name + "Log.txt";
 		}
 	}
 
@@ -46,6 +46,10 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public bool isPilot { get { return GetIsPilot (); } }
 
 
+	public static string defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/TH1/";
+	public Text defaultLoggingPathDisplay;
+	public InputField loggingPathInputField;
+
 	//SINGLETON
 	private static ExperimentSettings_CoinTask _instance;
 	
@@ -63,6 +67,8 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			return;
 		}
 		_instance = this;
+
+		defaultLoggingPathDisplay.text = defaultLoggingPath;
 
 	}
 	// Use this for initialization
@@ -84,6 +90,14 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			return false;
 		}
 		return true;
+	}
+
+	public void ChangeLoggingPath(){
+		if (Directory.Exists (loggingPathInputField.text)) {
+			defaultLoggingPath = loggingPathInputField.text;
+		}
+
+		defaultLoggingPathDisplay.text = defaultLoggingPath;
 	}
 
 	public void SetReplayTrue(){

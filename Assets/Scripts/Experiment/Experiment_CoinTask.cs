@@ -89,7 +89,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	
 	//TODO: move to logger_threading perhaps? *shrug*
 	void InitLogging(){
-		string subjectDirectory = "TextFiles/" + ExperimentSettings_CoinTask.currentSubject.name + "/";
+		string subjectDirectory = ExperimentSettings_CoinTask.defaultLoggingPath + ExperimentSettings_CoinTask.currentSubject.name + "/";
 		string sessionDirectory = subjectDirectory + "session000" + "/";;
 		
 		int sessionID = 0;
