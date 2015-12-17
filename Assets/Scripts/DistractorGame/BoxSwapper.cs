@@ -205,6 +205,7 @@ public class BoxSwapper : MonoBehaviour {
 
 	public IEnumerator SwapBoxes(int numTimes){
 		rewardObject.transform.parent = boxes[boxRewardIndex].transform;
+		rewardObject.transform.position = rewardObject.transform.parent.position;
 
 		for(int swapNum = 0; swapNum < numTimes; swapNum++){
 			int stationaryBoxIndex = -1; //a bool to make sure no more than one box stays stationary at one time.
@@ -274,7 +275,7 @@ public class BoxSwapper : MonoBehaviour {
 			yield return new WaitForSeconds(Config_CoinTask.boxMoveTime);
 			yield return 0; //wait an extra frame to make sure the boxes get into the correct positions
 		}
-
+		rewardObject.transform.position = rewardObject.transform.parent.position;
 		rewardObject.transform.parent = rewardObject.transform.parent.parent; //set it equal to the box's parent.
 	}
 
