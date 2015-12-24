@@ -10,7 +10,6 @@ public class DefaultItem : MonoBehaviour {
 	public Transform top;
 	public Transform specialObjectSpawnPoint;
 	
-	
 	float angleToOpen = 150.0f; //degrees
 
 
@@ -20,7 +19,7 @@ public class DefaultItem : MonoBehaviour {
 	public AudioSource defaultCollisionSound;
 	public AudioSource specialCollisionSound;
 
-	bool isOpen = false;
+	bool isExecutingPlayerCollision = false;
 	bool shouldDie = false;
 
 	public TextMesh specialObjectText;
@@ -38,8 +37,8 @@ public class DefaultItem : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision){
-		if (collision.gameObject.tag == "Player" && (tag == "DefaultObject" || tag == "DefaultSpecialObject") && !isOpen ) {
-
+		if (collision.gameObject.tag == "Player" && (tag == "DefaultObject" || tag == "DefaultSpecialObject") && !isExecutingPlayerCollision ) {
+			isExecutingPlayerCollision = true;
 			StartCoroutine(RunCollision());
 
 		}
@@ -119,7 +118,6 @@ public class DefaultItem : MonoBehaviour {
 
 	//open. most likely a treasure chest. could also be something like a giftbox.
 	public IEnumerator Open(GameObject opener){
-		isOpen = true;
 
 		float distOpenerToPivotA = (pivotA.position - opener.transform.position).magnitude;
 		float distOpenerToPivotB = (pivotB.position - opener.transform.position).magnitude;
