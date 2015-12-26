@@ -55,9 +55,9 @@ public class Config_CoinTask : MonoBehaviour {
 	//OBJECTS
 	public static int numDefaultObjects = 4;
 
-	public static float selectionDiameter = 20.0f;
+	public static float selectionDiameter = 26.0f;
 
-	public static float objectToWallBuffer = 10.0f; //half of the selection diameter.
+	public static float objectToWallBuffer = 13.0f; //half of the selection diameter.
 	public static float objectToObjectBuffer { get { return CalculateObjectToObjectBuffer(); } } //calculated base on min time to drive between objects!
 	public static float specialObjectBufferMult = 0.0f; //the distance the object controller will try to keep between special objects. should be a multiple of objectToObjectBuffer
 
