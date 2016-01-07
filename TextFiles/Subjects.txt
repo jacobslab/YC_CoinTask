@@ -4,5 +4,5 @@ Scott Novich,score 0,block 0
 Me,score -250,block 0
 c,score 0,block 0
 C,score 1120,block 0
-Corey,score 180,block 1
+Corey,score -340,block 1
 Bruce,score -2120,block 0
