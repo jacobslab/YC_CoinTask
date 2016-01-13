@@ -39,7 +39,19 @@ public class GameClock : MonoBehaviour {
 		
 		//long seconds = tick / TimeSpan.TicksPerSecond;
 		long milliseconds = ticks / TimeSpan.TicksPerMillisecond;
-		
+
+
+
+
+
+		DateTime e = DateTime.UtcNow;//new DateTime(2011, 12, 31, 0, 0, 0, DateTimeKind.Utc);
+		DateTime s = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+		TimeSpan t = (e - s);
+		milliseconds = (long)t.TotalMilliseconds;
+		//var x = t.TotalMilliseconds.ToString();
+	///	=> 1325289600000
+
+		//Debug.Log ("DMILL: " + dmilliseconds);
 		return milliseconds;
 	}
 	
