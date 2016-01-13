@@ -5,14 +5,16 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public enum Version
 	{
-		Pilot_001,
-		Pilot_002,
-		ECOG_001,
-		FMRI_001
+		TH1,
+		TH2,
+		TH3,
+		Pilot_001,	
+		Pilot_002,		
+		FMRI_001	
 	}
 
-	public static Version BuildVersion = Version.Pilot_002;
-
+	public static Version BuildVersion = Version.TH2;
+	public static float VersionNumber = 2.02f;
 
 
 	//JUICE

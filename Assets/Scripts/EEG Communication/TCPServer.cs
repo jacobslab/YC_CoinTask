@@ -14,6 +14,8 @@ using System.Diagnostics;
 
 using System.Threading;
 
+using LitJson;
+
 public class TCPServer : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
@@ -24,7 +26,7 @@ public class TCPServer : MonoBehaviour {
 
 
 
-	int QUEUE_SIZE = 20;  //Blocks if the queue is full
+	//int QUEUE_SIZE = 20;  //Blocks if the queue is full
 
 
 	//SINGLETON
@@ -52,7 +54,6 @@ public class TCPServer : MonoBehaviour {
 			RunServer ();
 
 			StartCoroutine(AlignClocks());
-			StartCoroutine(SendPhase());
 		}
 	}
 
@@ -61,15 +62,15 @@ public class TCPServer : MonoBehaviour {
 		yield return new WaitForSeconds(TCP_Config.numSecondsBeforeAlignment);
 		while(true){
 			myServer.RequestClockAlignment();
-			yield return new WaitForSeconds(10.0f);
+			yield return new WaitForSeconds(TCP_Config.ClockAlignInterval);
 		}
 	}
 
 	//test encoding phase, every x seconds
-	IEnumerator SendPhase(){
+	IEnumerator SendPhase(bool value){
 		yield return new WaitForSeconds(TCP_Config.numSecondsBeforeAlignment);
 		while(true){
-			myServer.SendEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.PHASE, "ENCODING", "");
+			myServer.SendStateEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.STATE, "ENCODING", value);
 			yield return new WaitForSeconds(10.0f);
 		}
 	}
@@ -89,6 +90,10 @@ public class TCPServer : MonoBehaviour {
 			myServer.canStartGame = true;
 		}
 		*/
+
+		if (Input.GetKeyDown (KeyCode.A)) {
+			myServer.DecodeJSONMessage("");
+		}
 	}
 
 	public void Log(long time, TCP_Config.EventType eventType){
@@ -209,17 +214,27 @@ public class ThreadedServer : ThreadedJob{
 		//connect
 		OpenConnections();
 
+		isServerConnected = true;
+
+		//define event
+		SendDefineEvent (GameClock.SystemTime_Milliseconds, TCP_Config.EventType.DEFINE, TCP_Config.GetDefineList ());
+
 		//send name of this experiment
-		SendEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.EXPNAME, TCP_Config.ExpName, "");
+		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.EXPNAME, TCP_Config.ExpName);
+
+		//send exp version
+		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.VERSION, Config_CoinTask.VersionNumber);
 
 		//send subject ID
-		SendEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SUBJECTID, TCP_Config.SubjectName, "");
+		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SUBJECTID, TCP_Config.SubjectName);
 
 		//align clocks //TODO: SHOULD THIS BE FINISHED BEFORE WE START SENDING HEARTBEATS? -- NO
 		RequestClockAlignment();
 
 		//start heartbeat
 		StartHeartbeatPoll();
+
+		//wait for "STARTED" message to be received
 	}
 
 	void OpenConnections(){
@@ -282,8 +297,8 @@ public class ThreadedServer : ThreadedJob{
 
 		isSynced = false;
 
-		SendEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.ALIGNCLOCK, "", "");
-		//SendEvent(0, TCP_Config.EventType.ALIGNCLOCK, "0", ""); //JUST FOR DEBUGGING
+		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.ALIGNCLOCK, "");
+		//SendSimpleJSONEvent(0, TCP_Config.EventType.ALIGNCLOCK, "0", ""); //JUST FOR DEBUGGING
 		UnityEngine.Debug.Log("REQUESTING ALIGN CLOCK");
         
 		clockAlignmentStopwatch.Start();
@@ -345,7 +360,7 @@ public class ThreadedServer : ThreadedJob{
 		messagesToSend += ("ECHO: " + message);
 	}
 
-	public void SendEvent(long systemTime, TCP_Config.EventType eventType, string eventData, string auxData){
+	/*public void SendEvent(long systemTime, TCP_Config.EventType eventType, string eventData, string auxData){
 		//Format the message
 		//(from the python code:) TODO: Change to JSONRPC and add checksum
 		string t0 = GameClock.FormatTime(systemTime);
@@ -373,19 +388,84 @@ public class ThreadedServer : ThreadedJob{
 		messagesToSend += message;
 
 		TCPServer.Instance.Log(systemTime, eventType);
+	}*/
+
+	public string SendSimpleJSONEvent(long systemTime, TCP_Config.EventType eventType, string eventData){
+		
+		string jsonEventString = JsonMessageController.FormatSimpleJSONEvent (systemTime, eventType.ToString(), eventData);
+		
+		UnityEngine.Debug.Log (jsonEventString);
+		
+		messagesToSend += jsonEventString;
+		
+		TCPServer.Instance.Log(systemTime, eventType);
+		
+		return jsonEventString;
+	}
+
+	public string SendSimpleJSONEvent(long systemTime, TCP_Config.EventType eventType, float eventData){
+		
+		string jsonEventString = JsonMessageController.FormatSimpleJSONEvent (systemTime, eventType.ToString(), eventData);
+		
+		UnityEngine.Debug.Log (jsonEventString);
+		
+		messagesToSend += jsonEventString;
+		
+		TCPServer.Instance.Log(systemTime, eventType);
+		
+		return jsonEventString;
+	}
+	
+	public string SendSessionEvent(long systemTime, TCP_Config.EventType eventType, int sessionNum, TCP_Config.SessionType sessionType){
+		
+		string jsonEventString = JsonMessageController.FormatJSONSessionEvent (systemTime, sessionNum.ToString(), sessionType.ToString());
+		
+		UnityEngine.Debug.Log (jsonEventString);
+		
+		messagesToSend += jsonEventString;
+		
+		TCPServer.Instance.Log(systemTime, eventType);
+		
+		return jsonEventString;
+	}
+	
+	public string SendDefineEvent(long systemTime, TCP_Config.EventType eventType, List<string> stateList){
+		
+		string jsonEventString = JsonMessageController.FormatJSONDefineEvent (systemTime, stateList);
+		
+		UnityEngine.Debug.Log (jsonEventString);
+		
+		messagesToSend += jsonEventString;
+		
+		TCPServer.Instance.Log(systemTime, eventType);
+		
+		return jsonEventString;
+	}
+	
+	public string SendStateEvent(long systemTime, TCP_Config.EventType eventType, string stateName, bool value){
+		
+		string jsonEventString = JsonMessageController.FormatJSONStateEvent (systemTime, stateName, value.ToString());
+		
+		UnityEngine.Debug.Log (jsonEventString);
+		
+		messagesToSend += jsonEventString;
+		
+		TCPServer.Instance.Log(systemTime, eventType);
+		
+		return jsonEventString;
 	}
 
 	void CheckForMessages(){
 		String message = ReceiveMessageBuffer();
 		
-		ProcessMessageBuffer(message);
+		ProcessJSONMessageBuffer(message);
 	}
 
 	String ReceiveMessageBuffer(){
 		String messageBuffer = "";
 		try{
 
-			byte[] b=new byte[100];
+			byte[] b=new byte[1000];
 
 			int k=s.Receive(b);
 			UnityEngine.Debug.Log("Recieved something!");
@@ -405,153 +485,215 @@ public class ThreadedServer : ThreadedJob{
 		return messageBuffer;
 	}
 
-	void ProcessMessageBuffer(string messageBuffer){
-		//DEALS WITH MESSAGES GETTING CUT IN HALF AND SUCH. TODO: I'm guessing this could be refactored...
-
-		string MSG_START_STRING = TCP_Config.MSG_START.ToString ();
-		string MSG_END_STRING = TCP_Config.MSG_END.ToString ();
-
-
+	//CURRENTLY ASSUMING MESSAGES AREN'T GETTING SPLIT IN HALF.
+	public void ProcessJSONMessageBuffer(string messageBuffer){
+		
 		if (messageBuffer != "") {
-			//string[] splitBuffer = messageBuffer.Split(new char[] {MSG_START}, StringSplitOptions.RemoveEmptyEntries);
-			string[] splitBuffer = Regex.Split(messageBuffer, "(\\" + MSG_START_STRING + ")");
-
-			List<String> separateMessages = new List<string>();
-
-			for(int i = 0; i < splitBuffer.Length - 1; i++){
-				if(splitBuffer[i] == MSG_START_STRING){
-					splitBuffer[i] += splitBuffer[i+1]; //will create duplicate messages...
-					separateMessages.Add(splitBuffer[i]);
+			
+			char[] individualCharacters = messageBuffer.ToCharArray();
+			
+			int numOpenCharacter = 0;
+			int numCloseCharacter = 0;
+			string message = "";
+			for(int i = 0; i <individualCharacters.Length; i++){
+				if(incompleteMessage != ""){
+					numOpenCharacter = incompleteMessage.Split(TCP_Config.MSG_START).Length - 1;
+					numCloseCharacter = incompleteMessage.Split(TCP_Config.MSG_END).Length - 1;
 				}
-				else{
-					if ( (i == 0) && (splitBuffer[i] != "") ){
-						separateMessages.Add(splitBuffer[i]);
-					}
+				
+				if(individualCharacters[i] == TCP_Config.MSG_START){
+					numOpenCharacter++;
 				}
-			}
-
-			int numMessages = separateMessages.Count;
-
-			for(int i = 0; i < numMessages; i++){
-				UnityEngine.Debug.Log("SEPARATE MESSAGES " + i + ": " + separateMessages[i]);
-
-				//if it's the first element...
-				if(i == 0){
-					string firstMessage = separateMessages[i];
-					//if it contains a start character...
-					if( firstMessage.Contains(MSG_START_STRING) ){
-
-						if( firstMessage.Contains(MSG_END_STRING) ){ //first in buffer, has both start and end characters
-							//decode normally! a full message!
-							DecodeMessage(firstMessage);
-						}
-						else{//first in buffer, has only start character --> must be an incomplete message.
-							incompleteMessage = firstMessage; //incomplete message gets reset.
-						}
-					}
-					else if( firstMessage.Contains(MSG_END_STRING) ){ //message contains only end character, no start --> must be finishing an incomplete message
-						if(incompleteMessage.Contains(MSG_START_STRING)){
-							incompleteMessage += firstMessage;
-							//DECODE IT!
-							DecodeMessage(incompleteMessage);
-						}
-						incompleteMessage = "";
-					}
-					else{ //no start or end character, must be the center of an incomplete message
-						incompleteMessage += firstMessage;
-					}
+				else if(individualCharacters[i] == TCP_Config.MSG_END && numOpenCharacter > numCloseCharacter){ //close character should never come before open character(s)
+					numCloseCharacter++;
 				}
-				//else if it's the last element...
-				else if( i == numMessages - 1 ){
-					string lastMessage = separateMessages[i];
-					if( !lastMessage.Contains(MSG_END_STRING) ){ //no end character, must be an incomplete message
-						incompleteMessage += splitBuffer[i];
-					}
-					else{
-						//decode normally!
-						DecodeMessage(lastMessage);
-					}
+				
+				message += individualCharacters[i].ToString();
+				
+				if(numOpenCharacter == numCloseCharacter && numOpenCharacter > 0){ //END OF MESSAGE!
+					UnityEngine.Debug.Log("DECODE MESSAGE: " + message);
+					DecodeJSONMessage(message);
+					
+					//reset variables
+					message = "";
+					
+					numOpenCharacter = 0;
+					numCloseCharacter = 0;
 				}
-				//if it's a middle element to the message buffer, it must be a complete message --> decode normally
-				else{
-					DecodeMessage(separateMessages[i]);
+				//if we're on the last character and num open != num close, we have an incomplete message!
+				else if (i == individualCharacters.Length - 1 && numOpenCharacter > 0){
+					incompleteMessage = message;
+					UnityEngine.Debug.Log("INCOMPLETE MESSAGE: " + incompleteMessage);
 				}
+				
 			}
 		}
 	}
 
-	void DecodeMessage(string message){
-		//...assumes we got here with a message in the correct form...
 
-		//Extract content between [] brackets before splitting. Then just split with the message separator.
-		string[] messageContent = Regex.Split(message, ( "\\" + TCP_Config.MSG_START + "(.*?)" + "\\" + TCP_Config.MSG_END ) );//"(\\" + MSG_START.ToString() + ")");
+	public void DecodeJSONMessage(string jsonMessage){
 
-		//string[] splitMessage = message.Split (new Char [] {MSG_START, MSG_SEPARATOR, MSG_END});
-		if (messageContent.Length > 2) { 
-			string[] splitMessage = messageContent [1].Split ( TCP_Config.MSG_SEPARATOR );
+		//long theTime = 383095863184;
+		//jsonMessage = JsonMessageController.FormatSimpleJSONEvent(theTime, TCP_Config.EventType.SYNC.ToString(), ""); 
 
-			string t0 = "";
-			string id = "";
-			string data = "";
-			string aux = "";
 
-			for (int i = 0; i < splitMessage.Length; i++) {
-				switch (i) {
-					case 0:
-						t0 = splitMessage [i];
-						UnityEngine.Debug.Log ("T0: " + t0);
-						break;
-					case 1:
-						id = splitMessage [i];
-						UnityEngine.Debug.Log ("ID: " + id);
-						break;
-					case 2:
-						data = splitMessage [i];
-						UnityEngine.Debug.Log ("DATA: " + data);
-						break;
-					case 3:
-						aux = splitMessage [i];
-						UnityEngine.Debug.Log ("AUX: " + aux);
-						break;
+		JsonReader reader;
+		string dataContent = "";
+		int dataContentInt = 0;
+		long timeContent = 0;
+		string typeContent = "";
+
+		JsonData messageData = JsonMapper.ToObject(jsonMessage);
+
+		List<string> dataArray = new List<string>();
+		List<string> dataObject = new List<String>();
+
+		typeContent = (string)messageData ["type"];
+		//timeContent = (long)messageData ["time"];
+
+		switch ( typeContent ){
+		case "SUBJECTID":
+			//do nothing
+			break;
+
+		case "EXPNAME":
+			//do nothing
+			break;
+
+		case "VERSION":
+			//do nothing
+			break;
+
+		case "MESSAGE":
+			dataContent = (string)messageData["data"];
+			if(dataContent == "STARTED"){
+				canStartGame = true;
+			}
+			break;
+
+		case "SESSION":
+			/*json
+			reader = new JsonReader(messageData["data"]);
+			while(reader.Read()){
+				if(reader.Token.ToString() != "ObjectStart" && reader.Token.ToString() != "ObjectEnd"){
+					dataArray.Add(reader.Value);
 				}
-			}
+			}*/
+			break;
 
-			switch (id) {
-				case "ID":
-					//do nothing
-					break;
-				case "SYNC":
-					//Sync received from Control PC
-					//Echo SYNC back to Control PC with high precision time so that clocks can be aligned
-					SendEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SYNC, GameClock.SystemTime_MicrosecondsString, "");
-					break;
-				case "SYNCED":
-					//Control PC is done with clock alignment
-					isSynced = true;
-					break;
-				case "START":
-					//Control PC is done with clock alignment
-					canStartGame = true;
-					break;
-				case "EXIT":
-					//Control PC is exiting. If heartbeat is active, this is a premature abort.
+		case "TRIAL":
+			dataContentInt = (int)messageData["data"];
+			break;
 
-					/*
+		case "DEFINE":
+			/*reader = new JsonReader(messageData["data"]);
+			while(reader.Read()){
+				if(reader.Token.ToString() != "ArrayStart" && reader.Token.ToString() != "ArrayEnd"){
+					dataArray.Add(reader.Value);
+				}
+			}*/
+			break;
+
+		case "STATE":
+			/*reader = new JsonReader(messageData["data"]);
+			while(reader.Read()){
+				if(reader.Token.ToString() != "ObjectStart" && reader.Token.ToString() != "ObjectEnd"){
+					dataArray.Add(reader.Value);
+				}
+			}*/
+			break;
+
+		case "HEARTBEAT":
+			//do nothing
+			break;
+
+		case "ALIGNCLOCK":
+			//do nothing
+			break;
+
+		case "ABORT":
+			//do nothing
+			break;
+			
+		case "SYNC":
+			//Sync received from Control PC
+			//Echo SYNC back to Control PC with high precision time so that clocks can be aligned
+			SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SYNC, GameClock.SystemTime_MicrosecondsString);
+			break;
+			
+		case "SYNCED":
+			//Control PC is done with clock alignment
+			isSynced = true;
+			//now align the neuroport
+			SendSimpleJSONEvent (GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SYNCNP, "");
+			break;
+			
+		case "EXIT":
+			//Control PC is exiting. If heartbeat is active, this is a premature abort.
+			
+			/*
 					if self.isHeartbeat and self.abortCallback:
-                        self.disconnect()
-                        self.abortCallback(self.clock)
+	                    self.disconnect()
+	                    self.abortCallback(self.clock)
 					*/
-					
-					if(isHeartbeat){
-						//TODO: do this. am I supposed to check for a premature abort? does it matter? or just end it?
-						End ();
-					}
-					break;
-				default:
-					break;
+			
+			if(isHeartbeat){
+				//TODO: do this. am I supposed to check for a premature abort? does it matter? or just end it?
+				End ();
 			}
+			break;
+			
+		default:
+			break;
+		}
+		
+		/*string lastValue = "";
+		
+		List<string> dataArray = new List<string>();
+		List<string> dataObject = new List<String>();
+		
+		while (reader.Read ()) {
+			
+			//UnityEngine.Debug.Log (reader.Token);
+			//UnityEngine.Debug.Log (reader.Value);
+
+
+
+			switch (lastValue){
+			case "data":
+				if(reader.Token.ToString() == "ObjectStart"){
+					//TODO: parse the object
+					while(reader.Read() && reader.Token.ToString() != "ObjectEnd"){
+						dataObject.Add((string)reader.Value);
+					}
+				}
+				else if (reader.Token.ToString() == "ArrayStart"){
+					while(reader.Read() && reader.Token.ToString() != "ArrayEnd"){
+						dataArray.Add((string)reader.Value);
+					}
+				}
+				else{
+					dataContent = (string)reader.Value;
+				}
+				break;
+			case "type":
+				typeContent = (string)reader.Value;
+				break;
+			case "time":
+				timeContent = (string)reader.Value;
+				break;
+			}
+			lastValue = (string)reader.Value;
 		}
 
+		if (dataContent == "STARTED") {
+			canStartGame = true;
+			UnityEngine.Debug.Log("START THE GAME");
+		}
+
+		if (typeContent == "SYNC") {
+			UnityEngine.Debug.Log("SHOULD SYNC");
+		}*/
 	}
 
 
@@ -585,7 +727,7 @@ public class ThreadedServer : ThreadedJob{
 				nextBeat = nextBeat + intervalMS;
 				delta = t1 - lastBeat;
 				lastBeat = t1;
-				SendEvent(lastBeat, TCP_Config.EventType.HEARTBEAT, intervalMS.ToString(), "");
+				SendSimpleJSONEvent(lastBeat, TCP_Config.EventType.HEARTBEAT, intervalMS.ToString());
 			}
 		}
 		else {
@@ -593,7 +735,7 @@ public class ThreadedServer : ThreadedJob{
 			firstBeat = GameClock.SystemTime_Milliseconds;
 			lastBeat = firstBeat;
 			nextBeat = intervalMS;
-			SendEvent(lastBeat, TCP_Config.EventType.HEARTBEAT, intervalMS.ToString(), "");
+			SendSimpleJSONEvent(lastBeat, TCP_Config.EventType.HEARTBEAT, intervalMS.ToString());
 			hasSentFirstHeartbeat = true;
 		}
 	}

@@ -1,7 +1,9 @@
 fileFormatVersion: 2
 guid: 506dbb8a9128f43668650dbcda27cee6
+timeCreated: 1452617634
+licenseType: Free
 ModelImporter:
-  serializedVersion: 16
+  serializedVersion: 18
   fileIDToRecycleName:
     100000: _AMBIENT_
     100002: //RootNode
@@ -35,7 +37,13 @@ ModelImporter:
     3300008: Camera04
     3300010: Light01
     3300012: Light02
+    4300000: Camera04
+    4300002: Camera03
+    4300004: Light01
+    4300006: Camera01
+    4300008: Light02
     4300010: bed
+    4300012: Camera02
     7400000: Default Take
     9500000: //RootNode
   materials:
@@ -47,6 +55,10 @@ ModelImporter:
     bakeSimulation: 0
     optimizeGameObjects: 0
     motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
     animationCompression: 1
     animationRotationError: .5
     animationPositionError: .5
@@ -65,11 +77,13 @@ ModelImporter:
     generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
+    keepQuads: 0
     weldVertices: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
+    useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     splitTangentsAcrossUV: 1
@@ -92,3 +106,5 @@ ModelImporter:
   animationType: 2
   additionalBone: 0
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 

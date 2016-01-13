@@ -1,7 +1,9 @@
 fileFormatVersion: 2
 guid: a86d10e1e017d4f3baa7b568a889444e
+timeCreated: 1452617714
+licenseType: Free
 ModelImporter:
-  serializedVersion: 16
+  serializedVersion: 18
   fileIDToRecycleName:
     100000: ___DUMMY_bench
     100002: //RootNode
@@ -111,6 +113,9 @@ ModelImporter:
     3300046: Line05
     3300048: Plane01
     3300050: Spot01
+    4300000: Spot01
+    4300002: Camera01
+    4300004: Plane01
     4300006: ChamferBox
     4300008: ChamferBo0
     4300010: ChamferBo1
@@ -145,6 +150,10 @@ ModelImporter:
     bakeSimulation: 0
     optimizeGameObjects: 0
     motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
     animationCompression: 1
     animationRotationError: .5
     animationPositionError: .5
@@ -163,11 +172,13 @@ ModelImporter:
     generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
+    keepQuads: 0
     weldVertices: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
+    useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     splitTangentsAcrossUV: 1
@@ -190,3 +201,5 @@ ModelImporter:
   animationType: 2
   additionalBone: 0
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 
