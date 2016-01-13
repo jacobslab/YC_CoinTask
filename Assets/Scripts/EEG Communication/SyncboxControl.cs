@@ -28,7 +28,7 @@ public class SyncboxControl : MonoBehaviour {
 	[DllImport ("ASimplePlugin")]
 	private static extern IntPtr StimPulse(float durationSeconds, float freqHz, bool doRelay);
 	
-	public bool ShouldPulse = false;
+	public bool ShouldSyncPulse = false;
 	public float PulseOnSeconds;
 	public float PulseOffSeconds;
 	public TextMesh DownCircle;
@@ -38,6 +38,8 @@ public class SyncboxControl : MonoBehaviour {
 	public bool isUSBOpen = false; //TODO: set to true.
 
 	bool isToggledOn = false;
+
+	float syncPulseDuration = 1.0f;
 
 
 	//SINGLETON
@@ -83,20 +85,21 @@ public class SyncboxControl : MonoBehaviour {
 		}
 
 		//Debug.Log(Marshal.PtrToStringAuto (CloseUSB()));
-		StartCoroutine (TestPulse ());
+		//StartCoroutine (TestPulse ());
+		StartCoroutine (RunSyncPulse ());
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if(ExperimentSettings_CoinTask.isSyncbox){
-			if (!ShouldPulse) {
+			if (!ShouldSyncPulse) {
 				GetInput ();
 			}
 		}
 	}
 
 	void GetInput(){
-		if (Input.GetKey (KeyCode.DownArrow)) {
+		/*if (Input.GetKey (KeyCode.DownArrow)) {
 			ToggleOn();
 		}
 		else{
@@ -105,6 +108,13 @@ public class SyncboxControl : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.S)){
 			//DoSyncPulse();
 			DoStimPulse();
+		}*/
+	}
+
+	IEnumerator RunSyncPulse(){
+		while (ShouldSyncPulse) {
+			SyncPulse();
+			yield return new WaitForSeconds(syncPulseDuration);
 		}
 	}
 
@@ -161,8 +171,7 @@ public class SyncboxControl : MonoBehaviour {
 
 	//ex: a 10 ms pulse every second — until the duration is over...
 	void DoSyncPulse(){
-		float duration = 1.0f; //TODO: implement a duration or something for a series of sync pulses
-		LogSYNCStarted (GameClock.SystemTime_Milliseconds, duration);
+		LogSYNCStarted (GameClock.SystemTime_Milliseconds, syncPulseDuration);
 		float timeBeforePulse = SyncPulse ();
 		LogSYNCPulseInfo (GameClock.SystemTime_Milliseconds, timeBeforePulse);
 		Debug.Log (timeBeforePulse);
@@ -179,7 +188,7 @@ public class SyncboxControl : MonoBehaviour {
 	IEnumerator TestPulse (){
 		yield return new WaitForSeconds(TCP_Config.numSecondsBeforeAlignment);
 		while (true) {
-			if(ShouldPulse){
+			if(ShouldSyncPulse){
 				ToggleOn();
 				LogTEST(GameClock.SystemTime_Milliseconds, true);
 				yield return new WaitForSeconds(PulseOnSeconds);
