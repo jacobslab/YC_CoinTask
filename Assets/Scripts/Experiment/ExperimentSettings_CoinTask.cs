@@ -33,8 +33,8 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public Toggle loggingToggle; //only exists in main menu -- make sure to null check
 
 	//EEG, STIM/SYNC TOGGLES
-	public static bool isSystem2;
-	public static bool isSyncbox;
+	public static bool isSystem2 = false;
+	public static bool isSyncbox = true;
 
 	public Toggle system2Toggle;
 	public Toggle syncboxToggle;
@@ -80,8 +80,8 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	// Use this for initialization
 	void Start () {
 		SetOculus();
-		SetSystem2();
-		SetSyncBox();
+		//SetSystem2();
+		//SetSyncBox();
 	}
 	
 	// Update is called once per frame

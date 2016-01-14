@@ -50,15 +50,33 @@ public class JsonMessageController : MonoBehaviour {
 	}
 
 	//TODO: REFACTOR? A LOT OF DUPLICATE CODE HERE.
-	public class MessageEventFloatData{
-		public float data { get; set; }
+	public class MessageEventDoubleData{
+		public double data { get; set; }
 		public string type { get; set; }
 		public long time { get; set; }
 	}
 
 	//TODO: REFACTOR? A LOT OF DUPLICATE CODE HERE.
-	public static string FormatSimpleJSONEvent(long time, string eventType, float eventData){
-		MessageEventFloatData mEvent = new MessageEventFloatData();
+	public static string FormatSimpleJSONEvent(long time, string eventType, double eventData){
+		MessageEventDoubleData mEvent = new MessageEventDoubleData();
+		mEvent.data = eventData;
+		mEvent.type = eventType;
+		mEvent.time = time;
+		
+		string jsonEventString = JsonMapper.ToJson (mEvent);
+		
+		return jsonEventString;
+	}
+
+
+	//TODO: REFACTOR? A LOT OF DUPLICATE CODE HERE.
+	public class MessageEventLongData{
+		public long data { get; set; }
+		public string type { get; set; }
+		public long time { get; set; }
+	}
+	public static string FormatSimpleJSONEvent(long time, string eventType, long eventData){
+		MessageEventLongData mEvent = new MessageEventLongData();
 		mEvent.data = eventData;
 		mEvent.type = eventType;
 		mEvent.time = time;

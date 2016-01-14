@@ -85,7 +85,8 @@ public class SyncboxControl : MonoBehaviour {
 
 		//Debug.Log(Marshal.PtrToStringAuto (CloseUSB()));
 		//StartCoroutine (TestPulse ());
-		StartCoroutine (RunSyncPulse ());
+		//StartCoroutine (RunSyncPulse ());
+		StartCoroutine (RunSyncPulseManual ());
 	}
 	
 	// Update is called once per frame
@@ -95,13 +96,15 @@ public class SyncboxControl : MonoBehaviour {
 				GetInput ();
 			}
 		}*/
+
+		GetInput ();
 	}
 
 	void GetInput(){
-		/*if (Input.GetKey (KeyCode.DownArrow)) {
-			ToggleOn();
-		}
-		else{
+		/*if (Input.GetKeyDown (KeyCode.DownArrow)) {
+			SyncPulse();
+		}*/
+		/*else{
 			ToggleOff ();
 		}
 		if(Input.GetKeyDown(KeyCode.S)){
@@ -110,7 +113,7 @@ public class SyncboxControl : MonoBehaviour {
 		}*/
 	}
 
-	//float syncPulseDuration = 0.01f;
+	float syncPulseDuration = 0.05f;
 	float syncPulseInterval = 1.0f;
 	//float minSyncPulseJitter = 0.8f;
 	//float maxSyncPulseJitter = 1.2f;
@@ -127,8 +130,8 @@ public class SyncboxControl : MonoBehaviour {
 
 			executionStopwatch.Start();
 			long syncPulseOnTime = SyncPulse();
-			LogSYNCOn(syncPulseOnTime, exp.eegLog.GetFrameCount());
-			while(executionStopwatch.ElapsedMilliseconds < 1000){
+			LogSYNCOn(syncPulseOnTime);
+			while(executionStopwatch.ElapsedMilliseconds < 1500){
 				yield return 0;
 			}
 
@@ -140,33 +143,57 @@ public class SyncboxControl : MonoBehaviour {
 		}
 	}
 
+	IEnumerator RunSyncPulseManual(){
+		float jitterMin = 0.1f;
+		float jitterMax = syncPulseInterval - syncPulseDuration;
+
+		Stopwatch executionStopwatch = new Stopwatch ();
+		
+		while (ShouldSyncPulse) {
+			executionStopwatch.Reset();
+
+
+			float jitter = UnityEngine.Random.Range(jitterMin, jitterMax);//syncPulseInterval - syncPulseDuration);
+			yield return StartCoroutine(WaitForShortTime(jitter));
+
+			//UnityEngine.Debug.Log("time waited A: " + timeWaited);
+
+			ToggleLEDOn();
+			yield return StartCoroutine(WaitForShortTime(syncPulseDuration));
+			//UnityEngine.Debug.Log("time waited B: " + timeWaited);
+			ToggleLEDOff();
+
+			float timeToWait = (syncPulseInterval - syncPulseDuration) - jitter;
+			if(timeToWait < 0){
+				timeToWait = 0;
+			}
+
+			/*float totalTime = syncPulseDuration + jitter + timeToWait;
+			if(totalTime < syncPulseInterval){
+				UnityEngine.Debug.Log("TOO SHORT PULSE TIME: " + totalTime);
+			}
+			else{
+				UnityEngine.Debug.Log(totalTime);
+			}*/
+
+			yield return StartCoroutine(WaitForShortTime(timeToWait));
+			//UnityEngine.Debug.Log("time waited C: " + timeWaited);
+			
+			executionStopwatch.Stop();
+		}
+	}
+
 	//return microseconds it took to turn on LED
 	void ToggleLEDOn(){
-		Stopwatch executionStopwatch = new Stopwatch ();
-
-		executionStopwatch.Start();
 
 		TurnLEDOn ();
-
-		executionStopwatch.Stop();
-
-
-		long executionTimeMicro = GetMicroseconds (executionStopwatch.ElapsedTicks);
-		LogSYNCOn (GameClock.SystemTime_Milliseconds, executionTimeMicro);
+		LogSYNCOn (GameClock.SystemTime_Milliseconds);
 	}
 
 	void ToggleLEDOff(){
-		Stopwatch executionStopwatch = new Stopwatch ();
-		
-		executionStopwatch.Start();
 
 		TurnLEDOff();
-
-		executionStopwatch.Stop();
-		
-		
-		long executionTimeMicro = GetMicroseconds (executionStopwatch.ElapsedTicks);
-		LogSYNCOff (GameClock.SystemTime_Milliseconds, executionTimeMicro);
+		LogSYNCOff (GameClock.SystemTime_Milliseconds);
 
 	}
 
@@ -175,12 +202,15 @@ public class SyncboxControl : MonoBehaviour {
 		return microseconds;
 	}
 
+	float timeWaited = 0.0f;
 	IEnumerator WaitForShortTime(float jitter){
 		float currentTime = 0.0f;
 		while (currentTime < jitter) {
 			currentTime += Time.deltaTime;
 			yield return 0;
 		}
+
+		timeWaited = currentTime;
 	}
 
 
@@ -196,15 +226,15 @@ public class SyncboxControl : MonoBehaviour {
 		}
 	}*/
 
-	void LogSYNCOn(long time, long microSecondsPassed){
+	void LogSYNCOn(long time){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			exp.eegLog.Log (time, microSecondsPassed, "ON"); //NOTE: NOT USING FRAME IN THE FRAME SLOT
+			exp.eegLog.Log (time, exp.eegLog.GetFrameCount(), "ON"); //NOTE: NOT USING FRAME IN THE FRAME SLOT
 		}
 	}
 
-	void LogSYNCOff(long time, long microSecondsPassed){
+	void LogSYNCOff(long time){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			exp.eegLog.Log (time, microSecondsPassed, "OFF"); //NOTE: NOT USING FRAME IN THE FRAME SLOT
+			exp.eegLog.Log (time, exp.eegLog.GetFrameCount(), "OFF"); //NOTE: NOT USING FRAME IN THE FRAME SLOT
 		}
 	}
 

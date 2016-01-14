@@ -52,8 +52,6 @@ public class TCPServer : MonoBehaviour {
 	void Start(){
 		if(ExperimentSettings_CoinTask.isSystem2){
 			RunServer ();
-
-			StartCoroutine(AlignClocks());
 		}
 	}
 
@@ -80,7 +78,15 @@ public class TCPServer : MonoBehaviour {
 		myServer.Start ();
 	}
 
+	bool startedAlignClocks = false;
 	void Update(){
+		if (myServer != null) {
+			if (isConnected && !startedAlignClocks) {
+				startedAlignClocks = true;
+				StartCoroutine (AlignClocks ());
+				myServer.SendInitMessages ();
+			}
+		}
 		//DEBUGGING
 		/*
 		if (Input.GetKeyDown (KeyCode.A)) {
@@ -90,10 +96,6 @@ public class TCPServer : MonoBehaviour {
 			myServer.canStartGame = true;
 		}
 		*/
-
-		if (Input.GetKeyDown (KeyCode.A)) {
-			myServer.DecodeJSONMessage("");
-		}
 	}
 
 	public void Log(long time, TCP_Config.EventType eventType){
@@ -215,25 +217,27 @@ public class ThreadedServer : ThreadedJob{
 		OpenConnections();
 
 		isServerConnected = true;
+	}
 
+	public void SendInitMessages(){
 		//define event
 		SendDefineEvent (GameClock.SystemTime_Milliseconds, TCP_Config.EventType.DEFINE, TCP_Config.GetDefineList ());
-
+		
 		//send name of this experiment
 		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.EXPNAME, TCP_Config.ExpName);
-
+		
 		//send exp version
 		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.VERSION, Config_CoinTask.VersionNumber);
-
+		
 		//send subject ID
 		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SUBJECTID, TCP_Config.SubjectName);
-
+		
 		//align clocks //TODO: SHOULD THIS BE FINISHED BEFORE WE START SENDING HEARTBEATS? -- NO
 		RequestClockAlignment();
-
+		
 		//start heartbeat
 		StartHeartbeatPoll();
-
+		
 		//wait for "STARTED" message to be received
 	}
 
@@ -398,12 +402,12 @@ public class ThreadedServer : ThreadedJob{
 		
 		messagesToSend += jsonEventString;
 		
-		TCPServer.Instance.Log(systemTime, eventType);
+		//TCPServer.Instance.Log(systemTime, eventType);
 		
 		return jsonEventString;
 	}
 
-	public string SendSimpleJSONEvent(long systemTime, TCP_Config.EventType eventType, float eventData){
+	public string SendSimpleJSONEvent(long systemTime, TCP_Config.EventType eventType, double eventData){
 		
 		string jsonEventString = JsonMessageController.FormatSimpleJSONEvent (systemTime, eventType.ToString(), eventData);
 		
@@ -411,7 +415,20 @@ public class ThreadedServer : ThreadedJob{
 		
 		messagesToSend += jsonEventString;
 		
-		TCPServer.Instance.Log(systemTime, eventType);
+		//TCPServer.Instance.Log(systemTime, eventType);
+		
+		return jsonEventString;
+	}
+
+	public string SendSimpleJSONEvent(long systemTime, TCP_Config.EventType eventType, long eventData){
+		
+		string jsonEventString = JsonMessageController.FormatSimpleJSONEvent (systemTime, eventType.ToString(), eventData);
+		
+		UnityEngine.Debug.Log (jsonEventString);
+		
+		messagesToSend += jsonEventString;
+		
+		//TCPServer.Instance.Log(systemTime, eventType);
 		
 		return jsonEventString;
 	}
@@ -424,7 +441,7 @@ public class ThreadedServer : ThreadedJob{
 		
 		messagesToSend += jsonEventString;
 		
-		TCPServer.Instance.Log(systemTime, eventType);
+		//TCPServer.Instance.Log(systemTime, eventType);
 		
 		return jsonEventString;
 	}
@@ -437,7 +454,7 @@ public class ThreadedServer : ThreadedJob{
 		
 		messagesToSend += jsonEventString;
 		
-		TCPServer.Instance.Log(systemTime, eventType);
+		//TCPServer.Instance.Log(systemTime, eventType);
 		
 		return jsonEventString;
 	}
@@ -450,7 +467,7 @@ public class ThreadedServer : ThreadedJob{
 		
 		messagesToSend += jsonEventString;
 		
-		TCPServer.Instance.Log(systemTime, eventType);
+		//TCPServer.Instance.Log(systemTime, eventType);
 		
 		return jsonEventString;
 	}
@@ -618,7 +635,7 @@ public class ThreadedServer : ThreadedJob{
 		case "SYNC":
 			//Sync received from Control PC
 			//Echo SYNC back to Control PC with high precision time so that clocks can be aligned
-			SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SYNC, GameClock.SystemTime_MicrosecondsString);
+			SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SYNC, GameClock.SystemTime_Microseconds);
 			break;
 			
 		case "SYNCED":
