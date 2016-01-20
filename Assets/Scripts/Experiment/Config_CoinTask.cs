@@ -16,6 +16,8 @@ public class Config_CoinTask : MonoBehaviour {
 	public static Version BuildVersion = Version.TH2;
 	public static float VersionNumber = 2.02f;
 
+	//REPLAY
+	public static int replayPadding = 6;
 
 	//JUICE
 	public static bool isJuice = true;

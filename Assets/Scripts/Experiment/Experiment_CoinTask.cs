@@ -77,12 +77,12 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 		juiceController.Init ();
 
+		cameraController.SetInGame(); //don't use oculus for replay mode
 		if (ExperimentSettings_CoinTask.isLogging) {
 			InitLogging();
 		}
 		else if(ExperimentSettings_CoinTask.isReplay) {
 			instructionsController.TurnOffInstructions();
-			cameraController.SetInGame(); //don't use oculus for replay mode
 		}
 
 	}

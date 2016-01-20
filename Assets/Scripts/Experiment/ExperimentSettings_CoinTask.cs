@@ -34,7 +34,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 	//EEG, STIM/SYNC TOGGLES
 	public static bool isSystem2 = false;
-	public static bool isSyncbox = true;
+	public static bool isSyncbox = false;
 
 	public Toggle system2Toggle;
 	public Toggle syncboxToggle;
