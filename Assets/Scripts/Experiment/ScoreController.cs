@@ -13,14 +13,30 @@ public class ScoreController : MonoBehaviour {
 	int scoreTextScore = 0;
 	int amountLeftToAdd = 0; //amount left to add to the score text
 
+
+
+	
+	//Time bonus time variables!
+	static int timeBonusTimeMin = 22;
+	public static int TimeBonusTimeMin { get { return timeBonusTimeMin; } }
+	
+	static int timeBonusTimeMed = 37;
+	public static int TimeBonusTimeMed { get { return timeBonusTimeMed; } }
+	
+	static int timeBonusTimeMax = 52;
+	public static int TimeBonusTimeBig { get { return timeBonusTimeMax; } }
+
+
+
+
 	//SCORE VARIABLES -- don't want anyone to change them, so make public getters, no setters.
-	static int timeBonusSmall = 10;
+	static int timeBonusSmall = 100;
 	public static int TimeBonusSmall { get { return timeBonusSmall; } }
 
-	static int timeBonusMed = 20;
+	static int timeBonusMed = 200;
 	public static int TimeBonusMed { get { return timeBonusMed; } }
 
-	static int timeBonusBig = 30;
+	static int timeBonusBig = 300;
 	public static int TimeBonusBig { get { return timeBonusBig; } }
 	
 
@@ -57,27 +73,16 @@ public class ScoreController : MonoBehaviour {
 
 
 
-	public TextMesh verySureScoreExplanation;
-	public TextMesh notVerySureScoreExplanation;
-
-
-
-	//Time bonus time variables!
-	static int timeBonusTimeMin = 22;
-	public static int TimeBonusTimeMin { get { return timeBonusTimeMin; } }
-	
-	static int timeBonusTimeMed = 37;
-	public static int TimeBonusTimeMed { get { return timeBonusTimeMed; } }
-	
-	static int timeBonusTimeMax = 52;
-	public static int TimeBonusTimeBig { get { return timeBonusTimeMax; } }
-
+	public TextMesh yesScoreExplanation;
+	public TextMesh maybeScoreExplanation;
+	public TextMesh noScoreExplanation;
 
 
 	// Use this for initialization
 	void Start () {
-		verySureScoreExplanation.text = "win " + memoryScoreYesRight + "/" + "lose " + memoryScoreYesWrong;
-		notVerySureScoreExplanation.text = "win " + memoryScoreMaybeRight + "/" + "lose " + memoryScoreMaybeWrong;
+		/*yesScoreExplanation.text = "win " + memoryScoreYesRight + "/" + "lose " + memoryScoreYesWrong;
+		maybeScoreExplanation.text = "win " + memoryScoreMaybeRight + "/" + "lose " + memoryScoreMaybeWrong;
+		noScoreExplanation.text = "win " + memoryScoreNoRight + "/" + "lose " + memoryScoreNoWrong;*/
 		StartCoroutine (UpdateScoreText());
 	}
 	

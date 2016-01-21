@@ -82,7 +82,6 @@ public class TimerBar : MonoBehaviour {
 			}
 			else{
 				if(timeState != TimeState.overTime){
-					LowOnTimeText.text = "OUT OF TIME.";
 					SetState(TimeState.overTime, bottomBonusUI.GetComponentInChildren<Text> ().text, bottomBonusUI.position);
 				}
 			}
@@ -95,12 +94,9 @@ public class TimerBar : MonoBehaviour {
 
 	void EnableLowTimeText(){
 		LowOnTimeText.enabled = true;
-		LowOnTimeText.text = "LOW ON TIME!";
-		StartCoroutine(LowOnTimeText.GetComponent<TextUIColorCycler>().CycleColors());
 	}
 
 	void DisableLowTimeText(){
-		StopCoroutine(LowOnTimeText.GetComponent<TextUIColorCycler>().CycleColors());
 		LowOnTimeText.enabled = false;
 	}
 
