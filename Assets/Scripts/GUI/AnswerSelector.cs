@@ -7,6 +7,8 @@ public class AnswerSelector : MonoBehaviour {
 
 	bool shouldCheckForInput = false;
 
+	bool resetToRandomPosition = true;
+
 	public Transform[] positionTransforms; //should be put in order of left to right
 	public GameObject selectorVisuals;
 	public ColorChanger yesExplanationColorChanger;
@@ -20,8 +22,8 @@ public class AnswerSelector : MonoBehaviour {
 	public AudioSource selectionSwitchAudio;
 
 	int currPositionIndex = 0;
-	int yesIndex = 0;
-	int noIndex = 1;
+	//int yesIndex = 0;
+	//int noIndex = 1;
 
 	void Awake(){
 
@@ -48,25 +50,30 @@ public class AnswerSelector : MonoBehaviour {
 	}
 
 	void ResetSelectorPosition(){
-		exp.trialController.LogAnswerSelectorPositionChanged (0);
-		if (positionTransforms.Length > 0) {
-			selectorVisuals.transform.position = positionTransforms[0].position;
-			currPositionIndex = 0;
+		int resetIndex = 0; //first index
+		if (resetToRandomPosition) {
+			resetIndex = Random.Range(0, positionTransforms.Length);
+		}
+
+		if (positionTransforms.Length >= 0) {
+			selectorVisuals.transform.position = positionTransforms[resetIndex].position;
+			currPositionIndex = resetIndex;
+			exp.trialController.LogAnswerSelectorPositionChanged (GetMemoryState());
 
 			if(Config_CoinTask.isJuice){
 				StopCoroutine(selectorVisuals.GetComponent<TextMeshColorCycler>().CycleColors());
 				StartCoroutine(selectorVisuals.GetComponent<TextMeshColorCycler>().CycleColors());
 			}
 		}
-		ResetExplanationText ();
+		//ResetExplanationText ();
 	}
 
-	void ResetExplanationText(){
+	/*void ResetExplanationText(){
 		if (yesExplanationText && noExplanationText) {
 			yesExplanationColorChanger.ChangeColor (new Color (yesExplanationText.color.r, yesExplanationText.color.g, yesExplanationText.color.b, 1.0f)); 
 			noExplanationColorChanger.ChangeColor (new Color (noExplanationText.color.r, noExplanationText.color.g, noExplanationText.color.b, 0.0f)); 
 		}
-	}
+	}*/
 
 
 	//MODIFIED FROM BOXSWAPPER.CS
@@ -118,12 +125,12 @@ public class AnswerSelector : MonoBehaviour {
 		}
 	}
 
-	public bool IsNoPosition(){
+	/*public bool IsNoPosition(){
 		if (currPositionIndex == noIndex) {
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 	void Move(int indicesToMove){
 		int oldPositionIndex = currPositionIndex;
@@ -166,7 +173,7 @@ public class AnswerSelector : MonoBehaviour {
 	}*/
 
 	//TODO: combine these next two methods.
-	IEnumerator SetYesExplanationActive(float colorLerpTime){
+	/*IEnumerator SetYesExplanationActive(float colorLerpTime){
 		//TODO: REFACTOR.
 		if(yesExplanationText && noExplanationText && yesExplanationColorChanger && noExplanationColorChanger){
 			yesExplanationColorChanger.StopLerping();
@@ -190,5 +197,5 @@ public class AnswerSelector : MonoBehaviour {
 			StartCoroutine(yesExplanationColorChanger.LerpChangeColor( new Color(yesExplanationText.color.r, yesExplanationText.color.g, yesExplanationText.color.b, 0.0f), colorLerpTime));
 			StartCoroutine(noExplanationColorChanger.LerpChangeColor( new Color(noExplanationText.color.r, noExplanationText.color.g, noExplanationText.color.b, 1.0f), colorLerpTime));
 		}
-	}
+	}*/
 }
