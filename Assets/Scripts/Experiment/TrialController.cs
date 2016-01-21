@@ -362,8 +362,8 @@ public class TrialController : MonoBehaviour {
 		//ask player to locate each object individually
 		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
 		List<Vector3> chosenPositions = new List<Vector3> (); //chosen positions will be in the same order as the random special object order
-		List<bool> rememberResponses = new List<bool> (); //keep track of whether or not the player remembered each object
-		List<bool> areYouSureResponses = new List<bool> (); //keep track of whether or not the player wanted to double down on each object
+		List<Config_CoinTask.MemoryState> rememberResponses = new List<Config_CoinTask.MemoryState> (); //keep track of whether or not the player remembered each object
+		//List<bool> areYouSureResponses = new List<bool> (); //keep track of whether or not the player wanted to double down on each object
 
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
 
@@ -385,7 +385,7 @@ public class TrialController : MonoBehaviour {
 			yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy) );
 
 			yield return StartCoroutine (exp.WaitForActionButton());
-			bool rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.IsYesPosition();
+			Config_CoinTask.MemoryState rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
 			rememberResponses.Add(rememberResponse);
 			trialLogger.LogRememberResponse(rememberResponse);
 
@@ -416,7 +416,7 @@ public class TrialController : MonoBehaviour {
 
 			trialLogger.LogInstructionEvent();
 
-			if(rememberResponse == true){
+			/*if(rememberResponse == true){
 				yield return StartCoroutine( exp.uiController.areYouSureUI.Play() );
 
 				yield return StartCoroutine (exp.WaitForActionButton());
@@ -427,28 +427,28 @@ public class TrialController : MonoBehaviour {
 			else{
 				//if you chose not to remember, you should not get to double down.
 				areYouSureResponses.Add(false);
-			}
+			}*/
 
 			if(i <= exp.objectController.CurrentTrialSpecialObjects.Count - 1){
 				//jitter if it's not the last object to be shown
 				yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
 			}
 
-			if(rememberResponse == true){
+			/*if(rememberResponse == true){
 				exp.uiController.areYouSureUI.Stop();
-			}
+			}*/
 
 		}
 
 		trialLogger.LogFeedbackStarted();
-		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses, areYouSureResponses) );
+		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses));//, areYouSureResponses) );
 		
 		//increment subject's trial count
 		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
 
 	}
 
-	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<bool> rememberResponses, List<bool> areYouSureResponses){
+	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<Config_CoinTask.MemoryState> rememberResponses){//, List<bool> areYouSureResponses){
 		memoryScore = 0;
 
 		List<GameObject> CorrectPositionIndicators = new List<GameObject> ();
@@ -503,7 +503,7 @@ public class TrialController : MonoBehaviour {
 			//calculate the memory points and display them
 			exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
 
-			int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position, rememberResponses[i], areYouSureResponses[i] );
+			int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position, rememberResponses[i]);//, areYouSureResponses[i] );
 
 			//change chosen indicator color to reflect right or wrong
 			ChosenIndicatorController chosenIndicatorController = chosenPositionIndicator.GetComponent<ChosenIndicatorController>();
@@ -576,13 +576,13 @@ public class TrialController : MonoBehaviour {
 		listOfGameObjects.Clear ();
 	}
 
-	public void LogAnswerSelectorPositionChanged(bool isYesPosition){
+	public void LogAnswerSelectorPositionChanged(Config_CoinTask.MemoryState memoryState){
 		if (exp.uiController.doYouRememberUI.isPlaying) {
-			trialLogger.LogAnswerPositionMoved( isYesPosition, true );
+			trialLogger.LogAnswerPositionMoved( memoryState, true );
 		} 
-		else if (exp.uiController.areYouSureUI.isPlaying) {
+		/*else if (exp.uiController.areYouSureUI.isPlaying) {
 			trialLogger.LogAnswerPositionMoved( isYesPosition, false );
-		}
+		}*/
 	}
 
 	public IEnumerator WaitForPlayerRotationToTreasure(GameObject treasureChest){

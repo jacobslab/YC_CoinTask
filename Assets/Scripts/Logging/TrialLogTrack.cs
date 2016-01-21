@@ -77,27 +77,36 @@ public class TrialLogTrack : LogTrack {
 		Debug.Log ("DOUBLE DOWN LOGGED: " + response);
 	}
 
-	public void LogRememberResponse(bool response){
-		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "REMEMBER_RESPONSE" + separator + response);
+	public void LogRememberResponse(Config_CoinTask.MemoryState response){
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "REMEMBER_RESPONSE" + separator + response.ToString());
 		Debug.Log ("REMEMBER LOGGED: " + response);
 	}
 
 	//if the UI answer selector has moved TODO: move to an answer selector logger?
-	public void LogAnswerPositionMoved(bool isYesPosition, bool isRememberResponse){ //either remember response or double down response
+	public void LogAnswerPositionMoved(Config_CoinTask.MemoryState memoryState, bool isRememberResponse){ //either remember response or double down response
 		string answerPosition = "NO";
-		if (isYesPosition) {
-			answerPosition = "YES";
+
+		switch(memoryState){
+			case Config_CoinTask.MemoryState.yes:
+				answerPosition = "YES";
+				break;
+			case Config_CoinTask.MemoryState.maybe:
+				answerPosition = "MAYBE";
+				break;
+			case Config_CoinTask.MemoryState.no:
+				answerPosition = "NO";
+				break;
 		}
 
 		if(isRememberResponse){
 			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "REMEMBER_ANSWER_MOVEMENT" + separator + answerPosition);
 			Debug.Log ("REMEMBER MOVEMENT LOGGED: " + answerPosition);
 		}
-		else{
+		/*else{
 			//TODO: CHANGE THE "DOUBLE DOWN" TO ARE YOU SURE OR SOMETHING.
 			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "DOUBLE_DOWN_ANSWER_MOVEMENT" + separator + answerPosition);
 			Debug.Log ("DOUBLE DOWN MOVEMENT LOGGED: " + answerPosition);
-		}
+		}*/
 	}
 
 

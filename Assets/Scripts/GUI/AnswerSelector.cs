@@ -47,7 +47,7 @@ public class AnswerSelector : MonoBehaviour {
 	}
 
 	void ResetSelectorPosition(){
-		exp.trialController.LogAnswerSelectorPositionChanged (IsYesPosition ());
+		exp.trialController.LogAnswerSelectorPositionChanged (0);
 		if (positionTransforms.Length > 0) {
 			selectorVisuals.transform.position = positionTransforms[0].position;
 			currPositionIndex = 0;
@@ -69,10 +69,10 @@ public class AnswerSelector : MonoBehaviour {
 
 	void CheckForInput(){
 		//keyboard input
-		if (Input.GetKeyDown (KeyCode.RightArrow)) {
+		if (Input.GetKey (KeyCode.RightArrow)) {
 			Move (1);
 		}
-		else if (Input.GetKeyDown (KeyCode.LeftArrow)){
+		else if (Input.GetKey (KeyCode.LeftArrow)){
 			Move (-1);
 		}
 		else {
@@ -86,11 +86,14 @@ public class AnswerSelector : MonoBehaviour {
 		}
 	}
 
-	public bool IsYesPosition(){
-		if (currPositionIndex == yesIndex) {
-			return true;
+	public Config_CoinTask.MemoryState GetMemoryState(){
+		if (currPositionIndex == 0) {
+			return Config_CoinTask.MemoryState.yes;
+		} else if (currPositionIndex == 1) {
+			return Config_CoinTask.MemoryState.maybe;
+		} else {
+			return Config_CoinTask.MemoryState.no;
 		}
-		return false;
 	}
 
 	public bool IsNoPosition(){
@@ -125,20 +128,20 @@ public class AnswerSelector : MonoBehaviour {
 		selectorVisuals.transform.position = positionTransforms [currPositionIndex].position;
 
 		if (currPositionIndex != oldPositionIndex) {
-			exp.trialController.LogAnswerSelectorPositionChanged (IsYesPosition ());
+			exp.trialController.LogAnswerSelectorPositionChanged (GetMemoryState());
 		}
 
-		SetExplanationText(explanationLerpTime);
+		//SetExplanationText(explanationLerpTime);
 	}
 
-	void SetExplanationText(float colorLerpTime){
-		if(IsYesPosition()){
+	/*void SetExplanationText(float colorLerpTime){
+		if(GetMemoryState()){
 			StartCoroutine(SetYesExplanationActive(colorLerpTime));
 		}
 		else if(IsNoPosition()){
 			StartCoroutine(SetNoExplanationActive(colorLerpTime));
 		}
-	}
+	}*/
 
 	//TODO: combine these next two methods.
 	IEnumerator SetYesExplanationActive(float colorLerpTime){

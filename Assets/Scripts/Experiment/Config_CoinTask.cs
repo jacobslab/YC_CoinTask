@@ -55,6 +55,12 @@ public class Config_CoinTask : MonoBehaviour {
 	//FEEDBACK SETTINGS:
 	public static float feedbackTimeBetweenObjects = 0.5f;
 
+	public enum MemoryState{
+		yes,
+		maybe,
+		no
+	}
+
 
 	//OBJECTS
 	public static int numDefaultObjects = 4;

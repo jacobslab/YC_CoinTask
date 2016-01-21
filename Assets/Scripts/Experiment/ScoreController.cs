@@ -24,23 +24,23 @@ public class ScoreController : MonoBehaviour {
 	public static int TimeBonusBig { get { return timeBonusBig; } }
 	
 
-	static int memoryScoreRight = 100;
-	public static int MemoryScoreRight { get { return memoryScoreRight; } }
+	static int memoryScoreMaybeRight = 100;
+	public static int MemoryScoreMaybeRight { get { return memoryScoreMaybeRight; } }
 
-	static int memoryScoreWrong = -50;
-	public static int MemoryScoreWrong { get { return memoryScoreWrong; } }
+	static int memoryScoreMaybeWrong = -50;
+	public static int MemoryScoreMaybeWrong { get { return memoryScoreMaybeWrong; } }
 
-	static int memoryScoreRightNotRemembered = 50;
-	public static int MemoryScoreRightNotRemembered { get { return memoryScoreRightNotRemembered; } }
+	static int memoryScoreNoRight = 50;
+	public static int MemoryScoreNoRight { get { return memoryScoreNoRight; } }
 	
-	static int memoryScoreWrongNotRemembered = 0;
-	public static int MemoryScoreWrongNotRemembered { get { return memoryScoreWrongNotRemembered; } }
+	static int memoryScoreNoWrong = 0;
+	public static int MemoryScoreNoWrong { get { return memoryScoreNoWrong; } }
 
-	static int memoryScoreRightVerySure = 200;
-	public static int MemoryScoreRightVerySure { get { return memoryScoreRightVerySure; } }
+	static int memoryScoreYesRight = 200;
+	public static int MemoryScoreYesRight { get { return memoryScoreYesRight; } }
 
-	static int memoryScoreWrongVerySure = -350;
-	public static int MemoryScoreWrongVerySure { get { return memoryScoreWrongVerySure; } }
+	static int memoryScoreYesWrong = -350;
+	public static int MemoryScoreYesWrong { get { return memoryScoreYesWrong; } }
 
 	static int specialObjectPoints = 0;
 	public static int SpecialObjectPoints { get { return specialObjectPoints; } }
@@ -76,8 +76,8 @@ public class ScoreController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		verySureScoreExplanation.text = "win " + memoryScoreRightVerySure + "/" + "lose " + memoryScoreWrongVerySure;
-		notVerySureScoreExplanation.text = "win " + memoryScoreRight + "/" + "lose " + memoryScoreWrong;
+		verySureScoreExplanation.text = "win " + memoryScoreYesRight + "/" + "lose " + memoryScoreYesWrong;
+		notVerySureScoreExplanation.text = "win " + memoryScoreMaybeRight + "/" + "lose " + memoryScoreMaybeWrong;
 		StartCoroutine (UpdateScoreText());
 	}
 	
@@ -151,32 +151,32 @@ public class ScoreController : MonoBehaviour {
 		scoreLogger.LogTreasureOpenScoreAdded (specialObjectPoints);
 	}
 
-	public int CalculateMemoryPoints (Vector3 correctPosition, bool didRemember, bool doubledDown){
+	public int CalculateMemoryPoints (Vector3 correctPosition, Config_CoinTask.MemoryState memoryState){//, bool doubledDown){
 		int memoryPoints = 0;
 		if (exp.environmentController.myPositionSelector.GetRadiusOverlap (correctPosition)) {
-			if(!didRemember){
-				memoryPoints = memoryScoreRightNotRemembered;
-			}
-			else{
-				if(!doubledDown){
-					memoryPoints = memoryScoreRight;
-				}
-				else{
-					memoryPoints = memoryScoreRightVerySure;
-				}
+			switch(memoryState){
+				case Config_CoinTask.MemoryState.yes:
+					memoryPoints = memoryScoreYesRight;
+					break;
+				case Config_CoinTask.MemoryState.maybe:
+					memoryPoints = memoryScoreMaybeRight;
+					break;
+				case Config_CoinTask.MemoryState.no:
+					memoryPoints = memoryScoreNoRight;
+				break;
 			}
 		}
 		else{ //wrong
-			if(!didRemember){
-				memoryPoints = memoryScoreWrongNotRemembered;
-			}
-			else{
-				if(!doubledDown){
-					memoryPoints = memoryScoreWrong;
-				}
-				else{
-					memoryPoints = memoryScoreWrongVerySure;
-				}
+			switch(memoryState){
+				case Config_CoinTask.MemoryState.yes:
+					memoryPoints = memoryScoreYesWrong;
+					break;
+				case Config_CoinTask.MemoryState.maybe:
+					memoryPoints = memoryScoreMaybeWrong;
+					break;
+				case Config_CoinTask.MemoryState.no:
+					memoryPoints = memoryScoreNoWrong;
+				break;
 			}
 		}
 
