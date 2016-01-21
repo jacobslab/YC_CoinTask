@@ -34,15 +34,16 @@ public class AnswerSelector : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (shouldCheckForInput) {
-			CheckForInput();
-		}
+
 	}
 
 	public void SetShouldCheckForInput(bool shouldCheck){
 		shouldCheckForInput = shouldCheck;
 		if (shouldCheck) {
 			ResetSelectorPosition ();
+			StartCoroutine (GetSelectionInput ());
+		} else {
+			StopCoroutine (GetSelectionInput ());
 		}
 	}
 
@@ -67,22 +68,43 @@ public class AnswerSelector : MonoBehaviour {
 		}
 	}
 
-	void CheckForInput(){
-		//keyboard input
-		if (Input.GetKey (KeyCode.RightArrow)) {
-			Move (1);
-		}
-		else if (Input.GetKey (KeyCode.LeftArrow)){
-			Move (-1);
-		}
-		else {
-			//joystick input
-			if (Input.GetAxis ("Horizontal") > 0.3f) {
-				Move(1);
+
+	//MODIFIED FROM BOXSWAPPER.CS
+	IEnumerator GetSelectionInput(){
+		bool isInput = false;
+		float delayTime = 0.3f;
+		float currDelayTime = 0.0f;
+
+		while (true) {
+
+			if (!isInput) {
+				float horizAxisInput = Input.GetAxis ("Horizontal");
+				if (horizAxisInput > 0) {
+					Move (1);
+					isInput = true;
+				} 
+				else if (horizAxisInput < 0) {
+					Move (-1);
+					isInput = true;
+				} 
+				else if (horizAxisInput == 0) {
+					isInput = false;
+				}
+				
 			}
-			else if (Input.GetAxis ("Horizontal") < -0.3f){
-				Move (-1);
+			
+			else{
+				if(currDelayTime < delayTime){
+					currDelayTime += Time.deltaTime;
+				}
+				else{
+					currDelayTime = 0.0f;
+					isInput = false;
+				}
+				
 			}
+			
+			yield return 0;
 		}
 	}
 

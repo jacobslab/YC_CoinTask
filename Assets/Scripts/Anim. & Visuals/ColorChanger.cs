@@ -23,7 +23,7 @@ public class ColorChanger : MonoBehaviour {
 
 		float currentTime = 0.0f;
 
-		float timeMult = 1.0f / time;
+ 		float timeMult = 1.0f / time;
 
 		Color origColor = new Color ();
 

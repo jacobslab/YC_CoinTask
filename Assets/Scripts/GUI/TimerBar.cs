@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class TimerBar : MonoBehaviour {
 
+	public Text LowOnTimeText;
+
 	public SimpleTimer myTimer;
 
 	public RectTransform topBar;
@@ -75,15 +77,31 @@ public class TimerBar : MonoBehaviour {
 				if(timeState != TimeState.maxTime){
 					SetState(TimeState.maxTime, bottomMidBonusUI.GetComponentInChildren<Text> ().text, bottomMidBonusUI.position);
 				}
+				EnableLowTimeText();
 				MoveBar (bottomBar, 2);
 			}
 			else{
 				if(timeState != TimeState.overTime){
+					LowOnTimeText.text = "OUT OF TIME.";
 					SetState(TimeState.overTime, bottomBonusUI.GetComponentInChildren<Text> ().text, bottomBonusUI.position);
 				}
 			}
 
-		} 
+		}
+		else{
+			DisableLowTimeText();
+		}
+	}
+
+	void EnableLowTimeText(){
+		LowOnTimeText.enabled = true;
+		LowOnTimeText.text = "LOW ON TIME!";
+		StartCoroutine(LowOnTimeText.GetComponent<TextUIColorCycler>().CycleColors());
+	}
+
+	void DisableLowTimeText(){
+		StopCoroutine(LowOnTimeText.GetComponent<TextUIColorCycler>().CycleColors());
+		LowOnTimeText.enabled = false;
 	}
 
 	void SetState(TimeState newState, string newBonusText, Vector3 indicatorPosition){
@@ -103,6 +121,9 @@ public class TimerBar : MonoBehaviour {
 	}
 
 	void Reset(){
+
+		DisableLowTimeText ();
+
 		timeState = TimeState.none;
 
 		indicator.position = topBonusUI.position;
