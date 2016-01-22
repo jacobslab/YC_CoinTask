@@ -50,6 +50,15 @@ public class SpawnableObject : MonoBehaviour {
 		return name;
 	}
 
+	
+	public string GetName(GameObject obj){
+		string name = obj.name;
+		name = Regex.Replace( name, "(Clone)", "" );
+		name = Regex.Replace( name, "[()]", "" );
+		
+		return name;
+	}
+
 	public string GetNameNoID(){
 		//separate out the object name from a numeric ID
 		Regex numAlpha = new Regex("(?<Alpha>[a-zA-Z ]*)(?<Numeric>[0-9]*)");
@@ -61,7 +70,8 @@ public class SpawnableObject : MonoBehaviour {
 	}
 
 	//should be set when spawned by the ObjectController
-	public void SetNameID(int ID){
+	//AVOID THIS METHOD IF THERE ARE TOO MANY CHILDREN -- RECURSIVE.
+	public void SetNameID(Transform t, int ID){
 		if (ID < 10) {
 			IDstring = "00" + ID; 
 		}
@@ -72,13 +82,12 @@ public class SpawnableObject : MonoBehaviour {
 			IDstring = ID.ToString(); 
 		}
 
-		gameObject.name = GetName () + IDstring;
+		t.name = GetName (t.gameObject) + IDstring;
 
-		//set the first layer of children...
-		//TODO: do this recursively.
-		//...in case one of the children gets logged or something!
-		for (int i = 0; i < transform.childCount; i++) {
-			transform.GetChild (i).name += IDstring;
+
+		foreach( Transform child in t )
+		{
+			SetNameID( child.transform, ID );
 		}
 	}
 

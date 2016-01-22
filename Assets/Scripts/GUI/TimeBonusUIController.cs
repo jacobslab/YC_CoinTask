@@ -31,7 +31,7 @@ public class TimeBonusUIController : MonoBehaviour {
 
 	int minTimeBonusTime { get { return ScoreController.TimeBonusTimeMin; } }
 	int medTimeBonusTime { get { return ScoreController.TimeBonusTimeMed; } }
-	int maxTimeBonusTime { get { return ScoreController.TimeBonusTimeBig; } }
+	//int maxTimeBonusTime { get { return ScoreController.TimeBonusTimeBig; } }
 
 
 	enum TimeState {
@@ -80,13 +80,13 @@ public class TimeBonusUIController : MonoBehaviour {
 				StartCoroutine (LerpPanelColor (timeLessThanPanel, timeLessThanPanel.color, panelColor2, colorLerpTime));
 				StartCoroutine (LerpTextColor (timeBonusText, timeBonusText.color, timeBonusTextColor2, colorLerpTime));
 			}
-		} else if (seconds < maxTimeBonusTime) {
+/*		} else if (seconds < maxTimeBonusTime) {
 			if (timeState != TimeState.maxTime) {
 				timeState = TimeState.maxTime;
 				StartCoroutine (LerpPanelColor (timeLessThanPanel, timeLessThanPanel.color, panelColor3, colorLerpTime));
 				StartCoroutine (LerpTextColor (timeBonusText, timeBonusText.color, timeBonusTextColor3, colorLerpTime));
-			}
-		} else if (seconds >= maxTimeBonusTime) {
+			}*/
+		} else if (seconds >= medTimeBonusTime) {
 			if (timeState != TimeState.overTime) {
 				timeState = TimeState.overTime;
 				StartCoroutine (LerpPanelColor (timeLessThanPanel, timeLessThanPanel.color, panelColor0, colorLerpTime));
@@ -141,13 +141,13 @@ public class TimeBonusUIController : MonoBehaviour {
 			timeLessThanText.text += medTimeBonusTime;
 			timeBonusText.text += ScoreController.TimeBonusMed;
 		}
-		else if (seconds < maxTimeBonusTime) {
+		/*else if (seconds < maxTimeBonusTime) {
 			timeLessThanText.text += maxTimeBonusTime;
 			timeBonusText.text += ScoreController.TimeBonusSmall;
-		}
+		}*/
 		else {
 			timeLessThanText.text = ">";
-			timeLessThanText.text += maxTimeBonusTime;
+			timeLessThanText.text += medTimeBonusTime;
 			timeBonusText.text += "0";
 		}
 

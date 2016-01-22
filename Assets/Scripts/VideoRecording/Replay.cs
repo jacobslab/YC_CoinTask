@@ -263,7 +263,7 @@ public class Replay : MonoBehaviour {
 											int numOnes = int.Parse(splitNum[2].ToString());
 											int objIDint = (numHundreds*100) + (numTens*10) + numOnes;
 
-											objInSceneSpawnable.SetNameID(objIDint);
+											objInSceneSpawnable.SetNameID(objInScene.transform, objIDint);
 										}
 
 										objsInSceneDict.Add(objName, objInScene);

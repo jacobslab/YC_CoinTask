@@ -116,7 +116,7 @@ public class ObjectController : MonoBehaviour {
 		GameObject newObj = Instantiate(DefaultObject, objPos, DefaultObject.transform.rotation) as GameObject;
 		
 		SpawnableObject newSpawnableObj = newObj.GetComponent<SpawnableObject>();
-		newSpawnableObj.SetNameID(index);
+		newSpawnableObj.SetNameID(newObj.transform, index);
 		
 		if( specialPositions.Contains(positionXZ) ){
 			newObj.tag = "DefaultSpecialObject";

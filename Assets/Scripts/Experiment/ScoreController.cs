@@ -20,23 +20,23 @@ public class ScoreController : MonoBehaviour {
 	static int timeBonusTimeMin = 22;
 	public static int TimeBonusTimeMin { get { return timeBonusTimeMin; } }
 	
-	static int timeBonusTimeMed = 37;
+	static int timeBonusTimeMed = 44;
 	public static int TimeBonusTimeMed { get { return timeBonusTimeMed; } }
 	
-	static int timeBonusTimeMax = 52;
-	public static int TimeBonusTimeBig { get { return timeBonusTimeMax; } }
+	//static int timeBonusTimeMax = 52;
+	//public static int TimeBonusTimeBig { get { return timeBonusTimeMax; } }
 
 
 
 
 	//SCORE VARIABLES -- don't want anyone to change them, so make public getters, no setters.
-	static int timeBonusSmall = 100;
-	public static int TimeBonusSmall { get { return timeBonusSmall; } }
+	//static int timeBonusSmall = 100;
+	//public static int TimeBonusSmall { get { return timeBonusSmall; } }
 
-	static int timeBonusMed = 200;
+	static int timeBonusMed = 100;
 	public static int TimeBonusMed { get { return timeBonusMed; } }
 
-	static int timeBonusBig = 300;
+	static int timeBonusBig = 200;
 	public static int TimeBonusBig { get { return timeBonusBig; } }
 	
 
@@ -199,9 +199,9 @@ public class ScoreController : MonoBehaviour {
 		else if (secondsToCompleteTrial < timeBonusTimeMed) {
 			timeBonusScore = timeBonusMed;
 		} 
-		else if (secondsToCompleteTrial < timeBonusTimeMax) {
-			timeBonusScore = timeBonusSmall;
-		} 
+		//else if (secondsToCompleteTrial < timeBonusTimeMax) {
+		//	timeBonusScore = timeBonusSmall;
+		//} 
 
 		AddToScore (timeBonusScore);
 		scoreLogger.LogTimeBonusAdded (timeBonusScore);

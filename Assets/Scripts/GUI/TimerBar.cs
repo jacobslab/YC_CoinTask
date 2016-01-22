@@ -10,13 +10,13 @@ public class TimerBar : MonoBehaviour {
 
 	public RectTransform topBar;
 	public RectTransform midBar;
-	public RectTransform bottomBar;
+	//public RectTransform bottomBar;
 
 	public RectTransform indicator;
 	public RectTransform topBonusUI;
 	public RectTransform topMidBonusUI;
 	public RectTransform bottomMidBonusUI;
-	public RectTransform bottomBonusUI;
+	//public RectTransform bottomBonusUI;
 
 
 	Vector3[] barPositions;
@@ -39,20 +39,20 @@ public class TimerBar : MonoBehaviour {
 
 		myTimer.myResetDelegate += Reset;
 
-		barPositions = new Vector3[3];
+		barPositions = new Vector3[2];
 		barPositions [0] = topBar.position;
 		barPositions [1] = midBar.position;
-		barPositions [2] = bottomBar.position;
+		//barPositions [2] = bottomBar.position;
 
-		barWidths = new float[3];
+		barWidths = new float[2];
 		barWidths [0] = topBar.rect.width;
 		barWidths [1] = midBar.rect.width;
-		barWidths [2] = bottomBar.rect.width;
+		//barWidths [2] = bottomBar.rect.width;
 
-		barTimes = new float[3];
+		barTimes = new float[2];
 		barTimes [0] = ScoreController.TimeBonusTimeMin;
 		barTimes [1] = ScoreController.TimeBonusTimeMed - ScoreController.TimeBonusTimeMin;
-		barTimes [2] = ScoreController.TimeBonusTimeBig - ScoreController.TimeBonusTimeMed;
+		//barTimes [2] = ScoreController.TimeBonusTimeBig - ScoreController.TimeBonusTimeMed;
 
 		Reset ();
 	}
@@ -72,17 +72,19 @@ public class TimerBar : MonoBehaviour {
 					SetState(TimeState.medTime, topMidBonusUI.GetComponentInChildren<Text> ().text, topMidBonusUI.position);
 				}
 				MoveBar (midBar, 1);
+				EnableLowTimeText();
 			} 
-			else if (myTimer.GetSecondsInt () < ScoreController.TimeBonusTimeBig) { //make bottom bar smaller
+			/*else if (myTimer.GetSecondsInt () < ScoreController.TimeBonusTimeBig) { //make bottom bar smaller
 				if(timeState != TimeState.maxTime){
 					SetState(TimeState.maxTime, bottomMidBonusUI.GetComponentInChildren<Text> ().text, bottomMidBonusUI.position);
 				}
 				EnableLowTimeText();
 				MoveBar (bottomBar, 2);
-			}
+			}*/
 			else{
 				if(timeState != TimeState.overTime){
-					SetState(TimeState.overTime, bottomBonusUI.GetComponentInChildren<Text> ().text, bottomBonusUI.position);
+					//SetState(TimeState.overTime, bottomBonusUI.GetComponentInChildren<Text> ().text, bottomBonusUI.position);
+					SetState(TimeState.overTime, bottomMidBonusUI.GetComponentInChildren<Text> ().text, bottomMidBonusUI.position);
 				}
 			}
 
@@ -126,7 +128,7 @@ public class TimerBar : MonoBehaviour {
 
 		topBar.position = barPositions [0];
 		midBar.position = barPositions [1];
-		bottomBar.position = barPositions [2];
+		//bottomBar.position = barPositions [2];
 
 	}
 

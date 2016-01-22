@@ -484,7 +484,7 @@ public class TrialController : MonoBehaviour {
 			float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;
 			Vector3 correctPosition = new Vector3 (specialObj.transform.position.x, indicatorHeight, specialObj.transform.position.z);
 			GameObject correctPositionIndicator = Instantiate( exp.environmentController.myPositionSelector.CorrectPositionIndicator, correctPosition, exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.rotation) as GameObject;
-			correctPositionIndicator.GetComponent<SpawnableObject>().SetNameID(i);
+			correctPositionIndicator.GetComponent<SpawnableObject>().SetNameID(correctPositionIndicator.transform, i);
 			CorrectPositionIndicators.Add(correctPositionIndicator); 
 
 			//create an indicator for each chosen position
@@ -494,7 +494,7 @@ public class TrialController : MonoBehaviour {
 			Vector3 chosenIndicatorPosition = new Vector3(chosenPosition.x, chosenIndicatorHeight, chosenPosition.z);
 			GameObject chosenPositionIndicator = Instantiate (exp.environmentController.myPositionSelector.PositionSelectorVisuals, chosenIndicatorPosition, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.rotation) as GameObject;
 
-			chosenPositionIndicator.GetComponent<SpawnableObject>().SetNameID(i);
+			chosenPositionIndicator.GetComponent<SpawnableObject>().SetNameID(chosenPositionIndicator.transform, i);
 			chosenPositionIndicator.GetComponent<VisibilityToggler>().TurnVisible(true);
 
 
