@@ -83,7 +83,10 @@ public class Config_CoinTask : MonoBehaviour {
 			"\n\nUse the joystick to control your movement." + 
 			"\n\nDrive into treasure chests to open them. Remember where each object is located!";
 
-	public static string initialInstructions2 = "TIPS FOR MAXIMIZING YOUR SCORE" + 
+	public static string initialInstructions2 = "When you are asked about if you remember an object, you will can answer [ YES ], [ MAYBE ], or [ NO ]." +
+		"\n\nIf you get the location correct, you will gain points, and if you get it wrong, you may lose points, depending on which answer you chose.";
+
+	public static string initialInstructions3 = "TIPS FOR MAXIMIZING YOUR SCORE" + 
 		"\n\nGet a time bonus by driving to the chests quickly." + 
 			"\n\nIf you are more than 50% sure of an object's location, you should say you remember." + 
 			"\n\nIf you say you are very sure, you should be at least 75% accurate." + 

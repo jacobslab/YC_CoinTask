@@ -12,9 +12,14 @@ public class AnswerSelector : MonoBehaviour {
 	public Transform[] positionTransforms; //should be put in order of left to right
 	public GameObject selectorVisuals;
 	public ColorChanger yesExplanationColorChanger;
+	public ColorChanger maybeExplanationColorChanger;
 	public ColorChanger noExplanationColorChanger;
-	public TextMesh yesExplanationText;
-	public TextMesh noExplanationText;
+	//public TextMesh yesExplanationText;
+	//public TextMesh maybeExplanationText;
+	//public TextMesh noExplanationText;
+
+	public Color selectedColor;
+	public Color deselectedColor;
 
 	float explanationLerpTime = 0.2f;
 	float resetExplanationLerpTime = 0.0f;
@@ -22,8 +27,6 @@ public class AnswerSelector : MonoBehaviour {
 	public AudioSource selectionSwitchAudio;
 
 	int currPositionIndex = 0;
-	//int yesIndex = 0;
-	//int noIndex = 1;
 
 	void Awake(){
 
@@ -65,6 +68,7 @@ public class AnswerSelector : MonoBehaviour {
 				StartCoroutine(selectorVisuals.GetComponent<TextMeshColorCycler>().CycleColors());
 			}
 		}
+		SetExplanationColors ();
 		//ResetExplanationText ();
 	}
 
@@ -151,6 +155,8 @@ public class AnswerSelector : MonoBehaviour {
 		//play audio if the selector moved
 		if (isMoved) {
 			AudioController.PlayAudio(selectionSwitchAudio);
+
+			SetExplanationColors();
 		}
 
 		//TODO: make nice smooth movement with a coroutine.
@@ -161,6 +167,30 @@ public class AnswerSelector : MonoBehaviour {
 		}
 
 		//SetExplanationText(explanationLerpTime);
+	}
+
+	void SetExplanationColors(){
+		float lerpTime = 0.5f;
+
+		switch(currPositionIndex){
+		case 0:
+			StartCoroutine(yesExplanationColorChanger.LerpChangeColor(selectedColor, lerpTime));
+			StartCoroutine(maybeExplanationColorChanger.LerpChangeColor(deselectedColor, lerpTime));
+			StartCoroutine(noExplanationColorChanger.LerpChangeColor(deselectedColor, lerpTime));
+			break;
+			
+		case 1:
+			StartCoroutine(yesExplanationColorChanger.LerpChangeColor(deselectedColor, lerpTime));
+			StartCoroutine(maybeExplanationColorChanger.LerpChangeColor(selectedColor, lerpTime));
+			StartCoroutine(noExplanationColorChanger.LerpChangeColor(deselectedColor, lerpTime));
+			break;
+			
+		case 2:
+			StartCoroutine(yesExplanationColorChanger.LerpChangeColor(deselectedColor, lerpTime));
+			StartCoroutine(maybeExplanationColorChanger.LerpChangeColor(deselectedColor, lerpTime));
+			StartCoroutine(noExplanationColorChanger.LerpChangeColor(selectedColor, lerpTime));
+			break;
+		}
 	}
 
 	/*void SetExplanationText(float colorLerpTime){
