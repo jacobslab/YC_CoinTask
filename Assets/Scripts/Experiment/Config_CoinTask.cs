@@ -83,14 +83,18 @@ public class Config_CoinTask : MonoBehaviour {
 			"\n\nUse the joystick to control your movement." + 
 			"\n\nDrive into treasure chests to open them. Remember where each object is located!";
 
-	public static string initialInstructions2 = "When you are asked about if you remember an object, you will can answer [ YES ], [ MAYBE ], or [ NO ]." +
-		"\n\nIf you get the location correct, you will gain points, and if you get it wrong, you may lose points, depending on which answer you chose.";
+	public static string initialInstructions2 = "When you are asked about remembering an object's location, you must answer [ YES ], [ MAYBE ], or [ NO ], and choose a location." +
+			"\n\nYou will win points for correct locations and you will lose points for incorrect locations.";
 
 	public static string initialInstructions3 = "TIPS FOR MAXIMIZING YOUR SCORE" + 
-		"\n\nGet a time bonus by driving to the chests quickly." + 
-			"\n\nIf you are more than 50% sure of an object's location, you should say you remember." + 
+		"\n\nGet a time bonus by driving to the chests quickly." +
+		"\n\nIf you are more than 75% sure, you should select [YES]." +
+		"\n\nIf you are at least 50% sure, you should select [MAYBE]." +
+		"\n\nOtherwise, should should select [NO]." +
+		"\n\nPress (X) to begin!";
+		/*	"\n\nIf you are more than 50% sure of an object's location, you should say you remember." + 
 			"\n\nIf you say you are very sure, you should be at least 75% accurate." + 
-			"\n\nPress (X) to begin!";
+			"\n\nPress (X) to begin!";*/
 	
 	public static float minInitialInstructionsTime = 0.0f; //TODO: change back to 5.0f
 	public static float minDefaultInstructionTime = 0.0f; //time each learning trial instruction should be displayed for
