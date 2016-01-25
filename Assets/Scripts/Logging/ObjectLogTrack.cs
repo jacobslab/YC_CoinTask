@@ -2,6 +2,13 @@ using UnityEngine;
 using System.Collections;
 
 public class ObjectLogTrack : LogTrack {
+
+	public bool ShouldLogPosition = true;
+	public bool ShouldLogRotation = true;
+	public bool ShouldLogScale = true;
+
+
+
 	SpawnableObject spawnableObject;
 	VisibilityToggler visibilityToggler;
 	string nameToLog { get { return GetNameToLog (); } }
@@ -68,18 +75,24 @@ public class ObjectLogTrack : LogTrack {
 	}
 
 	void LogPosition(){
-		lastPosition = transform.position;
-		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "POSITION" + separator + transform.position.x + separator + transform.position.y + separator + transform.position.z);
+		if (ShouldLogPosition) {
+			lastPosition = transform.position;
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), nameToLog + separator + "POSITION" + separator + transform.position.x + separator + transform.position.y + separator + transform.position.z);
+		}
 	}
 	
 	void LogRotation(){
-		lastRotation = transform.rotation;
-		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "ROTATION" + separator + transform.rotation.eulerAngles.x + separator + transform.rotation.eulerAngles.y + separator + transform.rotation.eulerAngles.z);
+		if (ShouldLogRotation) {
+			lastRotation = transform.rotation;
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), nameToLog + separator + "ROTATION" + separator + transform.rotation.eulerAngles.x + separator + transform.rotation.eulerAngles.y + separator + transform.rotation.eulerAngles.z);
+		}
 	}
 
 	void LogScale(){
-		lastScale = transform.localScale;
-		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "SCALE" + separator + transform.localScale.x + separator + transform.localScale.y + separator + transform.localScale.z);
+		if (ShouldLogScale) {
+			lastScale = transform.localScale;
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), nameToLog + separator + "SCALE" + separator + transform.localScale.x + separator + transform.localScale.y + separator + transform.localScale.z);
+		}
 	}
 	
 	void LogVisibility(){

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class TimerBar : MonoBehaviour {
 
-	public Text LowOnTimeText;
+	public CanvasGroup HurryUpText;
 
 	public SimpleTimer myTimer;
 
@@ -90,16 +90,18 @@ public class TimerBar : MonoBehaviour {
 
 		}
 		else{
-			DisableLowTimeText();
+			if(!ExperimentSettings_CoinTask.isReplay){
+				DisableLowTimeText();
+			}
 		}
 	}
 
 	void EnableLowTimeText(){
-		LowOnTimeText.enabled = true;
+		HurryUpText.alpha = 1.0f;
 	}
 
 	void DisableLowTimeText(){
-		LowOnTimeText.enabled = false;
+		HurryUpText.alpha = 0.0f;
 	}
 
 	void SetState(TimeState newState, string newBonusText, Vector3 indicatorPosition){
