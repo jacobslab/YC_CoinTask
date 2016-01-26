@@ -29,7 +29,7 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 	}
 
 	void Start(){
-		PointsScoredText.name += GetComponent<SpawnableObject> ().IDstring; //if it has an ID, it can log itself and be replayed when there are multiple correct position indicators in the scene at once.
+
 	}
 	
 	// Update is called once per frame

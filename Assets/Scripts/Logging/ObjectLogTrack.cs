@@ -112,16 +112,6 @@ public class ObjectLogTrack : LogTrack {
 		}
 	}
 
-	void LogDestroy(){
-		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), nameToLog + separator + "DESTROYED");
-	}
-
-	void OnDestroy(){
-		if (ExperimentSettings_CoinTask.isLogging) {
-			LogDestroy();
-		}
-	}
-
 	string GetNameToLog(){
 		string name = gameObject.name;
 		if (spawnableObject) {

@@ -70,7 +70,7 @@ public class SpawnableObject : MonoBehaviour {
 	}
 
 	//should be set when spawned by the ObjectController
-	//AVOID THIS METHOD IF THERE ARE TOO MANY CHILDREN -- RECURSIVE.
+	//MAYBE AVOID THIS METHOD IF THERE ARE TOO MANY CHILDREN -- RECURSIVE.
 	public void SetNameID(Transform t, int ID){
 		if (ID < 10) {
 			IDstring = "00" + ID; 
@@ -88,6 +88,7 @@ public class SpawnableObject : MonoBehaviour {
 		foreach( Transform child in t )
 		{
 			SetNameID( child.transform, ID );
+			//child.name = child.name + IDstring;
 		}
 	}
 

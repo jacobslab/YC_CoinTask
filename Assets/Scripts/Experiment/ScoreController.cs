@@ -80,9 +80,9 @@ public class ScoreController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		yesScoreExplanation.text = "win " + memoryScoreYesRight + "/" + "lose " + memoryScoreYesWrong;
-		maybeScoreExplanation.text = "win " + memoryScoreMaybeRight + "/" + "lose " + memoryScoreMaybeWrong;
-		noScoreExplanation.text = "win " + memoryScoreNoRight + "/" + "lose " + memoryScoreNoWrong;
+		//yesScoreExplanation.text = "win " + memoryScoreYesRight + "/" + "lose " + memoryScoreYesWrong;
+		//maybeScoreExplanation.text = "win " + memoryScoreMaybeRight + "/" + "lose " + memoryScoreMaybeWrong;
+		//noScoreExplanation.text = "win " + memoryScoreNoRight + "/" + "lose " + memoryScoreNoWrong;
 		StartCoroutine (UpdateScoreText());
 	}
 	
