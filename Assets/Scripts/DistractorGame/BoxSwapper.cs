@@ -25,13 +25,18 @@ public class BoxSwapper : MonoBehaviour {
 	public GameObject[] boxes; //BE THREE BOXES PLEASE.
 	public Transform[] boxStartPositions;
 
-	float startBoxHeight = 2.0f;
+	float boxScale = 1.0f; // set in start
+	float startBoxHeightMult = 2.0f;
+
 
 	float raiseAndLowerTime = 0.75f;
 
 
 	// Use this for initialization
 	void Start () {
+		//Set box scale
+		boxScale = boxes [0].transform.parent.localScale.y;
+
 		boxSelectorVisualsOrigRot = boxSelectorVisuals.transform.rotation;
 	}
 
@@ -46,9 +51,9 @@ public class BoxSwapper : MonoBehaviour {
 	}
 
 	void InitBoxPositions(){
-		boxes[0].transform.position = boxStartPositions[0].position + Vector3.up*startBoxHeight;
-		boxes[1].transform.position = boxStartPositions[1].position + Vector3.up*startBoxHeight;
-		boxes[2].transform.position = boxStartPositions[2].position + Vector3.up*startBoxHeight;
+		boxes[0].transform.position = boxStartPositions[0].position + Vector3.up*startBoxHeightMult*boxScale;
+		boxes[1].transform.position = boxStartPositions[1].position + Vector3.up*startBoxHeightMult*boxScale;
+		boxes[2].transform.position = boxStartPositions[2].position + Vector3.up*startBoxHeightMult*boxScale;
 
 		boxes [0].GetComponent<BoxMover> ().SetBoxLocationIndex(0);
 		boxes [1].GetComponent<BoxMover> ().SetBoxLocationIndex(1);
@@ -64,7 +69,7 @@ public class BoxSwapper : MonoBehaviour {
 	public IEnumerator RaiseOrLowerBoxes(int direction, bool initBoxPositions){
 		float currTime = 0.0f;
 		
-		float moveAmount = (direction*startBoxHeight) / raiseAndLowerTime;
+		float moveAmount = (direction*startBoxHeightMult*boxScale) / raiseAndLowerTime;
 		
 		while(currTime < raiseAndLowerTime){
 			currTime += Time.deltaTime;
