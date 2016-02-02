@@ -3,6 +3,7 @@ using System.Collections;
 
 //Default item, aka a treasure chest.
 public class DefaultItem : MonoBehaviour {
+	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
 	//opening variables
 	public Transform pivotA;
@@ -23,6 +24,27 @@ public class DefaultItem : MonoBehaviour {
 	bool shouldDie = false;
 
 	public TextMesh specialObjectText;
+
+	void Awake(){
+		InitTreasureState ();
+	}
+
+	void InitTreasureState(){
+		switch (exp.trialController.NumDefaultObjectsCollected) {
+		case 0:
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_1, true);
+			break;
+		case 1:
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_2, true);
+			break;
+		case 2:
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_3, true);
+			break;
+		case 3:
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_4, true);
+			break;
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -119,6 +141,8 @@ public class DefaultItem : MonoBehaviour {
 	//open. most likely a treasure chest. could also be something like a giftbox.
 	public IEnumerator Open(GameObject opener){
 
+		TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN, true);
+
 		float distOpenerToPivotA = (pivotA.position - opener.transform.position).magnitude;
 		float distOpenerToPivotB = (pivotB.position - opener.transform.position).magnitude;
 		
@@ -167,5 +191,27 @@ public class DefaultItem : MonoBehaviour {
 			return true;
 		}
 		return false;
+	}
+
+	void OnDestroy(){
+		EndTreasureState ();
+	}
+
+	void EndTreasureState(){
+		TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN, false);
+		switch (exp.trialController.NumDefaultObjectsCollected) {
+		case 0:
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_1, false);
+			break;
+		case 1:
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_2, false);
+			break;
+		case 2:
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_3, false);
+			break;
+		case 3:
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_4, false);
+			break;
+		}
 	}
 }

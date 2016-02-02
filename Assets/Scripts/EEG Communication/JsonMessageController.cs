@@ -86,7 +86,7 @@ public class JsonMessageController : MonoBehaviour {
 		return jsonEventString;
 	}
 
-	public static string FormatJSONSessionEvent(long time, string sessionNum, string sessionType){
+	public static string FormatJSONSessionEvent(long time, int sessionNum, string sessionType){
 		StringBuilder sb = new StringBuilder();
 		JsonWriter writer = new JsonWriter(sb);
 
@@ -150,7 +150,7 @@ public class JsonMessageController : MonoBehaviour {
 		return sb.ToString ();
 	}
 
-	public static string FormatJSONStateEvent(long time, string stateName, string boolValue){
+	public static string FormatJSONStateEvent(long time, string stateName, bool boolValue){
 		StringBuilder sb = new StringBuilder();
 		JsonWriter writer = new JsonWriter(sb);
 		
@@ -160,7 +160,7 @@ public class JsonMessageController : MonoBehaviour {
 		//data object content
 		writer.WriteObjectStart();
 		
-		writer.WritePropertyName("statename");
+		writer.WritePropertyName("name");
 		writer.Write(stateName);
 		
 		writer.WritePropertyName("value");

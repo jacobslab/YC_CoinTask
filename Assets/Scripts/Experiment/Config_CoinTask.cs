@@ -13,8 +13,11 @@ public class Config_CoinTask : MonoBehaviour {
 		FMRI_001	
 	}
 
-	public static Version BuildVersion = Version.TH2;
-	public static float VersionNumber = 2.02f;
+	public static Version BuildVersion = Version.TH3;
+	public static float VersionNumber = 2.03f;
+
+	public static bool isSyncbox = false;
+	public static bool isSystem2 = true;
 
 	//REPLAY
 	public static int replayPadding = 6;
@@ -29,10 +32,10 @@ public class Config_CoinTask : MonoBehaviour {
 	public static Vector3 boxAcceleration = Physics.gravity * 3.0f;
 
 	//stimulation variables
-	public static bool shouldDoStim;	//TODO
+	/*public static bool shouldDoStim;	//TODO
 	public static int stimFrequency;	//TODO
 	public static float stimDuration;	//TODO
-	public static bool shouldDoBreak;	//TODO
+	public static bool shouldDoBreak;	//TODO*/
 	
 	//test session variables
 	//doTestSession (not implemented in the panda3d version )

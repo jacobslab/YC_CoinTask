@@ -32,13 +32,6 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public Toggle oculusToggle; //only exists in main menu -- make sure to null check
 	public Toggle loggingToggle; //only exists in main menu -- make sure to null check
 
-	//EEG, STIM/SYNC TOGGLES
-	public static bool isSystem2 = false;
-	public static bool isSyncbox = false;
-
-	public Toggle system2Toggle;
-	public Toggle syncboxToggle;
-
 
 	public InputField NumTreasureChestsInputField; //Frames Per Second
 
@@ -46,7 +39,10 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public bool isPilot { get { return GetIsPilot (); } }
 
 
-	public static string defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/TH1/";
+	public static string defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM2.0/data";
+	string TH1Folder = "/TH1/";
+	string TH2Folder = "/TH2/";
+	string TH3Folder = "/TH3/";
 	public Text defaultLoggingPathDisplay;
 	public InputField loggingPathInputField;
 
@@ -68,20 +64,54 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		}
 		_instance = this;
 
+		InitLoggingPath ();
+		InitMainMenuLabels ();
+
+	}
+
+	void InitLoggingPath(){
+
 		if(Directory.Exists(defaultLoggingPath)){
-			defaultLoggingPathDisplay.text = defaultLoggingPath;
+			if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH1) {
+				defaultLoggingPath += TH1Folder;
+			} 
+			else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH2) {
+				defaultLoggingPath += TH2Folder;
+			}
+			else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH3) {
+				defaultLoggingPath += TH3Folder;
+			}
+
+			if(!Directory.Exists(defaultLoggingPath)){ //if that TH folder doesn't exist, make it!
+				Directory.CreateDirectory(defaultLoggingPath);
+			}
 		}
 		else{
 			defaultLoggingPath = "TextFiles/";
-			defaultLoggingPathDisplay.text = defaultLoggingPath;
 		}
 
+		defaultLoggingPathDisplay.text = defaultLoggingPath;
 	}
+
+
+	public Text ExpNameVersion;
+	public Text BuildType;
+	void InitMainMenuLabels(){
+		ExpNameVersion.text = Config_CoinTask.BuildVersion.ToString () + "/" + Config_CoinTask.VersionNumber;
+		if (Config_CoinTask.isSyncbox) {
+			BuildType.text = "Sync Box";
+		}
+		else if (Config_CoinTask.isSystem2){
+			BuildType.text = "System 2";
+		}
+		else{
+			BuildType.text = "Demo";
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
 		SetOculus();
-		//SetSystem2();
-		//SetSyncBox();
 	}
 	
 	// Update is called once per frame
@@ -134,20 +164,8 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	}
 
 	public void SetOculus(){
-		if(oculusToggle){
+		if (oculusToggle) {
 			isOculus = oculusToggle.isOn;
-		}
-	}
-
-	public void SetSystem2(){
-		if(system2Toggle){
-			isSystem2 = system2Toggle.isOn;
-		}
-	}
-
-	public void SetSyncBox(){
-		if(syncboxToggle){
-			isSyncbox = syncboxToggle.isOn;
 		}
 	}
 	

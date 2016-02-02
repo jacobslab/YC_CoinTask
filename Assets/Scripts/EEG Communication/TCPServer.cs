@@ -50,7 +50,7 @@ public class TCPServer : MonoBehaviour {
 	}
 
 	void Start(){
-		if(ExperimentSettings_CoinTask.isSystem2){
+		if(Config_CoinTask.isSystem2){
 			RunServer ();
 		}
 	}
@@ -68,7 +68,7 @@ public class TCPServer : MonoBehaviour {
 	IEnumerator SendPhase(bool value){
 		yield return new WaitForSeconds(TCP_Config.numSecondsBeforeAlignment);
 		while(true){
-			myServer.SendStateEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.STATE, "ENCODING", value);
+			myServer.SendStateEvent(GameClock.SystemTime_Milliseconds, "ENCODING", value);
 			yield return new WaitForSeconds(10.0f);
 		}
 	}
@@ -100,6 +100,14 @@ public class TCPServer : MonoBehaviour {
 
 	public void Log(long time, TCP_Config.EventType eventType){
 		exp.eegLog.Log(time, exp.eegLog.GetFrameCount(), eventType.ToString());
+	}
+
+	public void SetState(TCP_Config.DefineStates state, bool isEnabled){
+		if (myServer != null) {
+			if (myServer.isServerConnected) {
+				myServer.SendStateEvent (GameClock.SystemTime_Milliseconds, state.ToString (), isEnabled);
+			}
+		}
 	}
 
 	bool GetIsConnected(){
@@ -228,6 +236,10 @@ public class ThreadedServer : ThreadedJob{
 		
 		//send exp version
 		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.VERSION, Config_CoinTask.VersionNumber);
+
+		//send exp session
+		SendSessionEvent (GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SESSION, Experiment_CoinTask.sessionID, TCP_Config.sessionType);
+		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.VERSION, Config_CoinTask.VersionNumber);
 		
 		//send subject ID
 		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SUBJECTID, TCP_Config.SubjectName);
@@ -283,9 +295,6 @@ public class ThreadedServer : ThreadedJob{
 			UnityEngine.Debug.Log("Close Server Error....." + e.StackTrace);
 		}  
 	}
-
-
-
 
 	//CLOCK ALIGNMENT!
 	/*
@@ -435,7 +444,7 @@ public class ThreadedServer : ThreadedJob{
 	
 	public string SendSessionEvent(long systemTime, TCP_Config.EventType eventType, int sessionNum, TCP_Config.SessionType sessionType){
 		
-		string jsonEventString = JsonMessageController.FormatJSONSessionEvent (systemTime, sessionNum.ToString(), sessionType.ToString());
+		string jsonEventString = JsonMessageController.FormatJSONSessionEvent (systemTime, sessionNum, sessionType.ToString());
 		
 		UnityEngine.Debug.Log (jsonEventString);
 		
@@ -459,9 +468,9 @@ public class ThreadedServer : ThreadedJob{
 		return jsonEventString;
 	}
 	
-	public string SendStateEvent(long systemTime, TCP_Config.EventType eventType, string stateName, bool value){
+	public string SendStateEvent(long systemTime, string stateName, bool value){
 		
-		string jsonEventString = JsonMessageController.FormatJSONStateEvent (systemTime, stateName, value.ToString());
+		string jsonEventString = JsonMessageController.FormatJSONStateEvent (systemTime, stateName, value);
 		
 		UnityEngine.Debug.Log (jsonEventString);
 		

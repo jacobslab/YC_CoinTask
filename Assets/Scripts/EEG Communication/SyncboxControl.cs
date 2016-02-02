@@ -63,7 +63,7 @@ public class SyncboxControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if(ExperimentSettings_CoinTask.isSyncbox){
+		if(Config_CoinTask.isSyncbox){
 			//Debug.Log(AddTwoFloats(2.5F,4F));
 			//Debug.Log ("OH HAYYYY");
 			//Debug.Log(PrintANumber());

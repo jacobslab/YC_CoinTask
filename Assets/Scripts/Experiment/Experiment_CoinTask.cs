@@ -20,6 +20,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	public Logger_Threading subjectLog;
 	private string eegLogfile; //gets set based on the current subject in Awake()
 	public Logger_Threading eegLog;
+	public static int sessionID;
 
 	//session controller
 	public TrialController trialController;
@@ -92,7 +93,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 		string subjectDirectory = ExperimentSettings_CoinTask.defaultLoggingPath + ExperimentSettings_CoinTask.currentSubject.name + "/";
 		string sessionDirectory = subjectDirectory + "session000" + "/";;
 		
-		int sessionID = 0;
+		sessionID = 0;
 		string sessionIDString = "000";
 		
 		if(!Directory.Exists(subjectDirectory)){

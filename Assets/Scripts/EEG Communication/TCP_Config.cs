@@ -13,7 +13,7 @@ public class TCP_Config : MonoBehaviour {
 	public static char MSG_START = '{';
 	public static char MSG_END = '}';
 
-	public static string ExpName = "TH1";
+	public static string ExpName { get { return GetExpName (); } }
 	public static string SubjectName = ExperimentSettings_CoinTask.currentSubject.name;
 
 	public static float ClockAlignInterval = 60.0f; //this should happen about once a minute
@@ -42,61 +42,76 @@ public class TCP_Config : MonoBehaviour {
 	}
 
 	public enum SessionType{
-		CLOSED_STIME,
+		CLOSED_STIM,
 		OPEN_STIM,
 		NO_STIM
 	}
 
+	public static SessionType sessionType { get { return GetSessionType (); } }
+
+
+	void Start(){
+
+	}
+
+	static string GetExpName(){
+		return Config_CoinTask.BuildVersion.ToString ();
+	}
+	
+	public static SessionType GetSessionType(){
+		switch (Config_CoinTask.BuildVersion) {
+		case Config_CoinTask.Version.TH1:
+			return SessionType.NO_STIM;
+		case Config_CoinTask.Version.TH2:
+			return SessionType.CLOSED_STIM ;//could change back to openstim... just use closedstim for now
+		case Config_CoinTask.Version.TH3:
+			return SessionType.CLOSED_STIM;
+		case Config_CoinTask.Version.Pilot_001:
+			return SessionType.NO_STIM;
+		case Config_CoinTask.Version.Pilot_002:
+			return SessionType.NO_STIM;
+		case Config_CoinTask.Version.FMRI_001:
+			return SessionType.NO_STIM;
+		}
+
+		return SessionType.NO_STIM;
+	}
+
+	//fill in how you see fit!
+	public enum DefineStates
+	{
+		TREASURE_1,
+		TREASURE_2,
+		TREASURE_3,
+		TREASURE_4,
+		TREASURE_OPEN,
+		NAVIGATION,
+		RECALLCUE_1,
+		RECALLCUE_2,
+		RECALLCUE_3,
+		RECALLCUE_4,
+		RECALLCHOOSE_1,
+		RECALLCHOOSE_2,
+		RECALLCHOOSE_3,
+		RECALLCHOOSE_4,
+		FEEDBACK,
+		SCORESCREEN,
+		BLOCKSCREEN,
+		DISTRACTOR,
+		PAUSED
+	}
+
 	public static List<string> GetDefineList(){
 		List<string> defineList = new List<string> ();
-		//fill in how you see fit!
 
-		defineList.Add ("TREASURE_1_APPEAR");
-		defineList.Add ("TREASURE_1_OPEN");
-		defineList.Add ("TREASURE_1_DISAPPEAR");
-		defineList.Add ("TREASURE_2_APPEAR");
-		defineList.Add ("TREASURE_2_OPEN");
-		defineList.Add ("TREASURE_2_DISAPPEAR");
-		defineList.Add ("TREASURE_3_APPEAR");
-		defineList.Add ("TREASURE_3_OPEN");
-		defineList.Add ("TREASURE_3_DISAPPEAR");
-		defineList.Add ("TREASURE_4_APPEAR");
-		defineList.Add ("TREASURE_4_OPEN");
-		defineList.Add ("TREASURE_4_DISAPPEAR");
+		DefineStates[] values = (DefineStates[])DefineStates.GetValues(typeof(DefineStates));
 
-		defineList.Add ("NAVIGATION_STARTED");
-		defineList.Add ("NAVIGATION_OVER");
-
-		//recall cue -- "do you remember?"
-		defineList.Add ("RECALLCUE_1_STARTED");
-		defineList.Add ("RECALLCUE_1_OVER");
-		defineList.Add ("RECALLCUE_2_STARTED");
-		defineList.Add ("RECALLCUE_2_OVER");
-		defineList.Add ("RECALLCUE_3_STARTED");
-		defineList.Add ("RECALLCUE_3_OVER");
-		defineList.Add ("RECALLCUE_4_STARTED");
-		defineList.Add ("RECALLCUE_4_OVER");
-
-		//choosing a location
-		defineList.Add ("RECALLCHOOSE_1_STARTED");
-		defineList.Add ("RECALLCHOOSE_1_OVER");
-		defineList.Add ("RECALLCHOOSE_2_STARTED");
-		defineList.Add ("RECALLCHOOSE_2_OVER");
-		defineList.Add ("RECALLCHOOSE_3_STARTED");
-		defineList.Add ("RECALLCHOOSE_3_OVER");
-		defineList.Add ("RECALLCHOOSE_4_STARTED");
-		defineList.Add ("RECALLCHOOSE_4_OVER");
-
-		defineList.Add ("FEEDBACK_STARTED");
-		defineList.Add ("FEEDBACK_OVER");
-
-		defineList.Add ("SCORESCREEN_STARTED");
-		defineList.Add ("SCORESCREEN_OVER");
-
-		defineList.Add ("BLOCKSCREEN_STARTED");
-		defineList.Add ("BLOCKSCREEN_OVER");
+		foreach (DefineStates defineState in values)
+		{
+			defineList.Add(defineState.ToString());
+		}
 
 		return defineList;
 	}
-	
+
 }

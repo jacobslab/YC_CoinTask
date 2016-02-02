@@ -21,6 +21,7 @@ public class TrialController : MonoBehaviour {
 	int numRealTrials = 0; //used for logging trial ID's
 
 	int numDefaultObjectsCollected = 0;
+	public int NumDefaultObjectsCollected { get { return numDefaultObjectsCollected; } }
 
 	int timeBonus = 0;
 	int memoryScore = 0;
@@ -140,12 +141,14 @@ public class TrialController : MonoBehaviour {
 			//exp.player.controls.Pause(true);
 			exp.uiController.PauseUI.alpha = 1.0f;
 			Time.timeScale = 0.0f;
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.PAUSED, true);
 		} 
 		else {
 			Time.timeScale = 1.0f;
 			//exp.player.controls.Pause(false);
 			//exp.player.controls.ShouldLockControls = false;
 			exp.uiController.PauseUI.alpha = 0.0f;
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.PAUSED, false);
 		}
 	}
 
@@ -155,7 +158,7 @@ public class TrialController : MonoBehaviour {
 		if (!ExperimentSettings_CoinTask.isReplay) {
 			exp.player.controls.ShouldLockControls = true;
 
-			if(ExperimentSettings_CoinTask.isSystem2 || ExperimentSettings_CoinTask.isSyncbox){
+			if(Config_CoinTask.isSystem2 || Config_CoinTask.isSyncbox){
 				yield return StartCoroutine( WaitForEEGHardwareConnection() );
 			}
 			else{
@@ -217,9 +220,12 @@ public class TrialController : MonoBehaviour {
 				trialLogger.LogInstructionEvent();
 				StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
 				exp.uiController.blockCompletedUI.Play(i, exp.scoreController.score, ListOfTrialBlocks.Count);
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
+
 				yield return StartCoroutine(exp.WaitForActionButton());
 
 				exp.uiController.blockCompletedUI.Stop();
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, false);
 
 				exp.scoreController.Reset();
 
@@ -238,13 +244,13 @@ public class TrialController : MonoBehaviour {
 		isConnectingToHardware = true;
 
 		exp.uiController.ConnectionUI.alpha = 1.0f;
-		if(ExperimentSettings_CoinTask.isSystem2){
+		if(Config_CoinTask.isSystem2){
 			while(!TCPServer.Instance.isConnected || !TCPServer.Instance.canStartGame){
 				Debug.Log("Waiting for system 2 connection...");
 				yield return 0;
 			}
 		}
-		if (ExperimentSettings_CoinTask.isSyncbox){
+		if (Config_CoinTask.isSyncbox){
 			while(!SyncboxControl.Instance.isUSBOpen){
 				Debug.Log("Waiting for sync box to open...");
 				yield return 0;
@@ -291,9 +297,9 @@ public class TrialController : MonoBehaviour {
 		}
 
 		//move player to home location & rotation
-		trialLogger.LogTransportationToHomeEvent ();
+		trialLogger.LogTransportationToHomeEvent (true);
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot));
-
+		trialLogger.LogTransportationToHomeEvent (false);
 
 		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
 			//Spawn the first default object
@@ -318,7 +324,8 @@ public class TrialController : MonoBehaviour {
 		}
 
 		//START NAVIGATION --> TODO: make this its own function. or a delegate. ...clean it up.
-		trialLogger.LogTrialNavigationStarted ();
+		trialLogger.LogTrialNavigation (true);
+		TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, true);
 
 		exp.uiController.goText.Play ();
 
@@ -346,22 +353,26 @@ public class TrialController : MonoBehaviour {
 
 		//bring player to tower
 		//exp.player.TurnOnVisuals (false);
-		trialLogger.LogTransportationToTowerEvent ();
+		trialLogger.LogTrialNavigation (false);
+		TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, false);
+		trialLogger.LogTransportationToTowerEvent (true);
 		currentDefaultObject = null; //set to null so that arrows stop showing up...
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot));//PlayerControls.toTowerTime) );
-
+		trialLogger.LogTransportationToTowerEvent (false);
 
 		//RUN DISTRACTOR GAME
-		trialLogger.LogDistractorGameStarted ();
+		trialLogger.LogDistractorGame (true);
+		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, true);
 		yield return StartCoroutine(exp.boxGameController.RunGame());
-
+		trialLogger.LogDistractorGame (false);
 
 
 		//jitter before the first object is shown
 		yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
 
 		//show instructions for location selection 
-		trialLogger.LogRecallPhaseStarted();
+		trialLogger.LogRecallPhaseStarted(true);
+		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, false);
 
 		//ask player to locate each object individually
 		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
@@ -377,8 +388,23 @@ public class TrialController : MonoBehaviour {
 			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
 			string specialItemName = specialSpawnable.GetName();
 
+			//set TCP state true
+			switch(randomOrderIndex){
+			case 0:
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_1, true);
+				break;
+			case 1:
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_2, true);
+				break;
+			case 2:
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, true);
+				break;
+			case 3:
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_4, true);
+				break;
+			}
 
-			//show nice UI
+			//show nice UI, log special object
 			trialLogger.LogObjectToRecall(specialSpawnable);
 			GameObject specialObjUICopy = Instantiate (specialObj, Vector3.zero, specialObj.transform.rotation) as GameObject;
 
@@ -393,8 +419,26 @@ public class TrialController : MonoBehaviour {
 			rememberResponses.Add(rememberResponse);
 			trialLogger.LogRememberResponse(rememberResponse);
 
-			//IF THEY SAID 'YES, I REMEMBER', SELECT LOCATION
-			//if(response == true){
+			//SELECT LOCATION
+			switch(randomOrderIndex){
+			case 0:
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_1, false);
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, true);
+				break;
+			case 1:
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_2, false);
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, true);
+				break;
+			case 2:
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, false);
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, true);
+				break;
+			case 3:
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_4, false);
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_4, true);
+				break;
+			}
+
 			//enable position selection, turn off fancy selection UI
 			exp.environmentController.myPositionSelector.Reset();
 			exp.environmentController.myPositionSelector.EnableSelection (true);
@@ -420,39 +464,41 @@ public class TrialController : MonoBehaviour {
 
 			trialLogger.LogInstructionEvent();
 
-			/*if(rememberResponse == true){
-				yield return StartCoroutine( exp.uiController.areYouSureUI.Play() );
-
-				yield return StartCoroutine (exp.WaitForActionButton());
-				bool areYouSureResponse = exp.uiController.areYouSureUI.myAnswerSelector.IsYesPosition();
-				trialLogger.LogAreYouSureResponse(areYouSureResponse);
-				areYouSureResponses.Add(areYouSureResponse);
-			}
-			else{
-				//if you chose not to remember, you should not get to double down.
-				areYouSureResponses.Add(false);
-			}*/
-
 			if(i <= exp.objectController.CurrentTrialSpecialObjects.Count - 1){
 				//jitter if it's not the last object to be shown
 				yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
 			}
 
-			/*if(rememberResponse == true){
-				exp.uiController.areYouSureUI.Stop();
-			}*/
+			switch(randomOrderIndex){
+			case 0:
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, false);
+				break;
+			case 1:
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, false);
+				break;
+			case 2:
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, false);
+				break;
+			case 3:
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_4, false);
+				break;
+			}
 
 		}
 
-		trialLogger.LogFeedbackStarted();
+		trialLogger.LogRecallPhaseStarted(false);
+		trialLogger.LogFeedback(true);
 		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses));//, areYouSureResponses) );
-		
+		trialLogger.LogFeedback(false);
+
 		//increment subject's trial count
 		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
 
 	}
 
 	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<Config_CoinTask.MemoryState> rememberResponses){//, List<bool> areYouSureResponses){
+		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
+
 		memoryScore = 0;
 
 		List<GameObject> CorrectPositionIndicators = new List<GameObject> ();
@@ -550,16 +596,20 @@ public class TrialController : MonoBehaviour {
 		}
 
 		trialLogger.LogInstructionEvent();
+		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
 		exp.uiController.scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
 		yield return StartCoroutine (exp.WaitForActionButton ());
 		exp.uiController.scoreRecapUI.Stop ();
+		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);
 
 
 		//delete all indicators & special objects
 		DestroyGameObjectList (CorrectPositionIndicators);
 		DestroyGameObjectList (ChosenPositionIndicators);
 		DestroyGameObjectList (exp.objectController.CurrentTrialSpecialObjects);
-		
+
+		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, false);
+
 		yield return 0;
 	}
 
@@ -584,9 +634,6 @@ public class TrialController : MonoBehaviour {
 		if (exp.uiController.doYouRememberUI.isPlaying) {
 			trialLogger.LogAnswerPositionMoved( memoryState, true );
 		} 
-		/*else if (exp.uiController.areYouSureUI.isPlaying) {
-			trialLogger.LogAnswerPositionMoved( isYesPosition, false );
-		}*/
 	}
 
 	public IEnumerator WaitForPlayerRotationToTreasure(GameObject treasureChest){
@@ -601,6 +648,7 @@ public class TrialController : MonoBehaviour {
 	}
 
 	public IEnumerator WaitForTreasurePause( GameObject specialObject){
+
 		//lock the avatar controls
 		exp.player.controls.ShouldLockControls = true;
 		exp.player.GetComponent<Rigidbody> ().velocity = Vector3.zero;

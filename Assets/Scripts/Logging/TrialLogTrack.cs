@@ -84,9 +84,10 @@ public class TrialLogTrack : LogTrack {
 
 	//if the UI answer selector has moved TODO: move to an answer selector logger?
 	public void LogAnswerPositionMoved(Config_CoinTask.MemoryState memoryState, bool isRememberResponse){ //either remember response or double down response
-		string answerPosition = "NO";
+		if (ExperimentSettings_CoinTask.isLogging) {
+			string answerPosition = "NO";
 
-		switch(memoryState){
+			switch (memoryState) {
 			case Config_CoinTask.MemoryState.yes:
 				answerPosition = "YES";
 				break;
@@ -96,26 +97,22 @@ public class TrialLogTrack : LogTrack {
 			case Config_CoinTask.MemoryState.no:
 				answerPosition = "NO";
 				break;
-		}
-
-		if(isRememberResponse){
+			}
+	
 			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "REMEMBER_ANSWER_MOVEMENT" + separator + answerPosition);
 			Debug.Log ("REMEMBER MOVEMENT LOGGED: " + answerPosition);
 		}
-		/*else{
-			//TODO: CHANGE THE "DOUBLE DOWN" TO ARE YOU SURE OR SOMETHING.
-			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "DOUBLE_DOWN_ANSWER_MOVEMENT" + separator + answerPosition);
-			Debug.Log ("DOUBLE DOWN MOVEMENT LOGGED: " + answerPosition);
-		}*/
 	}
 
 
 	//THE FOLLOWING ARE EVENTS
 
 	public void LogPauseEvent(bool isPaused){
-		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "TASK_PAUSED" + separator + isPaused); //logged for replay
-		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "TASK_PAUSED" + separator + isPaused); //logged for parsing events
-		Debug.Log ("Logged pause event. isPaused: " + isPaused);
+		if (ExperimentSettings_CoinTask.isLogging) {
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "TASK_PAUSED" + separator + isPaused); //logged for replay
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "TASK_PAUSED" + separator + isPaused); //logged for parsing events
+			Debug.Log ("Logged pause event. isPaused: " + isPaused);
+		}
 	}
 
 	public void LogInstructionEvent(){
@@ -125,45 +122,81 @@ public class TrialLogTrack : LogTrack {
 		}
 	}
 
-	public void LogBeginningExplorationEvent(){
+	public void LogBeginningExplorationEvent(bool isStarting){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "FREE_EXPLORATION_STARTED");
-			Debug.Log ("Logged exploration event.");
+			if(isStarting){
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "FREE_EXPLORATION_STARTED");
+				Debug.Log ("Logged exploration event.");
+			}
+			else{
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "FREE_EXPLORATION_ENDED");
+				Debug.Log ("Logged exploration ended event.");
+			}
 		}
 	}
 
-	public void LogTransportationToHomeEvent(){
+	public void LogTransportationToHomeEvent(bool isStarting){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "HOMEBASE_TRANSPORT_STARTED");
-			Debug.Log ("Logged home transport event.");
+			if(isStarting){
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "HOMEBASE_TRANSPORT_STARTED");
+				Debug.Log ("Logged home transport event.");
+			}
+			else{
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "HOMEBASE_TRANSPORT_ENDED");
+				Debug.Log ("Logged home transport ended event.");
+			}
 		}
 	}
 
-	public void LogTransportationToTowerEvent(){
+	public void LogTransportationToTowerEvent(bool isStarting){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "TOWER_TRANSPORT_STARTED");
-			Debug.Log ("Logged tower transport event.");
+			if(isStarting){
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "TOWER_TRANSPORT_STARTED");
+				Debug.Log ("Logged tower transport event.");
+			}
+			else{
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "TOWER_TRANSPORT_ENDED");
+				Debug.Log ("Logged tower transport ended event.");
+			}
 		}
 	}
 
-	public void LogTrialNavigationStarted(){
+	public void LogTrialNavigation(bool isStarting){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "TRIAL_NAVIGATION_STARTED");
-			Debug.Log ("Logged nav started event.");
+			if(isStarting){
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "TRIAL_NAVIGATION_STARTED");
+				Debug.Log ("Logged nav started event.");
+			}
+			else {
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "TRIAL_NAVIGATION_ENDED");
+				Debug.Log ("Logged nav ended event.");
+			}
 		}
 	}
 
-	public void LogDistractorGameStarted(){
+	public void LogDistractorGame(bool isStarting){ //if it's not starting, then it's ending
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "DISTRACTOR_GAME_STARTED");
-			Debug.Log ("Logged distractor game started event.");
+			if(isStarting){
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "DISTRACTOR_GAME_STARTED");
+				Debug.Log ("Logged distractor game started event.");
+			}
+			else{
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "DISTRACTOR_GAME_ENDED");
+				Debug.Log ("Logged distractor game ended event.");
+			}
 		}
 	}
 
-	public void LogRecallPhaseStarted(){
+	public void LogRecallPhaseStarted(bool isStarting){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "RECALL_PHASE_STARTED");
-			Debug.Log ("Logged recall started event.");
+			if(isStarting){
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "RECALL_PHASE_STARTED");
+				Debug.Log ("Logged recall started event.");
+			}
+			else{
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "RECALL_PHASE_ENDED");
+				Debug.Log ("Logged recall ended event.");
+			}
 		}
 	}
 
@@ -174,10 +207,16 @@ public class TrialLogTrack : LogTrack {
 		}
 	}
 
-	public void LogFeedbackStarted(){
+	public void LogFeedback(bool isStarting){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "FEEDBACK_STARTED");
-			Debug.Log ("Logged feedback event.");
+			if(isStarting){
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "FEEDBACK_STARTED");
+				Debug.Log ("Logged feedback started event.");
+			}
+			else{
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "FEEDBACK_ENDED");
+				Debug.Log ("Logged feedback ended event.");
+			}
 		}
 	}
 
