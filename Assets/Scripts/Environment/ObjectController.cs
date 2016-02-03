@@ -164,7 +164,7 @@ public class ObjectController : MonoBehaviour {
 			bool objectsAreFarEnough = false;
 
 			int numTries = 0;
-			int maxNumTries = 15; //ARBITRARY.
+			int maxNumTries = 20; //ARBITRARY.
 
 			Vector3 randomEnvPosition = Vector3.zero;
 			Vector2 randomEnvPositionVec2 = Vector2.zero;
@@ -192,7 +192,7 @@ public class ObjectController : MonoBehaviour {
 			}
 
 			if(numTries == maxNumTries){
-				Debug.Log("Tried 15 times to place default objects!");
+				Debug.Log("Tried " + maxNumTries + " times to place default objects!");
 				Debug.Log("DISTANCE: " + currentBiggestSmallestDistance + " POSITION: " + smallestDistancePosition);
 				defaultPositions.Add(smallestDistancePosition);
 			}

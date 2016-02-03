@@ -14,10 +14,10 @@ public class Config_CoinTask : MonoBehaviour {
 	}
 
 	public static Version BuildVersion = Version.TH3;
-	public static float VersionNumber = 2.03f;
+	public static string VersionNumber = "2.03";
 
 	public static bool isSyncbox = false;
-	public static bool isSystem2 = true;
+	public static bool isSystem2 = false;
 
 	//REPLAY
 	public static int replayPadding = 6;
@@ -140,7 +140,9 @@ public class Config_CoinTask : MonoBehaviour {
 			buffer += Experiment_CoinTask.Instance.objectController.GetMaxDefaultObjectColliderBoundXZ ();
 
 			//Debug.Log ("BUFFER: " + buffer);
-
+			if(buffer < Config_CoinTask.selectionDiameter){
+				buffer = Config_CoinTask.selectionDiameter;
+			}
 		}
 
 		return buffer;

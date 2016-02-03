@@ -91,26 +91,18 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//TODO: move to logger_threading perhaps? *shrug*
 	void InitLogging(){
 		string subjectDirectory = ExperimentSettings_CoinTask.defaultLoggingPath + ExperimentSettings_CoinTask.currentSubject.name + "/";
-		string sessionDirectory = subjectDirectory + "session000" + "/";;
+		string sessionDirectory = subjectDirectory + "session_0" + "/";;
 		
 		sessionID = 0;
-		string sessionIDString = "000";
+		string sessionIDString = "_0";
 		
 		if(!Directory.Exists(subjectDirectory)){
 			Directory.CreateDirectory(subjectDirectory);
 		}
 		while (Directory.Exists(sessionDirectory)) {
-			if(sessionID < 10){
-				sessionIDString = "00" + sessionID;
-			}
-			else if (sessionID < 100){
-				sessionIDString = "0" + sessionID;
-			}
-			else{
-				sessionIDString = sessionID.ToString();
-			}
-			
 			sessionID++;
+
+			sessionIDString = "_" + sessionID.ToString();
 			
 			sessionDirectory = subjectDirectory + "session" + sessionIDString + "/";
 		}

@@ -141,7 +141,11 @@ public class DefaultItem : MonoBehaviour {
 	//open. most likely a treasure chest. could also be something like a giftbox.
 	public IEnumerator Open(GameObject opener){
 
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN, true);
+		if (GetIsSpecial ()) {
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_SPECIAL, true);
+		} else {
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_EMPTY, true);
+		}
 
 		float distOpenerToPivotA = (pivotA.position - opener.transform.position).magnitude;
 		float distOpenerToPivotB = (pivotB.position - opener.transform.position).magnitude;
@@ -198,18 +202,22 @@ public class DefaultItem : MonoBehaviour {
 	}
 
 	void EndTreasureState(){
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN, false);
+		if (GetIsSpecial ()) {
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_SPECIAL, false);
+		} else {
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_EMPTY, false);
+		}
 		switch (exp.trialController.NumDefaultObjectsCollected) {
-		case 0:
+		case 1:
 			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_1, false);
 			break;
-		case 1:
+		case 2:
 			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_2, false);
 			break;
-		case 2:
+		case 3:
 			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_3, false);
 			break;
-		case 3:
+		case 4:
 			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_4, false);
 			break;
 		}

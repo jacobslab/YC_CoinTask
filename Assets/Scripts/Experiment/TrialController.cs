@@ -365,14 +365,13 @@ public class TrialController : MonoBehaviour {
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, true);
 		yield return StartCoroutine(exp.boxGameController.RunGame());
 		trialLogger.LogDistractorGame (false);
-
+		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, false);
 
 		//jitter before the first object is shown
 		yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
 
 		//show instructions for location selection 
 		trialLogger.LogRecallPhaseStarted(true);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, false);
 
 		//ask player to locate each object individually
 		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
@@ -398,9 +397,6 @@ public class TrialController : MonoBehaviour {
 				break;
 			case 2:
 				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, true);
-				break;
-			case 3:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_4, true);
 				break;
 			}
 
@@ -433,10 +429,6 @@ public class TrialController : MonoBehaviour {
 				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, false);
 				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, true);
 				break;
-			case 3:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_4, false);
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_4, true);
-				break;
 			}
 
 			//enable position selection, turn off fancy selection UI
@@ -462,13 +454,6 @@ public class TrialController : MonoBehaviour {
 			//disable position selection
 			exp.environmentController.myPositionSelector.EnableSelection (false);
 
-			trialLogger.LogInstructionEvent();
-
-			if(i <= exp.objectController.CurrentTrialSpecialObjects.Count - 1){
-				//jitter if it's not the last object to be shown
-				yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
-			}
-
 			switch(randomOrderIndex){
 			case 0:
 				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, false);
@@ -479,17 +464,21 @@ public class TrialController : MonoBehaviour {
 			case 2:
 				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, false);
 				break;
-			case 3:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_4, false);
-				break;
+			}
+
+
+			trialLogger.LogInstructionEvent();
+
+			if(i <= exp.objectController.CurrentTrialSpecialObjects.Count - 1){
+				//jitter if it's not the last object to be shown
+				yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
 			}
 
 		}
 
 		trialLogger.LogRecallPhaseStarted(false);
-		trialLogger.LogFeedback(true);
+		
 		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses));//, areYouSureResponses) );
-		trialLogger.LogFeedback(false);
 
 		//increment subject's trial count
 		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
@@ -497,6 +486,7 @@ public class TrialController : MonoBehaviour {
 	}
 
 	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<Config_CoinTask.MemoryState> rememberResponses){//, List<bool> areYouSureResponses){
+		trialLogger.LogFeedback(true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
 
 		memoryScore = 0;
@@ -608,6 +598,7 @@ public class TrialController : MonoBehaviour {
 		DestroyGameObjectList (ChosenPositionIndicators);
 		DestroyGameObjectList (exp.objectController.CurrentTrialSpecialObjects);
 
+		trialLogger.LogFeedback(false);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, false);
 
 		yield return 0;

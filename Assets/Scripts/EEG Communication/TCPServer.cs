@@ -106,6 +106,7 @@ public class TCPServer : MonoBehaviour {
 		if (myServer != null) {
 			if (myServer.isServerConnected) {
 				myServer.SendStateEvent (GameClock.SystemTime_Milliseconds, state.ToString (), isEnabled);
+				UnityEngine.Debug.Log("SET THE STATE FOR BIO-M FILE: " + state.ToString() + isEnabled.ToString());
 			}
 		}
 	}

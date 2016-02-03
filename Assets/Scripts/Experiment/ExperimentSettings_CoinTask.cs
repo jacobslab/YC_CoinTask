@@ -39,7 +39,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public bool isPilot { get { return GetIsPilot (); } }
 
 
-	public static string defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM2.0/data";
+	public static string defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/data";
 	string TH1Folder = "/TH1/";
 	string TH2Folder = "/TH2/";
 	string TH3Folder = "/TH3/";
