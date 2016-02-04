@@ -21,7 +21,7 @@ public class DefaultItem : MonoBehaviour {
 	public AudioSource specialCollisionSound;
 
 	bool isExecutingPlayerCollision = false;
-	bool shouldDie = false;
+	//bool shouldDie = false;
 
 	public TextMesh specialObjectText;
 
@@ -88,7 +88,7 @@ public class DefaultItem : MonoBehaviour {
 	}
 
 	IEnumerator RunDefaultCollision(){
-		shouldDie = true;
+		//shouldDie = true;
 		
 		PlayJuice (false);
 	
@@ -164,7 +164,7 @@ public class DefaultItem : MonoBehaviour {
 
 		GetComponent<TreasureChestLogTrack> ().LogOpening (closePivotName, GetIsSpecial()); 
 		
-		Quaternion origRotation = top.rotation;
+		//Quaternion origRotation = top.rotation;
 
 
 		float angleChange = 8.0f;

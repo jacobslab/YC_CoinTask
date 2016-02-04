@@ -48,7 +48,7 @@ public class LoggerWriter : ThreadedJob
 	public bool isRunning = false;
 
 	//LOGGING
-	protected long microseconds = 1;
+	//protected long microseconds = 1;
 	protected string workingFile = "";
 	private StreamWriter logfile;
 	private LoggerQueue loggerQueue;
@@ -98,10 +98,10 @@ public class LoggerWriter : ThreadedJob
 	
 	public virtual void log(string msg) { //took out  ( ... , int level)
 
-		long tick = DateTime.Now.Ticks;
+		//long tick = DateTime.Now.Ticks;
 		//long seconds = tick / TimeSpan.TicksPerSecond;
-		long milliseconds = tick / TimeSpan.TicksPerMillisecond;
-		microseconds = tick / 10;
+		//long milliseconds = tick / TimeSpan.TicksPerMillisecond;
+		//microseconds = tick / 10;
 		//Debug.Log(milliseconds);
 		//Debug.Log(Time.frameCount + ": " + Event.current);
 		

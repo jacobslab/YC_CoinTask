@@ -8,7 +8,7 @@ public class PlayerControls : MonoBehaviour{
 
 	public bool ShouldLockControls = false;
 
-	bool isSmoothMoving = false;
+	//bool isSmoothMoving = false;
 
 	public Transform TiltableTransform;
 	public Transform towerPositionTransform1;
@@ -90,9 +90,6 @@ public class PlayerControls : MonoBehaviour{
 					currentZRot = -1.0f*(360.0f - currentZRot);
 				}
 
-				if(currentZRot == 0){
-					int a = 0;
-				}
 				if(currentZRot > zTiltEpsilon){
 					TiltableTransform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, currentZRot - zTiltBack);
 				}
@@ -139,7 +136,7 @@ public class PlayerControls : MonoBehaviour{
 		SetTilt (0.0f, 1.0f);
 
 		//notify tilting that we're smoothly moving, and thus should not tilt
-		isSmoothMoving = true;
+		//isSmoothMoving = true;
 
 		//stop collisions
 		GetComponent<Collider> ().enabled = false;
@@ -155,14 +152,14 @@ public class PlayerControls : MonoBehaviour{
 
 
 		float tElapsed = 0.0f;
-		float epsilon = 0.01f;
+		//float epsilon = 0.01f;
 
 		//DEBUG
 		float totalTimeElapsed = 0.0f;
 
-		float angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
-		float angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
-		bool arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
+		//float angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
+		//float angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
+//		bool arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
 		//while ( ( angleDiffY >= epsilon ) || ( angleDiffX >= epsilon ) || (!arePositionsCloseEnough) ){
 		while(tElapsed < timeToTravel){
 			totalTimeElapsed += Time.deltaTime;
@@ -178,9 +175,9 @@ public class PlayerControls : MonoBehaviour{
 			transform.position = Vector3.Lerp(origPosition, targetPosition, percentageTime);
 
 			//calculate new differences
-			angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
-			angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
-			arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
+			//angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
+			//angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
+			//arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
 
 			yield return 0;
 		}

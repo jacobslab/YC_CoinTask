@@ -281,7 +281,7 @@ public class ObjectController : MonoBehaviour {
 		List<Vector2> specialPositions = new List<Vector2> ();
 
 
-		int specialIndex;
+		//int specialIndex;
 
 		List<Vector2> orderedDefaultPositionsCopy = new List<Vector2> ();
 		int numDefault = orderedDefaultObjectLocationsXZ.Count;

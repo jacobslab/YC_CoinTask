@@ -33,7 +33,7 @@ public class GameClock : MonoBehaviour {
 	}
 	
 	static long GetSystemClockMilliseconds(){
-		long ticks = DateTime.Now.Ticks;
+		//long ticks = DateTime.Now.Ticks;
 		//Debug.Log (DateTime.Now.Ticks);
 		//Debug.Log (DateTime.Now);
 		
@@ -55,7 +55,7 @@ public class GameClock : MonoBehaviour {
 	static long GetSystemClockMicroseconds(){
 		//Convenience method to return the system time.
 		
-		long ticks = DateTime.Now.Ticks;
+		//long ticks = DateTime.Now.Ticks;
 
 		long microseconds;// = ticks / (TimeSpan.TicksPerMillisecond / 1000);
 

@@ -374,36 +374,6 @@ public class ThreadedServer : ThreadedJob{
 		messagesToSend += ("ECHO: " + message);
 	}
 
-	/*public void SendEvent(long systemTime, TCP_Config.EventType eventType, string eventData, string auxData){
-		//Format the message
-		//(from the python code:) TODO: Change to JSONRPC and add checksum
-		string t0 = GameClock.FormatTime(systemTime);
-		string message = TCP_Config.MSG_START + t0 + TCP_Config.MSG_SEPARATOR + "ERROR" + TCP_Config.MSG_END;
-		
-		if (auxData.Length > 0){
-			message = TCP_Config.MSG_START
-				+ t0 + TCP_Config.MSG_SEPARATOR
-					+ eventType.ToString() + TCP_Config.MSG_SEPARATOR
-					+ eventData + TCP_Config.MSG_SEPARATOR
-					+ auxData + TCP_Config.MSG_END;
-		}
-		else if( eventData.Length > 0){
-			message = TCP_Config.MSG_START
-				+ t0 + TCP_Config.MSG_SEPARATOR
-					+ eventType.ToString() + TCP_Config.MSG_SEPARATOR
-					+ eventData + TCP_Config.MSG_END;
-		}
-		else{
-			message = TCP_Config.MSG_START
-				+ t0 + TCP_Config.MSG_SEPARATOR
-					+ eventType.ToString() + TCP_Config.MSG_END;
-		}
-		
-		messagesToSend += message;
-
-		TCPServer.Instance.Log(systemTime, eventType);
-	}*/
-
 	public string SendSimpleJSONEvent(long systemTime, TCP_Config.EventType eventType, string eventData){
 		
 		string jsonEventString = JsonMessageController.FormatSimpleJSONEvent (systemTime, eventType.ToString(), eventData);
@@ -412,12 +382,10 @@ public class ThreadedServer : ThreadedJob{
 		
 		messagesToSend += jsonEventString;
 		
-		//TCPServer.Instance.Log(systemTime, eventType);
-		
 		return jsonEventString;
 	}
 
-	public string SendSimpleJSONEvent(long systemTime, TCP_Config.EventType eventType, double eventData){
+	/*public string SendSimpleJSONEvent(long systemTime, TCP_Config.EventType eventType, double eventData){
 		
 		string jsonEventString = JsonMessageController.FormatSimpleJSONEvent (systemTime, eventType.ToString(), eventData);
 		
@@ -425,10 +393,8 @@ public class ThreadedServer : ThreadedJob{
 		
 		messagesToSend += jsonEventString;
 		
-		//TCPServer.Instance.Log(systemTime, eventType);
-		
 		return jsonEventString;
-	}
+	}*/
 
 	public string SendSimpleJSONEvent(long systemTime, TCP_Config.EventType eventType, long eventData){
 		
@@ -437,8 +403,6 @@ public class ThreadedServer : ThreadedJob{
 		UnityEngine.Debug.Log (jsonEventString);
 		
 		messagesToSend += jsonEventString;
-		
-		//TCPServer.Instance.Log(systemTime, eventType);
 		
 		return jsonEventString;
 	}
@@ -450,9 +414,7 @@ public class ThreadedServer : ThreadedJob{
 		UnityEngine.Debug.Log (jsonEventString);
 		
 		messagesToSend += jsonEventString;
-		
-		//TCPServer.Instance.Log(systemTime, eventType);
-		
+
 		return jsonEventString;
 	}
 	
@@ -464,8 +426,6 @@ public class ThreadedServer : ThreadedJob{
 		
 		messagesToSend += jsonEventString;
 		
-		//TCPServer.Instance.Log(systemTime, eventType);
-		
 		return jsonEventString;
 	}
 	
@@ -476,8 +436,6 @@ public class ThreadedServer : ThreadedJob{
 		UnityEngine.Debug.Log (jsonEventString);
 		
 		messagesToSend += jsonEventString;
-		
-		//TCPServer.Instance.Log(systemTime, eventType);
 		
 		return jsonEventString;
 	}
@@ -560,23 +518,13 @@ public class ThreadedServer : ThreadedJob{
 
 	public void DecodeJSONMessage(string jsonMessage){
 
-		//long theTime = 383095863184;
-		//jsonMessage = JsonMessageController.FormatSimpleJSONEvent(theTime, TCP_Config.EventType.SYNC.ToString(), ""); 
-
-
-		JsonReader reader;
 		string dataContent = "";
 		int dataContentInt = 0;
-		long timeContent = 0;
 		string typeContent = "";
 
 		JsonData messageData = JsonMapper.ToObject(jsonMessage);
 
-		List<string> dataArray = new List<string>();
-		List<string> dataObject = new List<String>();
-
 		typeContent = (string)messageData ["type"];
-		//timeContent = (long)messageData ["time"];
 
 		switch ( typeContent ){
 		case "SUBJECTID":
@@ -599,13 +547,6 @@ public class ThreadedServer : ThreadedJob{
 			break;
 
 		case "SESSION":
-			/*json
-			reader = new JsonReader(messageData["data"]);
-			while(reader.Read()){
-				if(reader.Token.ToString() != "ObjectStart" && reader.Token.ToString() != "ObjectEnd"){
-					dataArray.Add(reader.Value);
-				}
-			}*/
 			break;
 
 		case "TRIAL":
@@ -613,21 +554,9 @@ public class ThreadedServer : ThreadedJob{
 			break;
 
 		case "DEFINE":
-			/*reader = new JsonReader(messageData["data"]);
-			while(reader.Read()){
-				if(reader.Token.ToString() != "ArrayStart" && reader.Token.ToString() != "ArrayEnd"){
-					dataArray.Add(reader.Value);
-				}
-			}*/
 			break;
 
 		case "STATE":
-			/*reader = new JsonReader(messageData["data"]);
-			while(reader.Read()){
-				if(reader.Token.ToString() != "ObjectStart" && reader.Token.ToString() != "ObjectEnd"){
-					dataArray.Add(reader.Value);
-				}
-			}*/
 			break;
 
 		case "HEARTBEAT":
@@ -673,54 +602,7 @@ public class ThreadedServer : ThreadedJob{
 		default:
 			break;
 		}
-		
-		/*string lastValue = "";
-		
-		List<string> dataArray = new List<string>();
-		List<string> dataObject = new List<String>();
-		
-		while (reader.Read ()) {
-			
-			//UnityEngine.Debug.Log (reader.Token);
-			//UnityEngine.Debug.Log (reader.Value);
 
-
-
-			switch (lastValue){
-			case "data":
-				if(reader.Token.ToString() == "ObjectStart"){
-					//TODO: parse the object
-					while(reader.Read() && reader.Token.ToString() != "ObjectEnd"){
-						dataObject.Add((string)reader.Value);
-					}
-				}
-				else if (reader.Token.ToString() == "ArrayStart"){
-					while(reader.Read() && reader.Token.ToString() != "ArrayEnd"){
-						dataArray.Add((string)reader.Value);
-					}
-				}
-				else{
-					dataContent = (string)reader.Value;
-				}
-				break;
-			case "type":
-				typeContent = (string)reader.Value;
-				break;
-			case "time":
-				timeContent = (string)reader.Value;
-				break;
-			}
-			lastValue = (string)reader.Value;
-		}
-
-		if (dataContent == "STARTED") {
-			canStartGame = true;
-			UnityEngine.Debug.Log("START THE GAME");
-		}
-
-		if (typeContent == "SYNC") {
-			UnityEngine.Debug.Log("SHOULD SYNC");
-		}*/
 	}
 
 

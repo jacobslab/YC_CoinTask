@@ -5,7 +5,7 @@ public class AnswerSelector : MonoBehaviour {
 
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
-	bool shouldCheckForInput = false;
+	//bool shouldCheckForInput = false;
 
 	bool resetToRandomPosition = true;
 
@@ -21,8 +21,8 @@ public class AnswerSelector : MonoBehaviour {
 	public Color selectedColor;
 	public Color deselectedColor;
 
-	float explanationLerpTime = 0.2f;
-	float resetExplanationLerpTime = 0.0f;
+	//float explanationLerpTime = 0.2f;
+	//float resetExplanationLerpTime = 0.0f;
 
 	public AudioSource selectionSwitchAudio;
 
@@ -43,7 +43,7 @@ public class AnswerSelector : MonoBehaviour {
 	}
 
 	public void SetShouldCheckForInput(bool shouldCheck){
-		shouldCheckForInput = shouldCheck;
+		//shouldCheckForInput = shouldCheck;
 		if (shouldCheck) {
 			ResetSelectorPosition ();
 			StartCoroutine (GetSelectionInput ());

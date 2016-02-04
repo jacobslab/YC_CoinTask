@@ -134,7 +134,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 		if (Experiment_CoinTask.Instance != null) {
 
-			float playerMaxSpeed = driveSpeed;
+			//float playerMaxSpeed = driveSpeed;
 			buffer = driveSpeed * minDriveTimeBetweenObjects; //d = vt
 
 			buffer += Experiment_CoinTask.Instance.objectController.GetMaxDefaultObjectColliderBoundXZ ();
