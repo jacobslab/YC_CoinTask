@@ -207,6 +207,19 @@ public class TrialLogTrack : LogTrack {
 		}
 	}
 
+	public void LogRecallChoiceStarted(bool isStarting){
+		if (ExperimentSettings_CoinTask.isLogging) {
+			if(isStarting){
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "RECALL_CHOICE_STARTED");
+				Debug.Log ("Logged recall choice started event.");
+			}
+			else{
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "RECALL_CHOICE_ENDED");
+				Debug.Log ("Logged recall choice ended event.");
+			}
+		}
+	}
+
 	public void LogFeedback(bool isStarting){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			if(isStarting){
@@ -216,6 +229,32 @@ public class TrialLogTrack : LogTrack {
 			else{
 				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "FEEDBACK_ENDED");
 				Debug.Log ("Logged feedback ended event.");
+			}
+		}
+	}
+
+	public void LogScoreScreenStarted(bool isStarting){
+		if (ExperimentSettings_CoinTask.isLogging) {
+			if(isStarting){
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "SCORESCREEN_STARTED");
+				Debug.Log ("Logged score screen started event.");
+			}
+			else{
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "SCORESCREEN_ENDED");
+				Debug.Log ("Logged score screen ended event.");
+			}
+		}
+	}
+
+	public void LogBlockScreenStarted(bool isStarting){
+		if (ExperimentSettings_CoinTask.isLogging) {
+			if(isStarting){
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "BLOCKSCREEN_STARTED");
+				Debug.Log ("Logged score screen started event.");
+			}
+			else{
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "BLOCKSCREEN_ENDED");
+				Debug.Log ("Logged score screen ended event.");
 			}
 		}
 	}

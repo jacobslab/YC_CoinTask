@@ -220,11 +220,13 @@ public class TrialController : MonoBehaviour {
 				trialLogger.LogInstructionEvent();
 				StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
 				exp.uiController.blockCompletedUI.Play(i, exp.scoreController.score, ListOfTrialBlocks.Count);
+				trialLogger.LogBlockScreenStarted(true);
 				TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
 
 				yield return StartCoroutine(exp.WaitForActionButton());
 
 				exp.uiController.blockCompletedUI.Stop();
+				trialLogger.LogBlockScreenStarted(false);
 				TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, false);
 
 				exp.scoreController.Reset();
@@ -434,6 +436,7 @@ public class TrialController : MonoBehaviour {
 			//enable position selection, turn off fancy selection UI
 			exp.environmentController.myPositionSelector.Reset();
 			exp.environmentController.myPositionSelector.EnableSelection (true);
+			trialLogger.LogRecallChoiceStarted(true);
 
 			exp.uiController.doYouRememberUI.Stop();
 
@@ -453,6 +456,7 @@ public class TrialController : MonoBehaviour {
 
 			//disable position selection
 			exp.environmentController.myPositionSelector.EnableSelection (false);
+			trialLogger.LogRecallChoiceStarted(false);
 
 			switch(randomOrderIndex){
 			case 0:
@@ -497,7 +501,7 @@ public class TrialController : MonoBehaviour {
 
 		List<int> objectScores = new List<int> ();
 
-		float indicatorHeightIncrement = 0.3f;
+		//float indicatorHeightIncrement = 0.3f;
 
 		for (int i = 0; i < specialObjectOrder.Count; i++){
 
@@ -586,10 +590,12 @@ public class TrialController : MonoBehaviour {
 		}
 
 		trialLogger.LogInstructionEvent();
+		trialLogger.LogScoreScreenStarted(true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
 		exp.uiController.scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
 		yield return StartCoroutine (exp.WaitForActionButton ());
 		exp.uiController.scoreRecapUI.Stop ();
+		trialLogger.LogScoreScreenStarted(false);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);
 
 
@@ -605,11 +611,6 @@ public class TrialController : MonoBehaviour {
 	}
 
 	void SetConnectingLines( GameObject correctPositionIndicator, Vector3 chosenPosition, Color chosenIndicatorColor){//, EnvironmentPositionSelector.SelectionRadiusType chosenRadiusSize ){
-
-		//render a line between the special object and its corresponding chosen position
-		LineRenderer positionConnector = correctPositionIndicator.GetComponent<LineRenderer>();
-		Vector3 correctPosition = correctPositionIndicator.transform.position;
-
 		correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>().SetLineTarget(chosenPosition, chosenIndicatorColor);
 	}
 

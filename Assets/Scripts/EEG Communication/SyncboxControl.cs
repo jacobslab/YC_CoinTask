@@ -38,7 +38,7 @@ public class SyncboxControl : MonoBehaviour {
 
 	public bool isUSBOpen = false; //TODO: set to true.
 
-	bool isToggledOn = false;
+	//bool isToggledOn = false;
 
 
 	//SINGLETON
@@ -202,7 +202,7 @@ public class SyncboxControl : MonoBehaviour {
 		return microseconds;
 	}
 
-	float timeWaited = 0.0f;
+	//float timeWaited = 0.0f;
 	IEnumerator WaitForShortTime(float jitter){
 		float currentTime = 0.0f;
 		while (currentTime < jitter) {
@@ -210,7 +210,7 @@ public class SyncboxControl : MonoBehaviour {
 			yield return 0;
 		}
 
-		timeWaited = currentTime;
+		//timeWaited = currentTime;
 	}
 
 
