@@ -164,7 +164,7 @@ public class ObjectController : MonoBehaviour {
 			bool objectsAreFarEnough = false;
 
 			int numTries = 0;
-			int maxNumTries = 20; //ARBITRARY.
+			int maxNumTries = 1000; //ARBITRARY.
 
 			Vector3 randomEnvPosition = Vector3.zero;
 			Vector2 randomEnvPositionVec2 = Vector2.zero;
