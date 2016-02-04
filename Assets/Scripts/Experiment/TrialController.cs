@@ -295,6 +295,7 @@ public class TrialController : MonoBehaviour {
 		else {
 			trialLogger.Log (numRealTrials, currentTrial.DefaultObjectLocationsXZ.Count, currentTrial.SpecialObjectLocationsXZ.Count, ExperimentSettings_CoinTask.isOneByOneReveal);
 			numRealTrials++;
+			TCPServer.Instance.SendTrialNum(numRealTrials);
 			Debug.Log("Logged trial #: " + numRealTrials);
 		}
 
@@ -417,7 +418,12 @@ public class TrialController : MonoBehaviour {
 			rememberResponses.Add(rememberResponse);
 			trialLogger.LogRememberResponse(rememberResponse);
 
+
 			//SELECT LOCATION
+			//enable position selection, turn off fancy selection UI
+			exp.environmentController.myPositionSelector.Reset();
+			exp.environmentController.myPositionSelector.EnableSelection (true);
+
 			switch(randomOrderIndex){
 			case 0:
 				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_1, false);
@@ -432,10 +438,6 @@ public class TrialController : MonoBehaviour {
 				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, true);
 				break;
 			}
-
-			//enable position selection, turn off fancy selection UI
-			exp.environmentController.myPositionSelector.Reset();
-			exp.environmentController.myPositionSelector.EnableSelection (true);
 			trialLogger.LogRecallChoiceStarted(true);
 
 			exp.uiController.doYouRememberUI.Stop();

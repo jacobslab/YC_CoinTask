@@ -64,14 +64,14 @@ public class TCPServer : MonoBehaviour {
 		}
 	}
 
-	//test encoding phase, every x seconds
+	/*//test encoding phase, every x seconds
 	IEnumerator SendPhase(bool value){
 		yield return new WaitForSeconds(TCP_Config.numSecondsBeforeAlignment);
 		while(true){
 			myServer.SendStateEvent(GameClock.SystemTime_Milliseconds, "ENCODING", value);
 			yield return new WaitForSeconds(10.0f);
 		}
-	}
+	}*/
 
 	void RunServer () {
 		myServer = new ThreadedServer ();
@@ -107,6 +107,14 @@ public class TCPServer : MonoBehaviour {
 			if (myServer.isServerConnected) {
 				myServer.SendStateEvent (GameClock.SystemTime_Milliseconds, state.ToString (), isEnabled);
 				UnityEngine.Debug.Log("SET THE STATE FOR BIO-M FILE: " + state.ToString() + isEnabled.ToString());
+			}
+		}
+	}
+
+	public void SendTrialNum(int trialNum){
+		if (myServer != null) {
+			if(myServer.isServerConnected){
+				myServer.SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.TRIAL, trialNum);
 			}
 		}
 	}
@@ -350,10 +358,17 @@ public class ThreadedServer : ThreadedJob{
 
 	//send all "messages to send"
 	void SendMessages(){
-		UnityEngine.Debug.Log("SENDING MESSAGE: " + messagesToSend);
 		if(messagesToSend != ""){
-			SendMessage(messagesToSend);
-			messagesToSend = "";
+			string messagesToSendCopy = messagesToSend;
+			UnityEngine.Debug.Log("SENDING MESSAGE: " + messagesToSendCopy);
+			SendMessage(messagesToSendCopy);
+			if(messagesToSend == messagesToSendCopy){
+				messagesToSend = "";
+			}
+			else{
+				UnityEngine.Debug.Log("CLEARED SENT PART OF MESSAGES TO SEND");
+				messagesToSend = messagesToSend.Substring(messagesToSendCopy.Length);
+			}
 		}
 	}
 
@@ -384,17 +399,6 @@ public class ThreadedServer : ThreadedJob{
 		
 		return jsonEventString;
 	}
-
-	/*public string SendSimpleJSONEvent(long systemTime, TCP_Config.EventType eventType, double eventData){
-		
-		string jsonEventString = JsonMessageController.FormatSimpleJSONEvent (systemTime, eventType.ToString(), eventData);
-		
-		UnityEngine.Debug.Log (jsonEventString);
-		
-		messagesToSend += jsonEventString;
-		
-		return jsonEventString;
-	}*/
 
 	public string SendSimpleJSONEvent(long systemTime, TCP_Config.EventType eventType, long eventData){
 		
@@ -568,7 +572,8 @@ public class ThreadedServer : ThreadedJob{
 			break;
 
 		case "ABORT":
-			//do nothing
+			//TODO: show message
+			Application.Quit();
 			break;
 			
 		case "SYNC":
@@ -597,6 +602,8 @@ public class ThreadedServer : ThreadedJob{
 				//TODO: do this. am I supposed to check for a premature abort? does it matter? or just end it?
 				End ();
 			}
+			//TODO: show message
+			Application.Quit();
 			break;
 			
 		default:
