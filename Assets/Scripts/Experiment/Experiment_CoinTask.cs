@@ -91,7 +91,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//TODO: move to logger_threading perhaps? *shrug*
 	void InitLogging(){
 		string subjectDirectory = ExperimentSettings_CoinTask.defaultLoggingPath + ExperimentSettings_CoinTask.currentSubject.name + "/";
-		string sessionDirectory = subjectDirectory + "session_0" + "/";;
+		string sessionDirectory = subjectDirectory + "session_0" + "/";
 		
 		sessionID = 0;
 		string sessionIDString = "_0";

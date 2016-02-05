@@ -36,10 +36,10 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public InputField NumTreasureChestsInputField; //Frames Per Second
 
 	public GameObject nonPilotOptions;
-	public bool isPilot { get { return GetIsPilot (); } }
+	public bool isRelease { get { return GetIsRelease (); } }
 
 
-	public static string defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/data";
+	public static string defaultLoggingPath = ""; //SET IN RESETDEFAULTLOGGINGPATH();
 	string TH1Folder = "/TH1/";
 	string TH2Folder = "/TH2/";
 	string TH3Folder = "/TH3/";
@@ -69,7 +69,12 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 	}
 
+	void ResetDefaultLoggingPath(){
+		defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/data";
+	}
+
 	void InitLoggingPath(){
+		ResetDefaultLoggingPath ();
 
 		if(Directory.Exists(defaultLoggingPath)){
 			if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH1) {
@@ -90,22 +95,24 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			defaultLoggingPath = "TextFiles/";
 		}
 
-		defaultLoggingPathDisplay.text = defaultLoggingPath;
+		if (defaultLoggingPathDisplay != null) {
+			defaultLoggingPathDisplay.text = defaultLoggingPath;
+		}
 	}
 
 
 	public Text ExpNameVersion;
 	public Text BuildType;
 	void InitMainMenuLabels(){
-		ExpNameVersion.text = Config_CoinTask.BuildVersion.ToString () + "/" + Config_CoinTask.VersionNumber;
-		if (Config_CoinTask.isSyncbox) {
-			BuildType.text = "Sync Box";
-		}
-		else if (Config_CoinTask.isSystem2){
-			BuildType.text = "System 2";
-		}
-		else{
-			BuildType.text = "Demo";
+		if (Application.loadedLevel == 0) {
+			ExpNameVersion.text = Config_CoinTask.BuildVersion.ToString () + "/" + Config_CoinTask.VersionNumber;
+			if (Config_CoinTask.isSyncbox) {
+				BuildType.text = "Sync Box";
+			} else if (Config_CoinTask.isSystem2) {
+				BuildType.text = "System 2";
+			} else {
+				BuildType.text = "Demo";
+			}
 		}
 	}
 
@@ -121,7 +128,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		}
 	}
 
-	bool GetIsPilot(){
+	bool GetIsRelease(){
 		if (nonPilotOptions.activeSelf) {
 			return false;
 		}

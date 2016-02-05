@@ -52,7 +52,7 @@ public class SubjectSelectionController : MonoBehaviour {
 
 			//don't want a duplicate subject
 			bool isDuplicateSubject = SubjectReaderWriter.subjectDict.ContainsKey( SubjectInputField.text );
-			if(!isDuplicateSubject || ExperimentSettings_CoinTask.Instance.isPilot){
+			if(!isDuplicateSubject || ExperimentSettings_CoinTask.Instance.isRelease){
 
 				//make and add a new subject
 				Subject newSubject = new Subject( SubjectInputField.text, 0, 0 ); //should subject be its own class?
@@ -63,7 +63,7 @@ public class SubjectSelectionController : MonoBehaviour {
 					SubjectReaderWriter.subjectDict.Add( newSubject.name, newSubject );
 				}
 
-				if(!ExperimentSettings_CoinTask.Instance.isPilot){
+				if(!ExperimentSettings_CoinTask.Instance.isRelease){
 
 					subjectReaderWriter.WriteNewSubject( newSubject.name );
 
@@ -81,7 +81,7 @@ public class SubjectSelectionController : MonoBehaviour {
 	}
 
 	void GenerateSubjectButtons(){
-		if (!ExperimentSettings_CoinTask.Instance.isPilot) {
+		if (!ExperimentSettings_CoinTask.Instance.isRelease) {
 			subjectButtonObjList = new List<GameObject> ();
 
 			//float distanceBetweenButtons = subjectButtonPrefab.GetComponent<RectTransform>().rect.width;
