@@ -17,7 +17,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static string VersionNumber = "2.03";
 
 	public static bool isSyncbox = false;
-	public static bool isSystem2 = true;
+	public static bool isSystem2 = false;
 
 	//REPLAY
 	public static int replayPadding = 6;
