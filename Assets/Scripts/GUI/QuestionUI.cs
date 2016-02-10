@@ -39,7 +39,7 @@ public class QuestionUI : MonoBehaviour {
 	}
 
 	//show an object
-	public IEnumerator Play(GameObject objectToSelect){
+	public IEnumerator Play(GameObject objectToSelect, string objectName){
 		isPlaying = true;
 
 		Enable (true);
@@ -55,7 +55,7 @@ public class QuestionUI : MonoBehaviour {
 		selectedObjectSpawnable.SetShadowCasting (false); //turn off shadows, they look weird in this case.
 		selectedObjectSpawnable.Scale (objectScaleMult);
 
-		ObjectNameTextMesh.text = selectedObjectSpawnable.GetName ();
+		ObjectNameTextMesh.text = objectName;
 
 		UsefulFunctions.FaceObject (objectToSelect, exp.player.gameObject, false); //make UI copy face the player
 

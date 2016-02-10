@@ -13,11 +13,11 @@ public class Config_CoinTask : MonoBehaviour {
 		FMRI_001	
 	}
 
-	public static Version BuildVersion = Version.TH3;
+	public static Version BuildVersion = Version.TH1;
 	public static string VersionNumber = "2.03";
 
 	public static bool isSyncbox = false;
-	public static bool isSystem2 = false;
+	public static bool isSystem2 = true;
 
 	//REPLAY
 	public static int replayPadding = 6;

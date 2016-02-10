@@ -406,12 +406,13 @@ public class TrialController : MonoBehaviour {
 			//show nice UI, log special object
 			trialLogger.LogObjectToRecall(specialSpawnable);
 			GameObject specialObjUICopy = Instantiate (specialObj, Vector3.zero, specialObj.transform.rotation) as GameObject;
+			specialObjUICopy.name += "UICopy";
 
 			//set layer of object & children to PlayerUI
 			specialObjUICopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI");
 
 			trialLogger.LogInstructionEvent();
-			yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy) );
+			yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy, specialSpawnable.GetName()) );
 
 			yield return StartCoroutine (exp.WaitForActionButton());
 			Config_CoinTask.MemoryState rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();

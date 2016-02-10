@@ -247,6 +247,7 @@ public class Replay : MonoBehaviour {
 									string objShortName = match.Groups["Alpha"].Value;
 									string objID = match.Groups["Numeric"].Value;
 
+									objShortName = Regex.Replace( objShortName, "UICopy", "" ); //for recall cue UI copy!
 
 									objInScene = exp.objectController.ChooseSpawnableObject(objShortName);
 									

@@ -211,17 +211,6 @@ public class ObjectController : MonoBehaviour {
 
 	List<Vector2> SortByNextClosest(List<Vector2> positions, Vector2 distancePos){
 
-		//INSERTION SORT
-		/*for (int i = 1; i < positions.Count; i++) {
-			int j = i;
-			while(j > 0 && UsefulFunctions.GetDistance(positions[j - 1], distancePos) > UsefulFunctions.GetDistance(positions[j], distancePos)){
-				//swap
-				Vector3 tempPos = positions[j - 1];
-				positions[j - 1] = positions[j];
-				positions[j] = tempPos;
-			}
-		}*/
-
 		List<Vector2> sortedPositions = new List<Vector2>();
 		int numPositions = positions.Count;
 
