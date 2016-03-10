@@ -72,8 +72,12 @@ public class ObjectController : MonoBehaviour {
 		return null;
 	}
 
-	public IEnumerator ThrowExplosive(Vector3 from, Vector3 to){
+	public IEnumerator ThrowExplosive(Vector3 from, Vector3 to, int explosiveID){
 		GameObject newExplosive = Instantiate (ExplosiveObject, from, ExplosiveObject.transform.rotation) as GameObject;
+		SpawnableObject newSpawnable = newExplosive.GetComponent<SpawnableObject> ();
+		if (newSpawnable) {
+			newSpawnable.SetNameID(newExplosive.transform, explosiveID);
+		}
 		yield return StartCoroutine( newExplosive.GetComponent<Explosive>().ThrowSelf(from, to) );
 	}
 

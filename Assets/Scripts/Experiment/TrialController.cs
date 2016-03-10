@@ -165,6 +165,11 @@ public class TrialController : MonoBehaviour {
 				exp.uiController.ConnectionUI.alpha = 0.0f;
 			}
 
+
+			trialLogger.LogVideoEvent(true);
+			yield return StartCoroutine(exp.instrVideoPlayer.Play());
+			trialLogger.LogVideoEvent(false);
+
 			//show instructions for exploring, wait for the action button
 			trialLogger.LogInstructionEvent();
 			yield return StartCoroutine(exp.uiController.pirateController.PlayWelcomingPirate());
@@ -513,7 +518,7 @@ public class TrialController : MonoBehaviour {
 			//throw bomb to selected location
 			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't actually want its visuals showing up as we wait
 
-			yield return StartCoroutine( exp.objectController.ThrowExplosive( exp.player.transform.position, chosenPosition ) );
+			yield return StartCoroutine( exp.objectController.ThrowExplosive( exp.player.transform.position, chosenPosition, i ) );
 
 
 			int randomOrderIndex = specialObjectOrder[i];

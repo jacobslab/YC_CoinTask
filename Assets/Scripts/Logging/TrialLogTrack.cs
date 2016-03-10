@@ -115,6 +115,19 @@ public class TrialLogTrack : LogTrack {
 		}
 	}
 
+	public void LogVideoEvent(bool isStarting){
+		if (ExperimentSettings_CoinTask.isLogging) {
+			if(isStarting){
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "INSTRUCTION_VIDEO_STARTED");
+				Debug.Log ("Logged video started event.");
+			}
+			else{
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "INSTRUCTION_VIDEO_ENDED");
+				Debug.Log ("Logged video ended event.");
+			}
+		}
+	}
+
 	public void LogInstructionEvent(){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "SHOWING_INSTRUCTIONS");

@@ -28,6 +28,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//DISTRACTOR GAME
 	public BoxSwapGameController boxGameController;
 
+	//instruction video player
+	public VideoPlayer instrVideoPlayer;
+
 	//score controller
 	public ScoreController scoreController;
 
