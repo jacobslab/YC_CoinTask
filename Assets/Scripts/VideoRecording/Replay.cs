@@ -107,25 +107,49 @@ public class Replay : MonoBehaviour {
 		return (newMS - baseMS); 
 	}
 
-	void RecordScreenShot(){
-		if(MyScreenRecorder != null){
-			//will check if it's supposed to record or not
-			//also will wait until endofframe in order to take the shot
-			MyScreenRecorder.TakeNextContinuousScreenShot();
-		}
-		else{
-			Debug.Log("No screen recorder attached!");
+
+
+	/// <summary>
+	/// Records the screen shot.
+	/// </summary>
+	/// <param name="timeStamp">Time stamp.</param>
+
+
+	void RecordScreenShot(long timeStamp){
+
+		if (timeStamp < maxTimeStamp && timeStamp > minTimeStamp) {
+			if (MyScreenRecorder != null) {
+				//will check if it's supposed to record or not
+				//also will wait until endofframe in order to take the shot
+				MyScreenRecorder.TakeNextContinuousScreenShot (timeStamp.ToString ());
+			} else {
+				Debug.Log ("No screen recorder attached!");
+			}
 		}
 	}
+
+
+	void SetTimeStamp(long newTimeStamp){
+		lastTimeStamp = currentTimeStamp;
+		currentTimeStamp = newTimeStamp;
+		timeDifference = currentTimeStamp - lastTimeRecorded; //gets time between log file lines
+	}
+
+
+	//IMPORTANT:
 	
+	long minTimeStamp = 1452876489932;//0;//
+	long maxTimeStamp = 1452877069298;
+	long currentFrame = 0;
+	long currentTimeStamp = 0;
+	long lastTimeStamp = 0;
+	long lastTimeRecorded = 0;
+	long timeDifference = 0;
+
+
 	//THIS PARSING DEPENDS GREATLY ON THE FORMATTING OF THE LOG FILE.
 	//IF THE FORMATTING OF THE LOG FILE IS CHANGED, THIS WILL VERY LIKELY HAVE TO CHANGE AS WELL.
 	IEnumerator ProcessLogFile(){
-
-		long currentFrame = 0;
-		long currentTimeStamp = 0;
-		long lastTimeRecorded = 0;
-		long timeDifference = 0;
 
 
 		//if (logFilePath != "") { 
@@ -150,8 +174,25 @@ public class Replay : MonoBehaviour {
 
 		char splitCharacter = Logger_Threading.LogTextSeparator.ToCharArray () [0];
 
+		bool hasReachedMinTime = false;
+
 		//PARSE
 		while (currentLogFileLine != null) {
+
+			//read up until desired timestamp
+			while (currentLogFileLine != null && !hasReachedMinTime){
+				splitLine = currentLogFileLine.Split(splitCharacter);
+
+				SetTimeStamp(long.Parse(splitLine[0]));
+				currentLogFileLine = fileReader.ReadLine ();
+
+				if(currentTimeStamp >= minTimeStamp){
+					hasReachedMinTime = true;
+					currentFrame = long.Parse(splitLine[1]);
+					lastTimeRecorded = currentTimeStamp; //we want to skip ahead!
+				}
+			}
+
 
 			splitLine = currentLogFileLine.Split(splitCharacter);
 
@@ -162,9 +203,7 @@ public class Replay : MonoBehaviour {
 					if (i == 0){
 
 						//Debug.Log(currentFrame + " " + splitLine[0] + " " + splitLine[1] + " " + splitLine[2]);
-
-						currentTimeStamp = long.Parse(splitLine[i]);
-						timeDifference = currentTimeStamp - lastTimeRecorded; //gets time between log file lines
+						SetTimeStamp(long.Parse(splitLine[i]));
 					}
 
 					//1 -- frame
@@ -183,7 +222,7 @@ public class Replay : MonoBehaviour {
 							lastTimeRecorded = currentTimeStamp;
 							
 							if(isRecording){
-								RecordScreenShot();
+								RecordScreenShot(lastTimeStamp);
 							}
 							yield return 0; //advance the game a frame before continuing
 							
@@ -195,7 +234,7 @@ public class Replay : MonoBehaviour {
 							//record and wait the appropriate number of frames
 							for(int j = 0; j < numFramesToCapture; j++){
 								if(isRecording){
-									RecordScreenShot();
+									RecordScreenShot(lastTimeStamp);
 								}
 								yield return 0; //advance the game a frame before continuing
 							}
@@ -247,7 +286,16 @@ public class Replay : MonoBehaviour {
 									string objShortName = match.Groups["Alpha"].Value;
 									string objID = match.Groups["Numeric"].Value;
 
+									string origName = objShortName;
+
 									objShortName = Regex.Replace( objShortName, "UICopy", "" ); //for recall cue UI copy!
+
+									//TODO: UNDO THIS WHEN GOING BACK TO NORMAL LOG FILES
+									bool isUIObj = false;
+									if(objShortName != origName){
+										isUIObj = true;
+										int a = 0;
+									}
 
 									objInScene = exp.objectController.ChooseSpawnableObject(objShortName);
 									
@@ -255,6 +303,10 @@ public class Replay : MonoBehaviour {
 										objInScene = exp.objectController.SpawnObject(objInScene, Vector3.zero); //position and rotation should be set next...
 										SpawnableObject objInSceneSpawnable = objInScene.GetComponent<SpawnableObject>();
 										objInScene.name = objInSceneSpawnable.GetName();
+
+										if(isUIObj){
+											objInScene.name += "UICopy";
+										}
 
 										//ID's are in the format 000 - 999
 										char[] splitNum = objID.ToCharArray();
@@ -274,6 +326,12 @@ public class Replay : MonoBehaviour {
 
 							}
 							if(objInScene != null){
+								if(objName == "coconut"){
+									Rigidbody r = objInScene.GetComponent<Rigidbody>();
+									r.constraints = RigidbodyConstraints.FreezeAll;
+									r.useGravity = false;
+								}
+
 								//NOW MOVE & ROTATE THE OBJECT.
 								string loggedProperty = splitLine[i+1];
 								
@@ -282,6 +340,15 @@ public class Replay : MonoBehaviour {
 									float posX = float.Parse(splitLine[i+2]);
 									float posY = float.Parse(splitLine[i+3]);
 									float posZ = float.Parse(splitLine[i+4]);
+
+								//TODO: GET RID OF THIS LATER. JUST FOR MODIFIED LOGFILE
+									if(objName == "Box1" || objName == "Box2" || objName == "Box3" || objName == "Coin" || objName == "BoxSelector" || objName == "BoxSelectorVisuals"){
+										posZ = 517.4979f;
+									}
+									else if (objName == "Do You Remember Selector Visuals" || objName == "Are You Sure Selector Visuals"){
+										posY =15.31f;
+										posZ = 574.4609f;
+									}
 									
 									objInScene.transform.position = new Vector3(posX, posY, posZ);
 									
@@ -593,7 +660,7 @@ public class Replay : MonoBehaviour {
 
 		//take the last screenshot
 		if (isRecording) {
-			RecordScreenShot ();
+			RecordScreenShot (currentTimeStamp);
 		}
 		yield return 0;
 		Application.LoadLevel(0); //return to main menu
