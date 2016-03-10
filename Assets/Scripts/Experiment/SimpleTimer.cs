@@ -10,6 +10,8 @@ public class SimpleTimer : MonoBehaviour {
 	bool isRunning = false;
 	public bool IsRunning { get { return isRunning; } } //public getter. don't want people setting isRunning outside of here.
 
+	public bool isCountDownTimer;
+
 	public delegate void ResetDelegate();
 	public ResetDelegate myResetDelegate;
 
@@ -26,7 +28,16 @@ public class SimpleTimer : MonoBehaviour {
 	}
 
 	void UpdateTimer(){
-		seconds += Time.deltaTime;
+		float countMult = 1.0f;
+		if (isCountDownTimer) {
+			countMult = -1.0f;
+		}
+
+		seconds += (countMult * Time.deltaTime);
+
+		if (seconds < 0.0f) {
+			seconds = 0.0f;
+		}
 
 		if(timerText != null){
 			int displayMinutes = (int)Mathf.Floor (seconds / 60.0f);
@@ -47,9 +58,13 @@ public class SimpleTimer : MonoBehaviour {
 		isRunning = false;
 	}
 
-	public void ResetTimer(){
+	public void ResetTimerNoDelegate (float newSeconds){
+		seconds = newSeconds;
+	}
+
+	public void ResetTimer(float newSeconds){
 		myResetDelegate ();
-		seconds = 0;
+		seconds = newSeconds;
 	}
 
 	public int GetSecondsInt(){

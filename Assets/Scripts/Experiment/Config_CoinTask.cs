@@ -65,6 +65,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float feedbackTimeBetweenObjects = 0.5f;
 
 	public static float MRIFixationTime = 2.0f;
+
 #else
 	public static int numTestTrials = 40; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
 
@@ -104,6 +105,11 @@ public class Config_CoinTask : MonoBehaviour {
 #if MRIVERSION
 	public static float rotateToSpecialObjectSpeed = 45.0f;
 	public static float pauseAtTreasureTime = 1.5f;
+
+	//public static float maxNavigationTime = 30.0f;
+	public static float maxInstructionTime = 3.0f;
+	public static float maxFeedbackTime = 3.0f;
+	public static float maxAnswerTime = 5.0f;
 #else
 	public static float rotateToSpecialObjectSpeed = 33.33f;
 	public static float pauseAtTreasureTime = 1.5f;

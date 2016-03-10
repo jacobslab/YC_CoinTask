@@ -14,6 +14,7 @@ public class TrialController : MonoBehaviour {
 
 	//TIMER
 	public SimpleTimer trialTimer;
+	public SimpleTimer MRITimer;
 
 	TrialLogTrack trialLogger;
 
@@ -290,7 +291,28 @@ public class TrialController : MonoBehaviour {
 		yield return new WaitForSeconds(Config_CoinTask.MRIFixationTime);
 		exp.uiController.FixationRestUI.alpha = 0.0f;
 	}
-#endif
+
+	IEnumerator WaitForMRITimeout(float maxSeconds){
+		exp.uiController.MRITimerUI.alpha = 1.0f;
+		MRITimer.ResetTimerNoDelegate(maxSeconds);
+		MRITimer.StartTimer ();
+
+		bool hasPressedButton = false;
+
+		while(MRITimer.GetSecondsFloat() > 0.0f && Input.GetAxis("Action Button") <= 0f){
+			yield return 0;
+		}
+		while(!hasPressedButton && MRITimer.GetSecondsFloat() > 0.0f){
+			if(Input.GetAxis("Action Button") == 1.0f){
+				hasPressedButton = true;
+			}
+			yield return 0;
+		}
+
+		MRITimer.StopTimer ();
+		exp.uiController.MRITimerUI.alpha = 0.0f;
+	}
+	#endif
 
 	public void IncrementNumDefaultObjectsCollected(){
 		numDefaultObjectsCollected++;
@@ -349,7 +371,7 @@ public class TrialController : MonoBehaviour {
 		exp.player.controls.ShouldLockControls = true;
 
 		//reset game timer
-		trialTimer.ResetTimer ();
+		trialTimer.ResetTimer (0);
 
 		if(numRealTrials > 1 || trial.avatarStartPos != exp.player.controls.startPositionTransform1.position){ //note: if numRealTrials > 1, not a practice trial.
 			trialLogger.LogInstructionEvent ();
@@ -447,7 +469,11 @@ public class TrialController : MonoBehaviour {
 			trialLogger.LogInstructionEvent();
 			yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy, specialSpawnable.GetName()) );
 
+#if MRIVERSION
+			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxAnswerTime));
+#else
 			yield return StartCoroutine (exp.WaitForActionButton());
+#endif
 			Config_CoinTask.MemoryState rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
 			rememberResponses.Add(rememberResponse);
 			trialLogger.LogRememberResponse(rememberResponse);

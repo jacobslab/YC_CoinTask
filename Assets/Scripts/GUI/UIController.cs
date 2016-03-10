@@ -12,12 +12,15 @@ public class UIController : MonoBehaviour {
 	public CanvasGroup ConnectionUI;
 	public GoText goText;
 
-	//MRI VERSION
-	public CanvasGroup WaitingForMRIUI;
-	public CanvasGroup FixationRestUI;
 
 	public Transform InSceneUIParent;
 	public Transform OculusInSceneUIPos;
+
+
+	//MRI VERSION
+	public CanvasGroup WaitingForMRIUI;
+	public CanvasGroup FixationRestUI;
+	public CanvasGroup MRITimerUI;
 
 	void Start(){
 		if (ExperimentSettings_CoinTask.isOculus) {
