@@ -70,7 +70,11 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	}
 
 	void ResetDefaultLoggingPath(){
-		defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/data";
+		if (Config_CoinTask.isSystem2) {
+			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/data";
+		} else {
+			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM/data";
+		}
 	}
 
 	void InitLoggingPath(){
