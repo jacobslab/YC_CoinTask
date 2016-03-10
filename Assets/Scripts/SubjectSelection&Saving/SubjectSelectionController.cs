@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 public class SubjectSelectionController : MonoBehaviour {
 	List <GameObject> subjectButtonObjList;
@@ -50,12 +51,15 @@ public class SubjectSelectionController : MonoBehaviour {
 	void AddNewSubject() {
 		if(SubjectInputField.text != ""){ //the subject must have a name!
 
+			string newSubjName = SubjectInputField.text.Replace("\n", "");
+			newSubjName = newSubjName.Replace("\r", "");
+			
 			//don't want a duplicate subject
-			bool isDuplicateSubject = SubjectReaderWriter.subjectDict.ContainsKey( SubjectInputField.text );
+			bool isDuplicateSubject = SubjectReaderWriter.subjectDict.ContainsKey( newSubjName );
 			if(!isDuplicateSubject || ExperimentSettings_CoinTask.Instance.isRelease){
 
 				//make and add a new subject
-				Subject newSubject = new Subject( SubjectInputField.text, 0, 0 ); //should subject be its own class?
+				Subject newSubject = new Subject( newSubjName, 0, 0 ); //should subject be its own class?
 																					//or a monobehavior to tie to the button?
 																					//or does each subject button just have a public subject variable?
 
@@ -76,6 +80,9 @@ public class SubjectSelectionController : MonoBehaviour {
 
 				ChooseSubject(newSubject.name);
 
+			}
+			else{
+				ChooseSubject(newSubjName);
 			}
 		}
 	}
