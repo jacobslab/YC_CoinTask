@@ -354,8 +354,9 @@ public class TrialController : MonoBehaviour {
 		if(numRealTrials > 1 || trial.avatarStartPos != exp.player.controls.startPositionTransform1.position){ //note: if numRealTrials > 1, not a practice trial.
 			trialLogger.LogInstructionEvent ();
 
+#if !(MRIVERSION)
 			yield return StartCoroutine (exp.ShowSingleInstruction ("Press (X) to start!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
-
+#endif
 		}
 
 		//START NAVIGATION --> TODO: make this its own function. or a delegate. ...clean it up.
