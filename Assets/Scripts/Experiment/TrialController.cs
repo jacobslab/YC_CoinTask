@@ -292,7 +292,7 @@ public class TrialController : MonoBehaviour {
 		exp.uiController.FixationRestUI.alpha = 0.0f;
 	}
 
-	IEnumerator WaitForMRITimeout(float maxSeconds){
+	public IEnumerator WaitForMRITimeout(float maxSeconds){
 		exp.uiController.MRITimerUI.alpha = 1.0f;
 		MRITimer.ResetTimerNoDelegate(maxSeconds);
 		MRITimer.StartTimer ();
@@ -504,8 +504,15 @@ public class TrialController : MonoBehaviour {
 
 			//show single selection instruction and wait for selection button press
 			string selectObjectText = "Select the location of the " + specialItemName + " (X).";
-			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 
+#if MRIVERSION
+			exp.instructionsController.SetInstructionsTransparentOverlay();
+			exp.instructionsController.DisplayText(selectObjectText);
+			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
+			exp.instructionsController.SetInstructionsBlank();
+#else
+			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
+#endif
 			//log the chosen position and correct position
 			exp.environmentController.myPositionSelector.logTrack.LogPositionChosen( exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position, specialSpawnable );
 
@@ -645,9 +652,13 @@ public class TrialController : MonoBehaviour {
 		
 		//disable original selector
 		exp.environmentController.myPositionSelector.EnableSelection(false);
-		
+
+#if MRIVERSION
+		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxFeedbackTime));
+#else
 		//wait for selection button press
 		yield return StartCoroutine (exp.ShowSingleInstruction ("Press (X) to continue.", false, true, false, Config_CoinTask.minDefaultInstructionTime));
+#endif
 
 		int currTrialNum = numRealTrials;
 		if (Config_CoinTask.doPracticeTrial) {
@@ -658,7 +669,13 @@ public class TrialController : MonoBehaviour {
 		trialLogger.LogScoreScreenStarted(true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
 		exp.uiController.scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
+
+#if MRIVERSION
+		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxScoreScreenTime));
+#else
 		yield return StartCoroutine (exp.WaitForActionButton ());
+#endif
+
 		exp.uiController.scoreRecapUI.Stop ();
 		trialLogger.LogScoreScreenStarted(false);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);

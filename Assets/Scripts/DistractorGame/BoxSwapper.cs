@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class BoxSwapper : MonoBehaviour {
 
+	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } } 
+
 	public AudioSource swapSound;
 	public AudioSource selectorSwitchSound;
 	public AudioSource correctAnswerSound;
@@ -154,15 +156,20 @@ public class BoxSwapper : MonoBehaviour {
 
 		boxSelector.GetComponent<VisibilityToggler> ().TurnVisible (true);
 
+#if MRIVERSION
+		yield return StartCoroutine(exp.trialController.WaitForMRITimeout(Config_CoinTask.maxBoxAnswerTime));
+		shouldSelect = false;
+#else
 		while(!actionButtonPressed){
-	
+			
 			if(Input.GetAxis("Action Button") != 0f){
 				actionButtonPressed = true;
 				shouldSelect = false;
 			}
-
+			
 			yield return 0;
 		}
+#endif
 
 		yield return 0;
 
