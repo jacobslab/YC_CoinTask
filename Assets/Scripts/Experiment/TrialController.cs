@@ -546,8 +546,9 @@ public class TrialController : MonoBehaviour {
 			//throw bomb to selected location
 			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't actually want its visuals showing up as we wait
 
+#if !(MRIVERSION)
 			yield return StartCoroutine( exp.objectController.ThrowExplosive( exp.player.transform.position, chosenPosition, i ) );
-
+#endif
 
 			int randomOrderIndex = specialObjectOrder[i];
 
@@ -611,7 +612,9 @@ public class TrialController : MonoBehaviour {
 
 			//WAIT BEFORE NEXT FEEDBACK
 			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't want its visuals showing up as we wait
+#if !(MRIVERSION)
 			yield return new WaitForSeconds(Config_CoinTask.feedbackTimeBetweenObjects);
+#endif
 		}
 		
 		//disable original selector
