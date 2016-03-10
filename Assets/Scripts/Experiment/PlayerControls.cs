@@ -226,9 +226,7 @@ public class PlayerControls : MonoBehaviour{
 			angleDifference = 360.0f - angleDifference;
 		}
 
-
-		float rotationSpeed = 0.03f;
-		float totalTimeToRotate = angleDifference * rotationSpeed;
+		float totalTimeToRotate = angleDifference / Config_CoinTask.rotateToSpecialObjectSpeed;
 
 		//rotate to look at target
 		transform.rotation = origRotation;
