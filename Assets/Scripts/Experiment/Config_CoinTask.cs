@@ -1,3 +1,6 @@
+//#define MRI_VERSION
+//#define STANDARD_VERSION
+
 using UnityEngine;
 using System.Collections;
 
@@ -16,8 +19,13 @@ public class Config_CoinTask : MonoBehaviour {
 	public static Version BuildVersion = Version.TH1;
 	public static string VersionNumber = "2.041";
 
+#if MRIVERSION
 	public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
+#else
+	public static bool isSyncbox = false;
+	public static bool isSystem2 = false;
+#endif
 
 	//REPLAY
 	public static int replayPadding = 6;
@@ -36,12 +44,31 @@ public class Config_CoinTask : MonoBehaviour {
 	public static int stimFrequency;	//TODO
 	public static float stimDuration;	//TODO
 	public static bool shouldDoBreak;	//TODO*/
-	
-	//test session variables
-	//doTestSession (not implemented in the panda3d version )
 
-	public static int numTestTrials = 40; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
+	//SPECIFIC COIN TASK VARIABLES:
+	public static float randomJitterMin = 0.0f;
+	public static float randomJitterMax = 0.2f;
 	
+#if MRIVERSION
+	public static int numTestTrials = 8; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
+	
+	
+	//practice settings
+	public static int numTrialsPract = 4;
+	public static bool doPracticeTrial = false;
+	public static int numSpecialObjectsPract = 2;
+	public static int numTwoItemTrials = 20;
+	public static int numThreeItemTrials = 20;
+	public static int numTrialsPerBlock = 8;
+	
+	//FEEDBACK SETTINGS:
+	public static float feedbackTimeBetweenObjects = 0.5f;
+
+	public static float MRIFixationTime = 30.0f;
+#else
+	public static int numTestTrials = 40; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
+
+
 	//practice settings
 	public static int numTrialsPract = 1;
 	public static bool doPracticeTrial = false;
@@ -51,12 +78,10 @@ public class Config_CoinTask : MonoBehaviour {
 	public static int numTrialsPerBlock = 8;
 
 
-	//SPECIFIC COIN TASK VARIABLES:
-	public static float randomJitterMin = 0.0f;
-	public static float randomJitterMax = 0.2f;
-
 	//FEEDBACK SETTINGS:
 	public static float feedbackTimeBetweenObjects = 0.5f;
+
+#endif
 
 	public enum MemoryState{
 		yes,
@@ -76,10 +101,13 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public static float minDriveTimeBetweenObjects = 0.5f; //half a second driving between objects
 
-
+#if MRIVERSION
 	public static float rotateToSpecialObjectTime = 0.5f;
 	public static float pauseAtTreasureTime = 1.5f;
-
+#else
+	public static float rotateToSpecialObjectTime = 0.5f;
+	public static float pauseAtTreasureTime = 1.5f;
+#endif
 
 	public static string initialInstructions1 = "Welcome to Treasure Island!" + 
 		"\n\nYou are going on a treasure hunt." + 
@@ -101,7 +129,6 @@ public class Config_CoinTask : MonoBehaviour {
 	
 	public static float minInitialInstructionsTime = 0.0f; //TODO: change back to 5.0f
 	public static float minDefaultInstructionTime = 0.0f; //time each learning trial instruction should be displayed for
-	public static float minScoreMapTime = 0.0f;
 
 	//tilt variables
 	public static bool isAvatarTilting = true;

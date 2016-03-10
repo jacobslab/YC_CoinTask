@@ -165,23 +165,29 @@ public class TrialController : MonoBehaviour {
 				exp.uiController.ConnectionUI.alpha = 0.0f;
 			}
 
-
+#if MRIVERSION
+			yield return StartCoroutine( WaitForMRIConnectionKey());
+			yield return StartCoroutine( WaitForMRIFixationRest());
+#else
 			trialLogger.LogVideoEvent(true);
 			yield return StartCoroutine(exp.instrVideoPlayer.Play());
 			trialLogger.LogVideoEvent(false);
+#endif
 
 			//show instructions for exploring, wait for the action button
 			trialLogger.LogInstructionEvent();
 			yield return StartCoroutine(exp.uiController.pirateController.PlayWelcomingPirate());
+
+#if MRIVERSION
+			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			scoreInstructionsGroup.alpha = 0.0f;
+#else
 			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 1.0f;
 			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 0.0f;
 			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
-
-			//let player explore until the button is pressed again
-			//trialLogger.LogBeginningExplorationEvent();
-			//yield return StartCoroutine (exp.WaitForActionButton ());
+#endif
 			
 			//get the number of blocks so far -- floor half the number of trials recorded
 			int totalTrialCount = ExperimentSettings_CoinTask.currentSubject.trials;
@@ -244,7 +250,10 @@ public class TrialController : MonoBehaviour {
 
 		StartCoroutine(exp.uiController.pirateController.PlayEndingPirate ());
 		yield return StartCoroutine(exp.ShowSingleInstruction("You have finished your trials! \nPress (X) to proceed.", true, true, false, 0.0f));
-		
+
+#if MRIVERSION
+		yield return StartCoroutine( WaitForMRIFixationRest());
+#endif
 	}
 
 	IEnumerator WaitForEEGHardwareConnection(){
@@ -266,6 +275,22 @@ public class TrialController : MonoBehaviour {
 		exp.uiController.ConnectionUI.alpha = 0.0f;
 		isConnectingToHardware = false;
 	}
+
+#if MRIVERSION
+	IEnumerator WaitForMRIConnectionKey(){
+		exp.uiController.WaitingForMRIUI.alpha = 1.0f;
+		while (Input.GetAxis("MRI Start Button") <= 0.0f) {
+			yield return 0;
+		}
+		exp.uiController.WaitingForMRIUI.alpha = 0.0f;
+	}
+
+	IEnumerator WaitForMRIFixationRest(){
+		exp.uiController.FixationRestUI.alpha = 1.0f;
+		yield return new WaitForSeconds(Config_CoinTask.MRIFixationTime);
+		exp.uiController.FixationRestUI.alpha = 0.0f;
+	}
+#endif
 
 	public void IncrementNumDefaultObjectsCollected(){
 		numDefaultObjectsCollected++;
@@ -328,7 +353,9 @@ public class TrialController : MonoBehaviour {
 
 		if(numRealTrials > 1 || trial.avatarStartPos != exp.player.controls.startPositionTransform1.position){ //note: if numRealTrials > 1, not a practice trial.
 			trialLogger.LogInstructionEvent ();
+
 			yield return StartCoroutine (exp.ShowSingleInstruction ("Press (X) to start!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
+
 		}
 
 		//START NAVIGATION --> TODO: make this its own function. or a delegate. ...clean it up.
