@@ -10,25 +10,6 @@ using System.Text.RegularExpressions;
 
 public class JsonMessageController : MonoBehaviour {
 
-	public class Person
-	{
-		// C# 3.0 auto-implemented properties
-		public string   Name     { get; set; }
-		public int      Age      { get; set; }
-		public DateTime Birthday { get; set; }
-	}
-
-	// Use this for initialization
-	void Start () {
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-
 	public class MessageEvent{
 		public string data { get; set; }
 		public string type { get; set; }

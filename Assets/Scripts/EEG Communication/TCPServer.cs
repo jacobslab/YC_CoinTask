@@ -195,10 +195,7 @@ public class ThreadedServer : ThreadedJob{
 				}
 			}
 
-			//OpenConnections();
-
 			//SEND HEARTBEAT
-			//messagesToSend = ""; //uncomment to test solo heartbeat.
 			SendHeartbeatPolled();
 
 			CheckForMessages();
@@ -207,20 +204,6 @@ public class ThreadedServer : ThreadedJob{
 
 			UnityEngine.Debug.Log("MAIN LOOP EXECUTED");
 
-			//ECHO TEST
-			/*
-			if(message != ""){
-
-				EchoMessage(message);
-
-				SendMessage(messagesToSend);
-				messagesToSend = "";
-
-			}*/
-
-
-
-			//CleanupConnections();
 			
 		}
 		catch (Exception e) {
@@ -253,7 +236,7 @@ public class ThreadedServer : ThreadedJob{
 		//send subject ID
 		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SUBJECTID, TCP_Config.SubjectName);
 		
-		//align clocks //TODO: SHOULD THIS BE FINISHED BEFORE WE START SENDING HEARTBEATS? -- NO
+		//align clocks //SHOULD THIS BE FINISHED BEFORE WE START SENDING HEARTBEATS? -- NO
 		RequestClockAlignment();
 		
 		//start heartbeat
@@ -345,10 +328,6 @@ public class ThreadedServer : ThreadedJob{
 		}
 		return -1;
 	}
-
-
-
-
 
 
 
