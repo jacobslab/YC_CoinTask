@@ -29,18 +29,46 @@ public class TrialController : MonoBehaviour {
 	public CanvasGroup scoreInstructionsGroup;
 
 	Trial currentTrial;
-	Trial practiceTrial;
 
 	[HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
 	
 	List<List<Trial>> ListOfTrialBlocks;
+	List<Trial> practiceTrials;
 
 	void Start(){
+		#if MRIVERSION
+		if(Config_CoinTask.isPractice){
+			InitPracticeTrials();
+		}
+		else{
+			InitTrials();
+		}
+		#else
+		if(Config_CoinTask.isPractice){
+			InitPracticeTrials();
+		}
 		InitTrials ();
+		#endif
+
 		trialLogger = GetComponent<TrialLogTrack> ();
 	}
 
+	void InitPracticeTrials(){
+		practiceTrials = new List<Trial>();
+
+		#if MRIVERSION
+		for(int i = 0; i < Config_CoinTask.numTrialsPract; i++){
+			Trial practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract[i]);	//2 special objects for practice trial
+			practiceTrials.Add(practiceTrial);
+		}
+		#else
+		Trial  practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract);	//2 special objects for practice trial
+		practiceTrials.Add(practiceTrial);
+		#endif
+	}
+
 	void InitTrials(){
+
 		ListOfTrialBlocks = new List<List<Trial>> ();
 
 		int numTestTrials = Config_CoinTask.numTestTrials;
@@ -58,11 +86,6 @@ public class TrialController : MonoBehaviour {
 		//generate blocks from trials
 		int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
 		GenerateTrialBlocks(ListOfTwoItemTrials, ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
-
-
-		if(Config_CoinTask.doPracticeTrial){
-			practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract);	//2 special objects for practice trial
-		}
 
 	}
 
@@ -189,62 +212,18 @@ public class TrialController : MonoBehaviour {
 			scoreInstructionsGroup.alpha = 0.0f;
 			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 #endif
-			
-			//get the number of blocks so far -- floor half the number of trials recorded
-			int totalTrialCount = ExperimentSettings_CoinTask.currentSubject.trials;
-			numRealTrials = totalTrialCount;
-			if (Config_CoinTask.doPracticeTrial) {
-				if (numRealTrials >= 2) { //otherwise, leave numRealTrials at zero.
-					numRealTrials -= 1; //-1 for practice trial
-				}
+
+			#if MRIVERSION
+			if(Config_CoinTask.isPractice){
+				yield return StartCoroutine(RunPracticeTrials()); //if MRI practice, ONLY run the practice trials
 			}
-
-			
-			//run practice trials
-			if(Config_CoinTask.doPracticeTrial){
-				isPracticeTrial = true;
+			else{
+				yield return StartCoroutine(RunTrials());
 			}
-			
-			if (isPracticeTrial) {
-
-				yield return StartCoroutine (RunTrial ( practiceTrial ));
-
-				Debug.Log ("PRACTICE TRIALS COMPLETED");
-				totalTrialCount += 1;
-				isPracticeTrial = false;
-			}
-
-
-			//RUN THE REST OF THE BLOCKS
-			for( int i = 0; i < ListOfTrialBlocks.Count; i++){
-				List<Trial> currentTrialBlock = ListOfTrialBlocks[i];
-				while (currentTrialBlock.Count > 0) {
-					Trial nextTrial = PickRandomTrial (currentTrialBlock);
-
-					yield return StartCoroutine (RunTrial ( nextTrial ));
-
-					totalTrialCount += 1;
-
-					Debug.Log ("TRIALS COMPLETED: " + totalTrialCount);
-				}
-
-				//FINISHED A TRIAL BLOCK, SHOW UI
-				trialLogger.LogInstructionEvent();
-				StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
-				exp.uiController.blockCompletedUI.Play(i, exp.scoreController.score, ListOfTrialBlocks.Count);
-				trialLogger.LogBlockScreenStarted(true);
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
-
-				yield return StartCoroutine(exp.WaitForActionButton());
-
-				exp.uiController.blockCompletedUI.Stop();
-				trialLogger.LogBlockScreenStarted(false);
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, false);
-
-				exp.scoreController.Reset();
-
-				Debug.Log ("TRIAL Block: " + i);
-			}
+			#else
+			yield return StartCoroutine(RunPracticeTrials);
+			yield return StartCoroutine(RunTrials());
+			#endif	
 
 			yield return 0;
 		}
@@ -255,6 +234,54 @@ public class TrialController : MonoBehaviour {
 #if MRIVERSION
 		yield return StartCoroutine( WaitForMRIFixationRest());
 #endif
+	}
+
+	IEnumerator RunPracticeTrials(){
+		//run practice trials
+		if(Config_CoinTask.isPractice){
+			isPracticeTrial = true;
+		}
+
+		if (isPracticeTrial) {
+			int numPracticeTrialsRun = 0;
+			while(numPracticeTrialsRun < practiceTrials.Count){
+
+				yield return StartCoroutine (RunTrial ( practiceTrials[numPracticeTrialsRun] ));
+				numPracticeTrialsRun++;
+			}
+			Debug.Log ("PRACTICE TRIALS COMPLETED");
+			isPracticeTrial = false;
+		}
+	}
+
+	IEnumerator RunTrials(){
+		//RUN THE REST OF THE BLOCKS
+		for( int i = 0; i < ListOfTrialBlocks.Count; i++){
+			List<Trial> currentTrialBlock = ListOfTrialBlocks[i];
+			while (currentTrialBlock.Count > 0) {
+				Trial nextTrial = PickRandomTrial (currentTrialBlock);
+
+				yield return StartCoroutine (RunTrial ( nextTrial ));
+
+			}
+
+			//FINISHED A TRIAL BLOCK, SHOW UI
+			trialLogger.LogInstructionEvent();
+			StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
+			exp.uiController.blockCompletedUI.Play(i, exp.scoreController.score, ListOfTrialBlocks.Count);
+			trialLogger.LogBlockScreenStarted(true);
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
+
+			yield return StartCoroutine(exp.WaitForActionButton());
+
+			exp.uiController.blockCompletedUI.Stop();
+			trialLogger.LogBlockScreenStarted(false);
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, false);
+
+			exp.scoreController.Reset();
+
+			Debug.Log ("TRIAL Block: " + i);
+		}
 	}
 
 	IEnumerator WaitForEEGHardwareConnection(){
@@ -661,7 +688,7 @@ public class TrialController : MonoBehaviour {
 #endif
 
 		int currTrialNum = numRealTrials;
-		if (Config_CoinTask.doPracticeTrial) {
+		if (Config_CoinTask.isPractice) {
 			currTrialNum++;
 		}
 

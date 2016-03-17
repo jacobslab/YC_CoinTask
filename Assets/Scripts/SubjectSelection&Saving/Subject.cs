@@ -11,20 +11,15 @@ public class Subject {
 
 	}
 
-	public Subject(string newName, int newScore, int newBlock){
+	public Subject(string newName, int newScore, int newTrial){
 		name = newName;
 		score = newScore;
-		trials = newBlock;
+		trials = newTrial;
 	}
 
 	public void IncrementTrial () {
 		Debug.Log("incrementing session");
 		trials++;
 	}
-	
-	/*public void AddScore ( int scoreToAdd ) {
-		Debug.Log("adding to score");
-		score += scoreToAdd;
-	}*/
 
 }

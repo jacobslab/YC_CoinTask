@@ -112,13 +112,17 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			ExpNameVersion.text = Config_CoinTask.BuildVersion.ToString () + "/" + Config_CoinTask.VersionNumber;
 			if (Config_CoinTask.isSyncbox) {
 				BuildType.text = "Sync Box";
-#if MRIVERSION
-				BuildType.text = "MRI " + BuildType.text;
-#endif
 			} else if (Config_CoinTask.isSystem2) {
 				BuildType.text = "System 2";
 			} else {
+				#if MRIVERSION
+					BuildType.text = "MRI";
+				#else
 				BuildType.text = "Demo";
+				#endif
+			}
+			if(Config_CoinTask.isPractice){
+				BuildType.text += " Practice";
 			}
 		}
 	}
