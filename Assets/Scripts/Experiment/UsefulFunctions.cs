@@ -77,4 +77,17 @@ public class UsefulFunctions {
 	public static float GetDistance(Vector2 startPos, Vector2 endPos){
 		return (startPos - endPos).magnitude;
 	}
+
+	public static Quaternion GetDesiredRotation(Transform myTransform, Vector3 targetPos){
+		Quaternion origRotation = myTransform.rotation;
+
+		Vector3 targetPosition = new Vector3 (targetPos.x, myTransform.position.y, targetPos.z);
+		myTransform.LookAt(targetPosition);
+		Quaternion desiredRotation = myTransform.rotation;
+
+		//put rotation back to orig
+		myTransform.rotation = origRotation;
+
+		return desiredRotation;
+	}
 }

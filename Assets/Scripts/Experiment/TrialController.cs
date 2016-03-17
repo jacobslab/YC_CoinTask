@@ -346,6 +346,35 @@ public class TrialController : MonoBehaviour {
 		MRITimer.StopTimer ();
 		exp.uiController.MRITimerUI.alpha = 0.0f;
 	}
+
+	public IEnumerator WaitForMRINavigationTimeout(float maxSeconds){
+		exp.uiController.MRITimerUI.alpha = 1.0f;
+		MRITimer.ResetTimerNoDelegate(maxSeconds);
+		MRITimer.StartTimer ();
+
+		bool hasPressedButton = false;
+
+		int currNumCollected = numDefaultObjectsCollected;
+		while(MRITimer.GetSecondsFloat() > 0.0f && currNumCollected == numDefaultObjectsCollected){
+			yield return 0;
+		}
+
+		if(MRITimer.GetSecondsFloat() <= 0.0f){
+			Vector2 currChestPos = currentTrial.DefaultObjectLocationsXZ[currNumCollected];
+			Vector3 targetChestPos = new Vector3(currChestPos.x, exp.player.transform.position.y, currChestPos.y);
+
+			float collisionBuffer = Experiment_CoinTask.Instance.objectController.GetMaxDefaultObjectColliderBoundXZ ();
+			Vector3 direction = targetChestPos - exp.player.transform.position;
+			targetChestPos = targetChestPos - (direction.normalized*collisionBuffer);
+
+			Quaternion desiredRot = UsefulFunctions.GetDesiredRotation(exp.player.transform, targetChestPos);
+
+			yield return StartCoroutine(exp.player.controls.SmoothMoveTo(targetChestPos, desiredRot));
+		}
+
+		MRITimer.StopTimer ();
+		exp.uiController.MRITimerUI.alpha = 0.0f;
+	}
 	#endif
 
 	public void IncrementNumDefaultObjectsCollected(){
@@ -410,9 +439,9 @@ public class TrialController : MonoBehaviour {
 		if(numRealTrials > 1 || trial.avatarStartPos != exp.player.controls.startPositionTransform1.position){ //note: if numRealTrials > 1, not a practice trial.
 			trialLogger.LogInstructionEvent ();
 
-#if !(MRIVERSION)
+			#if !(MRIVERSION)
 			yield return StartCoroutine (exp.ShowSingleInstruction ("Press (X) to start!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
-#endif
+			#endif
 		}
 
 		//START NAVIGATION --> TODO: make this its own function. or a delegate. ...clean it up.
@@ -429,9 +458,16 @@ public class TrialController : MonoBehaviour {
 
 		//wait for player to collect all default objects
 		int numDefaultObjectsToCollect = currentTrial.DefaultObjectLocationsXZ.Count;
+
+		#if MRIVERSION
+		for(int i = 0; i <numDefaultObjectsToCollect; i++){
+			yield return StartCoroutine(WaitForMRINavigationTimeout(Config_CoinTask.maxChestNavigationTime));
+		}
+		#else //if not MRI version, just wait until all chests are collected;
 		while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
 			yield return 0;
 		}
+		#endif
 
 		//Add time bonus
 		trialTimer.StopTimer ();

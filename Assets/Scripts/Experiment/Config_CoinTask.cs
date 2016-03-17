@@ -110,7 +110,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float rotateToSpecialObjectSpeed = 45.0f;
 	public static float pauseAtTreasureTime = 1.5f;
 
-	//public static float maxNavigationTime = 30.0f;
+	public static float maxChestNavigationTime = 8.0f;
 	public static float maxInstructionTime = 3.0f;
 	public static float maxFeedbackTime = 3.0f;
 	public static float maxAnswerTime = 5.0f;
