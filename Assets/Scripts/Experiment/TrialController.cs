@@ -188,11 +188,8 @@ public class TrialController : MonoBehaviour {
 			else{
 				exp.uiController.ConnectionUI.alpha = 0.0f;
 			}
-
-#if MRIVERSION
-			yield return StartCoroutine( WaitForMRIConnectionKey());
-			yield return StartCoroutine( WaitForMRIFixationRest());
-#else
+				
+#if !(MRIVERSION)
 			trialLogger.LogVideoEvent(true);
 			yield return StartCoroutine(exp.instrVideoPlayer.Play());
 			trialLogger.LogVideoEvent(false);
@@ -205,6 +202,15 @@ public class TrialController : MonoBehaviour {
 #if MRIVERSION
 			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 0.0f;
+
+			if(Config_CoinTask.isPractice){
+				yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+				scoreInstructionsGroup.alpha = 0.0f;
+				yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			}
+
+			yield return StartCoroutine( WaitForMRIConnectionKey());
+			yield return StartCoroutine( WaitForMRIFixationRest());
 #else
 			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 1.0f;
