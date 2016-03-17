@@ -38,7 +38,17 @@ public class ObjectController : MonoBehaviour {
 
 	void CreateSpecialObjectList(List<GameObject> gameObjectListToFill){
 		gameObjectListToFill.Clear();
-		Object[] prefabs = Resources.LoadAll("Prefabs/Objects");
+		Object[] prefabs;
+		#if MRIVERSION
+		if(Config_CoinTask.isPractice){
+			prefabs = Resources.LoadAll("Prefabs/MRIPracticeObjects");
+		}
+		else{
+			prefabs = Resources.LoadAll("Prefabs/Objects");
+		}
+		#else
+			prefabs = Resources.LoadAll("Prefabs/Objects");
+		#endif
 		for (int i = 0; i < prefabs.Length; i++) {
 			gameObjectListToFill.Add((GameObject)prefabs[i]);
 		}

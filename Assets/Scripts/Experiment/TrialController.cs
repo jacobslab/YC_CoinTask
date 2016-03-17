@@ -585,6 +585,7 @@ public class TrialController : MonoBehaviour {
 
 	}
 
+	int currTrialNum = 0; //TODO: just use currentSubject.trialNum...
 	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<Config_CoinTask.MemoryState> rememberResponses){//, List<bool> areYouSureResponses){
 		trialLogger.LogFeedback(true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
@@ -687,10 +688,8 @@ public class TrialController : MonoBehaviour {
 		yield return StartCoroutine (exp.ShowSingleInstruction ("Press (X) to continue.", false, true, false, Config_CoinTask.minDefaultInstructionTime));
 #endif
 
-		int currTrialNum = numRealTrials;
-		if (Config_CoinTask.isPractice) {
-			currTrialNum++;
-		}
+		currTrialNum++;
+
 
 		trialLogger.LogInstructionEvent();
 		trialLogger.LogScoreScreenStarted(true);
