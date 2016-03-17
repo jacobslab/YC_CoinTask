@@ -208,9 +208,10 @@ public class TrialController : MonoBehaviour {
 				scoreInstructionsGroup.alpha = 0.0f;
 				yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			}
-
-			yield return StartCoroutine( WaitForMRIConnectionKey());
-			yield return StartCoroutine( WaitForMRIFixationRest());
+			else{
+				yield return StartCoroutine( WaitForMRIConnectionKey());
+				yield return StartCoroutine( WaitForMRIFixationRest());
+			}
 #else
 			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 1.0f;
