@@ -18,8 +18,9 @@ public class VideoPlayer : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		RawImage rim = GetComponent<RawImage>();
-		movie = (MovieTexture)rim.mainTexture;
-		
+		if(rim != null){
+			movie = (MovieTexture)rim.mainTexture;
+		}
 		movieAudio = GetComponent<AudioSource> ();
 	}
 	
@@ -40,9 +41,9 @@ public class VideoPlayer : MonoBehaviour {
 				}
 			}
 		} 
-		else {
-			Debug.Log("No movie attached! Can't update.");
-		}
+		//else {
+			//Debug.Log("No movie attached! Can't update.");
+		//}
 	}
 	
 	public IEnumerator Play(){

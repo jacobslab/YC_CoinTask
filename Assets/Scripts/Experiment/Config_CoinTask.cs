@@ -13,10 +13,14 @@ public class Config_CoinTask : MonoBehaviour {
 		TH3,
 		Pilot_001,	
 		Pilot_002,		
-		FMRI_001	
+		MRI
 	}
-
+#if MRIVERSION
+	public static Version BuildVersion = Version.MRI;
+#else
 	public static Version BuildVersion = Version.TH1;
+#endif
+
 	public static string VersionNumber = "2.041";
 
 #if MRIVERSION
@@ -64,7 +68,7 @@ public class Config_CoinTask : MonoBehaviour {
 	//FEEDBACK SETTINGS:
 	public static float feedbackTimeBetweenObjects = 0.5f;
 
-	public static float MRIFixationTime = 2.0f;
+	public static float MRIFixationTime = 10.0f;
 
 #else
 	public static int numTestTrials = 40; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
