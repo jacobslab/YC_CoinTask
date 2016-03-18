@@ -131,7 +131,7 @@ public class PlayerControls : MonoBehaviour{
 	}
 
 
-	public IEnumerator SmoothMoveTo(Vector3 targetPosition, Quaternion targetRotation){
+	public IEnumerator SmoothMoveTo(Vector3 targetPosition, Quaternion targetRotation, bool isChestAutoDrive){
 
 		SetTilt (0.0f, 1.0f);
 
@@ -149,7 +149,11 @@ public class PlayerControls : MonoBehaviour{
 
 
 		float timeToTravel = GetTimeToTravel (travelDistance);//travelDistance / smoothMoveSpeed;
-
+		#if MRIVERSION
+		if(isChestAutoDrive){
+			timeToTravel *= Config_CoinTask.MRIAutoDriveTimeMult;
+		}
+		#endif
 
 		float tElapsed = 0.0f;
 		//float epsilon = 0.01f;

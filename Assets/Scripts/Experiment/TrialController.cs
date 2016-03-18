@@ -331,9 +331,16 @@ public class TrialController : MonoBehaviour {
 		MRITimer.ResetTimerNoDelegate(maxSeconds);
 		MRITimer.StartTimer ();
 
+		Debug.Log("MRI TIMEOUT STARTED");
+
 		bool hasPressedButton = false;
 
-		while(MRITimer.GetSecondsFloat() > 0.0f && Input.GetAxis("Action Button") <= 0f){
+		float actionInput = Input.GetAxis("Action Button");
+		float currSeconds = MRITimer.GetSecondsFloat();
+		while(currSeconds > 0.0f && actionInput != 0.0f){ //if button is down, must lift up before we can continue
+			Debug.Log(actionInput);
+			currSeconds = MRITimer.GetSecondsFloat();
+			actionInput = Input.GetAxis("Action Button");
 			yield return 0;
 		}
 		while(!hasPressedButton && MRITimer.GetSecondsFloat() > 0.0f){
@@ -369,7 +376,16 @@ public class TrialController : MonoBehaviour {
 
 			Quaternion desiredRot = UsefulFunctions.GetDesiredRotation(exp.player.transform, targetChestPos);
 
-			yield return StartCoroutine(exp.player.controls.SmoothMoveTo(targetChestPos, desiredRot));
+			yield return StartCoroutine(exp.player.controls.SmoothMoveTo(targetChestPos, desiredRot, true));
+
+			//wait until we've actually collected the chest
+			while(currNumCollected == numDefaultObjectsCollected){
+				yield return 0;
+				if(!exp.player.controls.ShouldLockControls){
+					float tinyMovement = 0.1f;
+					exp.player.transform.position += (exp.player.transform.forward*tinyMovement);
+				}
+			}
 		}
 
 		MRITimer.StopTimer ();
@@ -416,7 +432,7 @@ public class TrialController : MonoBehaviour {
 
 		//move player to home location & rotation
 		trialLogger.LogTransportationToHomeEvent (true);
-		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot));
+		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));
 		trialLogger.LogTransportationToHomeEvent (false);
 
 		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
@@ -461,6 +477,7 @@ public class TrialController : MonoBehaviour {
 
 		#if MRIVERSION
 		for(int i = 0; i <numDefaultObjectsToCollect; i++){
+			Debug.Log("WAIT FOR NAVIGATION TIMEOUT");
 			yield return StartCoroutine(WaitForMRINavigationTimeout(Config_CoinTask.maxChestNavigationTime));
 		}
 		#else //if not MRI version, just wait until all chests are collected;
@@ -485,7 +502,7 @@ public class TrialController : MonoBehaviour {
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, false);
 		trialLogger.LogTransportationToTowerEvent (true);
 		currentDefaultObject = null; //set to null so that arrows stop showing up...
-		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot));//PlayerControls.toTowerTime) );
+		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, false));//PlayerControls.toTowerTime) );
 		trialLogger.LogTransportationToTowerEvent (false);
 
 		//RUN DISTRACTOR GAME
@@ -809,6 +826,7 @@ public class TrialController : MonoBehaviour {
 
 		//only after the pause should we increment the number of coins collected...
 		//...because the trial controller waits for this to move on to the next part of the trial.
+		Debug.Log("INCREMENT CHEST COUNT");
 		IncrementNumDefaultObjectsCollected();
 	}
 }

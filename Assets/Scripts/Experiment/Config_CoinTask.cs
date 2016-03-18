@@ -117,6 +117,8 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float maxBoxAnswerTime = 5.0f;
 	public static float maxScoreScreenTime = 5.0f;
 	public static float maxLocationChooseTime = 10.0f;
+
+	public static float MRIAutoDriveTimeMult = 2.0f;
 #else
 	public static float rotateToSpecialObjectSpeed = 33.33f;
 	public static float pauseAtTreasureTime = 1.5f;
