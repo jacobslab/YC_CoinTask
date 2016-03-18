@@ -54,8 +54,8 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	}
 
 	void GetMovementInput(){
-		float verticalAxisInput = Input.GetAxis ("Vertical");
-		float horizontalAxisInput = Input.GetAxis ("Horizontal");
+		float verticalAxisInput = Input.GetAxis (Config_CoinTask.VerticalAxisName);
+		float horizontalAxisInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
 
 		float epsilon = 0.1f;
 		bool positionCloseToTower1 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.towerPositionTransform1.position);

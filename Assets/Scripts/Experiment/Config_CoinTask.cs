@@ -31,6 +31,17 @@ public class Config_CoinTask : MonoBehaviour {
 	public static bool isSystem2 = false;
 #endif
 
+	#if MRIVERSION
+	public static string HorizontalAxisName = "MRI Horizontal";
+	public static string VerticalAxisName = "MRI Vertical";
+	public static string ActionButtonName = "MRI Action Button";
+	#else
+	//INPUT
+	public static string HorizontalAxisName = "Horizontal";
+	public static string VerticalAxisName = "Vertical";
+	public static string ActionButtonName = "Action Button";
+	#endif
+
 	//REPLAY
 	public static int replayPadding = 6;
 

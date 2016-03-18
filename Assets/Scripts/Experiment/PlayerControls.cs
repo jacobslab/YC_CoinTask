@@ -60,7 +60,7 @@ public class PlayerControls : MonoBehaviour{
 	void GetInput()
 	{
 		//VERTICAL
-		float verticalAxisInput = Input.GetAxis ("Vertical");
+		float verticalAxisInput = Input.GetAxis (Config_CoinTask.VerticalAxisName);
 		if ( Mathf.Abs(verticalAxisInput) > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
 
 			GetComponent<Rigidbody>().velocity = transform.forward*verticalAxisInput*Config_CoinTask.driveSpeed; //since we are setting velocity based on input, no need for time.delta time component
@@ -71,7 +71,7 @@ public class PlayerControls : MonoBehaviour{
 		}
 
 		//HORIZONTAL
-		float horizontalAxisInput = Input.GetAxis ("Horizontal");
+		float horizontalAxisInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
 		if (Mathf.Abs (horizontalAxisInput) > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
 
 			float percent = horizontalAxisInput / 1.0f;

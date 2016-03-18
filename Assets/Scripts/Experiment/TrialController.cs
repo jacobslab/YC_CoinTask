@@ -336,16 +336,16 @@ public class TrialController : MonoBehaviour {
 
 		bool hasPressedButton = false;
 
-		float actionInput = Input.GetAxis("Action Button");
+		float actionInput = Input.GetAxis(Config_CoinTask.ActionButtonName);
 		float currSeconds = MRITimer.GetSecondsFloat();
 		while(currSeconds > 0.0f && actionInput != 0.0f){ //if button is down, must lift up before we can continue
 			Debug.Log(actionInput);
 			currSeconds = MRITimer.GetSecondsFloat();
-			actionInput = Input.GetAxis("Action Button");
+			actionInput = Input.GetAxis(Config_CoinTask.ActionButtonName);
 			yield return 0;
 		}
 		while(!hasPressedButton && MRITimer.GetSecondsFloat() > 0.0f){
-			if(Input.GetAxis("Action Button") == 1.0f){
+			if(Input.GetAxis(Config_CoinTask.ActionButtonName) == 1.0f){
 				hasPressedButton = true;
 			}
 			yield return 0;

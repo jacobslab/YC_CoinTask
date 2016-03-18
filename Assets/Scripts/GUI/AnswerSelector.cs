@@ -89,7 +89,7 @@ public class AnswerSelector : MonoBehaviour {
 		while (true) {
 
 			if (!isInput) {
-				float horizAxisInput = Input.GetAxis ("Horizontal");
+				float horizAxisInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
 				if (horizAxisInput > 0) {
 					Move (1);
 					isInput = true;

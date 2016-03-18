@@ -99,13 +99,13 @@ public class BoxSwapper : MonoBehaviour {
 		while (shouldSelect) {
 
 			if (!isInput) {
-				if (Input.GetAxis ("Horizontal") > 0) {
+				if (Input.GetAxis (Config_CoinTask.HorizontalAxisName) > 0) {
 					MoveSelector (1);
 					isInput = true;
-				} else if (Input.GetAxis ("Horizontal") < 0) {
+				} else if (Input.GetAxis (Config_CoinTask.HorizontalAxisName) < 0) {
 					MoveSelector (-1);
 					isInput = true;
-				} else if (Input.GetAxis ("Horizontal") == 0) {
+				} else if (Input.GetAxis (Config_CoinTask.HorizontalAxisName) == 0) {
 					isInput = false;
 				}
 
@@ -162,7 +162,7 @@ public class BoxSwapper : MonoBehaviour {
 #else
 		while(!actionButtonPressed){
 			
-			if(Input.GetAxis("Action Button") != 0f){
+			if(Input.GetAxis(Config_CoinTask.ActionButtonName) != 0f){
 				actionButtonPressed = true;
 				shouldSelect = false;
 			}

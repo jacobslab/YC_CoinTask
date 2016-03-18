@@ -62,7 +62,7 @@ public class PirateUI : MonoBehaviour {
 		} 
 		else {
 			//wait for action button
-			while(Input.GetAxis("Action Button") <= 0){
+			while(Input.GetAxis(Config_CoinTask.ActionButtonName) <= 0){
 				yield return 0;
 			}
 

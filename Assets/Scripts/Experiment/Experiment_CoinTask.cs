@@ -211,11 +211,11 @@ public class Experiment_CoinTask : MonoBehaviour {
 	
 	public IEnumerator WaitForActionButton(){
 		bool hasPressedButton = false;
-		while(Input.GetAxis("Action Button") != 0f){
+		while(Input.GetAxis(Config_CoinTask.ActionButtonName) != 0f){
 			yield return 0;
 		}
 		while(!hasPressedButton){
-			if(Input.GetAxis("Action Button") == 1.0f){
+			if(Input.GetAxis(Config_CoinTask.ActionButtonName) == 1.0f){
 				hasPressedButton = true;
 			}
 			yield return 0;

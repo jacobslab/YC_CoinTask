@@ -74,8 +74,8 @@ public class TileSelector : MonoBehaviour {
 		int origRow = selectedRow;
 		int origCol = selectedCol;
 		
-		float horizontalInput = Input.GetAxis ("Horizontal");
-		float verticalInput = Input.GetAxis ("Vertical");
+		float horizontalInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
+		float verticalInput = Input.GetAxis (Config_CoinTask.VerticalAxisName);
 
 
 		if (ExperimentSettings_CoinTask.isJoystickInput) { */
