@@ -82,6 +82,55 @@ public class TrialLogTrack : LogTrack {
 		Debug.Log ("REMEMBER LOGGED: " + response);
 	}
 
+	#if MRIVERSION
+
+	public void LogMRITimeout(){
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "MRI_TIMEOUT");
+		Debug.Log ("MRI timeout");
+	}
+
+	public void LogPlayerNavigationTimeout(){
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "MRI_NAVIGATION_TIMEOUT");
+		Debug.Log ("chest navigation timeout");
+	}
+
+	public void LogPlayerAutodrive(bool isStarted){
+		if(isStarted){
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "MRI_AUTODRIVE_STARTED");
+			Debug.Log ("chest autodrive starting");
+		}
+		else{
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "MRI_AUTODRIVE_ENDED");
+			Debug.Log ("chest autodrive ending");
+		}
+	}
+
+	/*public void LogRememberResponseTimeout(){
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "MRI_REMEMBER_RESPONSE_TIMEOUT");
+		Debug.Log ("remember response timeout");
+	}
+
+	public void LogScoreScreenTimeout(){
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "MRI_SCORESCREEN_TIMEOUT");
+		Debug.Log ("scorescreen timeout");
+	}
+
+	public void LogFeedbackTimeout(){
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "MRI_FEEDBACK_TIMEOUT");
+		Debug.Log ("feedback timeout");
+	}
+
+	public void LogDistractorResponseTimeout(){
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "MRI_DISTRACTOR_RESPONSE_TIMEOUT");
+		Debug.Log ("distractor response timeout");
+	}
+
+	public void LogDistractorFeedbackTimeout(){
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "MRI_DISTRACTOR_FEEDBACK_TIMEOUT");
+		Debug.Log ("distractor feedback timeout");
+	}*/
+	#endif
+
 	//if the UI answer selector has moved TODO: move to an answer selector logger?
 	public void LogAnswerPositionMoved(Config_CoinTask.MemoryState memoryState, bool isRememberResponse){ //either remember response or double down response
 		if (ExperimentSettings_CoinTask.isLogging) {

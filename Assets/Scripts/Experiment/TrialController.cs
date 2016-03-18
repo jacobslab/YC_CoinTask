@@ -326,6 +326,7 @@ public class TrialController : MonoBehaviour {
 		exp.uiController.FixationRestUI.alpha = 0.0f;
 	}
 
+	bool isMRITimeout = false;
 	public IEnumerator WaitForMRITimeout(float maxSeconds){
 		exp.uiController.MRITimerUI.alpha = 1.0f;
 		MRITimer.ResetTimerNoDelegate(maxSeconds);
@@ -350,6 +351,11 @@ public class TrialController : MonoBehaviour {
 			yield return 0;
 		}
 
+		if(MRITimer.GetSecondsFloat() <= 0.0f){
+			isMRITimeout = true;
+			trialLogger.LogMRITimeout();
+		}
+
 		MRITimer.StopTimer ();
 		exp.uiController.MRITimerUI.alpha = 0.0f;
 	}
@@ -367,6 +373,10 @@ public class TrialController : MonoBehaviour {
 		}
 
 		if(MRITimer.GetSecondsFloat() <= 0.0f){
+
+			trialLogger.LogPlayerNavigationTimeout();
+			trialLogger.LogPlayerAutodrive(true);
+
 			Vector2 currChestPos = currentTrial.DefaultObjectLocationsXZ[currNumCollected];
 			Vector3 targetChestPos = new Vector3(currChestPos.x, exp.player.transform.position.y, currChestPos.y);
 
@@ -386,6 +396,8 @@ public class TrialController : MonoBehaviour {
 					exp.player.transform.position += (exp.player.transform.forward*tinyMovement);
 				}
 			}
+
+			trialLogger.LogPlayerAutodrive(false);
 		}
 
 		MRITimer.StopTimer ();
@@ -557,13 +569,24 @@ public class TrialController : MonoBehaviour {
 			yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy, specialSpawnable.GetName()) );
 
 #if MRIVERSION
+			Config_CoinTask.MemoryState rememberResponse;
+			isMRITimeout = false;
 			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxAnswerTime));
+			if(isMRITimeout){
+				rememberResponse = Config_CoinTask.MemoryState.no;
+			}
+			else{
+				rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
+			}
+			rememberResponses.Add(rememberResponse);
+			trialLogger.LogRememberResponse(rememberResponse);
 #else
 			yield return StartCoroutine (exp.WaitForActionButton());
-#endif
 			Config_CoinTask.MemoryState rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
 			rememberResponses.Add(rememberResponse);
 			trialLogger.LogRememberResponse(rememberResponse);
+#endif
+
 
 
 			//SELECT LOCATION
