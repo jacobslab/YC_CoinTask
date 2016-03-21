@@ -70,7 +70,7 @@ public class Config_CoinTask : MonoBehaviour {
 	
 	//practice settings
 	public static int numTrialsPract = 3;
-	public static bool isPractice = false;
+	public static bool isPractice = true;
 	public static int[] numSpecialObjectsPract = {2,2,3};
 	public static int numTwoItemTrials = 20;
 	public static int numThreeItemTrials = 20;

@@ -200,16 +200,19 @@ public class TrialController : MonoBehaviour {
 			yield return StartCoroutine(exp.uiController.pirateController.PlayWelcomingPirate());
 
 #if MRIVERSION
-			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
-			scoreInstructionsGroup.alpha = 0.0f;
-
 			if(Config_CoinTask.isPractice){
+				yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 				yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 				scoreInstructionsGroup.alpha = 0.0f;
 				yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			}
 			else{
+				exp.instructionsController.SetInstructionsColorful();
+				exp.instructionsController.DisplayText(Config_CoinTask.initialInstructions1);
+				scoreInstructionsGroup.alpha = 0.0f;
 				yield return StartCoroutine( WaitForMRIConnectionKey());
+				exp.instructionsController.SetInstructionsBlank();
+				exp.instructionsController.SetInstructionsTransparentOverlay();
 				yield return StartCoroutine( WaitForMRIFixationRest());
 			}
 #else
