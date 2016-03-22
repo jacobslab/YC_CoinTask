@@ -231,7 +231,7 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine(RunTrials());
 			}
 			#else
-			yield return StartCoroutine(RunPracticeTrials);
+			yield return StartCoroutine(RunPracticeTrials());
 			yield return StartCoroutine(RunTrials());
 			#endif	
 

@@ -69,6 +69,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		InitLoggingPath ();
 		InitMainMenuLabels ();
 
+		QualitySettings.vSyncCount = 1;
 	}
 
 	void ResetDefaultLoggingPath(){
