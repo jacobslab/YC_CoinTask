@@ -40,9 +40,11 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 
 	public static string defaultLoggingPath = ""; //SET IN RESETDEFAULTLOGGINGPATH();
-	string TH1Folder = "/TH1/";
-	string TH2Folder = "/TH2/";
-	string TH3Folder = "/TH3/";
+	string TH1Folder = "TH1/";
+	string TH2Folder = "TH2/";
+	string TH3Folder = "TH3/";
+	string MRIFolder = "MRI/";
+	string MRIPracticeFolder = "MRIPractice/";
 	public Text defaultLoggingPathDisplay;
 	public InputField loggingPathInputField;
 
@@ -71,9 +73,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 	void ResetDefaultLoggingPath(){
 		if (Config_CoinTask.isSystem2) {
-			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/data";
+			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/data/";
 		} else {
-			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM/data";
+			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM/data/";
 		}
 	}
 
@@ -89,6 +91,14 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			}
 			else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH3) {
 				defaultLoggingPath += TH3Folder;
+			}
+			else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.MRI){
+				if(Config_CoinTask.isPractice){
+					defaultLoggingPath += MRIPracticeFolder;
+				}
+				else{
+					defaultLoggingPath += MRIFolder;
+				}
 			}
 
 			if(!Directory.Exists(defaultLoggingPath)){ //if that TH folder doesn't exist, make it!
