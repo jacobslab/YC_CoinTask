@@ -23,7 +23,7 @@ public class TrialLogTrack : LogTrack {
 
 	void LogVersion(){
 		Debug.Log ("LOGGED VERSION");
-		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Experiment Info" + separator + "VERSION" + separator + Config_CoinTask.BuildVersion.ToString());
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Experiment Info" + separator + "VERSION" + separator + Config_CoinTask.BuildVersion.ToString() + separator + Config_CoinTask.VersionNumber);
 	}
 
 	//LOGGED ON THE START OF THE TRIAL.
