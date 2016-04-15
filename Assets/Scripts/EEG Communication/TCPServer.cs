@@ -152,9 +152,9 @@ public class ThreadedServer : ThreadedJob{
 	public bool isSynced = false;
 	public bool canStartGame = false;
 	Stopwatch clockAlignmentStopwatch;
-	int numClockAlignmentTries = 0;
-	const int timeBetweenClockAlignmentTriesMS = 500;//500; //half a second
-	const int maxNumClockAlignmentTries = 120; //for a total of 60 seconds of attempted alignment
+	//int numClockAlignmentTries = 0;
+	//const int timeBetweenClockAlignmentTriesMS = 500;//500; //half a second
+	//const int maxNumClockAlignmentTries = 120; //for a total of 60 seconds of attempted alignment
 
 
 
@@ -186,14 +186,14 @@ public class ThreadedServer : ThreadedJob{
 	
 	void TalkToClient(){
 		try {
-			if(!isSynced){
+			/*if(!isSynced){
 				if(numClockAlignmentTries < maxNumClockAlignmentTries){
 					CheckClockAlignment();
 				}
 				else{
-					//TODO: what to do if the clocked never synced?!
+					//TODO: what to do if the clock never synced?!
 				}
-			}
+			}*/
 
 			//SEND HEARTBEAT
 			SendHeartbeatPolled();
@@ -235,9 +235,10 @@ public class ThreadedServer : ThreadedJob{
 		
 		//send subject ID
 		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SUBJECTID, TCP_Config.SubjectName);
-		
+
+		//NO LONGER REQUEST ALIGNMENT HERE. START IENUMERATOR WHEN TASK IS ACTUALLY STARTING
 		//align clocks //SHOULD THIS BE FINISHED BEFORE WE START SENDING HEARTBEATS? -- NO
-		RequestClockAlignment();
+		//RequestClockAlignment();
 		
 		//start heartbeat
 		StartHeartbeatPoll();
@@ -307,12 +308,12 @@ public class ThreadedServer : ThreadedJob{
 		UnityEngine.Debug.Log("REQUESTING ALIGN CLOCK");
         
 		clockAlignmentStopwatch.Start();
-		numClockAlignmentTries = 0;
+		//numClockAlignmentTries = 0;
 
 	}
 
 	//after x seconds have passed, check if the clocks are aligned yet
-	int CheckClockAlignment(){
+	/*int CheckClockAlignment(){
 		if(clockAlignmentStopwatch.ElapsedMilliseconds >= timeBetweenClockAlignmentTriesMS){
 			if(isSynced){
 				UnityEngine.Debug.Log("Sync Complete");
@@ -327,7 +328,7 @@ public class ThreadedServer : ThreadedJob{
 			}
 		}
 		return -1;
-	}
+	}*/
 
 
 
@@ -564,8 +565,10 @@ public class ThreadedServer : ThreadedJob{
 		case "SYNCED":
 			//Control PC is done with clock alignment
 			isSynced = true;
-			//now align the neuroport
-			SendSimpleJSONEvent (GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SYNCNP, "");
+			//now align the neuroport if we've received the start message
+			if(canStartGame){
+				SendSimpleJSONEvent (GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SYNCNP, "");
+			}
 			break;
 			
 		case "EXIT":
