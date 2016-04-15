@@ -73,41 +73,45 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	}
 
 	void ResetDefaultLoggingPath(){
+	#if MRIVERSION
+		defaultLoggingPath = "/TextFiles/";
+	#else
+
 		if (Config_CoinTask.isSystem2) {
 			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/data/";
 		} else {
 			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM/data/";
 		}
+	#endif
 	}
 
 	void InitLoggingPath(){
 		ResetDefaultLoggingPath ();
+		
+		if(!Directory.Exists(defaultLoggingPath)) {
+			Directory.CreateDirectory(defaultLoggingPath);
+		}
 
-		if(Directory.Exists(defaultLoggingPath)){
-			if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH1) {
-				defaultLoggingPath += TH1Folder;
-			} 
-			else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH2) {
-				defaultLoggingPath += TH2Folder;
+		if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH1) {
+			defaultLoggingPath += TH1Folder;
+		} 
+		else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH2) {
+			defaultLoggingPath += TH2Folder;
+		}
+		else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH3) {
+			defaultLoggingPath += TH3Folder;
+		}
+		else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.MRI){
+			if(Config_CoinTask.isPractice){
+				defaultLoggingPath += MRIPracticeFolder;
 			}
-			else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH3) {
-				defaultLoggingPath += TH3Folder;
-			}
-			else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.MRI){
-				if(Config_CoinTask.isPractice){
-					defaultLoggingPath += MRIPracticeFolder;
-				}
-				else{
-					defaultLoggingPath += MRIFolder;
-				}
-			}
-
-			if(!Directory.Exists(defaultLoggingPath)){ //if that TH folder doesn't exist, make it!
-				Directory.CreateDirectory(defaultLoggingPath);
+			else{
+				defaultLoggingPath += MRIFolder;
 			}
 		}
-		else{
-			defaultLoggingPath = "TextFiles/";
+
+		if(!Directory.Exists(defaultLoggingPath)){ //if that TH folder doesn't exist, make it!
+			Directory.CreateDirectory(defaultLoggingPath);
 		}
 
 		if (defaultLoggingPathDisplay != null) {
@@ -160,6 +164,13 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public void ChangeLoggingPath(){
 		if (Directory.Exists (loggingPathInputField.text)) {
 			defaultLoggingPath = loggingPathInputField.text;
+
+			//check if the last character is a slash --> if not, add a slash...
+			char[] defaultLoggingPathChars = defaultLoggingPath.ToCharArray();
+			int numChars = defaultLoggingPathChars.Length;
+			if(defaultLoggingPathChars [ numChars - 1 ] != '/'){
+				defaultLoggingPath += "/";
+			}
 		}
 
 		defaultLoggingPathDisplay.text = defaultLoggingPath;

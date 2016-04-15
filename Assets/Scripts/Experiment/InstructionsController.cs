@@ -84,35 +84,39 @@ public class InstructionsController : MonoBehaviour {
 		StartCoroutine (DisplayReadInText ());
 	}
 
+	string instructionsFilePath = "TextFiles/Instructions.txt";
 	public void Parse(){
 		_instructions = new List<string> ();
 
-		StreamReader reader = new StreamReader ("TextFiles/Instructions.txt");
-		string line = reader.ReadLine ();
+		if (Directory.Exists (instructionsFilePath)) {
 
-		string newInstruction = "";
+			StreamReader reader = new StreamReader (instructionsFilePath);
+			string line = reader.ReadLine ();
 
-		while (line != null) {
-			char[] characters = line.ToCharArray ();
-			if(characters.Length > 0){
-				if (characters [0] == '%') { //new instruction
-					AddInstruction(newInstruction);
-					newInstruction = line;
+			string newInstruction = "";
+
+			while (line != null) {
+				char[] characters = line.ToCharArray ();
+				if (characters.Length > 0) {
+					if (characters [0] == '%') { //new instruction
+						AddInstruction (newInstruction);
+						newInstruction = line;
+						newInstruction += '\n';
+					} else {
+						newInstruction += line;
+						newInstruction += '\n';
+					}
+				} else {
 					newInstruction += '\n';
 				}
-				else {
-					newInstruction += line;
-					newInstruction += '\n';
-				}
-			}
-			else{
-				newInstruction += '\n';
-			}
 
-			line = reader.ReadLine ();
+				line = reader.ReadLine ();
+			}
+			AddInstruction (newInstruction); //add the last instruction
+		} 
+		else {
+			Debug.Log("No path for instructions file!");
 		}
-		AddInstruction(newInstruction); //add the last instruction
-
 	}
 
 	void AddInstruction(string newInstruction){
