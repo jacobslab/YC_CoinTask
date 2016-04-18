@@ -83,6 +83,8 @@ public class ScoreController : MonoBehaviour {
 		//yesScoreExplanation.text = "win " + memoryScoreYesRight + "/" + "lose " + memoryScoreYesWrong;
 		//maybeScoreExplanation.text = "win " + memoryScoreMaybeRight + "/" + "lose " + memoryScoreMaybeWrong;
 		//noScoreExplanation.text = "win " + memoryScoreNoRight + "/" + "lose " + memoryScoreNoWrong;
+
+		Reset ();
 		StartCoroutine (UpdateScoreText());
 	}
 	
@@ -123,7 +125,7 @@ public class ScoreController : MonoBehaviour {
 					amountLeftToAdd = 0;
 				}
 
-				scoreText.text = "$ " + (scoreTextScore);
+				SetScoreText(scoreTextScore);
 
 				absAmountLeftToAdd = Mathf.Abs (amountLeftToAdd);
 
@@ -133,6 +135,11 @@ public class ScoreController : MonoBehaviour {
 			yield return 0;
 
 		}
+	}
+
+	void SetScoreText(int scoreToDisplay){
+		//scoreText.text = "$ " + (scoreTextScore);
+		scoreText.text = "Points: " + (scoreToDisplay);
 	}
 
 	//TODO: combine these two methods. add a bool as a parameter.
@@ -214,7 +221,7 @@ public class ScoreController : MonoBehaviour {
 		score = 0;
 		scoreTextScore = 0;
 		amountLeftToAdd = 0;
-		scoreText.text = "$ " + 0;
+		SetScoreText (0);
 
 		scoreLogger.LogScoreReset ();
 	}

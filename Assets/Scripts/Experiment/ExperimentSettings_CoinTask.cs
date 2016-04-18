@@ -79,8 +79,11 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 		if (Config_CoinTask.isSystem2) {
 			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/data/";
-		} else {
+		} else if(Config_CoinTask.isSyncbox) {
 			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM/data/";
+		}
+		else{
+			defaultLoggingPath = System.IO.Directory.GetCurrentDirectory() + "/TextFiles/";
 		}
 	#endif
 	}
@@ -93,7 +96,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		}
 
 		if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH1) {
-			defaultLoggingPath += TH1Folder;
+			if(Config_CoinTask.isSyncbox || Config_CoinTask.isSystem2){ //only add the folder if it's not the demo version.
+				defaultLoggingPath += TH1Folder;
+			}
 		} 
 		else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH2) {
 			defaultLoggingPath += TH2Folder;

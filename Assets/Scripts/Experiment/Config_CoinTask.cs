@@ -138,10 +138,12 @@ public class Config_CoinTask : MonoBehaviour {
 	public static string initialInstructions1 = "Welcome to Treasure Island!" + 
 		"\n\nYou are going on a treasure hunt." + 
 			"\n\nUse the joystick to control your movement." + 
-			"\n\nDrive into treasure chests to open them. Remember where each object is located!";
+			"\n\nDrive into treasure chests to open them. Remember where each object is located!" +
+			"\n\nPress (X) to continue.";
 
 	public static string initialInstructions2 = "When you are asked about remembering an object's location, you must answer [ YES ], [ MAYBE ], or [ NO ], and choose a location." +
-			"\n\nYou will win points for correct locations and you will lose points for incorrect locations.";
+			"\n\nYou will win points for correct locations and you will lose points for incorrect locations." +
+			"\n\nPress (X) to continue.";
 
 	public static string initialInstructions3 = "TIPS FOR MAXIMIZING YOUR SCORE" + 
 		"\n\nGet a time bonus by driving to the chests quickly." +
