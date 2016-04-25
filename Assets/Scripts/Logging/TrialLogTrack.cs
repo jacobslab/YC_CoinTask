@@ -197,6 +197,19 @@ public class TrialLogTrack : LogTrack {
 		}
 	}
 
+	public void LogPlayerChestRotation(bool isStarting){
+		if (ExperimentSettings_CoinTask.isLogging) {
+			if(isStarting){
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "PLAYER_CHEST_ROTATION_STARTED");
+				Debug.Log ("Logged player chest rotation started event.");
+			}
+			else{
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "PLAYER_CHEST_ROTATION_ENDED");
+				Debug.Log ("Logged player chest rotation ended event.");
+			}
+		}
+	}
+
 	public void LogTransportationToHomeEvent(bool isStarting){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			if(isStarting){

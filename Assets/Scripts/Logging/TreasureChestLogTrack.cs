@@ -17,6 +17,13 @@ public class TreasureChestLogTrack : LogTrack { //currently a treasure chest.
 		}
 	}
 
+	public void LogPlayerChestCollision(){
+		if (ExperimentSettings_CoinTask.isLogging) {
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), GetNameToLog() + separator + "PLAYER_CHEST_COLLISION");
+			Debug.Log ("Logged player chest collision event.");
+		}
+	}
+
 	public void LogTreasureLabel(string labelText){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "TREASURE_LABEL" + separator + labelText);

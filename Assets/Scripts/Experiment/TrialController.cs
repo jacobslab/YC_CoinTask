@@ -823,6 +823,8 @@ public class TrialController : MonoBehaviour {
 	}
 
 	public IEnumerator WaitForPlayerRotationToTreasure(GameObject treasureChest){
+		trialLogger.LogPlayerChestRotation (true);
+
 		//lock the avatar controls
 		exp.player.controls.ShouldLockControls = true;
 		exp.player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
@@ -831,6 +833,8 @@ public class TrialController : MonoBehaviour {
 
 		//unlock the avatar controls
 		Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;
+
+		trialLogger.LogPlayerChestRotation (false);
 	}
 
 	public IEnumerator WaitForTreasurePause( GameObject specialObject){

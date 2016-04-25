@@ -60,6 +60,8 @@ public class DefaultItem : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision){
 		if (collision.gameObject.tag == "Player" && (tag == "DefaultObject" || tag == "DefaultSpecialObject") && !isExecutingPlayerCollision ) {
+			GetComponent<TreasureChestLogTrack> ().LogPlayerChestCollision();
+
 			isExecutingPlayerCollision = true;
 			StartCoroutine(RunCollision());
 
