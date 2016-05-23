@@ -19,7 +19,9 @@ public class VideoPlayer : MonoBehaviour {
 	void Start () {
 		RawImage rim = GetComponent<RawImage>();
 		if(rim != null){
-			movie = (MovieTexture)rim.mainTexture;
+			if(rim.texture != null){
+				movie = (MovieTexture)rim.mainTexture;
+			}
 		}
 		movieAudio = GetComponent<AudioSource> ();
 	}
