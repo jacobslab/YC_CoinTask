@@ -294,7 +294,6 @@ public class Replay : MonoBehaviour {
 									bool isUIObj = false;
 									if(objShortName != origName){
 										isUIObj = true;
-										int a = 0;
 									}
 
 									objInScene = exp.objectController.ChooseSpawnableObject(objShortName);
