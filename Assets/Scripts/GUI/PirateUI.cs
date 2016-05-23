@@ -11,7 +11,7 @@ public class PirateUI : MonoBehaviour {
 
 	string welcomeText = "Welcome to Treasure Hunt!";
 	string[] encouragingText = {"Ahoy, matey!", "Great work!", "So much treasure!", "Great treasure hunting matey!"};
-	string endText = "You've found all of the treasure!";
+	string endText = "You found all of the treasure!";
 
 	public enum PirateTextType{
 		start,
