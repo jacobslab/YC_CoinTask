@@ -19,7 +19,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		}
 	}
 
-
+	public GameObject quitButton; //must turn this off in web build
 
 	//subject selection controller
 	public SubjectSelectionController subjectSelectionController;
@@ -32,6 +32,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public Toggle oculusToggle; //only exists in main menu -- make sure to null check
 	public Toggle loggingToggle; //only exists in main menu -- make sure to null check
 
+	public GameObject loggingPathOptions; //for easy un-enabling in web version
 
 	public InputField NumTreasureChestsInputField; //Frames Per Second
 
@@ -66,26 +67,31 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		}
 		_instance = this;
 
+#if UNITY_WEBPLAYER
+		InitWebSettings ();
+#else
 		InitLoggingPath ();
+#endif
 		InitMainMenuLabels ();
 
 		QualitySettings.vSyncCount = 1;
 	}
 
 	void ResetDefaultLoggingPath(){
-	#if MRIVERSION
-		defaultLoggingPath = "/TextFiles/";
-	#else
-
-		if (Config_CoinTask.isSystem2) {
-			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/data/";
-		} else if(Config_CoinTask.isSyncbox) {
-			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM/data/";
-		}
-		else{
+		#if (!UNITY_WEBPLAYER)
+			#if MRIVERSION
 			defaultLoggingPath = System.IO.Directory.GetCurrentDirectory() + "/TextFiles/";
-		}
-	#endif
+			#else
+
+			if (Config_CoinTask.isSystem2) {
+				defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/data/";
+			} else if (Config_CoinTask.isSyncbox) {
+				defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM/data/";
+			} else {
+				defaultLoggingPath = System.IO.Directory.GetCurrentDirectory () + "/TextFiles/";
+			}
+			#endif
+		#endif
 	}
 
 	void InitLoggingPath(){
@@ -134,17 +140,26 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 				BuildType.text = "Sync Box";
 			} else if (Config_CoinTask.isSystem2) {
 				BuildType.text = "System 2";
-			} else {
-				#if MRIVERSION
-					BuildType.text = "MRI";
-				#else
-				BuildType.text = "Demo";
-				#endif
 			}
+			#if UNITY_WEBPLAYER
+				BuildType.text = "WebDemo";
+			#elif MRIVERSION
+				BuildType.text = "MRI";
+			#else
+				BuildType.text = "Demo";
+			#endif
 			if(Config_CoinTask.isPractice){
 				BuildType.text += " Practice";
 			}
 		}
+	}
+
+	void InitWebSettings(){
+		isLogging = false;
+		loggingToggle.enabled = false;
+		loggingPathOptions.SetActive(false);
+		subjectSelectionController.SubjectInputField.gameObject.SetActive(false);
+		quitButton.SetActive (false);
 	}
 
 	// Use this for initialization
@@ -205,7 +220,6 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 				Debug.Log("should log?: " + isLogging);
 			}
 		}
-
 	}
 
 	public void SetOculus(){

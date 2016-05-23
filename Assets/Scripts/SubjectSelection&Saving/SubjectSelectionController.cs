@@ -49,9 +49,16 @@ public class SubjectSelectionController : MonoBehaviour {
 	}
 	
 	void AddNewSubject() {
-		if(SubjectInputField.text != ""){ //the subject must have a name!
 
-			string newSubjName = SubjectInputField.text.Replace("\n", "");
+#if UNITY_WEBPLAYER
+		string newSubjName = "WebSubject";
+#else
+		string newSubjName = SubjectInputField.text;
+#endif
+
+		if(newSubjName != ""){ //the subject must have a name!
+
+			newSubjName = SubjectInputField.text.Replace("\n", "");
 			newSubjName = newSubjName.Replace("\r", "");
 			
 			//don't want a duplicate subject

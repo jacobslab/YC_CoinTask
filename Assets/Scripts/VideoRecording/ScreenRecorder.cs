@@ -83,7 +83,9 @@ public class ScreenRecorder : MonoBehaviour {
 		
 		// For testing purposes, also write to a file in the project folder
 		string filename = ScreenShotName(width, height, timeStamp, recordingType);
+#if (!UNITY_WEBPLAYER)
 		System.IO.File.WriteAllBytes(filename, bytes);
+#endif
 
 		yield return null;
 	}

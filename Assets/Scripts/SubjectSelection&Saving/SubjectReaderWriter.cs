@@ -33,10 +33,7 @@ public class SubjectReaderWriter : MonoBehaviour {
 			return;
 		}
 		_instance = this;
-	}
 
-	// Use this for initialization
-	void Start () {
 		subjectDict = new Dictionary<string,Subject>();
 	}
 

@@ -83,7 +83,11 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 		cameraController.SetInGame(); //don't use oculus for replay mode
 		if (ExperimentSettings_CoinTask.isLogging) {
+#if !UNITY_WEBPLAYER
 			InitLogging();
+#else
+			ExperimentSettings_CoinTask.isLogging = false;
+#endif
 		}
 		else if(ExperimentSettings_CoinTask.isReplay) {
 			instructionsController.TurnOffInstructions();
@@ -142,12 +146,8 @@ public class Experiment_CoinTask : MonoBehaviour {
 	}
 
 	public IEnumerator RunOutOfTrials(){
-		/*while(environmentMap.IsActive){
-			yield return 0; //thus, should wait for the button press before ending the experiment
-		}*/
 
 		instructionsController.SetInstructionsColorful(); //want to keep a dark screen before transitioning to the end!
-		instructionsController.DisplayText("...loading end screen...");
 		EndExperiment();
 
 		yield return 0;
@@ -178,11 +178,16 @@ public class Experiment_CoinTask : MonoBehaviour {
 	}
 
 	public void EndExperiment(){
+		instructionsController.DisplayText("...loading end screen...");
+
 		Debug.Log ("Experiment Over");
 		currentState = ExperimentState.inExperimentOver;
 		isRunningExperiment = false;
-		
+#if UNITY_WEBPLAYER
+		Application.LoadLevel ("MainIsland"); //avoid main menu for web build.
+#else
 		SceneController.Instance.LoadEndMenu();
+#endif
 	}
 
 	//TODO: move to instructions controller...

@@ -189,10 +189,14 @@ public class TrialController : MonoBehaviour {
 				exp.uiController.ConnectionUI.alpha = 0.0f;
 			}
 				
-#if !(MRIVERSION)
-			trialLogger.LogVideoEvent(true);
-			yield return StartCoroutine(exp.instrVideoPlayer.Play());
-			trialLogger.LogVideoEvent(false);
+#if (!(MRIVERSION))
+	#if (!UNITY_WEBPLAYER)
+	//		if(!ExperimentSettings_CoinTask.Instance.isWebBuild){
+				trialLogger.LogVideoEvent(true);
+				yield return StartCoroutine(exp.instrVideoPlayer.Play());
+				trialLogger.LogVideoEvent(false);
+	//		}
+	#endif
 #endif
 
 			//show instructions for exploring, wait for the action button
@@ -239,7 +243,11 @@ public class TrialController : MonoBehaviour {
 		}
 
 		StartCoroutine(exp.uiController.pirateController.PlayEndingPirate ());
+#if UNITY_WEBPLAYER
+		yield return StartCoroutine(exp.ShowSingleInstruction("You have finished your trials! \nPress (X) to restart.", true, true, false, 0.0f));
+#else
 		yield return StartCoroutine(exp.ShowSingleInstruction("You have finished your trials! \nPress (X) to proceed.", true, true, false, 0.0f));
+#endif
 
 #if MRIVERSION
 		yield return StartCoroutine( WaitForMRIFixationRest());
@@ -664,15 +672,16 @@ public class TrialController : MonoBehaviour {
 
 		trialLogger.LogRecallPhaseStarted(false);
 		
-		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses));//, areYouSureResponses) );
+		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses));
 
 		//increment subject's trial count
+#if !UNITY_WEBPLAYER
 		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
-
+#endif
 	}
 
-	int currTrialNum = 0; //TODO: just use currentSubject.trialNum...
-	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<Config_CoinTask.MemoryState> rememberResponses){//, List<bool> areYouSureResponses){
+	int currTrialNum = 0;
+	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<Config_CoinTask.MemoryState> rememberResponses){
 		trialLogger.LogFeedback(true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
 
@@ -683,8 +692,6 @@ public class TrialController : MonoBehaviour {
 		List<GameObject> specialObjectListRecallOrder = new List<GameObject>();
 
 		List<int> objectScores = new List<int> ();
-
-		//float indicatorHeightIncrement = 0.3f;
 
 		for (int i = 0; i < specialObjectOrder.Count; i++){
 
