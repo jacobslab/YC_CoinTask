@@ -137,14 +137,19 @@ public class TrialController : MonoBehaviour {
 	
 	void Update(){
 		if(!isConnectingToHardware){
+#if MRIVERSION
+			if(Config_CoinTask.isPractice){ // only pause in MRI practice, not in the real task
+				GetPauseInput();
+			}
+#else
 			GetPauseInput ();
+#endif
 		}
 	}
 
 	bool isPauseButtonPressed = false;
 	void GetPauseInput(){
-		//if (Input.GetAxis ("Pause Button") > 0) {
-		if(Input.GetKeyDown(KeyCode.B) || Input.GetKey(KeyCode.JoystickButton2)){ //B JOYSTICK BUTTON TODO: move to input manager.
+		if(Input.GetButtonDown ("Pause Button")){//.GetAxis(Input.GetKeyDown(KeyCode.B) || Input.GetKey(KeyCode.JoystickButton2)){ //B JOYSTICK BUTTON TODO: move to input manager.
 			Debug.Log("PAUSE BUTTON PRESSED");
 			if(!isPauseButtonPressed){
 				isPauseButtonPressed = true;

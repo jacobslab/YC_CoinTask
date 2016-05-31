@@ -31,16 +31,16 @@ public class Config_CoinTask : MonoBehaviour {
 	public static bool isSystem2 = false;
 #endif
 
-	#if MRIVERSION
-	public static string HorizontalAxisName = "MRI Horizontal";
-	public static string VerticalAxisName = "MRI Vertical";
-	public static string ActionButtonName = "MRI Action Button";
-	#else
+	//#if MRIVERSION
+//	public static string HorizontalAxisName = "MRI Horizontal";
+	//public static string VerticalAxisName = "MRI Vertical";
+	//public static string ActionButtonName = "MRI Action Button";
+	//#else
 	//INPUT
 	public static string HorizontalAxisName = "Horizontal";
 	public static string VerticalAxisName = "Vertical";
 	public static string ActionButtonName = "Action Button";
-	#endif
+//	#endif
 
 	//REPLAY
 	public static int replayPadding = 6;
@@ -70,7 +70,7 @@ public class Config_CoinTask : MonoBehaviour {
 	
 	//practice settings
 	public static int numTrialsPract = 3;
-	public static bool isPractice = false;
+	public static bool isPractice = true;
 	public static int[] numSpecialObjectsPract = {2,2,3};
 	public static int numTwoItemTrials = 20;
 	public static int numThreeItemTrials = 20;
