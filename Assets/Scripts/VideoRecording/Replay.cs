@@ -135,7 +135,6 @@ public class Replay : MonoBehaviour {
 	}
 
 
-	//TODO: make log file just log the time elapsed????
 	long GetMillisecondDifference(long baseMS, long newMS){
 		return (newMS - baseMS); 
 	}
@@ -143,7 +142,6 @@ public class Replay : MonoBehaviour {
 
 	
 	// Records the screen shot.
-
 	void RecordScreenShot(long timeStamp){
 
 		if (!hasSetSpecificTimeStamps || ( timeStamp < maxTimeStamp && timeStamp > minTimeStamp )) {
