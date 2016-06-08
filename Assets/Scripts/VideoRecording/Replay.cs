@@ -356,12 +356,29 @@ public class Replay : MonoBehaviour {
 									float posZ = float.Parse(splitLine[i+4]);
 
 								//TODO: GET RID OF THIS LATER. JUST FOR MODIFIED LOGFILE
-									if(objName == "Box1" || objName == "Box2" || objName == "Box3" || objName == "Coin" || objName == "BoxSelector" || objName == "BoxSelectorVisuals"){
+									/*if(objName == "Box1" || objName == "Box2" || objName == "Box3" || objName == "Coin" || objName == "BoxSelector" || objName == "BoxSelectorVisuals"){
 										posZ = 517.4979f;
 									}
 									else if (objName == "Do You Remember Selector Visuals" || objName == "Are You Sure Selector Visuals"){
 										posY =15.31f;
 										posZ = 574.4609f;
+									}*/
+
+
+									if(objName.Contains("TimerBar") || objName.Contains("TimerCircle")){
+										//map from 15 inch mac pro resolution (standard patient resolution) to current resolution
+
+										Vector2 oldRes = new Vector2(1430, 900);
+										Vector2 currRes = new Vector2(Camera.main.pixelWidth, Camera.main.pixelHeight);
+
+										float widthPosRatio = posX / oldRes.x;
+										float heightPosRatio = posY / oldRes.y;
+
+										float newPosX = widthPosRatio * currRes.x;
+										float newPosY = heightPosRatio * currRes.y;
+
+										posX = newPosX;
+										posY = newPosY;
 									}
 									
 									objInScene.transform.position = new Vector3(posX, posY, posZ);
