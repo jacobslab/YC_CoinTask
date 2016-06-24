@@ -150,7 +150,7 @@ public class Config_CoinTask : MonoBehaviour {
 		"\n\nGet a time bonus by driving to the chests quickly." +
 		"\n\nIf you are more than 75% sure, you should select [YES]." +
 		"\n\nIf you are at least 50% sure, you should select [MAYBE]." +
-		"\n\nOtherwise, should should select [NO]." +
+		"\n\nOtherwise, you should select [NO]." +
 		"\n\nPress (X) to begin!";
 		/*	"\n\nIf you are more than 50% sure of an object's location, you should say you remember." + 
 			"\n\nIf you say you are very sure, you should be at least 75% accurate." + 
