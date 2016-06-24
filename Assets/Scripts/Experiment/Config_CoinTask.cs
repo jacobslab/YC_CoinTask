@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using System.Collections;
+using UnityEngine.VR;
 
 public class Config_CoinTask : MonoBehaviour {
 
@@ -159,7 +160,11 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float minDefaultInstructionTime = 0.0f; //time each learning trial instruction should be displayed for
 
 	//tilt variables
+	#if ENABLE_VR
+	public static bool isAvatarTilting = false; //don't tilt in VR!
+	#else
 	public static bool isAvatarTilting = true;
+	#endif
 	public static float turnAngleMult = 0.07f;
 
 	//drive variables
