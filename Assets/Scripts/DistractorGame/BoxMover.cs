@@ -54,25 +54,30 @@ public class BoxMover : MonoBehaviour {
 	IEnumerator MoveStraight(Vector3 targetPos){
 		float currentTime = 0.0f;
 
-		Vector3 origPos = transform.position;
+		//Vector3 origPos = transform.position;
+		Vector3 origPos = transform.localPosition;
 
 		while(currentTime < moveTime){
 			currentTime += Time.deltaTime;
 			float timePercent = currentTime / moveTime;
 
-			transform.position = Vector3.Lerp(origPos, targetPos, timePercent);
+			//transform.position = Vector3.Lerp(origPos, targetPos, timePercent);
+			transform.localPosition = Vector3.Lerp(origPos, targetPos, timePercent);
 
 			yield return 0;
 		}
 
-		transform.position = targetPos;
+		//transform.position = targetPos;
+		transform.localPosition = targetPos;
 	}
 
 	IEnumerator MoveArc(Vector3 targetPos, int arcDirection){
-		Vector3 origPos = transform.position;
+		//Vector3 origPos = transform.position;
+		Vector3 origPos = transform.localPosition;
 
-		Vector3 totalDistance = targetPos - transform.position;
-		
+		//Vector3 totalDistance = targetPos - transform.position;
+		Vector3 totalDistance = targetPos - transform.localPosition;
+
 		Vector3 acceleration = Config_CoinTask.boxAcceleration;
 		Vector3 initVelocity = (totalDistance - (acceleration*moveTime*moveTime) ) / moveTime;
 
@@ -84,12 +89,14 @@ public class BoxMover : MonoBehaviour {
 		float currentTime = 0.0f;
 		while( currentTime < moveTime ){
 			currentTime += Time.deltaTime;
-			transform.position = origPos + (initVelocity * currentTime) + ( acceleration * currentTime * currentTime );
+			//transform.position = origPos + (initVelocity * currentTime) + ( acceleration * currentTime * currentTime );
+			transform.localPosition = origPos + (initVelocity * currentTime) + ( acceleration * currentTime * currentTime );
 
 			yield return 0;
 		}
 
-		transform.position = targetPos;
+		//transform.position = targetPos;
+		transform.localPosition = targetPos;
 	}
 
 }

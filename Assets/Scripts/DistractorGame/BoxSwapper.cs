@@ -76,7 +76,8 @@ public class BoxSwapper : MonoBehaviour {
 		while(currTime < raiseAndLowerTime){
 			currTime += Time.deltaTime;
 			for(int i = 0; i < boxes.Length; i++){
-				boxes[i].transform.position += (Vector3.up*moveAmount*Time.deltaTime);
+				//boxes[i].transform.position += (Vector3.up*moveAmount*Time.deltaTime);
+				boxes[i].transform.localPosition += (boxes[i].transform.up*moveAmount*Time.deltaTime);
 			}
 			yield return 0;
 		}
@@ -223,9 +224,12 @@ public class BoxSwapper : MonoBehaviour {
 			int stationaryBoxIndex = -1; //a bool to make sure no more than one box stays stationary at one time.
 
 			List<Vector3> boxPositions = new List<Vector3>();
-			boxPositions.Add(boxStartPositions[0].position);
-			boxPositions.Add(boxStartPositions[1].position);
-			boxPositions.Add(boxStartPositions[2].position);
+			//boxPositions.Add(boxStartPositions[0].position);
+			//boxPositions.Add(boxStartPositions[1].position);
+			//boxPositions.Add(boxStartPositions[2].position);
+			boxPositions.Add(boxStartPositions[0].localPosition);
+			boxPositions.Add(boxStartPositions[1].localPosition);
+			boxPositions.Add(boxStartPositions[2].localPosition);
 
 			List<BoxMover.MoveType> moveTypes = new List<BoxMover.MoveType>();
 			moveTypes.Add(BoxMover.MoveType.moveOverArc);
@@ -292,13 +296,16 @@ public class BoxSwapper : MonoBehaviour {
 	}
 
 	int GetLocationIndex(Vector3 position){
-		if(position == boxStartPositions[0].position){
+		//if(position == boxStartPositions[0].position){
+		if(position == boxStartPositions[0].localPosition){
 			return 0;
 		}
-		else if(position == boxStartPositions[1].position){
+		//else if(position == boxStartPositions[1].position){
+		if(position == boxStartPositions[1].localPosition){
 			return 1;
 		}
-		else if(position == boxStartPositions[2].position){
+		//else if(position == boxStartPositions[2].position){
+		if(position == boxStartPositions[2].localPosition){
 			return 2;
 		}
 
