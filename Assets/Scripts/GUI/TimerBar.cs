@@ -40,6 +40,8 @@ public class TimerBar : MonoBehaviour {
 		myTimer.myResetDelegate += Reset;
 
 		barPositions = new Vector3[2];
+		RectTransform topParent = topBar.transform.parent.GetComponent<RectTransform> ();
+		RectTransform midParent = topBar.transform.parent.GetComponent<RectTransform> ();
 		barPositions [0] = topBar.position;
 		barPositions [1] = midBar.position;
 		//barPositions [2] = bottomBar.position;
@@ -113,7 +115,7 @@ public class TimerBar : MonoBehaviour {
 		float totalMoveDistance = barWidths [barIndex];
 		float moveAmount = ( totalMoveDistance / barTimes[barIndex] ) * Time.deltaTime * bar.transform.lossyScale.x;
 
-		bar.position += Vector3.left * moveAmount;
+		bar.position -= bar.transform.right * moveAmount;// += Vector3.left * moveAmount;
 
 		if (barIndex == 0) {
 			amountMoveTotal += moveAmount;
@@ -128,8 +130,8 @@ public class TimerBar : MonoBehaviour {
 
 		indicator.position = topBonusUI.position;
 
-		topBar.position = barPositions [0];
-		midBar.position = barPositions [1];
+		topBar.position = topBar.transform.parent.position;//barPositions [0];
+		midBar.position = midBar.transform.parent.position;//barPositions [1];
 		//bottomBar.position = barPositions [2];
 
 	}
