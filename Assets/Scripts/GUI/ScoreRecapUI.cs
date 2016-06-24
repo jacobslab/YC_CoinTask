@@ -23,7 +23,7 @@ public class ScoreRecapUI : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Enable (false);
-		centralContentOrigPos = ObjectScoreContent.position;
+		centralContentOrigPos = ObjectScoreContent.localPosition;//ObjectScoreContent.position;
 	}
 	
 	// Update is called once per frame
@@ -48,8 +48,6 @@ public class ScoreRecapUI : MonoBehaviour {
 		else {
 			int trialScore = 0;
 			for (int i = 0; i < objectScores.Count; i++) {
-				//put objects in the right places
-				//objectFoundVisuals [i].gameObject.transform.position = ObjectLocationScores [i].transform.position + ObjectVisualOffset;
 
 				//set object score text & object names
 				string currObjectScore = FormatScore(objectScores[i]);
@@ -97,7 +95,8 @@ public class ScoreRecapUI : MonoBehaviour {
 	}
 
 	void Reset(){
-		ObjectScoreContent.position = centralContentOrigPos;
+		//ObjectScoreContent.position = centralContentOrigPos;
+		ObjectScoreContent.localPosition = centralContentOrigPos;
 
 		for (int i = 0; i < ObjectLocationScores.Length; i++) {
 			ObjectLocationScores[i].text = "";
