@@ -56,17 +56,28 @@ public class PlayerControls : MonoBehaviour{
 		}
 	}
 
-
+	public Camera myCamera;
+	public Transform movementTransform;
+	bool wasNotMoving = false;
 	void GetInput()
 	{
 		//VERTICAL
-		float verticalAxisInput = Input.GetAxis (Config_CoinTask.VerticalAxisName);
+		float verticalAxisInput = Input.GetAxis ("Vertical");
 		if ( Mathf.Abs(verticalAxisInput) > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
-
-			GetComponent<Rigidbody>().velocity = transform.forward*verticalAxisInput*Config_CoinTask.driveSpeed; //since we are setting velocity based on input, no need for time.delta time component
-
+			Vector3 movementDir = movementTransform.forward;
+			float angleDifference = 0;
+			if(wasNotMoving){
+				//align forward direction with main camera forward direction!
+				Quaternion cameraRot = myCamera.transform.rotation;
+				angleDifference = movementTransform.rotation.eulerAngles.y - cameraRot.eulerAngles.y;
+				movementTransform.RotateAround(movementTransform.position, Vector3.up, -angleDifference);
+				movementDir = movementTransform.forward;
+			}
+			wasNotMoving = false;
+			GetComponent<Rigidbody>().velocity = movementDir*verticalAxisInput*Config_CoinTask.driveSpeed; //since we are setting velocity based on input, no need for time.delta time component
 		}
 		else{
+			wasNotMoving = true;
 			GetComponent<Rigidbody>().velocity = Vector3.zero;
 		}
 
@@ -223,7 +234,7 @@ public class PlayerControls : MonoBehaviour{
 		Vector3 targetPosition = new Vector3 (target.transform.position.x, transform.position.y, target.transform.position.z);
 		transform.LookAt(targetPosition);
 		Quaternion desiredRotation = transform.rotation;
-		
+
 		float angleDifference = origRotation.eulerAngles.y - desiredRotation.eulerAngles.y;
 		angleDifference = Mathf.Abs (angleDifference);
 		if (angleDifference > 180.0f) {
@@ -261,31 +272,42 @@ public class PlayerControls : MonoBehaviour{
 	//returns the angle between the facing angle of the player and an XZ position
 	public float GetYAngleBetweenFacingDirAndObjectXZ ( Vector2 objectPos ){
 
-		Quaternion origRotation = transform.rotation;
-		Vector3 origPosition = transform.position;
+		//Quaternion origRotation = transform.rotation;
+		//Vector3 origPosition = transform.position;
+		Quaternion origRotation = movementTransform.rotation;
+		Vector3 origPosition = movementTransform.position;
 
-		float origYRot = origRotation.eulerAngles.y;
+		//new -- we want to check with the camera's rotation. the camera demonstrate's where we're actually facing!
+		movementTransform.rotation = Quaternion.Euler(origRotation.eulerAngles.x, myCamera.transform.rotation.eulerAngles.y, origRotation.eulerAngles.z);
 
-		transform.position = new Vector3( objectPos.x, origPosition.y, objectPos.y );
-		transform.RotateAround(origPosition, Vector3.up, -origYRot);
+		//float origYRot = origRotation.eulerAngles.y;
+		float origYRot = movementTransform.rotation.eulerAngles.y;
 
-		Vector3 rotatedObjPos = transform.position;
+		//transform.position = new Vector3( objectPos.x, origPosition.y, objectPos.y );
+		//transform.RotateAround(origPosition, Vector3.up, -origYRot);
+		movementTransform.position = new Vector3( objectPos.x, origPosition.y, objectPos.y );
+		movementTransform.RotateAround(origPosition, Vector3.up, -origYRot);
 
+		//Vector3 rotatedObjPos = transform.position;
+		Vector3 rotatedObjPos = movementTransform.position;
 
 		//put player back in orig position
-		transform.position = origPosition;
+		//transform.position = origPosition;
+		movementTransform.position = origPosition;
 
-		transform.LookAt (rotatedObjPos);
+		//transform.LookAt (rotatedObjPos);
+		movementTransform.LookAt (rotatedObjPos);
 
-
-		float yAngle = transform.rotation.eulerAngles.y;
+		//float yAngle = transform.rotation.eulerAngles.y;
+		float yAngle = movementTransform.rotation.eulerAngles.y;
 
 		if(yAngle > 180.0f){
 			yAngle = 360.0f - yAngle; //looking for shortest angle no matter the angle
 			yAngle *= -1; //give it a signed value
 		}
 
-		transform.rotation = origRotation;
+		//transform.rotation = origRotation;
+		movementTransform.rotation = origRotation;
 
 		return yAngle;
 
