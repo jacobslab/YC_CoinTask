@@ -10,15 +10,20 @@ public class CameraController : MonoBehaviour {
 	
 	public GameObject AvatarStandardCameraRig;
 	public GameObject UICamera;
+	public GameObject ReplayOverHeadCamera;
+
 	public GameObject OculusRig;
 
 	public Transform AvatarOculusParent;
 	public Transform InstructionsOculusParent;
-	
 
 	// Use this for initialization
 	void Start () {
-
+		if (ExperimentSettings_CoinTask.isReplay) {
+			ReplayOverHeadCamera.SetActive (true);
+		} else {
+			ReplayOverHeadCamera.SetActive (false);
+		}
 	}
 	
 	// Update is called once per frame
