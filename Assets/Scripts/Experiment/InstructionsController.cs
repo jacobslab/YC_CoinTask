@@ -23,7 +23,10 @@ public class InstructionsController : MonoBehaviour {
 
 
 
-	//TODO: CHANGE THESE IN THE EDITOR DEPENDING ON LANGUAGE.
+	//CHANGE THESE IN THE EDITOR DEPENDING ON LANGUAGE.
+	//UICONTROLLER SETS THESE APPROPRIATELY IN EACH RESPECTIVE GAMEOBJECT.
+	//Localization is set up this way to hopefully make it easier to add a new language. It is difficult, however, to add new text...
+		//...could have done localization on each individual object, but that would make it more difficult to add new languages.
 
 	//pirate text
 	public string pirateWelcomeText = "Welcome to Treasure Hunt!";

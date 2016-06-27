@@ -124,7 +124,7 @@ public class DefaultItem : MonoBehaviour {
 		GameObject specialObject = Experiment_CoinTask.Instance.objectController.SpawnSpecialObject(specialSpawnPos);
 		
 		//set special object text
-		SetSpecialObjectText (specialObject.GetComponent<SpawnableObject> ().GetName ());
+		SetSpecialObjectText (specialObject.GetComponent<SpawnableObject> ().GetDisplayName ());
 
 		PlayJuice (true);
 

@@ -14,6 +14,9 @@ public class SpawnableObject : MonoBehaviour {
 
 	Vector3 origScale;
 
+	//NAME LOCALIZATION
+	public string SpanishName;
+	
 	public string IDstring = ""; //will get set in replay. TODO: don't really want this to be "settable" from the outside world... try to rethink how to structure this.
 
 	// Use this for initialization
@@ -44,12 +47,11 @@ public class SpawnableObject : MonoBehaviour {
 
 	public string GetName(){
 		string name = gameObject.name;
-		name = Regex.Replace( name, "(Clone)", "" );
-		name = Regex.Replace( name, "[()]", "" );
+		name = Regex.Replace (name, "(Clone)", "");
+		name = Regex.Replace (name, "[()]", "");
 
 		return name;
 	}
-
 	
 	public string GetName(GameObject obj){
 		string name = obj.name;
@@ -59,7 +61,7 @@ public class SpawnableObject : MonoBehaviour {
 		return name;
 	}
 
-	public string GetNameNoID(){
+	/*public string GetNameNoID(){
 		//separate out the object name from a numeric ID
 		Regex numAlpha = new Regex("(?<Alpha>[a-zA-Z ]*)(?<Numeric>[0-9]*)");
 		Match match = numAlpha.Match(GetName());
@@ -67,6 +69,18 @@ public class SpawnableObject : MonoBehaviour {
 		//string objID = match.Groups["Numeric"].Value;
 
 		return objShortName;
+	}*/
+
+	public string GetDisplayName(){
+		switch (ExperimentSettings_CoinTask.myLanguage) {
+		//don't need to do english case -- for that we'll use GetName()
+
+		//spanish case
+		case ExperimentSettings_CoinTask.LanguageSetting.Spanish:
+			return SpanishName;
+			break;
+		}
+		return GetName ();
 	}
 
 	//should be set when spawned by the ObjectController
