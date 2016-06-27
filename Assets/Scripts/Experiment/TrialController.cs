@@ -210,18 +210,18 @@ public class TrialController : MonoBehaviour {
 
 #if MRIVERSION
 			if(Config_CoinTask.isPractice){
-				yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
-				yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+				yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+				yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 				scoreInstructionsGroup.alpha = 0.0f;
-				yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+				yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			}
 			else{
-				exp.instructionsController.SetInstructionsColorful();
-				exp.instructionsController.DisplayText(Config_CoinTask.initialInstructions1);
+				exp.currInstructions.SetInstructionsColorful();
+				exp.currInstructions.DisplayText(exp.currInstructions.initialInstructions1);
 				scoreInstructionsGroup.alpha = 0.0f;
 				yield return StartCoroutine( WaitForMRIConnectionKey());
-				exp.instructionsController.SetInstructionsBlank();
-				exp.instructionsController.SetInstructionsTransparentOverlay();
+				exp.currInstructions.SetInstructionsBlank();
+				exp.currInstructions.SetInstructionsTransparentOverlay();
 				yield return StartCoroutine( WaitForMRIFixationRest());
 			}
 #else
@@ -634,10 +634,10 @@ public class TrialController : MonoBehaviour {
 			string selectObjectText = exp.currInstructions.selectTheLocationText + " " + specialItemName + " (X).";
 
 #if MRIVERSION
-			exp.instructionsController.SetInstructionsTransparentOverlay();
-			exp.instructionsController.DisplayText(selectObjectText);
+			exp.currInstructions.SetInstructionsTransparentOverlay();
+			exp.currInstructions.DisplayText(selectObjectText);
 			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
-			exp.instructionsController.SetInstructionsBlank();
+			exp.currInstructions.SetInstructionsBlank();
 #else
 			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 #endif
