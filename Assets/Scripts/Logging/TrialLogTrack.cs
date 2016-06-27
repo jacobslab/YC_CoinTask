@@ -9,6 +9,7 @@ public class TrialLogTrack : LogTrack {
 	void Update(){
 		if (ExperimentSettings_CoinTask.isLogging && !firstLog) {
 			LogVersion();
+			LogLanguage ();
 			LogEnvironmentDimensions ();
 			firstLog = true;
 		}
@@ -24,6 +25,11 @@ public class TrialLogTrack : LogTrack {
 	void LogVersion(){
 		Debug.Log ("LOGGED VERSION");
 		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Experiment Info" + separator + "VERSION" + separator + Config_CoinTask.BuildVersion.ToString() + separator + Config_CoinTask.VersionNumber);
+	}
+
+	void LogLanguage(){
+		Debug.Log ("LOGGED LANGUAGE");
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Experiment Info" + separator + "LANGUAGE" + separator + ExperimentSettings_CoinTask.myLanguage);
 	}
 
 	//LOGGED ON THE START OF THE TRIAL.
