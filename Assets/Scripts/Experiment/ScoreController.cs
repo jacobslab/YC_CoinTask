@@ -141,7 +141,7 @@ public class ScoreController : MonoBehaviour {
 
 	void SetScoreText(int scoreToDisplay){
 		//scoreText.text = "$ " + (scoreTextScore);
-		scoreText.text = "Points: " + (scoreToDisplay);
+		scoreText.text = exp.currInstructions.pointsText + ": " + (scoreToDisplay);
 	}
 
 	//TODO: combine these two methods. add a bool as a parameter.

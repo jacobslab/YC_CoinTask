@@ -135,26 +135,6 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float rotateToSpecialObjectSpeed = 33.33f;
 	public static float pauseAtTreasureTime = 1.5f;
 #endif
-
-	public static string initialInstructions1 = "Welcome to Treasure Island!" + 
-		"\n\nYou are going on a treasure hunt." + 
-			"\n\nUse the joystick to control your movement." + 
-			"\n\nDrive into treasure chests to open them. Remember where each object is located!" +
-			"\n\nPress (X) to continue.";
-
-	public static string initialInstructions2 = "When you are asked about remembering an object's location, you must answer [ YES ], [ MAYBE ], or [ NO ], and choose a location." +
-			"\n\nYou will win points for correct locations and you will lose points for incorrect locations." +
-			"\n\nPress (X) to continue.";
-
-	public static string initialInstructions3 = "TIPS FOR MAXIMIZING YOUR SCORE" + 
-		"\n\nGet a time bonus by driving to the chests quickly." +
-		"\n\nIf you are more than 75% sure, you should select [YES]." +
-		"\n\nIf you are at least 50% sure, you should select [MAYBE]." +
-		"\n\nOtherwise, you should select [NO]." +
-		"\n\nPress (X) to begin!";
-		/*	"\n\nIf you are more than 50% sure of an object's location, you should say you remember." + 
-			"\n\nIf you say you are very sure, you should be at least 75% accurate." + 
-			"\n\nPress (X) to begin!";*/
 	
 	public static float minInitialInstructionsTime = 0.0f; //TODO: change back to 5.0f
 	public static float minDefaultInstructionTime = 0.0f; //time each learning trial instruction should be displayed for

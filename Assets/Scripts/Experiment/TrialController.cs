@@ -225,11 +225,11 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine( WaitForMRIFixationRest());
 			}
 #else
-			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 1.0f;
-			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 0.0f;
-			yield return StartCoroutine (exp.ShowSingleInstruction (Config_CoinTask.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 #endif
 
 			#if MRIVERSION
@@ -251,7 +251,7 @@ public class TrialController : MonoBehaviour {
 #if UNITY_WEBPLAYER
 		yield return StartCoroutine(exp.ShowSingleInstruction("You have finished your trials! \nPress (X) to restart.", true, true, false, 0.0f));
 #else
-		yield return StartCoroutine(exp.ShowSingleInstruction("You have finished your trials! \nPress (X) to proceed.", true, true, false, 0.0f));
+		yield return StartCoroutine(exp.ShowSingleInstruction(exp.currInstructions.youHaveFinishedText, true, true, false, 0.0f));
 #endif
 
 #if MRIVERSION
@@ -484,7 +484,7 @@ public class TrialController : MonoBehaviour {
 			trialLogger.LogInstructionEvent ();
 
 			#if !(MRIVERSION)
-			yield return StartCoroutine (exp.ShowSingleInstruction ("Press (X) to start!", true, true, false, Config_CoinTask.minDefaultInstructionTime));
+			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToStart, true, true, false, Config_CoinTask.minDefaultInstructionTime));
 			#endif
 		}
 
@@ -631,7 +631,7 @@ public class TrialController : MonoBehaviour {
 			exp.uiController.doYouRememberUI.Stop();
 
 			//show single selection instruction and wait for selection button press
-			string selectObjectText = "Select the location of the " + specialItemName + " (X).";
+			string selectObjectText = exp.currInstructions.selectTheLocationText + " " + specialItemName + " (X).";
 
 #if MRIVERSION
 			exp.instructionsController.SetInstructionsTransparentOverlay();
@@ -785,7 +785,7 @@ public class TrialController : MonoBehaviour {
 		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxFeedbackTime));
 #else
 		//wait for selection button press
-		yield return StartCoroutine (exp.ShowSingleInstruction ("Press (X) to continue.", false, true, false, Config_CoinTask.minDefaultInstructionTime));
+		yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 #endif
 
 		currTrialNum++;

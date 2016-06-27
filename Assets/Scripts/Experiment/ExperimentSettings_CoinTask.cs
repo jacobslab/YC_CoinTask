@@ -24,6 +24,18 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	//subject selection controller
 	public SubjectSelectionController subjectSelectionController;
 
+
+
+	//LANGUAGE SELECTION
+	public enum LanguageSetting
+	{
+		English,
+		Spanish
+	}
+	public static LanguageSetting myLanguage = LanguageSetting.English;
+	public Dropdown languageDropdown;
+
+
 	//TOGGLES
 	public static bool isOculus = false;
 	public static bool isReplay = false;
@@ -227,5 +239,20 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			isOculus = oculusToggle.isOn;
 		}
 	}
-	
+
+	public void SetLanguage(){
+		Debug.Log ("SETTING LANGUAGE");
+		if (languageDropdown != null) {
+			switch (languageDropdown.options [languageDropdown.value].text) {
+			case "English":
+				myLanguage = LanguageSetting.English;
+				break;
+			case "Spanish":
+				myLanguage = LanguageSetting.Spanish;
+				break;
+			}
+
+			Debug.Log ("CURR LANGUAGE: " + myLanguage);
+		}
+	}
 }

@@ -14,15 +14,9 @@ public class AnswerSelector : MonoBehaviour {
 	public ColorChanger yesExplanationColorChanger;
 	public ColorChanger maybeExplanationColorChanger;
 	public ColorChanger noExplanationColorChanger;
-	//public TextMesh yesExplanationText;
-	//public TextMesh maybeExplanationText;
-	//public TextMesh noExplanationText;
 
 	public Color selectedColor;
 	public Color deselectedColor;
-
-	//float explanationLerpTime = 0.2f;
-	//float resetExplanationLerpTime = 0.0f;
 
 	public AudioSource selectionSwitchAudio;
 
@@ -43,7 +37,6 @@ public class AnswerSelector : MonoBehaviour {
 	}
 
 	public void SetShouldCheckForInput(bool shouldCheck){
-		//shouldCheckForInput = shouldCheck;
 		if (shouldCheck) {
 			ResetSelectorPosition ();
 			StartCoroutine (GetSelectionInput ());
@@ -69,16 +62,8 @@ public class AnswerSelector : MonoBehaviour {
 			}
 		}
 		SetExplanationColors ();
-		//ResetExplanationText ();
 	}
-
-	/*void ResetExplanationText(){
-		if (yesExplanationText && noExplanationText) {
-			yesExplanationColorChanger.ChangeColor (new Color (yesExplanationText.color.r, yesExplanationText.color.g, yesExplanationText.color.b, 1.0f)); 
-			noExplanationColorChanger.ChangeColor (new Color (noExplanationText.color.r, noExplanationText.color.g, noExplanationText.color.b, 0.0f)); 
-		}
-	}*/
-
+		
 
 	//MODIFIED FROM BOXSWAPPER.CS
 	IEnumerator GetSelectionInput(){
@@ -129,13 +114,6 @@ public class AnswerSelector : MonoBehaviour {
 		}
 	}
 
-	/*public bool IsNoPosition(){
-		if (currPositionIndex == noIndex) {
-			return true;
-		}
-		return false;
-	}*/
-
 	void Move(int indicesToMove){
 		int oldPositionIndex = currPositionIndex;
 
@@ -165,8 +143,7 @@ public class AnswerSelector : MonoBehaviour {
 		if (currPositionIndex != oldPositionIndex) {
 			exp.trialController.LogAnswerSelectorPositionChanged (GetMemoryState());
 		}
-
-		//SetExplanationText(explanationLerpTime);
+			
 	}
 
 	void SetExplanationColors(){

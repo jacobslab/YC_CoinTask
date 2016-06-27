@@ -35,7 +35,7 @@ public class BlockCompleteUI : MonoBehaviour {
 			Debug.Log("NOT ENOUGH BLOCK SCORE TEXTMESHES");
 		}
 
-		BlockText.text = "block " + (currentBlockIndex + 1) + "/" + maxNumBlocks + " completed";
+		BlockText.text = exp.currInstructions.blockLower + " " + (currentBlockIndex + 1) + "/" + maxNumBlocks + " " + exp.currInstructions.completed;
 	}
 
 	public void Stop(){

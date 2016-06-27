@@ -11,7 +11,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 	public JuiceController juiceController;
 
 	//instructions
-	public InstructionsController instructionsController;
+	public InstructionsController englishInstructions;
+	public InstructionsController spanishInstructions;
+	[HideInInspector] public InstructionsController currInstructions;
 	//public InstructionsController inGameInstructionsController;
 	public CameraController cameraController;
 
@@ -49,11 +51,11 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//public bool isOculus = false;
 
 	//state enum
-	public ExperimentState currentState = ExperimentState.instructionsState;
+	public ExperimentState currentState = ExperimentState.inExperiment;
 
 	public enum ExperimentState
 	{
-		instructionsState,
+		//instructionsState,
 		inExperiment,
 		inExperimentOver,
 	}
@@ -82,6 +84,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 		juiceController.Init ();
 
 		cameraController.SetInGame(); //don't use oculus for replay mode
+
+		InitInstructionsController ();
+
 		if (ExperimentSettings_CoinTask.isLogging) {
 #if !UNITY_WEBPLAYER
 			InitLogging();
@@ -90,9 +95,22 @@ public class Experiment_CoinTask : MonoBehaviour {
 #endif
 		}
 		else if(ExperimentSettings_CoinTask.isReplay) {
-			instructionsController.TurnOffInstructions();
+			currInstructions.TurnOffInstructions();
 		}
 
+	}
+
+	void InitInstructionsController(){
+		switch (ExperimentSettings_CoinTask.myLanguage) {
+		case ExperimentSettings_CoinTask.LanguageSetting.English:
+			currInstructions = englishInstructions;
+			break;
+		case ExperimentSettings_CoinTask.LanguageSetting.Spanish:
+			currInstructions = spanishInstructions;
+			break;
+		}
+
+		uiController.InitText ();
 	}
 	
 	//TODO: move to logger_threading perhaps? *shrug*
@@ -131,13 +149,13 @@ public class Experiment_CoinTask : MonoBehaviour {
 		//Proceed with experiment if we're not in REPLAY mode
 		if (!ExperimentSettings_CoinTask.isReplay) { //REPLAY IS HANDLED IN REPLAY.CS VIA LOG FILE PARSING
 
-			if (currentState == ExperimentState.instructionsState && !isRunningInstructions) {
+			/*if (currentState == ExperimentState.instructionsState && !isRunningInstructions) {
 				Debug.Log("running instructions");
 
 				StartCoroutine(RunInstructions());
 
 			}
-			else if (currentState == ExperimentState.inExperiment && !isRunningExperiment) {
+			else*/ if (currentState == ExperimentState.inExperiment && !isRunningExperiment) {
 				Debug.Log("running experiment");
 				StartCoroutine(BeginExperiment());
 			}
@@ -147,7 +165,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 	public IEnumerator RunOutOfTrials(){
 
-		instructionsController.SetInstructionsColorful(); //want to keep a dark screen before transitioning to the end!
+		currInstructions.SetInstructionsColorful(); //want to keep a dark screen before transitioning to the end!
 		EndExperiment();
 
 		yield return 0;
@@ -178,7 +196,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	}
 
 	public void EndExperiment(){
-		instructionsController.DisplayText("...loading end screen...");
+		currInstructions.DisplayText("...loading end screen...");
 
 		Debug.Log ("Experiment Over");
 		currentState = ExperimentState.inExperimentOver;
@@ -193,12 +211,12 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//TODO: move to instructions controller...
 	public IEnumerator ShowSingleInstruction(string line, bool isDark, bool waitForButton, bool addRandomPostJitter, float minDisplayTimeSeconds){
 		if(isDark){
-			instructionsController.SetInstructionsColorful();
+			currInstructions.SetInstructionsColorful();
 		}
 		else{
-			instructionsController.SetInstructionsTransparentOverlay();
+			currInstructions.SetInstructionsTransparentOverlay();
 		}
-		instructionsController.DisplayText(line);
+		currInstructions.DisplayText(line);
 
 		yield return new WaitForSeconds (minDisplayTimeSeconds);
 
@@ -210,7 +228,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 			yield return StartCoroutine(WaitForJitter ( Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax ) );
 		}
 
-		instructionsController.TurnOffInstructions ();
+		currInstructions.TurnOffInstructions ();
 		cameraController.SetInGame();
 	}
 	

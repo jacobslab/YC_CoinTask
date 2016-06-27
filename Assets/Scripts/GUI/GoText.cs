@@ -5,6 +5,8 @@ using System.Collections;
 [RequireComponent (typeof (ColorChanger))]
 public class GoText : MonoBehaviour {
 
+	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
+
 	public TextMesh text;
 
 	ColorChanger myColorChanger;
@@ -29,7 +31,7 @@ public class GoText : MonoBehaviour {
 
 	public void Play(){
 		if (Config_CoinTask.isJuice) {
-			text.text = "GO!";
+			text.text = exp.currInstructions.GoText;
 			StartCoroutine (ScaleUp ());
 			ChangeColor ();
 		}

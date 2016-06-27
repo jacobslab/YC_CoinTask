@@ -9,10 +9,6 @@ public class PirateUI : MonoBehaviour {
 	public CanvasGroup myCanvasGroup;
 	public Text speechText;
 
-	string welcomeText = "Welcome to Treasure Hunt!";
-	string[] encouragingText = {"Ahoy, matey!", "Great work!", "So much treasure!", "Great treasure hunting matey!"};
-	string endText = "You found all of the treasure!";
-
 	public enum PirateTextType{
 		start,
 		encouraging,
@@ -77,14 +73,14 @@ public class PirateUI : MonoBehaviour {
 	
 	void SetText(PirateTextType typeOfText){
 		if (typeOfText == PirateTextType.start) {
-			speechText.text = welcomeText;
+			speechText.text = exp.currInstructions.pirateWelcomeText;
 		} 
 		else if (typeOfText == PirateTextType.encouraging) {
-			int randomIndex = Random.Range(0, encouragingText.Length);
-			speechText.text = encouragingText[randomIndex];
+			int randomIndex = Random.Range(0, exp.currInstructions.pirateEncouragingText.Length);
+			speechText.text = exp.currInstructions.pirateEncouragingText[randomIndex];
 		} 
 		else if (typeOfText == PirateTextType.end) {
-			speechText.text = endText;
+			speechText.text = exp.currInstructions.pirateEndText;
 		}
 	}
 

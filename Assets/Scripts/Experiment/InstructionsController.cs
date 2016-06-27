@@ -21,7 +21,88 @@ public class InstructionsController : MonoBehaviour {
 	public Image oculusBackground;
 	public Color backgroundColorDefault;
 
-	public GameObject ScoreInstructions; //turn these on and off as necessary during the trial.......
+
+
+	//TODO: CHANGE THESE IN THE EDITOR DEPENDING ON LANGUAGE.
+
+	//pirate text
+	public string pirateWelcomeText = "Welcome to Treasure Hunt!";
+	public string[] pirateEncouragingText = {"Ahoy, matey!", "Great work!", "So much treasure!", "Great treasure hunting matey!"};
+	public string pirateEndText = "You found all of the treasure!";
+
+	//UI
+	public string pauseText = "[(B) to Pause]";
+	public string gamePausedText = "✪ GAME PAUSED ✪";
+
+	public string pointsText = "Points";
+
+	//instructions
+	public string initialInstructions1 = "Welcome to Treasure Island!" + 
+		"\n\nYou are going on a treasure hunt." + 
+		"\n\nUse the joystick to control your movement." + 
+		"\n\nDrive into treasure chests to open them. Remember where each object is located!" +
+		"\n\nPress (X) to continue.";
+
+	public string initialInstructions2 = "When you are asked about remembering an object's location, you must answer [ YES ], [ MAYBE ], or [ NO ], and choose a location." +
+		"\n\nYou will win points for correct locations and you will lose points for incorrect locations." +
+		"\n\nPress (X) to continue.";
+
+	public string initialInstructions3 = "TIPS FOR MAXIMIZING YOUR SCORE" + 
+		"\n\nGet a time bonus by driving to the chests quickly." +
+		"\n\nIf you are more than 75% sure, you should select [YES]." +
+		"\n\nIf you are at least 50% sure, you should select [MAYBE]." +
+		"\n\nOtherwise, you should select [NO]." +
+		"\n\nPress (X) to begin!";
+
+	public string yesExplanationInstruction = "[YES] win 200 points / lose 200 points";
+	public string maybeExplanationInstruction = "[MAYBE] win 100 points / lose 50 points";
+	public string noExplanationInstruction = "[NO] win 50 points / lose 0 points";
+
+	//go & hurry up
+	public string GoText = "GO!";
+	public string hurryUpText = "hurry up!";
+
+	//box swap
+	public string boxSwapBonusTitle = "Box Swap Bonus!";
+	public string boxExplanation = "when the boxes stop moving, \npress (X) to select a box";
+
+	//recall
+	public string doYouRememberText = "Do you remember where to find the...";
+	public string yesAnswerText = "YES!";
+	public string maybeAnswerText = "MAYBE";
+	public string noAnswerText = "NO...";
+	public string yesPointsText = "win a lot / lose a lot";
+	public string maybePointsText = "win some / lose some";
+	public string noPointsText = "win a little / lose a little";
+
+	public string pressToSelect = "press (X) to select";
+	public string selectTheLocationText = "Select the location of the ";
+
+	public string pressToContinue = "press (X) to continue";
+	public string pressToStart = "Press (X) to start!";
+
+	//score screen
+	public string trialCompleteText = "Trial Complete!";
+	public string timeBonusText = "time bonus";
+	public string boxSwapBonusText = "box swap bonus";
+	public string trialScoreText = "Trial Score";
+
+	//trial 1/40 completed
+	public string trial = "trial";
+	public string completed = "completed";
+
+	//block screen
+	public string blockCompletedText = "You completed a block!";
+	//Block 1 Score:
+	public string blockUpper = "Block";
+	public string score = "Score";
+	//for block 1/40 completed
+	public string blockLower = "block";
+
+
+	//finished
+	public string youHaveFinishedText = "You have finished your trials! \nPress (X) to proceed.";
+
 
 	List<string> _instructions;
 
@@ -77,7 +158,11 @@ public class InstructionsController : MonoBehaviour {
 		}
 	}
 
-	public void RunInstructions(){
+	public void DisplayText(string line){
+		SetText(line);
+	}
+
+	/*public void RunInstructions(){
 		SetInstructionsColorful();
 		isFinished = false;
 		Parse ();
@@ -134,10 +219,6 @@ public class InstructionsController : MonoBehaviour {
 		isFinished = true;
 	}
 
-	public void DisplayText(string line){
-		SetText(line);
-	}
-
 	IEnumerator WaitForInstruction(){
 		float timePassed = 0;
 
@@ -158,7 +239,7 @@ public class InstructionsController : MonoBehaviour {
 			timePassed += Time.deltaTime;
 			yield return 0;
 		}
-	}
+	}*/
 
 
 }
