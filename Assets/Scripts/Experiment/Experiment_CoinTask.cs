@@ -22,6 +22,8 @@ public class Experiment_CoinTask : MonoBehaviour {
 	public Logger_Threading subjectLog;
 	private string eegLogfile; //gets set based on the current subject in Awake()
 	public Logger_Threading eegLog;
+	string sessionDirectory;
+	public static string sessionStartedFileName = "sessionStarted.txt";
 	public static int sessionID;
 
 	//session controller
@@ -116,7 +118,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//TODO: move to logger_threading perhaps? *shrug*
 	void InitLogging(){
 		string subjectDirectory = ExperimentSettings_CoinTask.defaultLoggingPath + ExperimentSettings_CoinTask.currentSubject.name + "/";
-		string sessionDirectory = subjectDirectory + "session_0" + "/";
+		sessionDirectory = subjectDirectory + "session_0" + "/";
 		
 		sessionID = 0;
 		string sessionIDString = "_0";
@@ -124,7 +126,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 		if(!Directory.Exists(subjectDirectory)){
 			Directory.CreateDirectory(subjectDirectory);
 		}
-		while (Directory.Exists(sessionDirectory)) {
+		while (File.Exists(sessionDirectory + sessionStartedFileName)){//Directory.Exists(sessionDirectory)) {
 			sessionID++;
 
 			sessionIDString = "_" + sessionID.ToString();
@@ -136,6 +138,13 @@ public class Experiment_CoinTask : MonoBehaviour {
 		
 		subjectLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "Log" + ".txt";
 		eegLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "EEGLog" + ".txt";
+	}
+
+	//In order to increment the session, this file must be present. Otherwise, the session has not actually started.
+	//This accounts for when we don't successfully connect to hardware -- wouldn't want new session folders.
+	//Gets created in TrialController after any hardware has connected and the instruction video has finished playing.
+	public void CreateSessionStartedFile(){
+		StreamWriter newSR = new StreamWriter (sessionDirectory + sessionStartedFileName);
 	}
 
 	// Use this for initialization

@@ -204,6 +204,9 @@ public class TrialController : MonoBehaviour {
 	#endif
 #endif
 
+			//CREATE SESSION STARTED FILE!
+			exp.CreateSessionStartedFile();
+
 			//show instructions for exploring, wait for the action button
 			trialLogger.LogInstructionEvent();
 			yield return StartCoroutine(exp.uiController.pirateController.PlayWelcomingPirate());
