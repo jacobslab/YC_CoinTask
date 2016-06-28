@@ -134,7 +134,17 @@ public class Experiment_CoinTask : MonoBehaviour {
 			sessionDirectory = subjectDirectory + "session" + sessionIDString + "/";
 		}
 		
-		Directory.CreateDirectory(sessionDirectory);
+		//delete old files.
+		if(Directory.Exists(sessionDirectory)){
+			DirectoryInfo info = new DirectoryInfo(sessionDirectory);
+			FileInfo[] fileInfo = info.GetFiles();
+			for(int i = 0; i < fileInfo.Length; i++){
+				File.Delete(fileInfo[i].ToString());
+			}
+		}
+		else{ //if directory didn't exist, make it!
+			Directory.CreateDirectory(sessionDirectory);
+		}
 		
 		subjectLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "Log" + ".txt";
 		eegLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "EEGLog" + ".txt";
