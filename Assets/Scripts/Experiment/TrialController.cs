@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.IO;
 
 public class TrialController : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
@@ -29,6 +30,7 @@ public class TrialController : MonoBehaviour {
 	public CanvasGroup scoreInstructionsGroup;
 
 	Trial currentTrial;
+	public List<string> currentManualTrialObjects { get { return currentTrial.ManualSpecialObjectNames; } }
 
 	[HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
 	
@@ -71,22 +73,66 @@ public class TrialController : MonoBehaviour {
 
 		ListOfTrialBlocks = new List<List<Trial>> ();
 
-		int numTestTrials = Config_CoinTask.numTestTrials;
+		if (File.Exists(ExperimentSettings_CoinTask.manualTrialFilePath)) {
+			GenerateTrialsFromFile ();
+		} 
+		else {
+			int numTestTrials = Config_CoinTask.numTestTrials;
 
-		//int numTrialsPerBlock = (int)(Config_CoinTask.trialBlockDistribution [0] + Config_CoinTask.trialBlockDistribution [1]);
+			//int numTrialsPerBlock = (int)(Config_CoinTask.trialBlockDistribution [0] + Config_CoinTask.trialBlockDistribution [1]);
 
-		if (numTestTrials % Config_CoinTask.numTrialsPerBlock != 0) {
-			Debug.Log("CANNOT EXECUTE THIS TRIAL DISTRIBUTION");
+			if (numTestTrials % Config_CoinTask.numTrialsPerBlock != 0) {
+				Debug.Log ("CANNOT EXECUTE THIS TRIAL DISTRIBUTION");
+			}
+
+			//generate all trials, two & three object, including counter-balanced trials
+			List<Trial> ListOfTwoItemTrials = GenerateTrials (Config_CoinTask.numTwoItemTrials, 2);
+			List<Trial> ListOfThreeItemTrials = GenerateTrials (Config_CoinTask.numThreeItemTrials, 3);
+
+			//generate blocks from trials
+			int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
+			GenerateTrialBlocks (ListOfTwoItemTrials, ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
 		}
 
-		//generate all trials, two & three object, including counter-balanced trials
-		List<Trial> ListOfTwoItemTrials = GenerateTrials(Config_CoinTask.numTwoItemTrials, 2);
-		List<Trial> ListOfThreeItemTrials = GenerateTrials(Config_CoinTask.numThreeItemTrials, 3);
+	}
 
-		//generate blocks from trials
-		int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
-		GenerateTrialBlocks(ListOfTwoItemTrials, ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
+	void GenerateTrialsFromFile(){
+		StreamReader trialReader = new StreamReader (ExperimentSettings_CoinTask.manualTrialFilePath);
 
+		List<Trial> currBlock = new List<Trial>();
+		int numBlocks = 0;
+
+		string line = trialReader.ReadLine ();
+		while (line != null) {
+			string[] splitLine = line.Split (','); //CSV
+
+			if (splitLine [0] == "BLOCK") {
+				if (numBlocks != 0) { //can initialize again if this isn't the first block.
+					currBlock = new List<Trial> ();
+				}
+				ListOfTrialBlocks.Add (currBlock);
+				numBlocks++;
+			} else if (splitLine [0] == "TRIAL") {
+
+				int numSpecial = 0;
+				if (splitLine [2] == "NUMOBJS") {
+					numSpecial = int.Parse(splitLine[3]);
+				}
+
+				//make and add manual trials
+				Trial trial = new Trial(numSpecial);
+				//add specific objects to the generated trial
+				int objectNameIndex = 5;
+				for (int i = 0; i < numSpecial; i++) {
+					trial.AddToManualSpecialObjectNames (splitLine [objectNameIndex]);
+					objectNameIndex++;
+				}
+				currBlock.Add (trial);
+			}
+
+			line = trialReader.ReadLine ();
+		}
+		Debug.Log ("GENERATED TRIALS FROM FILE");
 	}
 
 	List<Trial> GenerateTrials(int numTrialsToGenerate, int numSpecial){

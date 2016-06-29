@@ -90,7 +90,7 @@ public class UIController : MonoBehaviour {
 
 		//box swap screen
 		boxSwapTitle.text = exp.currInstructions.boxSwapBonusTitle;
-		boxSwapExplanation.text = exp.currInstructions.boxExplanation;
+		boxSwapExplanation.text = exp.currInstructions.boxSwapExplanation;
 
 		//instructions
 		yesText.text = exp.currInstructions.yesAnswerText;

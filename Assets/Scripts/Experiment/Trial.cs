@@ -14,6 +14,9 @@ public class Trial {
 	public List<Vector2> DefaultObjectLocationsXZ;
 	public List<Vector2> SpecialObjectLocationsXZ;
 
+	public List<string> ManualSpecialObjectNames { get { return manualSpecialObjectNames; } }
+	List<string> manualSpecialObjectNames;
+
 	public Trial(){
 		DefaultObjectLocationsXZ = new List<Vector2> ();
 		SpecialObjectLocationsXZ = new List<Vector2> ();
@@ -23,6 +26,7 @@ public class Trial {
 
 		numSpecialObjects = numSpecial;
 
+		manualSpecialObjectNames = new List<string> (); //may or may not be filled in manually.
 
 		Debug.Log("NUM SPECIAL: " + numSpecialObjects);
 
@@ -57,6 +61,14 @@ public class Trial {
 		//init default and special locations
 		DefaultObjectLocationsXZ = exp.objectController.GenerateOrderedDefaultObjectPositions (numDefaultObjects, avatarStartPos);
 		SpecialObjectLocationsXZ = exp.objectController.GenerateSpecialObjectPositions (DefaultObjectLocationsXZ, numSpecialObjects);
+	}
+
+	public void AddToManualSpecialObjectNames(string specialObjectName){
+		manualSpecialObjectNames.Add (specialObjectName);
+	}
+
+	public void ClearSpecialObjectNames(){
+		manualSpecialObjectNames.Clear ();
 	}
 
 	//get reflected rotation

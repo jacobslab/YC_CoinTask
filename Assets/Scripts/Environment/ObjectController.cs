@@ -148,17 +148,24 @@ public class ObjectController : MonoBehaviour {
 	}
 
 	//spawn random object at a specified location
-	public GameObject SpawnSpecialObject (Vector3 spawnPosition){
-		GameObject objToSpawn = ChooseRandomObject ();
+	public GameObject SpawnSpecialObject (Vector3 spawnPos){
+		GameObject objToSpawn;
+		if (exp.trialController.currentManualTrialObjects.Count > 0) {
+			objToSpawn = ChooseSpawnableObject(exp.trialController.currentManualTrialObjects [0]);
+			exp.trialController.currentManualTrialObjects.RemoveAt (0);
+		}
+		else{
+			objToSpawn = ChooseRandomObject ();
+		}
+
 		if (objToSpawn != null) {
 
-			GameObject newObject = Instantiate(objToSpawn, spawnPosition, objToSpawn.transform.rotation) as GameObject;
+			GameObject newObject = Instantiate(objToSpawn, spawnPos, objToSpawn.transform.rotation) as GameObject;
 
 			float randomRot = GenerateRandomRotationY();
 			newObject.transform.RotateAround(newObject.transform.position, Vector3.up, randomRot);
 
 			CurrentTrialSpecialObjects.Add(newObject);
-		
 
 			//make object face the player -- MUST MAKE SURE OBJECT FACES Z-AXIS
 			//don't want object to tilt downward at the player -- use object's current y position

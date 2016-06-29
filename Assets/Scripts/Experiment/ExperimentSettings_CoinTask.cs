@@ -36,7 +36,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public Dropdown languageDropdown;
 
 
-	//TOGGLES
+	//TOGGLES & SETTINGS
 	public static bool isOculus = false;
 	public static bool isReplay = false;
 	public static bool isLogging = true; //if not in replay mode, should log things! or can be toggled off in main menu.
@@ -60,6 +60,13 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	string MRIPracticeFolder = "MRIPractice/";
 	public Text defaultLoggingPathDisplay;
 	public InputField loggingPathInputField;
+	public Text manualTrialFilePathDisplay;
+
+	//IF YOU WANT MANUAL TRIAL FILE
+	public static string manualTrialFilePath; //if you want to define trials & objects manually
+	public InputField manualTrialPathInputField;
+
+
 
 	//SINGLETON
 	private static ExperimentSettings_CoinTask _instance;
@@ -206,6 +213,16 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		}
 
 		defaultLoggingPathDisplay.text = defaultLoggingPath;
+	}
+
+	public void ChangeManualTrialFilePath(){
+		if (File.Exists (manualTrialPathInputField.text)) {
+			manualTrialFilePath = manualTrialPathInputField.text;
+		} else {
+			manualTrialFilePath = "None";
+		}
+
+		manualTrialFilePathDisplay.text = manualTrialFilePath;
 	}
 
 	public void SetReplayTrue(){
