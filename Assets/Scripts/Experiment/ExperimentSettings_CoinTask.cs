@@ -218,7 +218,8 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public void ChangeManualTrialFilePath(){
 		if (File.Exists (manualTrialPathInputField.text)) {
 			manualTrialFilePath = manualTrialPathInputField.text;
-		} else {
+		}
+		else if (manualTrialPathInputField.text == "") {
 			manualTrialFilePath = "None";
 		}
 
