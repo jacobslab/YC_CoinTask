@@ -67,7 +67,7 @@ public class InstructionsController : MonoBehaviour {
 
 	//box swap
 	public string boxSwapBonusTitle = "Box Swap Bonus!";
-	public string boxExplanation = "when the boxes stop moving, \npress (X) to select a box";
+	public string boxSwapExplanation = "when the boxes stop moving, \npress (X) to select a box";
 
 	//recall
 	public string doYouRememberText = "Do you remember where to find the...";
