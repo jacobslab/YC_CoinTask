@@ -13,6 +13,7 @@ public class UIController : MonoBehaviour {
 	public ScoreRecapUI scoreRecapUI;
 	public CanvasGroup PauseUI;
 	public CanvasGroup ConnectionUI;
+	public Text ConnectionText; //changed in TrialController from "connecting..." to "press start..." etc.
 	public GoText goText;
 
 	public Transform InSceneUIParent;
