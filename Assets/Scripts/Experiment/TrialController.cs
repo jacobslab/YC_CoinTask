@@ -475,6 +475,8 @@ public class TrialController : MonoBehaviour {
 	}
 	#endif
 
+	//GETS CALLED IN WAITFORTREASUREPAUSE() -- this is when treasure is paused in its open state.
+	//...one the pause for encoding ends, we increment.
 	public void IncrementNumDefaultObjectsCollected(){
 		numDefaultObjectsCollected++;
 		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
@@ -905,6 +907,7 @@ public class TrialController : MonoBehaviour {
 		trialLogger.LogPlayerChestRotation (false);
 	}
 
+	//GETS CALLED FROM DEFAULTITEM.CS WHEN CHEST OPENS ON COLLISION WITH PLAYER.
 	public IEnumerator WaitForTreasurePause( GameObject specialObject){
 
 		//lock the avatar controls
