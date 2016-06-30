@@ -159,13 +159,13 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 				BuildType.text = "Sync Box";
 			} else if (Config_CoinTask.isSystem2) {
 				BuildType.text = "System 2";
+			} else {
+				BuildType.text = "Demo";
 			}
 			#if UNITY_WEBPLAYER
 				BuildType.text = "WebDemo";
 			#elif MRIVERSION
 				BuildType.text = "MRI";
-			#else
-				BuildType.text = "Demo";
 			#endif
 			if(Config_CoinTask.isPractice){
 				BuildType.text += " Practice";
