@@ -47,27 +47,54 @@ public class VideoPlayer : MonoBehaviour {
 			//Debug.Log("No movie attached! Can't update.");
 		//}
 	}
-	
+
+	bool shouldPlay = false;
 	public IEnumerator Play(){
 		if (movie != null) {
-			group.alpha = 1.0f;
+
+			yield return StartCoroutine (AskIfShouldPlay());
+
+			if (shouldPlay) {
+				group.alpha = 1.0f;
 			
-			movie.Stop ();
-			movieAudio.Play ();
-			movie.Play ();
+				movie.Stop ();
+				movieAudio.Play ();
+				movie.Play ();
 			
-			while (movie.isPlaying || isMoviePaused) {
-				yield return 0;
+				while (movie.isPlaying || isMoviePaused) {
+					yield return 0;
+				}
+			
+				isMoviePaused = false;
+			
+				group.alpha = 0.0f;
 			}
-			
-			isMoviePaused = false;
-			
-			group.alpha = 0.0f;
 			yield return 0;
 		} 
 		else {
 			Debug.Log("No movie attached! Can't play.");
 		}
+	}
+
+	IEnumerator AskIfShouldPlay(){
+		exp.currInstructions.SetInstructionsColorful ();
+		exp.currInstructions.DisplayText ("Play instruction video? (y/n)");
+
+		bool isValidInput = false;
+		while (!isValidInput) {
+			if (Input.GetKeyUp (KeyCode.Y)) {
+				isValidInput = true;
+				shouldPlay = true;
+			}
+			else if (Input.GetKeyUp (KeyCode.N)) {
+				isValidInput = true;
+				shouldPlay = false;
+			}
+			yield return 0;
+		}
+
+		exp.currInstructions.SetInstructionsBlank ();
+		exp.currInstructions.SetInstructionsTransparentOverlay ();
 	}
 	
 	void Pause(){
