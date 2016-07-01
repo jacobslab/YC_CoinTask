@@ -29,8 +29,7 @@ public class TrialController : MonoBehaviour {
 	int memoryScore = 0;
 	public CanvasGroup scoreInstructionsGroup;
 
-	Trial currentTrial;
-	public List<string> currentManualTrialObjects { get { return currentTrial.ManualSpecialObjectNames; } }
+	public Trial currentTrial;
 
 	[HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
 	
@@ -614,7 +613,7 @@ public class TrialController : MonoBehaviour {
 			int randomOrderIndex = randomSpecialObjectOrder[i];
 			GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
 			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
-			string specialItemName = specialSpawnable.GetName();
+			string specialItemDisplayName = specialSpawnable.GetDisplayName ();
 
 			//set TCP state true
 			switch(randomOrderIndex){
@@ -640,7 +639,7 @@ public class TrialController : MonoBehaviour {
 			specialObjUICopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI");
 
 			trialLogger.LogInstructionEvent();
-			yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy, specialSpawnable.GetName()) );
+			yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy, specialItemDisplayName) );
 
 #if MRIVERSION
 			Config_CoinTask.MemoryState rememberResponse;
@@ -687,7 +686,21 @@ public class TrialController : MonoBehaviour {
 			exp.uiController.doYouRememberUI.Stop();
 
 			//show single selection instruction and wait for selection button press
-			string selectObjectText = exp.currInstructions.selectTheLocationText + " " + specialItemName + " (X).";
+			string selectObjectText = exp.currInstructions.selectTheLocationText;
+			if (ExperimentSettings_CoinTask.myLanguage == ExperimentSettings_CoinTask.LanguageSetting.Spanish) {
+				//check for masculine article
+				string[] splitName = specialItemDisplayName.Split(' ');
+				if (splitName [0] == "el") {
+					string displayNameNoEl = specialItemDisplayName.Remove (0, 3);
+					selectObjectText = selectObjectText + "l" + " " + displayNameNoEl + " (X)."; //add the 'l' to "de" to make "del"
+				}
+				else {
+					selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
+				}
+			} 
+			else { //english
+				selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
+			}
 
 #if MRIVERSION
 			exp.currInstructions.SetInstructionsTransparentOverlay();

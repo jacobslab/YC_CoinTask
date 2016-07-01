@@ -57,9 +57,9 @@ public class InstructionsController : MonoBehaviour {
 		"\n\nOtherwise, you should select [NO]." +
 		"\n\nPress (X) to begin!";
 
-	public string yesExplanationInstruction = "[YES] win 200 points / lose 200 points";
-	public string maybeExplanationInstruction = "[MAYBE] win 100 points / lose 50 points";
-	public string noExplanationInstruction = "[NO] win 50 points / lose 0 points";
+	public string yesExplanationInstruction = "win 200 points / lose 200 points";
+	public string maybeExplanationInstruction = "win 100 points / lose 50 points";
+	public string noExplanationInstruction = "win 50 points / lose 0 points";
 
 	//go & hurry up
 	public string GoText = "GO!";

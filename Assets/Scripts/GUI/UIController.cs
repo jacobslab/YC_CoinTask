@@ -94,22 +94,22 @@ public class UIController : MonoBehaviour {
 		boxSwapExplanation.text = exp.currInstructions.boxSwapExplanation;
 
 		//instructions
-		yesText.text = exp.currInstructions.yesAnswerText;
-		maybeText.text = exp.currInstructions.maybeAnswerText;
-		noText.text = exp.currInstructions.noAnswerText;
+		yesText.text = "[" + exp.currInstructions.yesAnswerText + "]";
+		maybeText.text = "[" + exp.currInstructions.maybeAnswerText + "]";
+		noText.text = "[" + exp.currInstructions.noAnswerText + "]";
 
-		yesExplanationInstruction.text = exp.currInstructions.yesExplanationInstruction;
-		maybeExplanationInstruction.text = exp.currInstructions.maybeExplanationInstruction;
-		noExplanationInstruction.text = exp.currInstructions.noExplanationInstruction;
+		yesExplanationInstruction.text = splitUpLongText (exp.currInstructions.yesExplanationInstruction, 25, '/');
+		maybeExplanationInstruction.text = splitUpLongText (exp.currInstructions.maybeExplanationInstruction, 25, '/');
+		noExplanationInstruction.text = splitUpLongText (exp.currInstructions.noExplanationInstruction, 25, '/');
 
 		//answer selector
 		yesAnswerText.text = exp.currInstructions.yesAnswerText;
 		maybeAnswerText.text = exp.currInstructions.maybeAnswerText;
 		noAnswerText.text = exp.currInstructions.noAnswerText;
 
-		yesExplanationText.text = exp.currInstructions.yesPointsText;
-		maybeExplanationText.text = exp.currInstructions.maybePointsText;
-		noExplanationText.text = exp.currInstructions.noPointsText;
+		yesExplanationText.text = splitUpLongText (exp.currInstructions.yesPointsText, 25, '/');
+		maybeExplanationText.text = splitUpLongText (exp.currInstructions.maybePointsText, 25, '/');
+		noExplanationText.text = splitUpLongText (exp.currInstructions.noPointsText, 25, '/');
 
 		//do you remember
 		doYouRememberText.text = exp.currInstructions.doYouRememberText;
@@ -130,6 +130,24 @@ public class UIController : MonoBehaviour {
 		blockTitle4.text = exp.currInstructions.blockUpper + " 4 " + exp.currInstructions.score + ":";
 		blockTitle5.text = exp.currInstructions.blockUpper + " 5 " + exp.currInstructions.score + ":";
 		blockScreenPressToContinue.text = exp.currInstructions.pressToContinue;
+	}
+
+	string splitUpLongText(string inputString, int maxLength, char splitChar){
+		string output = "";
+		if (inputString.Length > maxLength) {
+			string[] splitString = inputString.Split (splitChar);
+			for (int i = 0; i < splitString.Length; i++) {
+				if (i != 0) {
+					output += splitChar;
+					output += "\n";
+				}
+				output += splitString [i];
+			}
+		} else {
+			return inputString;
+		}
+
+		return output;
 	}
 
 }

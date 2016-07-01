@@ -150,9 +150,13 @@ public class ObjectController : MonoBehaviour {
 	//spawn random object at a specified location
 	public GameObject SpawnSpecialObject (Vector3 spawnPos){
 		GameObject objToSpawn;
-		if (exp.trialController.currentManualTrialObjects.Count > 0) {
-			objToSpawn = ChooseSpawnableObject(exp.trialController.currentManualTrialObjects [0]);
-			exp.trialController.currentManualTrialObjects.RemoveAt (0);
+		if (exp.trialController.currentTrial.ManualSpecialObjectNames != null) {
+			if (exp.trialController.currentTrial.ManualSpecialObjectNames.Count > 0) {
+				objToSpawn = ChooseSpawnableObject (exp.trialController.currentTrial.ManualSpecialObjectNames [0]);
+				exp.trialController.currentTrial.ManualSpecialObjectNames.RemoveAt (0);
+			} else {
+				objToSpawn = ChooseRandomObject ();
+			}
 		}
 		else{
 			objToSpawn = ChooseRandomObject ();
