@@ -67,7 +67,7 @@ public class InstructionsController : MonoBehaviour {
 
 	//box swap
 	public string boxSwapBonusTitle = "Box Swap Bonus!";
-	public string boxSwapExplanation = "when the boxes stop moving, \npress (X) to select a box";
+	public string boxSwapExplanation = "when the boxes stop moving,\npress (X) to select a box";
 
 	//recall
 	public string doYouRememberText = "Do you remember where to find the...";
@@ -96,9 +96,13 @@ public class InstructionsController : MonoBehaviour {
 
 	//block screen
 	public string blockCompletedText = "You completed a block!";
-	//Block 1 Score:
-	public string blockUpper = "Block";
-	public string score = "Score";
+	//Block 1 Score:    //I would have separated "block" and "score", but spanish grammar is different!
+	public string block1Text = "Block 1 Score:";
+	public string block2Text = "Block 2 Score:";
+	public string block3Text = "Block 3 Score:";
+	public string block4Text = "Block 4 Score:";
+	public string block5Text = "Block 5 Score:";
+
 	//for block 1/40 completed
 	public string blockLower = "block";
 

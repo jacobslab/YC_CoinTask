@@ -18,10 +18,12 @@ public class QuestionUI : MonoBehaviour {
 	GameObject selectedObject = null;
 
 	float objectScaleMult = 5.0f; //what the appropriate object scale is when in this UI
+	int origObjNameSize;
 
 	// Use this for initialization
 	void Start () {
 		Enable (false);
+		origObjNameSize = ObjectNameTextMesh.fontSize;
 	}
 
 	//no object
@@ -55,7 +57,7 @@ public class QuestionUI : MonoBehaviour {
 		selectedObjectSpawnable.SetShadowCasting (false); //turn off shadows, they look weird in this case.
 		selectedObjectSpawnable.Scale (objectScaleMult);
 
-		ObjectNameTextMesh.text = objectName;
+		SetObjectNameText(objectName);
 
 		UsefulFunctions.FaceObject (objectToSelect, exp.player.gameObject, false); //make UI copy face the player
 
@@ -68,6 +70,28 @@ public class QuestionUI : MonoBehaviour {
 	void PlayObjectJuice(){
 		JuiceController.PlayParticles (ObjectParticles);
 		AudioController.PlayAudio (ObjectSound);
+	}
+
+	void SetObjectNameText(string name){
+		ObjectNameTextMesh.text = name;
+		int nameLength = name.Length;
+		int maxLengthBeforeResize = 13;//15 = max num chars counted in editor... a rough length estimate.
+		int fontSizeDecreasePerChar = 50;
+		int minFontSize = 230;
+		if(nameLength > maxLengthBeforeResize){
+			int numOver = nameLength - maxLengthBeforeResize;
+			ObjectNameTextMesh.fontSize -= fontSizeDecreasePerChar*numOver;
+			if(ObjectNameTextMesh.fontSize < minFontSize){
+				ObjectNameTextMesh.fontSize = minFontSize;
+			}
+		}
+		else{
+			ResetObjectTextSize();
+		}
+	}
+
+	void ResetObjectTextSize(){
+		ObjectNameTextMesh.fontSize = origObjNameSize;
 	}
 
 	public void Stop(){

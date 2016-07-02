@@ -98,18 +98,19 @@ public class UIController : MonoBehaviour {
 		maybeText.text = "[" + exp.currInstructions.maybeAnswerText + "]";
 		noText.text = "[" + exp.currInstructions.noAnswerText + "]";
 
-		yesExplanationInstruction.text = splitUpLongText (exp.currInstructions.yesExplanationInstruction, 25, '/');
-		maybeExplanationInstruction.text = splitUpLongText (exp.currInstructions.maybeExplanationInstruction, 25, '/');
-		noExplanationInstruction.text = splitUpLongText (exp.currInstructions.noExplanationInstruction, 25, '/');
-
 		//answer selector
 		yesAnswerText.text = exp.currInstructions.yesAnswerText;
 		maybeAnswerText.text = exp.currInstructions.maybeAnswerText;
 		noAnswerText.text = exp.currInstructions.noAnswerText;
+		if(ExperimentSettings_CoinTask.myLanguage == ExperimentSettings_CoinTask.LanguageSetting.Spanish){
+			yesAnswerText.fontSize = 250;
+			maybeAnswerText.fontSize = 250;
+			noAnswerText.fontSize = 250;
+		}
 
-		yesExplanationText.text = splitUpLongText (exp.currInstructions.yesPointsText, 25, '/');
-		maybeExplanationText.text = splitUpLongText (exp.currInstructions.maybePointsText, 25, '/');
-		noExplanationText.text = splitUpLongText (exp.currInstructions.noPointsText, 25, '/');
+		yesExplanationText.text = splitUpLongText (exp.currInstructions.yesPointsText, 28, '/');
+		maybeExplanationText.text = splitUpLongText (exp.currInstructions.maybePointsText, 28, '/');
+		noExplanationText.text = splitUpLongText (exp.currInstructions.noPointsText, 28, '/');
 
 		//do you remember
 		doYouRememberText.text = exp.currInstructions.doYouRememberText;
@@ -124,11 +125,11 @@ public class UIController : MonoBehaviour {
 
 		//block screen
 		blockCompleteText.text = exp.currInstructions.blockCompletedText;
-		blockTitle1.text = exp.currInstructions.blockUpper + " 1 " + exp.currInstructions.score + ":";
-		blockTitle2.text = exp.currInstructions.blockUpper + " 2 " + exp.currInstructions.score + ":";
-		blockTitle3.text = exp.currInstructions.blockUpper + " 3 " + exp.currInstructions.score + ":";
-		blockTitle4.text = exp.currInstructions.blockUpper + " 4 " + exp.currInstructions.score + ":";
-		blockTitle5.text = exp.currInstructions.blockUpper + " 5 " + exp.currInstructions.score + ":";
+		blockTitle1.text = exp.currInstructions.block1Text;
+		blockTitle2.text = exp.currInstructions.block2Text;
+		blockTitle3.text = exp.currInstructions.block3Text;
+		blockTitle4.text = exp.currInstructions.block4Text;
+		blockTitle5.text = exp.currInstructions.block5Text;
 		blockScreenPressToContinue.text = exp.currInstructions.pressToContinue;
 	}
 
