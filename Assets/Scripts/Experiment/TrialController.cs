@@ -63,19 +63,27 @@ public class TrialController : MonoBehaviour {
 			practiceTrials.Add(practiceTrial);
 		}
 		#else
-		Trial  practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract);	//2 special objects for practice trial
+		Trial  practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract, false);	//2 special objects for practice trial
 		practiceTrials.Add(practiceTrial);
 		#endif
 	}
 
 	void InitTrials(){
 
+		if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH3) {
+			InitTH3Trials ();
+		} else {
+			InitStandardTrials ();
+		}
+
+	}
+
+	void InitStandardTrials(){
 		ListOfTrialBlocks = new List<List<Trial>> ();
 
-		if (File.Exists(ExperimentSettings_CoinTask.manualTrialFilePath)) {
+		if (File.Exists (ExperimentSettings_CoinTask.manualTrialFilePath)) {
 			GenerateTrialsFromFile ();
-		} 
-		else {
+		} else {
 			int numTestTrials = Config_CoinTask.numTestTrials;
 
 			//int numTrialsPerBlock = (int)(Config_CoinTask.trialBlockDistribution [0] + Config_CoinTask.trialBlockDistribution [1]);
@@ -85,16 +93,60 @@ public class TrialController : MonoBehaviour {
 			}
 
 			//generate all trials, two & three object, including counter-balanced trials
-			List<Trial> ListOfTwoItemTrials = GenerateTrials (Config_CoinTask.numTwoItemTrials, 2);
-			List<Trial> ListOfThreeItemTrials = GenerateTrials (Config_CoinTask.numThreeItemTrials, 3);
+			List<Trial> ListOfTwoItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numTwoItemTrials, 2, false, false);
+			List<Trial> ListOfThreeItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numThreeItemTrials, 3, false, false);
 
 			//generate blocks from trials
 			int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
 			GenerateTrialBlocks (ListOfTwoItemTrials, ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
 		}
-
 	}
 
+	void InitTH3Trials(){
+		ListOfTrialBlocks = new List<List<Trial>> ();
+
+		List<Trial> currBlock = new List<Trial> ();
+		//generate first block of completely unique, no-stim trials (no counter-trials)
+			//half should be two-item trials, half should be three-item trials
+		for (int i = 0; i < Config_CoinTask.numTrialsPerBlock / 2; i++) {
+			Trial t2 = new Trial (2, false);
+			Trial t3 = new Trial (3, false);
+
+			currBlock.Add (t2);
+			currBlock.Add (t3);
+		}
+
+		//Now generate the rest of the trials: the original, non-stim trials, and the counter, stim trials.
+		List<Trial> twoItemOrigTrials = new List<Trial> ();
+		List<Trial> threeItemOrigTrials = new List<Trial> ();
+		List<Trial> twoItemCounterTrials = new List<Trial> ();
+		List<Trial> threeItemCounterTrials = new List<Trial> ();
+
+		int blocksLeft = (Config_CoinTask.numTestTrials / Config_CoinTask.numTrialsPerBlock) - 1; //as of 7/5/2016, should be 4 trials left
+		int numOrigTrials = Config_CoinTask.numTrialsPerBlock * blocksLeft;
+		for(int i = 0; i < numOrigTrials / 2; i++){
+			Trial t2 = new Trial (2, false);
+			Trial t3 = new Trial (3, false);
+
+			twoItemOrigTrials.Add (t2);
+			threeItemOrigTrials.Add (t3);
+
+			Trial t2Counter = t2.GetCounterSelf (true);
+			Trial t3Counter = t3.GetCounterSelf (true);
+			twoItemCounterTrials.Add (t2Counter);
+			threeItemCounterTrials.Add (t3Counter);
+		}
+
+		//now split up the trials into two shuffled lists of 16 -- 8 non-stim trials (4 2-item, 4 3-item) and 8 stim trials (4 2-item, 4 3-item) each.
+		//TODO
+
+		//now split each 16-trial list into two lists of 8 (each with 4 2-item trials and 4 3-item trials)
+		//TODO
+
+		//TODO: next, set a stim vs. no-stim state on each trial and log if each trial is stim or not.
+	}
+
+	//ALWAYS NON-STIM. COULD CHANGE THINGS.
 	void GenerateTrialsFromFile(){
 		StreamReader trialReader = new StreamReader (ExperimentSettings_CoinTask.manualTrialFilePath);
 
@@ -119,7 +171,7 @@ public class TrialController : MonoBehaviour {
 				}
 
 				//make and add manual trials
-				Trial trial = new Trial(numSpecial);
+				Trial trial = new Trial(numSpecial, false); //non-stim.
 				//add specific objects to the generated trial
 				int objectNameIndex = 5;
 				for (int i = 0; i < numSpecial; i++) {
@@ -134,11 +186,11 @@ public class TrialController : MonoBehaviour {
 		Debug.Log ("GENERATED TRIALS FROM FILE");
 	}
 
-	List<Trial> GenerateTrials(int numTrialsToGenerate, int numSpecial){
+	List<Trial> GenerateTrialsWithCounterTrials(int numTrialsToGenerate, int numSpecial, bool shouldStim, bool shouldStimCounter){
 		List<Trial> trialList = new List<Trial>();
 		for(int i = 0; i < numTrialsToGenerate / 2; i++){ //we're adding trial and a counter trial
-			Trial trial = new Trial(numSpecial);
-			Trial counterTrial = trial.GetCounterSelf();
+			Trial trial = new Trial(numSpecial, shouldStim);
+			Trial counterTrial = trial.GetCounterSelf(shouldStimCounter);
 			
 			trialList.Add(trial);
 			trialList.Add(counterTrial);

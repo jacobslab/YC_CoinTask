@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public class Trial {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
+	public bool isStim;
+
 	public Vector3 avatarStartPos;
 	public Quaternion avatarStartRot;
 	public Vector3 avatarTowerPos;
@@ -22,7 +24,7 @@ public class Trial {
 		SpecialObjectLocationsXZ = new List<Vector2> ();
 	}
 
-	public Trial(int numSpecial){
+	public Trial(int numSpecial, bool shouldStim){
 
 		numSpecialObjects = numSpecial;
 
@@ -94,8 +96,10 @@ public class Trial {
 		return reflectedPos;
 	}
 	
-	public Trial GetCounterSelf(){
+	public Trial GetCounterSelf(bool shouldStim){
 		Trial counterTrial = new Trial ();
+
+		counterTrial.isStim = shouldStim;
 
 		counterTrial.numSpecialObjects = numSpecialObjects;
 
