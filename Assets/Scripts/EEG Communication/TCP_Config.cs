@@ -80,13 +80,14 @@ public class TCP_Config : MonoBehaviour {
 	//fill in how you see fit!
 	public enum DefineStates
 	{
+		NAVIGATION,
+		STIM_NAVIGATION,
 		TREASURE_OPEN_SPECIAL,
 		TREASURE_OPEN_EMPTY,
 		TREASURE_1,
 		TREASURE_2,
 		TREASURE_3,
 		TREASURE_4,
-		NAVIGATION,
 		RECALLCUE_1,
 		RECALLCUE_2,
 		RECALLCUE_3,

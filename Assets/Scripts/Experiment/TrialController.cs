@@ -116,6 +116,8 @@ public class TrialController : MonoBehaviour {
 			currBlock.Add (t3);
 		}
 
+		ListOfTrialBlocks.Add (currBlock);
+
 		//Now generate the rest of the trials: the original, non-stim trials, and the counter, stim trials.
 		List<Trial> twoItemOrigTrials = new List<Trial> ();
 		List<Trial> threeItemOrigTrials = new List<Trial> ();
@@ -136,14 +138,94 @@ public class TrialController : MonoBehaviour {
 			twoItemCounterTrials.Add (t2Counter);
 			threeItemCounterTrials.Add (t3Counter);
 		}
+			
+		//now split up the trials into two (shuffled) lists of 16 -- 8 non-stim trials (4 2-item, 4 3-item) and 8 stim trials (4 2-item, 4 3-item) each.
+		List<Trial> listOf16A = GetListOf16Trials(twoItemOrigTrials, threeItemOrigTrials, twoItemCounterTrials, threeItemCounterTrials);
+		List<Trial> listOf16B = GetListOf16Trials(twoItemOrigTrials, threeItemOrigTrials, twoItemCounterTrials, threeItemCounterTrials);
 
-		//now split up the trials into two shuffled lists of 16 -- 8 non-stim trials (4 2-item, 4 3-item) and 8 stim trials (4 2-item, 4 3-item) each.
+		//add blocks 2,3,4,5
+		AddBlocksFromListOf16 (listOf16A);
+		AddBlocksFromListOf16 (listOf16B);
+	
+	}
+
+	void AddBlocksFromListOf16(List<Trial> listOf16){
+
+		//ORDER OF TRIAL TYPES IN THE 16 LIST: 4 2-item non-stim, 4 2-item stim, 4 3-item non-stim, 4 3-item stim
+
+		List<Trial> currBlock;
+
+		//HARD CODED.
+		int numTwoItemTrialsLeft = 8; //includes stim & non-stim
+		int numThreeItemTrialsLeft = 8; //includes stim & non-stim
+
+		if (listOf16.Count == 16) {
+			//now split each 16-trial list into two random lists of 8 (each with 4 2-item trials and 4 3-item trials)
+			//16A --> block 2, block 3
+			currBlock = new List<Trial>();
+			for (int i = 0; i < 4; i++) {
+				//pick any 4 2-item trials per block
+				int randIndex = Random.Range (0, numTwoItemTrialsLeft);
+				currBlock.Add (listOf16 [randIndex]);
+				listOf16.RemoveAt (randIndex);
+				numTwoItemTrialsLeft--;
+			}
+			for (int i = 0; i < 4; i++) { //num 3 item trials should be 4
+				//pick any 4 3-item trials
+				int randIndex = Random.Range(4, 4 + numThreeItemTrialsLeft); //start at 4 because there should still be 4 2-item trials left.
+				currBlock.Add (listOf16 [randIndex]);
+				listOf16.RemoveAt (randIndex);
+				numThreeItemTrialsLeft--;
+			}
+
+			ListOfTrialBlocks.Add (currBlock);
+
+			//make second block from this list of 16 -- add the remaining trials to the new block
+			currBlock = new List<Trial>();
+			for (int i = 0; i < listOf16.Count; i++) {
+				currBlock.Add (listOf16 [i]);
+			}
+			ListOfTrialBlocks.Add (currBlock);
+		}
+		else {
+			Debug.Log ("Error: Not exactly 16 trials!");
+		}
+	}
+
+	//makes a list of 16 -- 8 non-stim trials (4 2-item, 4 3-item) and 8 stim trials (4 2-item, 4 3-item) each.
+	List<Trial> GetListOf16Trials(List<Trial> twoItemNonStimList, List<Trial> threeItemNonStimList, List<Trial> twoItemStimList, List<Trial> threeItemStimList){
 		//TODO
+		List<Trial> listOf16 = new List<Trial>();
 
-		//now split each 16-trial list into two lists of 8 (each with 4 2-item trials and 4 3-item trials)
-		//TODO
+		//add 2-item non stim trials
+		for (int i = 0; i < 4; i++) {
+			int randIndex = Random.Range(0,twoItemNonStimList.Count);
+			listOf16.Add (twoItemNonStimList [randIndex]);
+			twoItemNonStimList.RemoveAt(randIndex);
+		}
 
-		//TODO: next, set a stim vs. no-stim state on each trial and log if each trial is stim or not.
+		//add 2-item stim trials
+		for (int i = 0; i < 4; i++) {
+			int randIndex = Random.Range(0,twoItemStimList.Count);
+			listOf16.Add (twoItemStimList [randIndex]);
+			twoItemStimList.RemoveAt(randIndex);
+		}
+
+		//add 3-item non stim trials
+		for (int i = 0; i < 4; i++) {
+			int randIndex = Random.Range(0,threeItemNonStimList.Count);
+			listOf16.Add (threeItemNonStimList [randIndex]);
+			threeItemNonStimList.RemoveAt(randIndex);
+		}
+
+		//add 3-item stim trials
+		for (int i = 0; i < 4; i++) {
+			int randIndex = Random.Range(0,threeItemStimList.Count);
+			listOf16.Add (threeItemStimList [randIndex]);
+			threeItemStimList.RemoveAt(randIndex);
+		}
+
+		return listOf16;
 	}
 
 	//ALWAYS NON-STIM. COULD CHANGE THINGS.
@@ -555,11 +637,11 @@ public class TrialController : MonoBehaviour {
 		currentTrial = trial;
 
 		if (isPracticeTrial) {
-			trialLogger.Log (-1, currentTrial.DefaultObjectLocationsXZ.Count, currentTrial.SpecialObjectLocationsXZ.Count, ExperimentSettings_CoinTask.isOneByOneReveal);
+			trialLogger.Log (-1, currentTrial.DefaultObjectLocationsXZ.Count, currentTrial.SpecialObjectLocationsXZ.Count, ExperimentSettings_CoinTask.isOneByOneReveal, false);
 			Debug.Log("Logged practice trial.");
 		} 
 		else {
-			trialLogger.Log (numRealTrials, currentTrial.DefaultObjectLocationsXZ.Count, currentTrial.SpecialObjectLocationsXZ.Count, ExperimentSettings_CoinTask.isOneByOneReveal);
+			trialLogger.Log (numRealTrials, currentTrial.DefaultObjectLocationsXZ.Count, currentTrial.SpecialObjectLocationsXZ.Count, ExperimentSettings_CoinTask.isOneByOneReveal, currentTrial.isStim);
 			numRealTrials++;
 			TCPServer.Instance.SendTrialNum(numRealTrials);
 			Debug.Log("Logged trial #: " + numRealTrials);
@@ -597,7 +679,12 @@ public class TrialController : MonoBehaviour {
 
 		//START NAVIGATION --> TODO: make this its own function. or a delegate. ...clean it up.
 		trialLogger.LogTrialNavigation (true);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, true);
+		if (currentTrial.isStim) {
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.STIM_NAVIGATION, true);
+		} 
+		else {
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, true);
+		}
 
 		exp.uiController.goText.Play ();
 
@@ -634,7 +721,12 @@ public class TrialController : MonoBehaviour {
 		//bring player to tower
 		//exp.player.TurnOnVisuals (false);
 		trialLogger.LogTrialNavigation (false);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, false);
+		if (currentTrial.isStim) {
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.STIM_NAVIGATION, false);
+		} 
+		else {
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, false);
+		}
 		trialLogger.LogTransportationToTowerEvent (true);
 		currentDefaultObject = null; //set to null so that arrows stop showing up...
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, false));//PlayerControls.toTowerTime) );

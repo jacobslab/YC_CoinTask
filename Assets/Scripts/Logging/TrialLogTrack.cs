@@ -16,9 +16,9 @@ public class TrialLogTrack : LogTrack {
 	}
 
 	//gets called from trial controller instead of in update!
-	public void Log(int trialNumber, int numTreasureChests, int numSpecialObjects, bool isSequential){
+	public void Log(int trialNumber, int numTreasureChests, int numSpecialObjects, bool isSequential, bool isStim){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			LogTrial (trialNumber, numTreasureChests, numSpecialObjects, isSequential);
+			LogTrial (trialNumber, numTreasureChests, numSpecialObjects, isSequential, isStim);
 		}
 	}
 
@@ -33,10 +33,10 @@ public class TrialLogTrack : LogTrack {
 	}
 
 	//LOGGED ON THE START OF THE TRIAL.
-	void LogTrial(int trialNumber, int numTreasureChests, int numSpecialObjects, bool isSequential){
+	void LogTrial(int trialNumber, int numTreasureChests, int numSpecialObjects, bool isSequential, bool isStim){
 		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "Trial Info" + separator + "NUM_TRIALS" + separator + trialNumber + separator
 		                + "NUM_TREASURE" + separator + numTreasureChests + separator + "NUM_SPECIAL_OBJECTS" + separator + numSpecialObjects + separator 
-		                + "IS_SEQUENTIAL" + separator + isSequential);
+							+ "IS_SEQUENTIAL" + separator + isSequential + separator + "IS_STIM" + separator + isStim);
 	}
 
 
