@@ -45,7 +45,7 @@ public class TextMeshLogTrack : LogTrack {
 			textToLog = " "; //log a space -- makes it easier to read it during replay!
 		}
 		else {
-			textToLog = textToLog.Replace (System.Environment.NewLine, "_NEWLINE_");
+			textToLog = Regex.Replace( textToLog, "\r?\n", "_NEWLINE_"); //will replace line breaks on mac or windows with _NEWLINE_ for easier log file parsing.
 		}
 
 		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "TEXT_MESH" + separator + textToLog );
