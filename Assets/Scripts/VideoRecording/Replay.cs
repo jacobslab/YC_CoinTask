@@ -39,10 +39,11 @@ public class Replay : MonoBehaviour {
 	//PARSING VARIABLES
 	public InputField minTimeStampInput;
 	public InputField maxTimeStampInput;
-	static bool hasSetSpecificTimeStamps = false;
+	//gets set in SetMinMaxTimeStamps
+	static bool hasSetSpecificTimeStamps = false; //If false, will record all frames. If true, will only record between min and max time stamps.
 	
-	static long minTimeStamp = 0;//1452876489932;//0;//
-	static long maxTimeStamp = 0;//1452877069298;
+	static long minTimeStamp = 0;//gets set based on the input field
+	static long maxTimeStamp = 0;//gets set based on the input field
 	long currentFrame = 0;
 	long currentTimeStamp = 0;
 	long lastTimeStamp = 0;
