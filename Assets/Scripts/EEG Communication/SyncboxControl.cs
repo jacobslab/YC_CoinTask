@@ -99,6 +99,8 @@ public class SyncboxControl : MonoBehaviour {
 		}
 	}
 
+
+	//WE'RE USING THIS FUNCTION
 	IEnumerator RunSyncPulseManual(){
 		float jitterMin = 0.1f;
 		float jitterMax = syncPulseInterval - syncPulseDuration;

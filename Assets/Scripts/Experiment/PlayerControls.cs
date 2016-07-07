@@ -57,7 +57,7 @@ public class PlayerControls : MonoBehaviour{
 	}
 
 	public Camera myCamera;
-	public Transform movementTransform;
+	public Transform movementTransform; //for Oculus!
 	bool wasNotMoving = false;
 	void GetInput()
 	{
