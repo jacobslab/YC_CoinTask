@@ -59,7 +59,7 @@ public class TrialController : MonoBehaviour {
 
 		#if MRIVERSION
 		for(int i = 0; i < Config_CoinTask.numTrialsPract; i++){
-			Trial practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract[i]);	//2 special objects for practice trial
+			Trial practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract[i], false);	//2 special objects for practice trial
 			practiceTrials.Add(practiceTrial);
 		}
 		#else
