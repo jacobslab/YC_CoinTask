@@ -11,9 +11,7 @@ public class Config_CoinTask : MonoBehaviour {
 	{
 		TH1,
 		TH2,
-		TH3,
-		Pilot_001,	
-		Pilot_002,		
+		TH3,	
 		MRI
 	}
 #if MRIVERSION
