@@ -31,6 +31,7 @@ public class VideoPlayer : MonoBehaviour {
 		if (movie != null) {
 			if (movie.isPlaying) {
 				if (Input.GetAxis (Config_CoinTask.ActionButtonName) > 0.2f) { //skip movie!
+					Debug.Log("skip movie");
 					Stop ();
 				}
 				if (TrialController.isPaused) {
