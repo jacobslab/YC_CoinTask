@@ -52,7 +52,7 @@ public class VideoPlayer : MonoBehaviour {
 	bool shouldPlay = false;
 	public IEnumerator Play(){
 		if (movie != null) {
-
+			Debug.Log("playing instruction video");
 			yield return StartCoroutine (AskIfShouldPlay());
 
 			if (shouldPlay) {
@@ -80,7 +80,7 @@ public class VideoPlayer : MonoBehaviour {
 	IEnumerator AskIfShouldPlay(){
 		exp.currInstructions.SetInstructionsColorful ();
 		exp.currInstructions.DisplayText ("Play instruction video? (y/n)");
-
+		Debug.Log("show instructions");
 		bool isValidInput = false;
 		while (!isValidInput) {
 			if (Input.GetKeyUp (KeyCode.Y)) {

@@ -77,12 +77,13 @@ public class UIController : MonoBehaviour {
 			//PauseInstruction.text = ""; //get rid of pause instruction if in real task
 		}
 		#endif
-
+		/* OCULUS is same as main camera now
 		if (ExperimentSettings_CoinTask.isOculus) {
 			InSceneUIParent.position = OculusInSceneUIPos.position;
 			InSceneUIParent.parent = OculusInSceneUIPos;
 			InSceneUIParent.rotation = OculusInSceneUIPos.rotation;
 		}
+		*/
 	}
 
 	public void InitText(){

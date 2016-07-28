@@ -36,16 +36,8 @@ public class CameraController : MonoBehaviour {
 		//Debug.Log("oh hey in game cameras");
 		TurnOffAllCameras();
 
-		if(ExperimentSettings_CoinTask.isOculus){
-			//OculusRig.transform.position = AvatarOculusParent.transform.position;
-			//OculusRig.transform.parent = AvatarOculusParent;
-			if(!OculusRig.activeSelf){
-				SetOculus(true);
-			}
-		}
-		else{
-			EnableCameras(AvatarStandardCameraRig, true);
-		}
+		//oculus and non-VR camera are the same now
+		EnableCameras(AvatarStandardCameraRig, true);
 
 
 	}
@@ -72,6 +64,6 @@ public class CameraController : MonoBehaviour {
 			cameras[i].orthographic = false;
 			//cameras[i].clearFlags = CameraClearFlags.Skybox;
 		}*/
-		OculusRig.SetActive (isActive);
+		//OculusRig.SetActive (isActive);
 	}
 }

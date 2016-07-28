@@ -133,39 +133,23 @@ public class InstructionsController : MonoBehaviour {
 	}
 
 	void SetText(string newText){
-		if(ExperimentSettings_CoinTask.isOculus){
-			oculusText.text = newText;
-		}
-		else{
 			text.text = newText;
-		}
 	}
 
 	public void SetInstructionsColorful(){
 		//Debug.Log("set instructions dark");
-		if(ExperimentSettings_CoinTask.isOculus){
-			oculusBackground.color = backgroundColorDefault;
-			oculusText.color = textColorDefault;
-		}
-		else{
 			background.color = backgroundColorDefault;
 			text.color = textColorDefault;
-		}
 	}
 	
 	public void SetInstructionsTransparentOverlay(){
 		//Debug.Log("set instructions transparent overlay");
-		if(ExperimentSettings_CoinTask.isOculus){
-			oculusBackground.color = new Color(0,0,0,0);
-			oculusText.color = textColorOverlay;
-		}
-		else{
 			background.color = new Color(0,0,0,0);
 			text.color = textColorOverlay;
-		}
 	}
 
 	public void DisplayText(string line){
+		Debug.Log ("setting line " + line);
 		SetText(line);
 	}
 
