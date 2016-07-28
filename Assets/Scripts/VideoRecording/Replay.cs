@@ -378,10 +378,11 @@ public class Replay : MonoBehaviour {
 										float newPosX = widthPosRatio * currRes.x;
 										float newPosY = heightPosRatio * currRes.y;
 
-										posX = newPosX;
-										posY = newPosY;
+										//posX = newPosX;
+										//posY = newPosY;
+										objInScene.GetComponent<RectTransform> ().localPosition = new Vector2 (posX, posY);
 									}
-									
+									else
 									objInScene.transform.position = new Vector3(posX, posY, posZ);
 									
 								}

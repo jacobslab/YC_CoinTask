@@ -76,8 +76,13 @@ public class ObjectLogTrack : LogTrack {
 
 	void LogPosition(){
 		if (ShouldLogPosition) {
-			lastPosition = transform.position;
-			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), nameToLog + separator + "POSITION" + separator + transform.position.x + separator + transform.position.y + separator + transform.position.z);
+			if (gameObject.tag == "RectUIObject") {
+				lastPosition = GetComponent<RectTransform> ().localPosition;
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), nameToLog + separator + "POSITION" + separator + lastPosition.x + separator + lastPosition.y + separator + lastPosition.z);
+			} else {
+				lastPosition = transform.position;
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), nameToLog + separator + "POSITION" + separator + transform.position.x + separator + transform.position.y + separator + transform.position.z);
+			}
 		}
 	}
 	
