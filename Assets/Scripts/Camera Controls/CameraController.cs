@@ -46,7 +46,7 @@ public class CameraController : MonoBehaviour {
 		else{
 			EnableCameras(AvatarStandardCameraRig, true);
 		}
-
+		EnableCameras(AvatarStandardCameraRig, true);
 
 	}
 
@@ -72,6 +72,6 @@ public class CameraController : MonoBehaviour {
 			cameras[i].orthographic = false;
 			//cameras[i].clearFlags = CameraClearFlags.Skybox;
 		}*/
-		OculusRig.SetActive (isActive);
+//		OculusRig.SetActive (isActive);
 	}
 }
