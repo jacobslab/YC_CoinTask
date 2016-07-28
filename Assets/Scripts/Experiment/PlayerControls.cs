@@ -115,6 +115,7 @@ public class PlayerControls : MonoBehaviour{
 
 	}
 
+
 	void Move( float amount ){
 		transform.position += transform.forward * amount;
 	}
@@ -140,7 +141,36 @@ public class PlayerControls : MonoBehaviour{
 			}
 		}
 	}
+		
+	public IEnumerator PlayerLookingAt(GameObject specialItem)
+	{
+		bool wasLooking = false; // used for OnStartLook and OnEndLook
+		// generate the ray before we raycast it
+		while (!wasLooking) {
+			Ray ray = new Ray (Camera.main.transform.position,
+				         Camera.main.transform.forward);
+			// this var will tell us where and what it hit
+			RaycastHit rayHitInfo = new RaycastHit ();
 
+			Debug.DrawRay (ray.origin, ray.direction * 1000f, Color.yellow);
+
+			// actually shooting the raycast now
+			if (Physics.Raycast (ray, out rayHitInfo, 1000f)
+			   && rayHitInfo.transform == specialItem.transform) {
+				// is the raycast hitting the thing we put this script on?
+				if (wasLooking == false) {
+					wasLooking = true;
+				}
+			} else {
+				if (wasLooking == true) {
+					wasLooking = false;
+				}
+			}
+			yield return null;
+		}
+		yield return null;
+		
+	}
 
 	public IEnumerator SmoothMoveTo(Vector3 targetPosition, Quaternion targetRotation, bool isChestAutoDrive){
 

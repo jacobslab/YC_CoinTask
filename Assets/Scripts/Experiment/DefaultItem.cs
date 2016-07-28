@@ -59,12 +59,34 @@ public class DefaultItem : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision){
-		if (collision.gameObject.tag == "Player" && (tag == "DefaultObject" || tag == "DefaultSpecialObject") && !isExecutingPlayerCollision ) {
-			GetComponent<TreasureChestLogTrack> ().LogPlayerChestCollision();
+		if (collision.gameObject.tag == "Player" && (tag == "DefaultObject" || tag == "DefaultSpecialObject") && !isExecutingPlayerCollision) {
+			if (!ExperimentSettings_CoinTask.isOculus) {
+				GetComponent<TreasureChestLogTrack> ().LogPlayerChestCollision ();
 
-			isExecutingPlayerCollision = true;
-			StartCoroutine(RunCollision());
+				isExecutingPlayerCollision = true;
+				StartCoroutine (RunCollision ());
 
+			} else {
+				StartCoroutine ("WaitForObjectLookAt");
+			}
+		}
+	}
+
+	IEnumerator WaitForObjectLookAt()
+	{
+		yield return StartCoroutine (Experiment_CoinTask.Instance.trialController.WaitForPlayerToLookAt (gameObject));
+		//open the object
+		StartCoroutine( Open(Experiment_CoinTask.Instance.player.gameObject) );
+
+		//if it was a special spot and this is the default object...
+		//...we should spawn the special object!
+		if (tag == "DefaultSpecialObject") {
+
+			yield return StartCoroutine(SpawnSpecialObject(specialObjectSpawnPoint.position));
+
+		}
+		else{
+			yield return StartCoroutine(RunDefaultCollision());
 		}
 	}
 
@@ -85,6 +107,7 @@ public class DefaultItem : MonoBehaviour {
 		else{
 			yield return StartCoroutine(RunDefaultCollision());
 		}
+
 
 
 	}

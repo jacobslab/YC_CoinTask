@@ -1049,6 +1049,25 @@ public class TrialController : MonoBehaviour {
 		} 
 	}
 
+	public IEnumerator WaitForPlayerToLookAt(GameObject treasureChest)
+	{
+		//LOG waiting for player to look at the object
+
+		//lock the avatar controls
+		exp.player.controls.ShouldLockControls = true;
+		exp.player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+
+		//wait for player to look at the gameobject
+		yield return StartCoroutine(Experiment_CoinTask.Instance.player.controls.PlayerLookingAt(treasureChest));
+
+		Debug.Log ("the player has looked at");
+		//unlock the avatar controls
+		Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;
+
+
+		//LOG end of waiting for player to look at
+	}
+
 	public IEnumerator WaitForPlayerRotationToTreasure(GameObject treasureChest){
 		trialLogger.LogPlayerChestRotation (true);
 
