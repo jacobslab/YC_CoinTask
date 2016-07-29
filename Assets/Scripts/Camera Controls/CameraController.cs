@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-
+using UnityEngine.VR;
 //this oculus switching is mainly for MAC
 //for Oculus in Windows, just use the VR checkbox in player settings.
 public class CameraController : MonoBehaviour {
@@ -36,9 +36,18 @@ public class CameraController : MonoBehaviour {
 		//Debug.Log("oh hey in game cameras");
 		TurnOffAllCameras();
 
-		//oculus and non-VR camera are the same now
+		if(ExperimentSettings_CoinTask.isOculus){
+			//OculusRig.transform.position = AvatarOculusParent.transform.position;
+			//OculusRig.transform.parent = AvatarOculusParent;
+			if(!OculusRig.activeSelf){
+				SetOculus(true);
+			}
+			VRSettings.renderScale = 1.5f;
+		}
+		else{
+			EnableCameras(AvatarStandardCameraRig, true);
+		}
 		EnableCameras(AvatarStandardCameraRig, true);
-
 
 	}
 
@@ -64,6 +73,6 @@ public class CameraController : MonoBehaviour {
 			cameras[i].orthographic = false;
 			//cameras[i].clearFlags = CameraClearFlags.Skybox;
 		}*/
-		//OculusRig.SetActive (isActive);
+//		OculusRig.SetActive (isActive);
 	}
 }
