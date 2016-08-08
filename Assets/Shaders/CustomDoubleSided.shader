@@ -1,4 +1,7 @@
-﻿//SOURCE: http://en.wikibooks.org/wiki/Cg_Programming/Unity/Two-Sided_Surfaces
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+
+//SOURCE: http://en.wikibooks.org/wiki/Cg_Programming/Unity/Two-Sided_Surfaces
 Shader "Custom/CustomDoubleSided" {
 Properties {
       _Color ("Front Material Diffuse Color", Color) = (1,1,1,1) 
@@ -45,8 +48,8 @@ Properties {
          {
             vertexOutput output;
  
-            float4x4 modelMatrix = _Object2World;
-            float4x4 modelMatrixInverse = _World2Object; 
+            float4x4 modelMatrix = unity_ObjectToWorld;
+            float4x4 modelMatrixInverse = unity_WorldToObject; 
                // multiplication with unity_Scale.w is unnecessary 
                // because we normalize transformed vectors
  
@@ -143,8 +146,8 @@ Properties {
          {
             vertexOutput output;
  
-            float4x4 modelMatrix = _Object2World;
-            float4x4 modelMatrixInverse = _World2Object; 
+            float4x4 modelMatrix = unity_ObjectToWorld;
+            float4x4 modelMatrixInverse = unity_WorldToObject; 
                // multiplication with unity_Scale.w is unnecessary 
                // because we normalize transformed vectors
  
@@ -238,8 +241,8 @@ Properties {
          {
             vertexOutput output;
  
-            float4x4 modelMatrix = _Object2World;
-            float4x4 modelMatrixInverse = _World2Object; 
+            float4x4 modelMatrix = unity_ObjectToWorld;
+            float4x4 modelMatrixInverse = unity_WorldToObject; 
                // multiplication with unity_Scale.w is unnecessary 
                // because we normalize transformed vectors
  
@@ -336,8 +339,8 @@ Properties {
          {
             vertexOutput output;
  
-            float4x4 modelMatrix = _Object2World;
-            float4x4 modelMatrixInverse = _World2Object; 
+            float4x4 modelMatrix = unity_ObjectToWorld;
+            float4x4 modelMatrixInverse = unity_WorldToObject; 
                // multiplication with unity_Scale.w is unnecessary 
                // because we normalize transformed vectors
  
