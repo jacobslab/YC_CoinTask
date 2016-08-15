@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using XInputDotNetPure;
 
 //TODO: add some sort of a check if a controller is attached??? or a menu toggle for keyboard vs. joystick?
 //LOG CUSTOM MESSAGES. should be accessed through some global class.
@@ -8,23 +9,60 @@ public class LogitechControllerLogTrack : LogTrack {
 	int numButtons = 20;
 	int numJoystickAxesUsed = 2; //DPAD, LEFT JOYSTICK
 
-	// Use this for initialization
-	void Start () {
+
+    bool playerIndexSet = false;
+    PlayerIndex playerIndex;
+    GamePadState state;
+    GamePadState prevState;
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
 	void Update(){ //can be called in update because we are checking for input. other logtracks use LateUpdate because things like positions must be finished updating before they are logged.
-		string[] joystickNames = Input.GetJoystickNames ();
+
+
+        if (!playerIndexSet || !prevState.IsConnected)
+        {
+            for (int i = 0; i < 4; ++i)
+            {
+                PlayerIndex testPlayerIndex = (PlayerIndex)i;
+                GamePadState testState = GamePad.GetState(testPlayerIndex);
+                if (testState.IsConnected)
+                {
+                    Debug.Log(string.Format("GamePad found {0}", testPlayerIndex));
+                    playerIndex = testPlayerIndex;
+                    playerIndexSet = true;
+                }
+            }
+        }
+
+        prevState = state;
+        state = GamePad.GetState(playerIndex);
+
+        if (ExperimentSettings_CoinTask.isLogging && state.IsConnected)
+        {
+            Debug.Log("Logging controllers");
+            LogController();
+        }
+        else
+        {
+            Debug.Log("Not logging anymore");
+            
+        }
+        /*
+        string[] joystickNames = Input.GetJoystickNames ();
 		int numControllers = joystickNames.Length;
+        Debug.Log(numControllers);
 		if (ExperimentSettings_CoinTask.isLogging && numControllers > 0) {
 			if (joystickNames [0] != "") {
 				LogController ();
 			}
 		}
+        */
 	}
 
 	void LogController(){
-
 		float[] joystickInput = GetLogitechControllerJoystickInput ();
 		bool[] buttonInput = GetLogitechControllerButtonInput ();
 
