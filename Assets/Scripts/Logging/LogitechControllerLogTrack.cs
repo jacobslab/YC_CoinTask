@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-
+using XInputDotNetPure;
 //TODO: add some sort of a check if a controller is attached??? or a menu toggle for keyboard vs. joystick?
 //LOG CUSTOM MESSAGES. should be accessed through some global class.
 public class LogitechControllerLogTrack : LogTrack {
@@ -8,12 +8,35 @@ public class LogitechControllerLogTrack : LogTrack {
 	int numButtons = 20;
 	int numJoystickAxesUsed = 2; //DPAD, LEFT JOYSTICK
 
+	bool playerIndexSet=false;
+	PlayerIndex playerIndex;
+	private GamePadState state;
+	private GamePadState prevState;
 	// Use this for initialization
 	void Start () {
 		
 	}
 	
 	void Update(){ //can be called in update because we are checking for input. other logtracks use LateUpdate because things like positions must be finished updating before they are logged.
+		if (!playerIndexSet || !prevState.IsConnected) {
+
+			for (int i = 0; i < 4; i++) {
+				PlayerIndex testPlayerIndex = (PlayerIndex)i;
+				GamePadState testState = GamePad.GetState (testPlayerIndex);
+				if (testState.IsConnected) {
+					playerIndex = testPlayerIndex;
+					playerIndexSet = true;
+				}
+			}
+		}
+		prevState = state;
+		state = GamePad.GetState (playerIndex);
+
+		if (ExperimentSettings_CoinTask.isLogging && state.IsConnected) {
+			LogController ();
+		}
+
+		/*
 		string[] joystickNames = Input.GetJoystickNames ();
 		int numControllers = joystickNames.Length;
 		if (ExperimentSettings_CoinTask.isLogging && numControllers > 0) {
@@ -21,6 +44,7 @@ public class LogitechControllerLogTrack : LogTrack {
 				LogController ();
 			}
 		}
+		*/
 	}
 
 	void LogController(){
