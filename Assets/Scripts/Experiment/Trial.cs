@@ -30,7 +30,7 @@ public class Trial {
 
 		manualSpecialObjectNames = new List<string> (); //may or may not be filled in manually.
 
-		Debug.Log("NUM SPECIAL: " + numSpecialObjects);
+		//Debug.Log("NUM SPECIAL: " + numSpecialObjects);
 
 
 

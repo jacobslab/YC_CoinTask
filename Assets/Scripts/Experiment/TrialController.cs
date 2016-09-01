@@ -491,7 +491,7 @@ public class TrialController : MonoBehaviour {
 
 	IEnumerator WaitForEEGHardwareConnection(){
 		isConnectingToHardware = true;
-
+		Debug.Log ("waiting for eeg connection");
 		exp.uiController.ConnectionUI.alpha = 1.0f;
 		if(Config_CoinTask.isSystem2){
 			while(!TCPServer.Instance.isConnected){

@@ -25,7 +25,7 @@ public class ScreenRecorder : MonoBehaviour {
  			path = RecordingPathInputField.text;
 		} 
 		else {
-			Debug.Log("No input field to get recording path!");
+			Debug.Log("NO INPUT FIELD TO GET RECORDING PATH");
 		}
 	}
 

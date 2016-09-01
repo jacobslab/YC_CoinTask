@@ -78,7 +78,6 @@ public class Replay : MonoBehaviour {
 
 	public void ReplayScene(){ //gets called via replay button in the main menu scene
 		objsInSceneDict.Clear ();
-
 		if (LogFilePathInputField != null) {
 			SetLogFile (LogFilePathInputField.text);
 		}
@@ -87,11 +86,13 @@ public class Replay : MonoBehaviour {
 			SetFPS (int.Parse(FPSInputField.text));
 		}
 
-		if (maxTimeStampInput != null && maxTimeStampInput != null) {
+		if (minTimeStampInput != null && maxTimeStampInput != null) {
+
+
 			if(minTimeStampInput.text != "" && maxTimeStampInput.text != ""){
 				long min = long.Parse(minTimeStampInput.text);
 				long max = long.Parse(maxTimeStampInput.text);
-
+				Debug.Log ("THE MIN IS : " + min);
 				SetMinMaxTimeStamps(min, max);
 			}
 		}
@@ -160,6 +161,7 @@ public class Replay : MonoBehaviour {
 	void SetTimeStamp(long newTimeStamp){
 		lastTimeStamp = currentTimeStamp;
 		currentTimeStamp = newTimeStamp;
+		//Debug.Log ("current timestamp is: " + currentTimeStamp);
 		timeDifference = currentTimeStamp - lastTimeRecorded; //gets time between log file lines
 	}
 
@@ -225,12 +227,13 @@ public class Replay : MonoBehaviour {
 					//1 -- frame
 					else if(i == 1){
 						long readFrame = long.Parse(splitLine[i]);
-						
+						//Debug.Log ("frame number " + readFrame);
 						while(readFrame != currentFrame){
 							currentFrame++;
+//							if (currentFrame == 2)
+//								currentFrame = 12068;
 							hasFinishedSettingFrame = true;
-							
-							//Debug.Log(currentFrame);
+							//Debug.Log("current frame is " + currentFrame);
 						}
 						
 						//first frame case -- need to set the last time recorded as the current time stamp
@@ -267,7 +270,7 @@ public class Replay : MonoBehaviour {
 					else if (i == 2){
 						string objName = splitLine[i];
 						
-						if(objName != "Mouse" && objName != "Keyboard" && objName != "Trial Info"){
+						if(objName != "Mouse" && objName != "Keyboard" && objName != "Trial Info" && objName!="Experiment Info"){
 
 							GameObject objInScene;
 								
@@ -283,6 +286,8 @@ public class Replay : MonoBehaviour {
 										objsInSceneDict.Remove(objName);
 									}
 								}
+							//	if (objName == "Connecting to EEG UI")
+								//Debug.Log (objName + "awwww eyyyyyy");
 
 							}
 							else{
@@ -669,7 +674,7 @@ public class Replay : MonoBehaviour {
 
 							}
 							else{
-								Debug.Log("REPLAY: No obj in scene named " + objName);
+								Debug.Log("REPLAY: No obj in scene named " + objName + " at timestamp: " + currentTimeStamp);
 							}
 							
 						}

@@ -18,6 +18,7 @@ public class LogitechControllerLogTrack : LogTrack {
 	}
 	
 	void Update(){ //can be called in update because we are checking for input. other logtracks use LateUpdate because things like positions must be finished updating before they are logged.
+	/*
 		if (!playerIndexSet || !prevState.IsConnected) {
 
 			for (int i = 0; i < 4; i++) {
@@ -36,7 +37,7 @@ public class LogitechControllerLogTrack : LogTrack {
 			LogController ();
 		}
 
-		/*
+		*/
 		string[] joystickNames = Input.GetJoystickNames ();
 		int numControllers = joystickNames.Length;
 		if (ExperimentSettings_CoinTask.isLogging && numControllers > 0) {
@@ -44,7 +45,7 @@ public class LogitechControllerLogTrack : LogTrack {
 				LogController ();
 			}
 		}
-		*/
+
 	}
 
 	void LogController(){

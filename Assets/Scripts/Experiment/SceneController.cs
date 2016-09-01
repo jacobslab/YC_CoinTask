@@ -14,17 +14,19 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 	}
 	
 	void Awake(){
-		if (_instance != null) {
-			Debug.Log("Instance already exists!");
-			Destroy(transform.gameObject);
-			return;
-		}
+//		if (_instance != null) {
+//			Debug.Log("Instance already exists!");
+//			Destroy(transform.gameObject);
+//			return;
+//		}
 		_instance = this;
 	}
 
 
 	// Use this for initialization
 	void Start () {
+
+		DontDestroyOnLoad (this.gameObject);
 
 	}
 

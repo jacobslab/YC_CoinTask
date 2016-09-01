@@ -553,6 +553,7 @@ public class ThreadedServer : ThreadedJob{
 
 		case "ABORT":
 			//TODO: show message
+			UnityEngine.Debug.Log("Aborted");
 			Application.Quit();
 			break;
 			
@@ -585,6 +586,7 @@ public class ThreadedServer : ThreadedJob{
 				End ();
 			}
 			//TODO: show message
+			UnityEngine.Debug.Log("premature abort occured");
 			Application.Quit();
 			break;
 			
