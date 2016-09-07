@@ -54,6 +54,11 @@ public class SyncboxControl : MonoBehaviour {
 		}
 	}
 
+	public static void RunStimPulse (float timeDuration, float frequency, bool doRelay)
+	{
+		StimPulse (timeDuration, frequency, doRelay);
+	}
+
 	IEnumerator ConnectSyncbox(){
 		while(!isUSBOpen){
 			string usbOpenFeedback = Marshal.PtrToStringAuto (OpenUSB());

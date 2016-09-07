@@ -645,6 +645,13 @@ public class TrialController : MonoBehaviour {
 			numRealTrials++;
 			TCPServer.Instance.SendTrialNum(numRealTrials);
 			Debug.Log("Logged trial #: " + numRealTrials);
+			int halfChance = Random.Range (0, 2);
+			if (halfChance == 1) {
+				Config_CoinTask.stimThisTrial = true;
+			} else {
+				Config_CoinTask.stimThisTrial = false;
+			}
+			trialLogger.LogStimDecision (Config_CoinTask.stimThisTrial);
 		}
 
 		//move player to home location & rotation
@@ -694,6 +701,13 @@ public class TrialController : MonoBehaviour {
 		//unlock avatar controls
 		exp.player.controls.ShouldLockControls = false;
 
+
+		//FOR SIMON'S EEG, should STIM PULSE NOW
+		if (Config_CoinTask.stimThisTrial) {
+			SyncboxControl.RunStimPulse (Config_CoinTask.stimDuration, Config_CoinTask.frequency, Config_CoinTask.doRelay);
+			trialLogger.LogStimPulse ();
+		}
+
 		//wait for player to collect all default objects
 		int numDefaultObjectsToCollect = currentTrial.DefaultObjectLocationsXZ.Count;
 
@@ -731,6 +745,12 @@ public class TrialController : MonoBehaviour {
 		currentDefaultObject = null; //set to null so that arrows stop showing up...
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, false));//PlayerControls.toTowerTime) );
 		trialLogger.LogTransportationToTowerEvent (false);
+
+		//FOR SIMON'S EEG, should STIM PULSE NOW
+		if (Config_CoinTask.stimThisTrial) {
+			SyncboxControl.RunStimPulse (Config_CoinTask.stimDuration, Config_CoinTask.frequency, Config_CoinTask.doRelay);
+			trialLogger.LogStimPulse ();
+		}
 
 		//RUN DISTRACTOR GAME
 		trialLogger.LogDistractorGame (true);

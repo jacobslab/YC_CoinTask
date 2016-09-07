@@ -48,6 +48,8 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 	public InputField NumTreasureChestsInputField; //Frames Per Second
 
+	public InputField stimFrequency; //for Simon's EEG
+
 	public GameObject nonPilotOptions;
 	public bool isRelease { get { return GetIsRelease (); } }
 
@@ -226,6 +228,11 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		manualTrialFilePathDisplay.text = manualTrialFilePath;
 	}
 
+	public void SetStimFrequency()
+	{
+		Config_CoinTask.frequency=float.Parse (stimFrequency.text);
+		Debug.Log ("the frequency is : " + Config_CoinTask.frequency);
+	}
 	public void SetReplayTrue(){
 		isReplay = true;
 		isLogging = false;

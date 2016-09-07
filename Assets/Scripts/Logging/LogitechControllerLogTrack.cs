@@ -52,7 +52,6 @@ public class LogitechControllerLogTrack : LogTrack {
 
 		float[] joystickInput = GetLogitechControllerJoystickInput ();
 		bool[] buttonInput = GetLogitechControllerButtonInput ();
-
 		for (int i = 0; i < numJoystickAxesUsed; i++) {
 			if(joystickInput[i] != 0){
 				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Joystick" + i + separator + joystickInput [i]);

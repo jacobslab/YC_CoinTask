@@ -22,11 +22,16 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public static string VersionNumber = "2.042";
 
-#if MRIVERSION
+	#if SYNCBOX
+	public static bool isSyncbox = true;
+	#else
 	public static bool isSyncbox = false;
+	#endif
+#if MRIVERSION
+	//public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
 #else
-	public static bool isSyncbox = false;
+	//public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
 #endif
 
@@ -40,6 +45,13 @@ public class Config_CoinTask : MonoBehaviour {
 	public static string VerticalAxisName = "Vertical";
 	public static string ActionButtonName = "Action Button";
 //	#endif
+
+
+	//SIMON'S EEG
+	public static float stimDuration=0.02f;
+	public static bool doRelay=true;
+	public static float frequency=5f;
+	public static bool stimThisTrial=false;
 
 	//REPLAY
 	public static int replayPadding = 6;

@@ -228,6 +228,21 @@ public class TrialLogTrack : LogTrack {
 			}
 		}
 	}
+	public void LogStimPulse()
+	{
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "STIM PULSE" + separator + Config_CoinTask.frequency.ToString());
+		Debug.Log ("Logged a stim pulse event");
+	}
+
+	public void LogStimDecision(bool stimDecision)
+	{
+		if (stimDecision)
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "STIM DECISION" + separator + "TRUE");
+		else
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "STIM DECISION" + separator + "FALSE");
+		Debug.Log ("Logged a stim pulse decision as : " + stimDecision.ToString());
+	}
+
 
 	public void LogTransportationToTowerEvent(bool isStarting){
 		if (ExperimentSettings_CoinTask.isLogging) {
