@@ -367,6 +367,8 @@ public class TrialController : MonoBehaviour {
 			exp.player.controls.ShouldLockControls = true;
 
 			if(Config_CoinTask.isSystem2 || Config_CoinTask.isSyncbox){
+				StartCoroutine (SyncboxControl.Instance.RunSyncPulse ());
+			//	StartCoroutine(SyncboxControl.RunStimPulse (Config_CoinTask.stimDuration, Config_CoinTask.frequency, Config_CoinTask.doRelay));
 				yield return StartCoroutine( WaitForEEGHardwareConnection() );
 			}
 			else{
@@ -704,7 +706,8 @@ public class TrialController : MonoBehaviour {
 
 		//FOR SIMON'S EEG, should STIM PULSE NOW
 		if (Config_CoinTask.stimThisTrial) {
-			SyncboxControl.RunStimPulse (Config_CoinTask.stimDuration, Config_CoinTask.frequency, Config_CoinTask.doRelay);
+			yield return StartCoroutine (SyncboxControl.Instance.RunSyncPulse ());
+			//SyncboxControl.RunStimPulse (Config_CoinTask.stimDuration, Config_CoinTask.frequency, Config_CoinTask.doRelay);
 			trialLogger.LogStimPulse ();
 		}
 
@@ -748,7 +751,8 @@ public class TrialController : MonoBehaviour {
 
 		//FOR SIMON'S EEG, should STIM PULSE NOW
 		if (Config_CoinTask.stimThisTrial) {
-			SyncboxControl.RunStimPulse (Config_CoinTask.stimDuration, Config_CoinTask.frequency, Config_CoinTask.doRelay);
+			yield return StartCoroutine (SyncboxControl.Instance.RunSyncPulse ());
+			//SyncboxControl.RunStimPulse (Config_CoinTask.stimDuration, Config_CoinTask.frequency, Config_CoinTask.doRelay);
 			trialLogger.LogStimPulse ();
 		}
 

@@ -16,16 +16,17 @@ public class SyncboxControl : MonoBehaviour {
 	[DllImport ("ASimplePlugin")]
 	private static extern IntPtr TurnLEDOff();
 	[DllImport ("ASimplePlugin")]
-	private static extern long SyncPulse();
+	private static extern long SyncPulse(float stimFreq);
 	[DllImport ("ASimplePlugin")]
 	private static extern IntPtr StimPulse(float durationSeconds, float freqHz, bool doRelay);
-	
+	[DllImport ("ASimplePlugin")]
+	private static extern int AddTwoIntegers(int a, int b);
 	public bool ShouldSyncPulse = true;
 	public float PulseOnSeconds;
 	public float PulseOffSeconds;
 
 	public bool isUSBOpen = false;
-
+	public static bool doingStim=false;
 
 	//SINGLETON
 	private static SyncboxControl _instance;
@@ -54,9 +55,22 @@ public class SyncboxControl : MonoBehaviour {
 		}
 	}
 
-	public static void RunStimPulse (float timeDuration, float frequency, bool doRelay)
+	public static IEnumerator RunStimPulse (float timeDuration, float frequency, bool doRelay)
 	{
-		StimPulse (timeDuration, frequency, doRelay);
+		UnityEngine.Debug.Log ("about to run stim pulse");
+		while(!doingStim){
+			UnityEngine.Debug.Log ("WAITING");
+//			string stimFeedback = Marshal.PtrToStringAuto (StimPulse (timeDuration, frequency, doRelay));
+//			UnityEngine.Debug.Log(stimFeedback);
+//			if(stimFeedback != "finished stim pulse!"){
+				doingStim = true;
+			//}
+
+			yield return 0;
+		}
+		UnityEngine.Debug.Log ("ME DNE");
+		yield return null;
+
 	}
 
 	IEnumerator ConnectSyncbox(){
@@ -84,24 +98,26 @@ public class SyncboxControl : MonoBehaviour {
 
 	float syncPulseDuration = 0.05f;
 	float syncPulseInterval = 1.0f;
-	IEnumerator RunSyncPulse(){
+	public IEnumerator RunSyncPulse(){
 		Stopwatch executionStopwatch = new Stopwatch ();
-
+		UnityEngine.Debug.Log ("about to run sync pulse");
 		while (ShouldSyncPulse) {
 			executionStopwatch.Reset();
+			UnityEngine.Debug.Log ("executing sync at: " + Config_CoinTask.frequency);
 
-			SyncPulse(); //executes pulse, then waits for the rest of the 1 second interval
+			SyncPulse(Config_CoinTask.frequency); //executes pulse, then waits for the rest of the 1 second interval
 
 			executionStopwatch.Start();
-			long syncPulseOnTime = SyncPulse();
+			long syncPulseOnTime = SyncPulse(Config_CoinTask.frequency);
 			LogSYNCOn(syncPulseOnTime);
 			while(executionStopwatch.ElapsedMilliseconds < 1500){
 				yield return 0;
 			}
-
 			executionStopwatch.Stop();
 
 		}
+
+		UnityEngine.Debug.Log ("done with sync");
 	}
 
 
