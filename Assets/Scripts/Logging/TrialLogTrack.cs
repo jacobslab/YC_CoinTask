@@ -230,8 +230,16 @@ public class TrialLogTrack : LogTrack {
 	}
 	public void LogStimPulse()
 	{
-		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "STIM PULSE" + separator + Config_CoinTask.frequency.ToString());
+		if (Config_CoinTask.stimThisTrial)
+	{
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "STIM PULSE" + separator + Config_CoinTask.frequency.ToString ());
 		Debug.Log ("Logged a stim pulse event");
+	}
+		else
+		{
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "STIM PULSE ENDED");
+			Debug.Log ("Ended a stim pulse event");
+		}
 	}
 
 	public void LogStimDecision(bool stimDecision)

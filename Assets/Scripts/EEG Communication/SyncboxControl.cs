@@ -16,7 +16,11 @@ public class SyncboxControl : MonoBehaviour {
 	[DllImport ("ASimplePlugin")]
 	private static extern IntPtr TurnLEDOff();
 	[DllImport ("ASimplePlugin")]
-	private static extern long SyncPulse(float stimFreq);
+	private static extern IntPtr TurnStimOn();
+	[DllImport ("ASimplePlugin")]
+	private static extern IntPtr TurnStimOff();
+	[DllImport ("ASimplePlugin")]
+	private static extern long SyncPulse(float stimFreq, int channel);
 	[DllImport ("ASimplePlugin")]
 	private static extern IntPtr StimPulse(float durationSeconds, float freqHz, bool doRelay);
 	[DllImport ("ASimplePlugin")]
@@ -24,7 +28,8 @@ public class SyncboxControl : MonoBehaviour {
 	public bool ShouldSyncPulse = true;
 	public float PulseOnSeconds;
 	public float PulseOffSeconds;
-
+	private int channel=0;
+	int pulses=0;
 	public bool isUSBOpen = false;
 	public static bool doingStim=false;
 
@@ -52,6 +57,7 @@ public class SyncboxControl : MonoBehaviour {
 	void Start () {
 		if(Config_CoinTask.isSyncbox){
 			StartCoroutine(ConnectSyncbox());
+			//StartCoroutine (RunSyncPulseManual ());
 		}
 	}
 
@@ -90,6 +96,9 @@ public class SyncboxControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		GetInput ();
+
+		if (Input.GetKeyDown (KeyCode.D))
+			channel++;
 	}
 
 	void GetInput(){
@@ -98,21 +107,39 @@ public class SyncboxControl : MonoBehaviour {
 
 	float syncPulseDuration = 0.05f;
 	float syncPulseInterval = 1.0f;
+
+
 	public IEnumerator RunSyncPulse(){
+		float jitterMin = 0.1f;
+		float syncPulseFakeInterval = Config_CoinTask.fakeInterval; 
+		syncPulseInterval = 1f / Config_CoinTask.frequency; //the gap between wave of pulses
+		syncPulseDuration = 0.01f;
+		float jitterMax = syncPulseInterval - syncPulseDuration;
+
 		Stopwatch executionStopwatch = new Stopwatch ();
 		UnityEngine.Debug.Log ("about to run sync pulse");
-		while (ShouldSyncPulse) {
+		while (exp.trialController.NumDefaultObjectsCollected!=4) {
 			executionStopwatch.Reset();
 			UnityEngine.Debug.Log ("executing sync at: " + Config_CoinTask.frequency);
-
-			SyncPulse(Config_CoinTask.frequency); //executes pulse, then waits for the rest of the 1 second interval
-
-			executionStopwatch.Start();
-			long syncPulseOnTime = SyncPulse(Config_CoinTask.frequency);
-			LogSYNCOn(syncPulseOnTime);
-			while(executionStopwatch.ElapsedMilliseconds < 1500){
-				yield return 0;
+			pulses++;
+			ToggleStimOn ();
+			yield return StartCoroutine(WaitForShortTime(syncPulseDuration));
+			ToggleStimOff();
+			float timeToWait;
+			if (pulses % 2 == 0) {
+				timeToWait = (syncPulseInterval - syncPulseDuration);
+				if (timeToWait < 0) {
+					timeToWait = 0;
+				}
+			} else {
+				timeToWait = syncPulseFakeInterval - syncPulseDuration;
+				if (timeToWait < 0) {
+					timeToWait = 0;
+				}
 			}
+
+			yield return StartCoroutine(WaitForShortTime(timeToWait));
+
 			executionStopwatch.Stop();
 
 		}
@@ -135,7 +162,7 @@ public class SyncboxControl : MonoBehaviour {
 			float jitter = UnityEngine.Random.Range(jitterMin, jitterMax);//syncPulseInterval - syncPulseDuration);
 			yield return StartCoroutine(WaitForShortTime(jitter));
 
-			ToggleLEDOn();
+			ToggleLEDOn ();
 			yield return StartCoroutine(WaitForShortTime(syncPulseDuration));
 			ToggleLEDOff();
 
@@ -149,18 +176,39 @@ public class SyncboxControl : MonoBehaviour {
 			executionStopwatch.Stop();
 		}
 	}
+	//return microseconds it took to turn on LED
+	void ToggleStimOn(){
+		string ledfeedback=Marshal.PtrToStringAuto(TurnStimOn());
+		UnityEngine.Debug.Log ("At channel: " + ledfeedback);
+		transform.GetChild (0).gameObject.GetComponent<TextMesh> ().text = ledfeedback;
+		//TurnLEDOn ();
+		//LogSYNCOn (GameClock.SystemTime_Milliseconds);
+	}
+
+	void ToggleStimOff(){
+
+		string ledfeedback=Marshal.PtrToStringAuto(TurnStimOff());
+		UnityEngine.Debug.Log ("turn off: " + ledfeedback);
+		transform.GetChild (0).gameObject.GetComponent<TextMesh> ().text = ledfeedback;
+		//LogSYNCOff (GameClock.SystemTime_Milliseconds);
+
+	}
 
 	//return microseconds it took to turn on LED
 	void ToggleLEDOn(){
-
-		TurnLEDOn ();
-		LogSYNCOn (GameClock.SystemTime_Milliseconds);
+		string ledfeedback=Marshal.PtrToStringAuto(TurnLEDOn());
+		UnityEngine.Debug.Log ("At channel: " + ledfeedback);
+		transform.GetChild (0).gameObject.GetComponent<TextMesh> ().text = ledfeedback;
+		//TurnLEDOn ();
+		//LogSYNCOn (GameClock.SystemTime_Milliseconds);
 	}
 
 	void ToggleLEDOff(){
 
-		TurnLEDOff();
-		LogSYNCOff (GameClock.SystemTime_Milliseconds);
+		string ledfeedback=Marshal.PtrToStringAuto(TurnLEDOff());
+		UnityEngine.Debug.Log ("turn off: " + ledfeedback);
+		transform.GetChild (0).gameObject.GetComponent<TextMesh> ().text = ledfeedback;
+		//LogSYNCOff (GameClock.SystemTime_Milliseconds);
 
 	}
 

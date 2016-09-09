@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.IO;
 public class ObjectController : MonoBehaviour {
 
 
@@ -13,22 +13,29 @@ public class ObjectController : MonoBehaviour {
 	public GameObject DefaultObject; //the prefab used to instantiate the other default objects.
 	public GameObject ExplosiveObject;
 	public List<GameObject> CurrentTrialSpecialObjects;
-
+	List<GameObject>tempList;
 
 	//experiment singleton
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
 	//object array & list
-	List<GameObject> gameObjectList_Spawnable;
+	List<GameObject> gameObjectList_Spawnable_Stim;
+	string[] stimObjList;
+	string[] nonStimObjList;
+	List<GameObject> gameObjectList_Spawnable_NoStim;
 	//List<GameObject> gameObjectList_Spawned; //a list to keep track of the objects currently in the scene
 
 
 
 	// Use this for initialization
 	void Start () {
-		gameObjectList_Spawnable = new List<GameObject> ();
+		gameObjectList_Spawnable_Stim = new List<GameObject> ();
+		gameObjectList_Spawnable_NoStim = new List<GameObject> ();
+		tempList=new List<GameObject>();
 		CurrentTrialSpecialObjects = new List<GameObject> ();
-		CreateSpecialObjectList (gameObjectList_Spawnable);
+		CreateSpecialObjectList ();
+		stimObjList = new string[50];
+		nonStimObjList = new string[50];
 	}
 	
 	// Update is called once per frame
@@ -36,9 +43,12 @@ public class ObjectController : MonoBehaviour {
 	
 	}
 
-	void CreateSpecialObjectList(List<GameObject> gameObjectListToFill){
-		gameObjectListToFill.Clear();
+	void CreateSpecialObjectList(){
+		gameObjectList_Spawnable_Stim.Clear();
+		gameObjectList_Spawnable_NoStim.Clear();
 		Object[] prefabs;
+		List<string> stimList = new List<string> ();
+		List<string> nonStimList = new List<string> ();
 		#if MRIVERSION
 		if(Config_CoinTask.isPractice){
 			prefabs = Resources.LoadAll("Prefabs/MRIPracticeObjects");
@@ -49,9 +59,47 @@ public class ObjectController : MonoBehaviour {
 		#else
 			prefabs = Resources.LoadAll("Prefabs/Objects");
 		#endif
-		for (int i = 0; i < prefabs.Length; i++) {
-			gameObjectListToFill.Add((GameObject)prefabs[i]);
+
+		for(int i=0;i<prefabs.Length;i++)
+			tempList.Add((GameObject)prefabs[i]);
+		while(gameObjectList_Spawnable_Stim.Count < 50)
+		{
+			GameObject tempObj = (GameObject) tempList[Random.Range(0,tempList.Count)];
+			if(!gameObjectList_Spawnable_Stim.Contains(tempObj))
+			{
+				gameObjectList_Spawnable_Stim.Add(tempObj);
+				string tempString = tempObj.ToString ();
+				int startIndex = tempString.IndexOf ("(");
+				int endIndex = tempString.IndexOf (")");
+				tempString=tempString.Remove (startIndex-1, endIndex - startIndex + 2);
+				stimList.Add(tempString);
+				tempList.Remove(tempObj);
+			}
 		}
+		for (int j = 0; j < tempList.Count; j++) {
+			gameObjectList_Spawnable_NoStim.Add ((GameObject)tempList [j]);
+			string tempString = tempList[j].ToString ();
+			int startIndex = tempString.IndexOf ("(");
+			int endIndex = tempString.IndexOf (")");
+			tempString=tempString.Remove (startIndex-1, endIndex - startIndex + 2);
+			nonStimList.Add(tempString.ToString ());
+		}
+
+		for (int i = 0; i < stimList.Count; i++)
+			stimObjList=stimList.ToArray();
+
+		for (int i = 0; i < nonStimList.Count; i++)
+			nonStimObjList = nonStimList.ToArray();
+		PrintObjects ();
+		Debug.Log ("the number of stim objects are : " + gameObjectList_Spawnable_Stim.Count);
+		Debug.Log ("the number of NON-Stim objects are : " + gameObjectList_Spawnable_NoStim.Count);
+		}
+
+	void PrintObjects()
+	{
+		System.IO.File.WriteAllLines (ExperimentSettings_CoinTask.defaultLoggingPath + "StimObjectList.txt",stimObjList );
+
+		System.IO.File.WriteAllLines (ExperimentSettings_CoinTask.defaultLoggingPath+ "NonStimObjectList.txt", nonStimObjList);
 	}
 
 	//used in replay
@@ -93,20 +141,37 @@ public class ObjectController : MonoBehaviour {
 
 
 	GameObject ChooseRandomObject(){
-		if (gameObjectList_Spawnable.Count == 0) {
-			Debug.Log ("No MORE objects to pick! Recreating object list.");
-			CreateSpecialObjectList(gameObjectList_Spawnable); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
-			if(gameObjectList_Spawnable.Count == 0){
-				Debug.Log ("No objects to pick at all!"); //if there are still no objects in the list, then there weren't any to begin with...
-				return null;
+		GameObject chosenObject;
+		if (Config_CoinTask.stimThisTrial) {
+			if (gameObjectList_Spawnable_Stim.Count == 0) {
+				Debug.Log ("No MORE objects to pick! Recreating object list.");
+				CreateSpecialObjectList (); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
+				if (gameObjectList_Spawnable_Stim.Count == 0) {
+					Debug.Log ("No objects to pick at all!"); //if there are still no objects in the list, then there weren't any to begin with...
+					return null;
+				}
 			}
+
+
+			int randomObjectIndex = Random.Range (0, gameObjectList_Spawnable_Stim.Count);
+			 chosenObject = gameObjectList_Spawnable_Stim [randomObjectIndex];
+			//gameObjectList_Spawnable_Stim.RemoveAt (randomObjectIndex);
+		} 
+		else {
+			if (gameObjectList_Spawnable_NoStim.Count == 0) {
+				Debug.Log ("No MORE objects to pick! Recreating object list.");
+				CreateSpecialObjectList (); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
+				if (gameObjectList_Spawnable_NoStim.Count == 0) {
+					Debug.Log ("No objects to pick at all!"); //if there are still no objects in the list, then there weren't any to begin with...
+					return null;
+				}
+			}
+
+
+			int randomObjectIndex = Random.Range (0, gameObjectList_Spawnable_NoStim.Count);
+			chosenObject = gameObjectList_Spawnable_NoStim [randomObjectIndex];
+			//gameObjectList_Spawnable_NoStim.RemoveAt (randomObjectIndex);
 		}
-
-
-		int randomObjectIndex = Random.Range(0, gameObjectList_Spawnable.Count);
-		GameObject chosenObject = gameObjectList_Spawnable[randomObjectIndex];
-		gameObjectList_Spawnable.RemoveAt(randomObjectIndex);
-		
 		return chosenObject;
 	}
 

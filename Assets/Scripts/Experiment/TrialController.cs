@@ -24,7 +24,6 @@ public class TrialController : MonoBehaviour {
 
 	int numDefaultObjectsCollected = 0;
 	public int NumDefaultObjectsCollected { get { return numDefaultObjectsCollected; } }
-
 	int timeBonus = 0;
 	int memoryScore = 0;
 	public CanvasGroup scoreInstructionsGroup;
@@ -367,7 +366,7 @@ public class TrialController : MonoBehaviour {
 			exp.player.controls.ShouldLockControls = true;
 
 			if(Config_CoinTask.isSystem2 || Config_CoinTask.isSyncbox){
-				StartCoroutine (SyncboxControl.Instance.RunSyncPulse ());
+				//StartCoroutine (SyncboxControl.Instance.RunSyncPulse ());
 			//	StartCoroutine(SyncboxControl.RunStimPulse (Config_CoinTask.stimDuration, Config_CoinTask.frequency, Config_CoinTask.doRelay));
 				yield return StartCoroutine( WaitForEEGHardwareConnection() );
 			}
@@ -705,15 +704,11 @@ public class TrialController : MonoBehaviour {
 
 
 		//FOR SIMON'S EEG, should STIM PULSE NOW
-		if (Config_CoinTask.stimThisTrial) {
-			yield return StartCoroutine (SyncboxControl.Instance.RunSyncPulse ());
-			//SyncboxControl.RunStimPulse (Config_CoinTask.stimDuration, Config_CoinTask.frequency, Config_CoinTask.doRelay);
-			trialLogger.LogStimPulse ();
-		}
+
 
 		//wait for player to collect all default objects
 		int numDefaultObjectsToCollect = currentTrial.DefaultObjectLocationsXZ.Count;
-
+		UnityEngine.Debug.Log ("num objects to collect: " + numDefaultObjectsToCollect);
 		#if MRIVERSION
 		for(int i = 0; i <numDefaultObjectsToCollect; i++){
 			Debug.Log("WAIT FOR NAVIGATION TIMEOUT");
@@ -721,6 +716,11 @@ public class TrialController : MonoBehaviour {
 		}
 		#else //if not MRI version, just wait until all chests are collected;
 		while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
+			if (Config_CoinTask.stimThisTrial) {
+				yield return StartCoroutine (SyncboxControl.Instance.RunSyncPulse ());
+				//SyncboxControl.RunStimPulse (Config_CoinTask.stimDuration, Config_CoinTask.frequency, Config_CoinTask.doRelay);
+				trialLogger.LogStimPulse ();
+			}
 			yield return 0;
 		}
 		#endif
@@ -751,7 +751,8 @@ public class TrialController : MonoBehaviour {
 
 		//FOR SIMON'S EEG, should STIM PULSE NOW
 		if (Config_CoinTask.stimThisTrial) {
-			yield return StartCoroutine (SyncboxControl.Instance.RunSyncPulse ());
+			Config_CoinTask.stimThisTrial = false;
+			//yield return StartCoroutine (SyncboxControl.Instance.RunSyncPulse ());
 			//SyncboxControl.RunStimPulse (Config_CoinTask.stimDuration, Config_CoinTask.frequency, Config_CoinTask.doRelay);
 			trialLogger.LogStimPulse ();
 		}

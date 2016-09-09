@@ -52,6 +52,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static bool doRelay=true;
 	public static float frequency=5f;
 	public static bool stimThisTrial=false;
+	public static float fakeInterval=0.01f;	
 
 	//REPLAY
 	public static int replayPadding = 6;

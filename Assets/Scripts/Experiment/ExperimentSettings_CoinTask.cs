@@ -49,6 +49,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public InputField NumTreasureChestsInputField; //Frames Per Second
 
 	public InputField stimFrequency; //for Simon's EEG
+	public InputField fakeInterval; //for Simon's EEG
 
 	public GameObject nonPilotOptions;
 	public bool isRelease { get { return GetIsRelease (); } }
@@ -227,7 +228,11 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 		manualTrialFilePathDisplay.text = manualTrialFilePath;
 	}
-
+	public void SetFakeInterval()
+	{
+		Config_CoinTask.fakeInterval=float.Parse (fakeInterval.text);
+		Debug.Log ("the fake interval is : " + Config_CoinTask.fakeInterval);
+	}
 	public void SetStimFrequency()
 	{
 		Config_CoinTask.frequency=float.Parse (stimFrequency.text);
