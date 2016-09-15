@@ -56,7 +56,8 @@ public class SyncboxControl : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		if(Config_CoinTask.isSyncbox){
-			StartCoroutine(ConnectSyncbox());
+            UnityEngine.Debug.Log("fake interval" + Config_CoinTask.fakeInterval);
+            StartCoroutine(ConnectSyncbox());
 			//StartCoroutine (RunSyncPulseManual ());
 		}
 	}
@@ -115,33 +116,36 @@ public class SyncboxControl : MonoBehaviour {
 		syncPulseInterval = 1f / Config_CoinTask.frequency; //the gap between wave of pulses
 		syncPulseDuration = 0.01f;
 		float jitterMax = syncPulseInterval - syncPulseDuration;
-
 		Stopwatch executionStopwatch = new Stopwatch ();
 		UnityEngine.Debug.Log ("about to run sync pulse");
 		while (exp.trialController.NumDefaultObjectsCollected!=4) {
 			executionStopwatch.Reset();
 			UnityEngine.Debug.Log ("executing sync at: " + Config_CoinTask.frequency);
 			pulses++;
+
 			ToggleStimOn ();
-			yield return StartCoroutine(WaitForShortTime(syncPulseDuration));
+            if (pulses % 3 != 0)
+                yield return StartCoroutine(WaitForShortTime(syncPulseFakeInterval));
 			ToggleStimOff();
+
+            //decide what to wait for next pulse
 			float timeToWait;
-			if (pulses % 2 == 0) {
-				timeToWait = (syncPulseInterval - syncPulseDuration);
+            //change: 3 pulses per train now, instead of 2
+			if (pulses % 3 == 0) {
+				timeToWait = (syncPulseInterval - (4*syncPulseFakeInterval));
 				if (timeToWait < 0) {
 					timeToWait = 0;
 				}
+                pulses = 0;
 			} else {
-				timeToWait = syncPulseFakeInterval - syncPulseDuration;
+				timeToWait = syncPulseFakeInterval;
 				if (timeToWait < 0) {
 					timeToWait = 0;
 				}
 			}
+            yield return StartCoroutine(WaitForShortTime(timeToWait));
 
-			yield return StartCoroutine(WaitForShortTime(timeToWait));
-
-			executionStopwatch.Stop();
-
+            executionStopwatch.Stop();
 		}
 
 		UnityEngine.Debug.Log ("done with sync");

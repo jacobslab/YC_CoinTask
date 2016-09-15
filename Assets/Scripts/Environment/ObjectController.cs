@@ -155,7 +155,7 @@ public class ObjectController : MonoBehaviour {
 
 			int randomObjectIndex = Random.Range (0, gameObjectList_Spawnable_Stim.Count);
 			 chosenObject = gameObjectList_Spawnable_Stim [randomObjectIndex];
-			//gameObjectList_Spawnable_Stim.RemoveAt (randomObjectIndex);
+			gameObjectList_Spawnable_Stim.RemoveAt (randomObjectIndex);
 		} 
 		else {
 			if (gameObjectList_Spawnable_NoStim.Count == 0) {
@@ -170,7 +170,7 @@ public class ObjectController : MonoBehaviour {
 
 			int randomObjectIndex = Random.Range (0, gameObjectList_Spawnable_NoStim.Count);
 			chosenObject = gameObjectList_Spawnable_NoStim [randomObjectIndex];
-			//gameObjectList_Spawnable_NoStim.RemoveAt (randomObjectIndex);
+			gameObjectList_Spawnable_NoStim.RemoveAt (randomObjectIndex);
 		}
 		return chosenObject;
 	}
