@@ -783,7 +783,7 @@ public class TrialController : MonoBehaviour {
 			GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
 			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
 			string specialItemDisplayName = specialSpawnable.GetDisplayName ();
-
+			Debug.Log ("TRYING TO SAY: " + specialItemDisplayName);
 			//set TCP state true
 			switch(randomOrderIndex){
 			case 0:

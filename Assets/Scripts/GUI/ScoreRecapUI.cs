@@ -52,7 +52,7 @@ public class ScoreRecapUI : MonoBehaviour {
 				//set object score text & object names
 				string currObjectScore = FormatScore(objectScores[i]);
 				ObjectLocationScores [ObjectLocationScores.Length - 1 - i].text = currObjectScore;
-				ObjectNames [ObjectNames.Length - 1 - i].text = specialObjects [i].GetComponent<SpawnableObject>().GetName () + ":";
+				ObjectNames [ObjectNames.Length - 1 - i].text = specialObjects [i].GetComponent<SpawnableObject>().GetDisplayName () + ":";
 
 				trialScore += objectScores [i];
 			}

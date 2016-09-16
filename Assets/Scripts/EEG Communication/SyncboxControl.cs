@@ -124,24 +124,28 @@ public class SyncboxControl : MonoBehaviour {
 			pulses++;
 
 			ToggleStimOn ();
-            if (pulses % 3 != 0)
-                yield return StartCoroutine(WaitForShortTime(syncPulseFakeInterval));
+            yield return StartCoroutine(WaitForShortTime(syncPulseFakeInterval));
 			ToggleStimOff();
 
             //decide what to wait for next pulse
 			float timeToWait;
             //change: 3 pulses per train now, instead of 2
+			//at the end of the train, decide how much time to wait before the onset of the next pulse train
 			if (pulses % 3 == 0) {
-				timeToWait = (syncPulseInterval - (4*syncPulseFakeInterval));
+				timeToWait = (syncPulseInterval - (3*syncPulseFakeInterval));
 				if (timeToWait < 0) {
 					timeToWait = 0;
 				}
                 pulses = 0;
 			} else {
+				//do not wait, mod for simon's eeg
+				/*
 				timeToWait = syncPulseFakeInterval;
 				if (timeToWait < 0) {
 					timeToWait = 0;
 				}
+				*/
+				timeToWait = 0;
 			}
             yield return StartCoroutine(WaitForShortTime(timeToWait));
 
