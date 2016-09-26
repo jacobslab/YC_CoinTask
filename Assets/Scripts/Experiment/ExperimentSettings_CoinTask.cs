@@ -32,7 +32,11 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		English,
 		Spanish
 	}
+	#if !SPANISH
 	public static LanguageSetting myLanguage = LanguageSetting.English;
+	#else
+	public static LanguageSetting myLanguage = LanguageSetting.Spanish;
+	#endif
 	public Dropdown languageDropdown;
 
 

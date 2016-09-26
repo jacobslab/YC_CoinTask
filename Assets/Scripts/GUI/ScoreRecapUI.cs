@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ScoreRecapUI : MonoBehaviour {
-	
+
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } } 
 
 
@@ -25,16 +25,16 @@ public class ScoreRecapUI : MonoBehaviour {
 		Enable (false);
 		centralContentOrigPos = ObjectScoreContent.localPosition;//ObjectScoreContent.position;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 
 	public void SetBoxSwapBonusText(int boxSwapBonus){
 		BoxSwapText.text = FormatScore(boxSwapBonus);
 	}
-	
+
 	public void Play(int numTrialsComplete, int currentTrialScore, int maxNumTrials, List<int> objectScores, List<GameObject> specialObjects, int timeBonus, float time){
 		Enable (true);
 
@@ -52,7 +52,7 @@ public class ScoreRecapUI : MonoBehaviour {
 				//set object score text & object names
 				string currObjectScore = FormatScore(objectScores[i]);
 				ObjectLocationScores [ObjectLocationScores.Length - 1 - i].text = currObjectScore;
-				ObjectNames [ObjectNames.Length - 1 - i].text = specialObjects [i].GetComponent<SpawnableObject>().GetName () + ":";
+				ObjectNames [ObjectNames.Length - 1 - i].text = specialObjects [i].GetComponent<SpawnableObject>().GetDisplayName () + ":";
 
 				trialScore += objectScores [i];
 			}
@@ -107,7 +107,7 @@ public class ScoreRecapUI : MonoBehaviour {
 
 	void Enable(bool shouldEnable){
 		GetComponent<EnableChildrenLogTrack>().LogChildrenEnabled(shouldEnable);
-		
+
 		UsefulFunctions.EnableChildren( transform, shouldEnable );
 	}
 }
