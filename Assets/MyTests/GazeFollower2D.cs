@@ -29,9 +29,9 @@ public class GazeFollower2D : MonoBehaviour {
 			//Debug.Log("SCREEN POS: " + screenGazePos);
             eyetrackerLogTrack.LogScreenGazePoint(screenGazePos);
             double leftPupilDiameter = SMIGazeController.Instance.GetSample().leftEye.pupilDiameter;
-            eyetrackerLogTrack.LogLeftPupilDiameter(leftPupilDiameter);
             double rightPupilDiameter= SMIGazeController.Instance.GetSample().rightEye.pupilDiameter;
-            eyetrackerLogTrack.LogRightPupilDiameter(rightPupilDiameter);
+            double averagedPupilDiameter = SMIGazeController.Instance.GetSample().averagedEye.pupilDiameter;
+            eyetrackerLogTrack.LogPupilDiameter(leftPupilDiameter,rightPupilDiameter,averagedPupilDiameter);
             Vector3 worldGazePos = Camera.main.ScreenToWorldPoint(new Vector3 ( screenGazePos.x, screenGazePos.y, gazeFollower.position.z));
             eyetrackerLogTrack.LogWorldGazePoint(worldGazePos);
 			//Debug.Log("WORLD POS: " + worldGazePos);

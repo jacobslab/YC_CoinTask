@@ -88,14 +88,13 @@ public class TCPServer : MonoBehaviour {
 			}
 		}
 		//DEBUGGING
-		/*
 		if (Input.GetKeyDown (KeyCode.A)) {
 			myServer.isServerConnected = true;
 		}
 		if (Input.GetKeyDown (KeyCode.S)) {
 			myServer.canStartGame = true;
 		}
-		*/
+		
 	}
 
 	public void Log(long time, TCP_Config.EventType eventType){

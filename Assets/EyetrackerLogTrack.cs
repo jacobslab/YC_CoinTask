@@ -28,18 +28,11 @@ public class EyetrackerLogTrack : LogTrack
             subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "GAZE_OBJECT" + separator + gazeObject.name);
         }
     }
-    public void LogLeftPupilDiameter(double pupilDiameter)
+    public void LogPupilDiameter(double leftPupilDiameter, double rightPupilDiameter, double averagedPupilDiameter)
     {
         if (ExperimentSettings_CoinTask.isLogging)
         {
-            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "LEFT_PUPIL_DIAMETER" + separator + pupilDiameter.ToString("F3"));
-        }
-    }
-    public void LogRightPupilDiameter(double pupilDiameter)
-    {
-        if (ExperimentSettings_CoinTask.isLogging)
-        {
-            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "RIGHT_PUPIL_DIAMETER" + separator + pupilDiameter.ToString("F3"));
+            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "PUPIL_DIAMETER" + separator + leftPupilDiameter.ToString("F3") + separator + rightPupilDiameter.ToString("F3") + separator + averagedPupilDiameter.ToString("F3"));
         }
     }
 }
