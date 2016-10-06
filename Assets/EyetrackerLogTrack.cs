@@ -5,19 +5,34 @@ public class EyetrackerLogTrack : LogTrack
 {
 
     //currently just logs one point at a time.
-    public void LogScreenGazePoint(Vector2 position)
+    public void LogScreenGazePoint(Vector2 position, bool lowConfidence)
     {
         if (ExperimentSettings_CoinTask.isLogging)
         {
-            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "SCREEN_GAZE_POSITION" + separator + position.x + separator + position.y);
+            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "SCREEN_GAZE_POSITION" + separator + position.x + separator + position.y + separator + "LOW_CONFIDENCE" + separator + lowConfidence.ToString());
         }
     }
 
-    public void LogWorldGazePoint(Vector3 position)
+    public void LogCalibrationStarted(int calibrationPoints)
     {
         if (ExperimentSettings_CoinTask.isLogging)
         {
-            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "WORLD_GAZE_POSITION" + separator + position.x + separator + position.y + separator + position.z);
+            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "EYETRACKER_CALIBRATION_EVENT" + separator + calibrationPoints.ToString() + separator + "STARTED");
+        }
+    }
+
+    public void LogCalibrationEnded(int calibrationPoints)
+    {
+        if (ExperimentSettings_CoinTask.isLogging)
+        {
+            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "EYETRACKER_CALIBRATION_EVENT" + separator + calibrationPoints.ToString() + separator + "ENDED");
+        }
+    }
+    public void LogWorldGazePoint(Vector3 position, bool lowConfidence)
+    {
+        if (ExperimentSettings_CoinTask.isLogging)
+        {
+            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "WORLD_GAZE_POSITION" + separator + position.x + separator + position.y + separator + position.z + separator + "LOW_CONFIDENCE" + separator + lowConfidence.ToString());
         }
     }
 

@@ -495,7 +495,7 @@ public class TrialController : MonoBehaviour {
 		exp.uiController.ConnectionUI.alpha = 1.0f;
 		if(Config_CoinTask.isSystem2){
 			while(!TCPServer.Instance.isConnected){
-				Debug.Log("Waiting for system 2 connection...");
+				//Debug.Log("Waiting for system 2 connection...");
 				yield return 0;
 			}
 			exp.uiController.ConnectionText.text = "Press START on host PC...";
