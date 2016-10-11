@@ -19,6 +19,8 @@ public class UIController : MonoBehaviour {
 	public Transform InSceneUIParent;
 	public Transform OculusInSceneUIPos;
 
+	public CanvasGroup exitPanel;
+
 
 	//FOR LOCALIZATION
 	public Text pauseInstruction;

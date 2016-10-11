@@ -370,6 +370,7 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine( WaitForEEGHardwareConnection() );
 			}
 			else{
+				exp.uiController.exitPanel.alpha = 0.0f;
 				exp.uiController.ConnectionUI.alpha = 0.0f;
 			}
 				

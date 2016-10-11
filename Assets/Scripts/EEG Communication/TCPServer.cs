@@ -21,6 +21,7 @@ public class TCPServer : MonoBehaviour {
 
 
 	ThreadedServer myServer;
+	bool showExitQuestion=true;
 	public bool isConnected { get { return GetIsConnected(); } }
 	public bool canStartGame { get { return GetCanStartGame(); } }
 
@@ -50,6 +51,7 @@ public class TCPServer : MonoBehaviour {
 	}
 
 	void Start(){
+		
 		if(Config_CoinTask.isSystem2){
 			RunServer ();
 		}
@@ -89,6 +91,10 @@ public class TCPServer : MonoBehaviour {
 		}
 		//DEBUGGING
 		/*
+		if(Input.GetKeyDown(KeyCode.R))
+			{
+				OnExitReceived();
+			}
 		if (Input.GetKeyDown (KeyCode.A)) {
 			myServer.isServerConnected = true;
 		}
@@ -96,6 +102,7 @@ public class TCPServer : MonoBehaviour {
 			myServer.canStartGame = true;
 		}
 		*/
+
 	}
 
 	public void Log(long time, TCP_Config.EventType eventType){
@@ -132,6 +139,43 @@ public class TCPServer : MonoBehaviour {
 			myServer.End ();
 			UnityEngine.Debug.Log ("Ended server.");
 		}
+	}
+
+	public void OnExitReceived()
+	{
+		if (showExitQuestion) {
+			UnityEngine.Debug.Log ("on exit received");
+			StartCoroutine ("OnExitServer");
+			showExitQuestion = false;
+		}
+	}
+
+
+	public IEnumerator OnExitServer()
+	{
+		UnityEngine.Debug.Log ("EXIT message received from server");
+		exp.uiController.exitPanel.alpha = 1.0f;
+		bool shouldContinue = false;
+		bool isValidInput = false;
+		while (!isValidInput) {
+			if (Input.GetKeyUp (KeyCode.Y)) {
+				isValidInput = true;
+				shouldContinue = true;
+			}
+			else if (Input.GetKeyUp (KeyCode.N)) {
+				isValidInput = true;
+				shouldContinue = false;
+			}
+			yield return 0;
+		}
+		if (shouldContinue) {
+			exp.uiController.exitPanel.alpha = 0.0f;
+			yield return null;
+		} else {
+
+			Application.Quit ();
+		}
+		yield return null;
 	}
 
 
@@ -581,13 +625,14 @@ public class ThreadedServer : ThreadedJob{
 	                    self.abortCallback(self.clock)
 					*/
 			
-			if(isHeartbeat){
-				//TODO: do this. am I supposed to check for a premature abort? does it matter? or just end it?
-				End ();
-			}
+//			if(isHeartbeat){
+//				//TODO: do this. am I supposed to check for a premature abort? does it matter? or just end it?
+//				End ();
+//			}
 			//TODO: show message
-			UnityEngine.Debug.Log("premature abort occured");
-			Application.Quit();
+			TCPServer.Instance.OnExitReceived();
+			UnityEngine.Debug.Log("premature abort occurred");
+			//Application.Quit();
 			break;
 			
 		default:
