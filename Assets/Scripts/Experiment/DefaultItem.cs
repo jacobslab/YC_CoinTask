@@ -62,7 +62,7 @@ public class DefaultItem : MonoBehaviour {
 		if (collision.gameObject.tag == "Player" && (tag == "DefaultObject" || tag == "DefaultSpecialObject") && !isExecutingPlayerCollision) {
 			if (!ExperimentSettings_CoinTask.isOculus) {
 				GetComponent<TreasureChestLogTrack> ().LogPlayerChestCollision ();
-
+                Debug.Log("executing non oculus code");
 				isExecutingPlayerCollision = true;
 				StartCoroutine (RunCollision ());
 
@@ -74,6 +74,7 @@ public class DefaultItem : MonoBehaviour {
 
 	IEnumerator WaitForObjectLookAt()
 	{
+        Debug.Log("waiting for object to look at");
 		yield return StartCoroutine (Experiment_CoinTask.Instance.trialController.WaitForPlayerToLookAt (gameObject));
 		//open the object
 		StartCoroutine( Open(Experiment_CoinTask.Instance.player.gameObject) );

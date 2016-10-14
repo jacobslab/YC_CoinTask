@@ -152,10 +152,10 @@ public class PlayerControls : MonoBehaviour{
 			// this var will tell us where and what it hit
 			RaycastHit rayHitInfo = new RaycastHit ();
 
-			Debug.DrawRay (ray.origin, ray.direction * 1000f, Color.yellow);
+			Debug.DrawRay (ray.origin, ray.direction * 1000f, Color.red);
 
 			// actually shooting the raycast now
-			if (Physics.Raycast (ray, out rayHitInfo, 1000f)
+			if (Physics.Raycast(ray,out rayHitInfo,1000f)
 			   && rayHitInfo.transform == specialItem.transform) {
 				// is the raycast hitting the thing we put this script on?
 				if (wasLooking == false) {

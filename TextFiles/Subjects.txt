@@ -1,5 +1,5 @@
 Subject1,score 200,block 0
 aa,score -200,block 0
 A,score 0,block 0
-a,score 250,block 0
+a,score -700,block 1
 NICE,score 500,block 0
