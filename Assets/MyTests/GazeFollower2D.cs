@@ -59,9 +59,7 @@ public class GazeFollower2D : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
        
-		if (gazeFollower != null) {
-
-            
+		if (gazeFollower != null) {  
 
             if (Input.GetKeyDown(KeyCode.P))
             {
