@@ -78,7 +78,7 @@ namespace iView
                 return;
             }
             _instance = this;
-
+            
 
 
         }

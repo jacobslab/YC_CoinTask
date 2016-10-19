@@ -50,6 +50,10 @@ public class Replay : MonoBehaviour {
 	long lastTimeRecorded = 0;
 	long timeDifference = 0;
 
+    GameObject gazeObj;
+    public Material highlightMat;
+    Material storedMat;
+
 
 
 
@@ -370,7 +374,26 @@ public class Replay : MonoBehaviour {
 										posZ = 574.4609f;
 									}*/
 
-
+                                    if(objName.Contains("EYETRACKER"))
+                                    {
+                                        if (loggedProperty == "SCREEN_GAZE_POSITION")
+                                        {
+                                            float gazeX = float.Parse(splitLine[i + 2]);
+                                            float gazeY = float.Parse(splitLine[i + 3]);
+                                            float gazeZ = float.Parse(splitLine[i + 3]);
+                                            GazeFollower2D.Instance.gazeFollower = new Vector3(gazeX, gazeY);
+                                        }
+                                        else if(loggedProperty=="GAZE_OBJECT")
+                                        {
+                                            string gazeObjName = splitLine[i + 2];
+                                            if (objsInSceneDict.ContainsKey(gazeObjName))
+                                            {
+                                                gazeObj = objsInSceneDict[gazeObjName];
+                                                storedMat = gazeObj.GetComponent<Renderer>().material;
+                                                gazeObj.GetComponent<Renderer>().material = highlightMat;
+                                            }
+                                        }
+                                    }
 									if(objName.Contains("TimerBar") || objName.Contains("TimerCircle")){
 										//map from 15 inch mac pro resolution (standard patient resolution) to current resolution
 

@@ -35,6 +35,7 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 	void Update () {
 
 	}
+    
 
 	public void LoadMainMenu(){
 		if(Experiment_CoinTask.Instance != null){

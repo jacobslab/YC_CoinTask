@@ -17,7 +17,7 @@ public class ScreenRecorder : MonoBehaviour {
 
 	void Start(){
 		//timeBetweenFrames = 1.0f / (float)framesPerSecond;
-		SetRecordPath ("");
+		SetRecordPath (RecordingPathInputField.text);
 	}
 
 	public void SetRecordPath(string emptyString){ //the emptyString variable is a hack and not used because I'm having trouble getting the darn InputField to pass it's value to a function T_T
@@ -52,6 +52,7 @@ public class ScreenRecorder : MonoBehaviour {
 		else if (recordingType == RecordingType.continuousVideo) {
 			string numFramesPadded = numFrames.ToString();
 			numFramesPadded = numFramesPadded.PadLeft(Config_CoinTask.replayPadding, '0');
+            
 			name = string.Format ("{0}/"+timeStamp+"_{1}.png", 
 			                      path, //change to path variable? 
 			                      numFramesPadded);

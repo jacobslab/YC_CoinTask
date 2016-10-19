@@ -26,7 +26,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
 #else
-    public static bool isSyncbox = true;
+    public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
 #endif
 

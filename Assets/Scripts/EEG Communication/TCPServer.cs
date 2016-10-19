@@ -87,6 +87,7 @@ public class TCPServer : MonoBehaviour {
 				myServer.SendInitMessages ();
 			}
 		}
+        /*
 		//DEBUGGING
 		if (Input.GetKeyDown (KeyCode.A)) {
 			myServer.isServerConnected = true;
@@ -94,7 +95,7 @@ public class TCPServer : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.S)) {
 			myServer.canStartGame = true;
 		}
-		
+		*/
 	}
 
 	public void Log(long time, TCP_Config.EventType eventType){
