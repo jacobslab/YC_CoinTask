@@ -14,7 +14,8 @@ public class GazeFollower2D : MonoBehaviour {
     public EyetrackerLogTrack eyetrackerLogTrack;
     private float timer = 0f;
     private Vector2 screenGazePos;
-    private bool lowConfidence =false;
+    private bool lowConfidence = false;
+    public float factor = 3f;
     //EXPERIMENT IS A SINGLETON
     private static GazeFollower2D _instance;
 
@@ -34,7 +35,7 @@ public class GazeFollower2D : MonoBehaviour {
             return;
         }
         _instance = this;
-        //gazeFollower = GetComponent<Transform>();
+      //  gazeFollower = GetComponent<Transform>();
 
     }
 
@@ -84,25 +85,31 @@ public class GazeFollower2D : MonoBehaviour {
             eyetrackerLogTrack.LogPupilDiameter(leftPupilDiameter,rightPupilDiameter,averagedPupilDiameter);
             Vector3 worldGazePos = Camera.main.ScreenToWorldPoint(new Vector3 ( screenGazePos.x, screenGazePos.y, gazeFollower.z));
             eyetrackerLogTrack.LogWorldGazePoint(worldGazePos, lowConfidence);
+            
 			//Debug.Log("WORLD POS: " + worldGazePos);
             ray = Camera.main.ScreenPointToRay(screenGazePos);
-            
+            //Vector3 gazedMovePos = ray.origin + (ray.direction * factor);
+           // GazeMove.Instance.MoveSphere(gazedMovePos);
+
             Debug.DrawRay(new Vector3(screenGazePos.x, screenGazePos.y, 0f), worldGazePos, Color.red);
             if(Physics.SphereCast(ray,0.8f,out hit,100f,mask.value))
             {
-               // Debug.Log(hit.collider.gameObject.name);
+                Debug.Log(hit.collider.transform.position);
+                GazeMove.Instance.MoveSphere(hit.point);
+                // Debug.Log(hit.collider.gameObject.name);
                 eyetrackerLogTrack.LogGazeObject(hit.collider.gameObject);
                // hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.green;
             }
             //gazeFollower.position = new Vector3(screenGazePos.x, screenGazePos.y, gazeFollower.position.z);
             //gazeFollower.position = worldGazePos;
 
-            if (!ExperimentSettings_CoinTask.isReplay)
-            {
+       //     if (!ExperimentSettings_CoinTask.isReplay)
+         //   {
                 Vector2 pos;
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, screenGazePos, myCanvas.worldCamera, out pos);
+                
                 gazeFollower = myCanvas.transform.TransformPoint(pos);
-            }
+           // }
 
 		}
 	}
