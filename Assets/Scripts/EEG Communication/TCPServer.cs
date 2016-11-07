@@ -21,7 +21,6 @@ public class TCPServer : MonoBehaviour {
 
 
 	ThreadedServer myServer;
-	bool showExitQuestion=true;
 	public bool isConnected { get { return GetIsConnected(); } }
 	public bool canStartGame { get { return GetCanStartGame(); } }
 
@@ -51,7 +50,6 @@ public class TCPServer : MonoBehaviour {
 	}
 
 	void Start(){
-		
 		if(Config_CoinTask.isSystem2){
 			RunServer ();
 		}
@@ -91,10 +89,6 @@ public class TCPServer : MonoBehaviour {
 		}
 		//DEBUGGING
 		/*
-		if(Input.GetKeyDown(KeyCode.R))
-			{
-				OnExitReceived();
-			}
 		if (Input.GetKeyDown (KeyCode.A)) {
 			myServer.isServerConnected = true;
 		}
@@ -102,7 +96,6 @@ public class TCPServer : MonoBehaviour {
 			myServer.canStartGame = true;
 		}
 		*/
-
 	}
 
 	public void Log(long time, TCP_Config.EventType eventType){
@@ -141,43 +134,6 @@ public class TCPServer : MonoBehaviour {
 		}
 	}
 
-	public void OnExitReceived()
-	{
-		if (showExitQuestion) {
-			UnityEngine.Debug.Log ("on exit received");
-			StartCoroutine ("OnExitServer");
-			showExitQuestion = false;
-		}
-	}
-
-
-	public IEnumerator OnExitServer()
-	{
-		UnityEngine.Debug.Log ("EXIT message received from server");
-		exp.uiController.exitPanel.alpha = 1.0f;
-		bool shouldContinue = false;
-		bool isValidInput = false;
-		while (!isValidInput) {
-			if (Input.GetKeyUp (KeyCode.Y)) {
-				isValidInput = true;
-				shouldContinue = true;
-			}
-			else if (Input.GetKeyUp (KeyCode.N)) {
-				isValidInput = true;
-				shouldContinue = false;
-			}
-			yield return 0;
-		}
-		if (shouldContinue) {
-			exp.uiController.exitPanel.alpha = 0.0f;
-			yield return null;
-		} else {
-
-			Application.Quit ();
-		}
-		yield return null;
-	}
-
 
 }
 
@@ -209,7 +165,7 @@ public class ThreadedServer : ThreadedJob{
 	Socket s;
 	TcpListener myList;
 
-	int socketTimeoutMS = 5; //TODO: what should I set this to?
+    int socketTimeoutMS = 500; // 500 milliseconds will be the time period within which socket messages will be exchanged
 		
 	public ThreadedServer(){
 		
@@ -307,12 +263,15 @@ public class ThreadedServer : ThreadedJob{
 		UnityEngine.Debug.Log("Waiting for a connection.....");
 		
 		s = myList.AcceptSocket();
+
+        //uncheck if you want a NON-BLOCKING SOCKET
+        s.Blocking = false;
 		isServerConnected = true;
 
 		//THIS IS VERY IMPORTANT.
 		//WITHOUT THIS, SOCKET WILL HANG ON THINGS LIKE RECEIVING MESSAGES IF THERE ARE NO NEW MESSAGES.
 			//...because socket.Receive() is a blocking call.
-		s.ReceiveTimeout = socketTimeoutMS;
+		//s.ReceiveTimeout = socketTimeoutMS;
 
 		UnityEngine.Debug.Log("CONNECTED!");
 	}
@@ -476,19 +435,22 @@ public class ThreadedServer : ThreadedJob{
 
 	String ReceiveMessageBuffer(){
 		String messageBuffer = "";
-		try{
+        SocketError error = SocketError.VersionNotSupported;
+        try
+        {
 
 			byte[] b=new byte[1000];
-
-			int k=s.Receive(b);
-			UnityEngine.Debug.Log("Recieved something!");
+          //  int k = s.Receive(b);
+		    int k=s.Receive(b,0,1000,SocketFlags.None,out error);
+           
+          //  UnityEngine.Debug.Log("Received something!");
 			if(k > 0){
 
 				for (int i=0; i<k; i++) {
 					messageBuffer += Convert.ToChar(b[i]);
 				}
 			}
-			UnityEngine.Debug.Log (messageBuffer);
+			//UnityEngine.Debug.Log (messageBuffer);
 		}
 
 		catch (Exception e) {
@@ -597,7 +559,6 @@ public class ThreadedServer : ThreadedJob{
 
 		case "ABORT":
 			//TODO: show message
-			UnityEngine.Debug.Log("Aborted");
 			Application.Quit();
 			break;
 			
@@ -625,14 +586,13 @@ public class ThreadedServer : ThreadedJob{
 	                    self.abortCallback(self.clock)
 					*/
 			
-//			if(isHeartbeat){
-//				//TODO: do this. am I supposed to check for a premature abort? does it matter? or just end it?
-//				End ();
-//			}
-			//TODO: show message
-			TCPServer.Instance.OnExitReceived();
-			UnityEngine.Debug.Log("premature abort occurred");
-			//Application.Quit();
+			if(isHeartbeat){
+				//TODO: do this. am I supposed to check for a premature abort? does it matter? or just end it?
+				End ();
+			}
+                //TODO: show message
+                UnityEngine.Debug.Log("EXIT happened");
+			    Application.Quit();
 			break;
 			
 		default:
