@@ -42,12 +42,12 @@ public class LogitechControllerLogTrack : LogTrack {
 
         if (ExperimentSettings_CoinTask.isLogging && state.IsConnected)
         {
-            Debug.Log("Logging controllers");
+          //  Debug.Log("Logging controllers");
             LogController();
         }
         else
         {
-            Debug.Log("Not logging anymore");
+            //Debug.Log("Not logging anymore");
             
         }
         /*

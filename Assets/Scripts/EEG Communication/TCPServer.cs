@@ -165,7 +165,7 @@ public class ThreadedServer : ThreadedJob{
 	Socket s;
 	TcpListener myList;
 
-	int socketTimeoutMS = 5; //TODO: what should I set this to?
+    int socketTimeoutMS = 500; // 500 milliseconds will be the time period within which socket messages will be exchanged
 		
 	public ThreadedServer(){
 		
@@ -263,12 +263,15 @@ public class ThreadedServer : ThreadedJob{
 		UnityEngine.Debug.Log("Waiting for a connection.....");
 		
 		s = myList.AcceptSocket();
+
+        //uncheck if you want a NON-BLOCKING SOCKET
+        s.Blocking = false;
 		isServerConnected = true;
 
 		//THIS IS VERY IMPORTANT.
 		//WITHOUT THIS, SOCKET WILL HANG ON THINGS LIKE RECEIVING MESSAGES IF THERE ARE NO NEW MESSAGES.
 			//...because socket.Receive() is a blocking call.
-		s.ReceiveTimeout = socketTimeoutMS;
+		//s.ReceiveTimeout = socketTimeoutMS;
 
 		UnityEngine.Debug.Log("CONNECTED!");
 	}
@@ -432,19 +435,22 @@ public class ThreadedServer : ThreadedJob{
 
 	String ReceiveMessageBuffer(){
 		String messageBuffer = "";
-		try{
+        SocketError error = SocketError.VersionNotSupported;
+        try
+        {
 
 			byte[] b=new byte[1000];
-
-			int k=s.Receive(b);
-			UnityEngine.Debug.Log("Recieved something!");
+          //  int k = s.Receive(b);
+		    int k=s.Receive(b,0,1000,SocketFlags.None,out error);
+           
+          //  UnityEngine.Debug.Log("Received something!");
 			if(k > 0){
 
 				for (int i=0; i<k; i++) {
 					messageBuffer += Convert.ToChar(b[i]);
 				}
 			}
-			UnityEngine.Debug.Log (messageBuffer);
+			//UnityEngine.Debug.Log (messageBuffer);
 		}
 
 		catch (Exception e) {
@@ -584,8 +590,9 @@ public class ThreadedServer : ThreadedJob{
 				//TODO: do this. am I supposed to check for a premature abort? does it matter? or just end it?
 				End ();
 			}
-			//TODO: show message
-			Application.Quit();
+                //TODO: show message
+                UnityEngine.Debug.Log("EXIT happened");
+			    Application.Quit();
 			break;
 			
 		default:
