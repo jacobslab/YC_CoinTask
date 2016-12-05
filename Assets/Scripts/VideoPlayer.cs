@@ -53,9 +53,12 @@ public class VideoPlayer : MonoBehaviour {
 	public IEnumerator Play(){
 		if (movie != null) {
 			Debug.Log("playing instruction video");
-			yield return StartCoroutine (AskIfShouldPlay());
+			//yield return StartCoroutine (AskIfShouldPlay());
 
+			//for NYSPI version only, turn it off for other versions
+			shouldPlay=true;
 			if (shouldPlay) {
+				Debug.Log ("should play is TRUE");
 				group.alpha = 1.0f;
 			
 				movie.Stop ();
