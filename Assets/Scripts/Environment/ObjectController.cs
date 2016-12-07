@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.IO;
 public class ObjectController : MonoBehaviour {
 
 
@@ -13,22 +13,33 @@ public class ObjectController : MonoBehaviour {
 	public GameObject DefaultObject; //the prefab used to instantiate the other default objects.
 	public GameObject ExplosiveObject;
 	public List<GameObject> CurrentTrialSpecialObjects;
-
+	List<GameObject>tempList;
 
 	//experiment singleton
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
 	//object array & list
-	List<GameObject> gameObjectList_Spawnable;
+	List<GameObject> gameObjectList_Spawnable_SetA;
+	string[] setAList;
+	string[] setBList;
+	string[] setCList;
+	List<GameObject> gameObjectList_Spawnable_SetB;
+	List<GameObject> gameObjectList_Spawnable_SetC;
 	//List<GameObject> gameObjectList_Spawned; //a list to keep track of the objects currently in the scene
 
 
 
 	// Use this for initialization
 	void Start () {
-		gameObjectList_Spawnable = new List<GameObject> ();
+		gameObjectList_Spawnable_SetA = new List<GameObject> ();
+		gameObjectList_Spawnable_SetB = new List<GameObject> ();
+		gameObjectList_Spawnable_SetC = new List<GameObject> ();
+		tempList=new List<GameObject>();
 		CurrentTrialSpecialObjects = new List<GameObject> ();
-		CreateSpecialObjectList (gameObjectList_Spawnable);
+		CreateSpecialObjectList ();
+		setAList = new string[50];
+		setBList = new string[50];
+		setCList = new string[50];
 	}
 	
 	// Update is called once per frame
@@ -36,9 +47,14 @@ public class ObjectController : MonoBehaviour {
 	
 	}
 
-	void CreateSpecialObjectList(List<GameObject> gameObjectListToFill){
-		gameObjectListToFill.Clear();
+	void CreateSpecialObjectList(){
+		gameObjectList_Spawnable_SetA.Clear();
+		gameObjectList_Spawnable_SetB.Clear();
+		gameObjectList_Spawnable_SetC.Clear();
 		Object[] prefabs;
+		List<string> firstList = new List<string> ();
+		List<string> secondList = new List<string> ();
+		List<string> thirdList = new List<string> ();
 		#if MRIVERSION
 		if(Config_CoinTask.isPractice){
 			prefabs = Resources.LoadAll("Prefabs/MRIPracticeObjects");
@@ -49,9 +65,47 @@ public class ObjectController : MonoBehaviour {
 		#else
 			prefabs = Resources.LoadAll("Prefabs/Objects");
 		#endif
-		for (int i = 0; i < prefabs.Length; i++) {
-			gameObjectListToFill.Add((GameObject)prefabs[i]);
+
+		for(int i=0;i<prefabs.Length;i++)
+			tempList.Add((GameObject)prefabs[i]);
+		while(gameObjectList_Spawnable_SetA.Count < 50)
+		{
+			GameObject tempObj = (GameObject) tempList[Random.Range(0,tempList.Count)];
+			if(!gameObjectList_Spawnable_SetA.Contains(tempObj))
+			{
+				gameObjectList_Spawnable_SetA.Add(tempObj);
+				string tempString = tempObj.ToString ();
+				int startIndex = tempString.IndexOf ("(");
+				int endIndex = tempString.IndexOf (")");
+				tempString=tempString.Remove (startIndex-1, endIndex - startIndex + 2);
+				firstList.Add(tempString);
+				tempList.Remove(tempObj);
+			}
 		}
+		for (int j = 0; j < tempList.Count; j++) {
+			gameObjectList_Spawnable_SetB.Add ((GameObject)tempList [j]);
+			string tempString = tempList[j].ToString ();
+			int startIndex = tempString.IndexOf ("(");
+			int endIndex = tempString.IndexOf (")");
+			tempString=tempString.Remove (startIndex-1, endIndex - startIndex + 2);
+			secondList.Add(tempString.ToString ());
+		}
+
+		for (int i = 0; i < firstList.Count; i++)
+			setAList=firstList.ToArray();
+
+		for (int i = 0; i < secondList.Count; i++)
+			setBList = secondList.ToArray();
+		PrintObjects ();
+		Debug.Log ("the number of stim objects are : " + gameObjectList_Spawnable_SetA.Count);
+		Debug.Log ("the number of NON-Stim objects are : " + gameObjectList_Spawnable_SetB.Count);
+		}
+
+	void PrintObjects()
+	{
+		System.IO.File.WriteAllLines (ExperimentSettings_CoinTask.defaultLoggingPath + "SetAList.txt",setAList );
+		System.IO.File.WriteAllLines (ExperimentSettings_CoinTask.defaultLoggingPath+ "SetBList.txt", setBList);
+	//	System.IO.File.WriteAllLines (ExperimentSettings_CoinTask.defaultLoggingPath+ "SetCList.txt", setCList);
 	}
 
 	//used in replay
@@ -93,20 +147,38 @@ public class ObjectController : MonoBehaviour {
 
 
 	GameObject ChooseRandomObject(){
-		if (gameObjectList_Spawnable.Count == 0) {
-			Debug.Log ("No MORE objects to pick! Recreating object list.");
-			CreateSpecialObjectList(gameObjectList_Spawnable); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
-			if(gameObjectList_Spawnable.Count == 0){
-				Debug.Log ("No objects to pick at all!"); //if there are still no objects in the list, then there weren't any to begin with...
-				return null;
+		GameObject chosenObject;
+		//MAKE NYSPI related changes here
+		if (Config_CoinTask.setA) {
+			if (gameObjectList_Spawnable_SetA.Count == 0) {
+				Debug.Log ("No MORE objects to pick! Recreating object list.");
+				CreateSpecialObjectList (); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
+				if (gameObjectList_Spawnable_SetA.Count == 0) {
+					Debug.Log ("No objects to pick at all!"); //if there are still no objects in the list, then there weren't any to begin with...
+					return null;
+				}
 			}
+
+
+			int randomObjectIndex = Random.Range (0, gameObjectList_Spawnable_SetA.Count);
+			 chosenObject = gameObjectList_Spawnable_SetA [randomObjectIndex];
+			gameObjectList_Spawnable_SetA.RemoveAt (randomObjectIndex);
+		} 
+		else {
+			if (gameObjectList_Spawnable_SetB.Count == 0) {
+				Debug.Log ("No MORE objects to pick! Recreating object list.");
+				CreateSpecialObjectList (); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
+				if (gameObjectList_Spawnable_SetB.Count == 0) {
+					Debug.Log ("No objects to pick at all!"); //if there are still no objects in the list, then there weren't any to begin with...
+					return null;
+				}
+			}
+
+
+			int randomObjectIndex = Random.Range (0, gameObjectList_Spawnable_SetB.Count);
+			chosenObject = gameObjectList_Spawnable_SetB [randomObjectIndex];
+			gameObjectList_Spawnable_SetB.RemoveAt (randomObjectIndex);
 		}
-
-
-		int randomObjectIndex = Random.Range(0, gameObjectList_Spawnable.Count);
-		GameObject chosenObject = gameObjectList_Spawnable[randomObjectIndex];
-		gameObjectList_Spawnable.RemoveAt(randomObjectIndex);
-		
 		return chosenObject;
 	}
 

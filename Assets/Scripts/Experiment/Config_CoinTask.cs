@@ -28,6 +28,8 @@ public class Config_CoinTask : MonoBehaviour {
 #else
 	public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
+	public static bool setA=true;
+	public static bool setB=false;
 #endif
 
 	//#if MRIVERSION
