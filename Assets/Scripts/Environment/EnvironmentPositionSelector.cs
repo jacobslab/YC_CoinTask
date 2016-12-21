@@ -53,6 +53,11 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		return newStartPos;
 	}
 
+	public void MoveToPosition(Vector3 destinationPosition)
+	{
+		PositionSelector.transform.position = destinationPosition;
+	}
+
 	void GetMovementInput(){
 		float verticalAxisInput = Input.GetAxis (Config_CoinTask.VerticalAxisName);
 		float horizontalAxisInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
@@ -130,6 +135,11 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	public Vector3 GetSelectorPosition(){
 		return PositionSelector.transform.position;
+	}
+
+	public void EnableVisibility(bool shouldBeVisible)
+	{
+		EnableSelectionIndicator (shouldBeVisible);
 	}
 	
 	public void EnableSelection(bool shouldEnable){

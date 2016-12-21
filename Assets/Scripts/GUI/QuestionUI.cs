@@ -4,7 +4,7 @@ using System.Collections;
 public class QuestionUI : MonoBehaviour {
 
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } } 
-
+	public TextMesh QuestionText;
 	public TextMesh ObjectNameTextMesh;
 	public GameObject Answers;
 	public ParticleSystem ObjectParticles;
@@ -39,11 +39,23 @@ public class QuestionUI : MonoBehaviour {
 
 		yield return 0;
 	}
+	public IEnumerator PlayObjectRecall(){
+		isPlaying = true;
+		QuestionText.text = "Do you remember what object \n you found in this location?";
 
+		Enable (true);
+		Answers.gameObject.SetActive (false);
+		myAnswerSelector.SetShouldCheckForInput (false);
+		SetObjectNameText ("");
+		Answers.gameObject.SetActive (true);
+		myAnswerSelector.SetShouldCheckForInput (true);
+
+		yield return 0;
+	}
 	//show an object
 	public IEnumerator Play(GameObject objectToSelect, string objectName){
 		isPlaying = true;
-
+		QuestionText.text = "Do you remember wbere to find this...";
 		Enable (true);
 		Answers.gameObject.SetActive (false);
 		myAnswerSelector.SetShouldCheckForInput (false);

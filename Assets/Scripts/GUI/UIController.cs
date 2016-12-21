@@ -8,6 +8,7 @@ public class UIController : MonoBehaviour {
 
 	public PirateController pirateController;
 	public QuestionUI doYouRememberUI;
+	public QuestionUI doYouRememberObjectUI;
 	//public QuestionUI areYouSureUI;
 	public BlockCompleteUI blockCompletedUI;
 	public ScoreRecapUI scoreRecapUI;

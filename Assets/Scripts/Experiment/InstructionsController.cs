@@ -11,8 +11,7 @@ public class InstructionsController : MonoBehaviour {
 	public float timePerInstruction;
 
 	public bool isFinished = false;
-
-	//TextMesh _textMesh;
+	public Image textPanel;
 	public Text text; //TODO: rename this!!!
 	public Text oculusText;
 	public Color textColorDefault;
@@ -125,15 +124,28 @@ public class InstructionsController : MonoBehaviour {
 
 	public void SetInstructionsBlank(){
 		SetText ("");
+		SetTextPanelOff ();
 	}
 
 	public void TurnOffInstructions(){
 		SetInstructionsTransparentOverlay();
 		SetInstructionsBlank();
+		SetTextPanelOff ();
+	}
+
+	public void SetTextPanelOff()
+	{
+		textPanel.color=new Color(1f,1f,1f,0f);
+	}
+
+	public void SetTextPanelOn()
+	{
+		textPanel.color=new Color(1f,1f,1f,0.5f);
 	}
 
 	void SetText(string newText){
 			text.text = newText;
+
 	}
 
 	public void SetInstructionsColorful(){
