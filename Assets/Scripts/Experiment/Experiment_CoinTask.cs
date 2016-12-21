@@ -22,7 +22,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	public Logger_Threading subjectLog;
 	private string eegLogfile; //gets set based on the current subject in Awake()
 	public Logger_Threading eegLog;
-	string sessionDirectory;
+	public string sessionDirectory;
 	public static string sessionStartedFileName = "sessionStarted.txt";
 	public static int sessionID;
 
@@ -46,6 +46,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 	//UI controller
 	public UIController uiController;
+
+	//audio recorder
+	public AudioController audioController;
 
 	//avatar
 	public Player player;

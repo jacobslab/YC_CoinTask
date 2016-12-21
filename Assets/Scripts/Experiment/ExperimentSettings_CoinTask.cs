@@ -23,7 +23,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 	//subject selection controller
 	public SubjectSelectionController subjectSelectionController;
-
+	public Image micTestIndicator;
 
 
 	//LANGUAGE SELECTION
@@ -93,6 +93,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 #if UNITY_WEBPLAYER
 		InitWebSettings ();
 #else
+		DoMicTest();
 		InitLoggingPath ();
 #endif
 		InitMainMenuLabels ();
@@ -115,6 +116,17 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			}
 			#endif
 		#endif
+	}
+
+
+	void DoMicTest(){
+		if (micTestIndicator != null) {
+			if (AudioRecorder.CheckForRecordingDevice ()) {
+				micTestIndicator.color = Color.green;
+			} else {
+				micTestIndicator.color = Color.red;
+			}
+		}
 	}
 
 	void InitLoggingPath(){

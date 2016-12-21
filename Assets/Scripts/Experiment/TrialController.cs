@@ -31,6 +31,10 @@ public class TrialController : MonoBehaviour {
 
 	public Trial currentTrial;
 
+
+	int currentTrialBlockNumber;
+	int currentTrialNumber;
+	int recallTime=2;
 	[HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
 	
 	List<List<Trial>> ListOfTrialBlocks;
@@ -43,15 +47,22 @@ public class TrialController : MonoBehaviour {
 		}
 		else{
 			InitTrials();
+			InitConfigVariables();
 		}
 		#else
 		if(Config_CoinTask.isPractice){
 			InitPracticeTrials();
 		}
 		InitTrials ();
+		InitConfigVariables();
 		#endif
 
 		trialLogger = GetComponent<TrialLogTrack> ();
+	}
+
+	void InitConfigVariables()
+	{
+		recallTime = Config_CoinTask.recallTime;
 	}
 
 	void InitPracticeTrials(){
@@ -302,7 +313,6 @@ public class TrialController : MonoBehaviour {
 		if (trialBlock.Count > 0) {
 			int randomTrialIndex = Random.Range (0, trialBlock.Count);
 			Trial randomTrial = trialBlock [randomTrialIndex];
-
 			trialBlock.RemoveAt (randomTrialIndex);
 			return randomTrial;
 		} 
@@ -464,9 +474,11 @@ public class TrialController : MonoBehaviour {
 		//RUN THE REST OF THE BLOCKS
 		for( int i = 0; i < ListOfTrialBlocks.Count; i++){
 			List<Trial> currentTrialBlock = ListOfTrialBlocks[i];
+			currentTrialBlockNumber = i;
+			int totalTrialsInCurrentBlock = currentTrialBlock.Count;
 			while (currentTrialBlock.Count > 0) {
 				Trial nextTrial = PickRandomTrial (currentTrialBlock);
-
+				currentTrialNumber = totalTrialsInCurrentBlock - currentTrialBlock.Count;
 				yield return StartCoroutine (RunTrial ( nextTrial ));
 
 			}
@@ -855,8 +867,9 @@ public class TrialController : MonoBehaviour {
 
 				//add current chosen position to list of chosen positions
 				//chosenPositions.Add (exp.environmentController.myPositionSelector.GetSelectorPosition ());
-
+				string fileName=currentTrialBlockNumber.ToString()+"_"+currentTrialNumber.ToString();
 					//DO AUDIO RECORDING
+				yield return StartCoroutine (exp.audioController.audioRecorder.Record (exp.sessionDirectory + "audio", fileName, recallTime));
 					//do a beep and record
 
 				//wait for fixed time
