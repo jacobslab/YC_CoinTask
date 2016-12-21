@@ -637,6 +637,8 @@ public class TrialController : MonoBehaviour {
 
 		currentTrial = trial;
 
+		//turn on FOG
+		RenderSettings.fog = true;
 		if (isPracticeTrial) {
 			trialLogger.Log (-1, currentTrial.DefaultObjectLocationsXZ.Count, currentTrial.SpecialObjectLocationsXZ.Count, ExperimentSettings_CoinTask.isOneByOneReveal, false);
 			Debug.Log("Logged practice trial.");
@@ -732,6 +734,10 @@ public class TrialController : MonoBehaviour {
 		currentDefaultObject = null; //set to null so that arrows stop showing up...
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, false));//PlayerControls.toTowerTime) );
 		trialLogger.LogTransportationToTowerEvent (false);
+
+
+		//turn off FOG
+		RenderSettings.fog = false;
 
 		//RUN DISTRACTOR GAME
 		trialLogger.LogDistractorGame (true);
