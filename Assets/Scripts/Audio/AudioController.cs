@@ -5,6 +5,7 @@ public class AudioController : MonoBehaviour {
 
 	public AudioSource[] MainGameSongs;
 	public AudioRecorder audioRecorder;
+	public AudioClip[] recordIndicatorClips;	
 	AudioSource currentSong;
 	int currentSongIndex = -1; //when we play the next song, currentSongIndex will ++;
 

@@ -30,6 +30,8 @@ public class AudioRecorder : MonoBehaviour {
 	private int amountSamples = 256; //increase to get better average, but will decrease performance. Best to leave it
 	private int minFreq, maxFreq; 
 
+	public AudioSource beepHigh;
+	public AudioSource beepLow;
 	AudioSource audio;
 
 	void Start() {

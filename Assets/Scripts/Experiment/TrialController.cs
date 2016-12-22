@@ -31,7 +31,7 @@ public class TrialController : MonoBehaviour {
 
 	public Trial currentTrial;
 
-
+	bool objectRecall=false;
 	int currentTrialBlockNumber;
 	int currentTrialNumber;
 	int recallTime=2;
@@ -793,17 +793,27 @@ public class TrialController : MonoBehaviour {
 
 
 			//do a coin toss to decide whether to do object or location recall
-			bool objectRecall=false;
+
+
+
+
+			//ALTERNATE SWITCHING: GUARANTEES BOTH OBJECT AND LOCATION RECALL WITHIN EACH TRIAL
+
+
+			//RANDOM SWITCHING BETWEEN OBJECT AND LOCATION RECALL: DOESN'T GUARANTEE BOTH WILL APPEAR IN EACH TRIALS
 			float halfChance = Random.value;
 			if (halfChance > 0.5f) {
 				Debug.Log ("got half chance but still keeping it biased");
 				objectRecall = true;
 			}
 			if (objectRecall) {
+				objectRecall = false;
 				Debug.Log ("starting object recall");
 				exp.environmentController.myPositionSelector.EnableVisibility (true);
-				exp.environmentController.myPositionSelector.MoveToPosition (specialObjPosition);
-				yield return new WaitForSeconds (2f);
+				Debug.Log ("this object is: " + specialObj.name);
+				exp.environmentController.myPositionSelector.MoveToPosition (specialObj.transform.position);
+				chosenPositions.Add (specialObj.transform.position);
+				//yield return new WaitForSeconds (2f);
 				trialLogger.LogInstructionEvent ();
 				yield return StartCoroutine (exp.uiController.doYouRememberObjectUI.PlayObjectRecall());
 				#if MRIVERSION
@@ -869,12 +879,20 @@ public class TrialController : MonoBehaviour {
 				//chosenPositions.Add (exp.environmentController.myPositionSelector.GetSelectorPosition ());
 				string fileName=currentTrialBlockNumber.ToString()+"_"+currentTrialNumber.ToString();
 					//DO AUDIO RECORDING
-				yield return StartCoroutine (exp.audioController.audioRecorder.Record (exp.sessionDirectory + "audio", fileName, recallTime));
-					//do a beep and record
 
-				//wait for fixed time
+				//play on record beep
+				exp.audioController.audioRecorder.beepHigh.Play();
+				yield return new WaitForSeconds (0.6f);
+
+				//turn off instructions
 				exp.currInstructions.SetTextPanelOff ();
-				yield return new WaitForSeconds(2f);
+				//start recording
+				yield return StartCoroutine (exp.audioController.audioRecorder.Record (exp.sessionDirectory + "audio", fileName, recallTime));
+
+				//play off beep
+				exp.audioController.audioRecorder.beepLow.Play();
+				yield return new WaitForSeconds (0.6f);
+
 				//disable position selection
 				exp.environmentController.myPositionSelector.EnableVisibility(false);
 				trialLogger.LogRecallChoiceStarted (false);
@@ -908,6 +926,7 @@ public class TrialController : MonoBehaviour {
 
 
 			else {
+				objectRecall = true;
 				//show nice UI, log special object
 				trialLogger.LogObjectToRecall (specialSpawnable);
 				GameObject specialObjUICopy = Instantiate (specialObj, Vector3.zero, specialObj.transform.rotation) as GameObject;
