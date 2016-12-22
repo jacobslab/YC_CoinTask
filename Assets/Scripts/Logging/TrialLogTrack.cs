@@ -288,15 +288,33 @@ public class TrialLogTrack : LogTrack {
 		}
 	}
 
-	public void LogRecallChoiceStarted(bool isStarting){
+	public void LogRecallChoiceStarted(bool isStarting, int recallType){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			if(isStarting){
-				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "RECALL_CHOICE_STARTED");
-				Debug.Log ("Logged recall choice started event.");
+				switch(recallType)
+				{
+				case 1:
+					subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "OBJECT_RECALL_CHOICE_STARTED");
+					Debug.Log ("Logged recall choice started event.");
+					break;
+				case 2:
+					subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "LOCATION_RECALL_CHOICE_STARTED");
+					Debug.Log ("Logged recall choice started event.");
+					break;
+				}
 			}
 			else{
-				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "RECALL_CHOICE_ENDED");
-				Debug.Log ("Logged recall choice ended event.");
+				switch(recallType)
+				{
+				case 1:
+					subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "OBJECT_RECALL_CHOICE_ENDED");
+					Debug.Log ("Logged recall choice started event.");
+					break;
+				case 2:
+					subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "LOCATION_RECALL_CHOICE_ENDED");
+					Debug.Log ("Logged recall choice started event.");
+					break;
+				}
 			}
 		}
 	}
