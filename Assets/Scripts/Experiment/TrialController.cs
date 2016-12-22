@@ -751,7 +751,7 @@ public class TrialController : MonoBehaviour {
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, true);
 		yield return StartCoroutine(exp.boxGameController.RunGame());
 		trialLogger.LogDistractorGame (false);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, false);
+		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, false);	
 
 		//jitter before the first object is shown
 		yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
@@ -809,7 +809,10 @@ public class TrialController : MonoBehaviour {
 //			}
 
 			//ALTERNATE SWITCHING: GUARANTEES BOTH OBJECT AND LOCATION RECALL WITHIN EACH TRIAL
-			if (objectRecall) {
+
+		
+
+			if (ExperimentSettings_CoinTask.myRecall==ExperimentSettings_CoinTask.RecallType.Object) {
 				objectRecall = false;
 				recallTypes.Add (1);
 				Debug.Log ("starting object recall");
@@ -870,7 +873,9 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
 				exp.currInstructions.SetInstructionsBlank();
 				#else
-				yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
+				yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, false, false, 3f));
+				Debug.Log("skipped instructions in 3 seconds"); 
+				//yield return new WaitForSeconds(3f);
 				#endif
 				//log the chosen position and correct position
 				//exp.environmentController.myPositionSelector.logTrack.LogPositionChosen (exp.environmentController.myPositionSelector.GetSelectorPosition (), specialObj.transform.position, specialSpawnable);

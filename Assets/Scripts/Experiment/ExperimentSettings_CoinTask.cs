@@ -40,6 +40,16 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public Dropdown languageDropdown;
 
 
+	public enum RecallType
+	{
+		Location,
+		Object
+	}
+
+	public static RecallType myRecall=RecallType.Location;
+	public Dropdown recallType;
+
+
 	//TOGGLES & SETTINGS
 	public static bool isOculus = false;
 	public static bool isReplay = false;
@@ -273,7 +283,21 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			isOculus = oculusToggle.isOn;
 		}
 	}
+	public void SetRecallType(){
+		Debug.Log ("SETTING Recall Type");
+		if (recallType != null) {
+			switch (recallType.options [recallType.value].text) {
+			case "Location":
+				myRecall = RecallType.Location;
+				break;
+			case "Object":
+				myRecall = RecallType.Object;
+				break;
+			}
 
+			Debug.Log ("CURR RECALL: " + myRecall);
+		}
+	}
 	public void SetLanguage(){
 		Debug.Log ("SETTING LANGUAGE");
 		if (languageDropdown != null) {
