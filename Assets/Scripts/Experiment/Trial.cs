@@ -58,7 +58,7 @@ public class Trial {
 
 
 		int numDefaultObjects = 0;
-		numDefaultObjects = Config_CoinTask.numDefaultObjects;
+		numDefaultObjects = numSpecial;
 
 		//init default and special locations
 		DefaultObjectLocationsXZ = exp.objectController.GenerateOrderedDefaultObjectPositions (numDefaultObjects, avatarStartPos);
