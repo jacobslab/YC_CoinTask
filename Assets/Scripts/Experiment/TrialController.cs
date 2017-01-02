@@ -33,6 +33,7 @@ public class TrialController : MonoBehaviour {
 
 	bool objectRecall=false;
 	int currentTrialBlockNumber;
+	int totalTrialNumber=0;
 	int currentTrialNumber;
 	int recallTime=2;
 	[HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
@@ -770,6 +771,8 @@ public class TrialController : MonoBehaviour {
 		//List<bool> areYouSureResponses = new List<bool> (); //keep track of whether or not the player wanted to double down on each object
 		List<int> recallTypes=new List<int>();
 
+		string trialLstContents = "";
+
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
 
 			//show instructions for location selection
@@ -778,7 +781,7 @@ public class TrialController : MonoBehaviour {
 			Vector3 specialObjPosition = correctPositions [randomOrderIndex];
 			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
 			string specialItemDisplayName = specialSpawnable.GetDisplayName ();
-
+			trialLstContents += specialItemDisplayName + "\n";
 			//set TCP state true
 			switch(randomOrderIndex){
 			case 0:
@@ -886,7 +889,13 @@ public class TrialController : MonoBehaviour {
 
 				//add current chosen position to list of chosen positions
 				//chosenPositions.Add (exp.environmentController.myPositionSelector.GetSelectorPosition ());
-				string fileName=currentTrialBlockNumber.ToString()+"_"+currentTrialNumber.ToString();
+
+				int logTrialNumber=i; //just the object number for this current trial
+
+				string fileName=totalTrialNumber.ToString()+"_"+logTrialNumber.ToString(); //totalTrialNumber_logTrialNumber
+
+
+
 					//DO AUDIO RECORDING
 
 				//play on record beep
@@ -901,6 +910,13 @@ public class TrialController : MonoBehaviour {
 				//play off beep
 				exp.audioController.audioRecorder.beepLow.Play();
 				yield return new WaitForSeconds (0.6f);
+
+
+
+				//make a .LST file with all the names of the objects in the trial
+				string trialLstName = exp.sessionDirectory + "audio/" + fileName + ".lst";
+				System.IO.File.WriteAllText(trialLstName, trialLstContents);
+
 
 				//disable position selection
 				exp.environmentController.myPositionSelector.EnableVisibility(false);
@@ -1060,10 +1076,14 @@ public class TrialController : MonoBehaviour {
 		
 		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses,recallTypes));
 
+
 		//increment subject's trial count
 #if !UNITY_WEBPLAYER
 		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
 #endif
+
+		totalTrialNumber++; //increments the total number of trials in the session
+
 	}
 
 	int currTrialNum = 0;

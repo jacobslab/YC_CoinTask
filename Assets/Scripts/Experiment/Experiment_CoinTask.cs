@@ -26,6 +26,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	public static string sessionStartedFileName = "sessionStarted.txt";
 	public static int sessionID;
 
+
 	//session controller
 	public TrialController trialController;
 
