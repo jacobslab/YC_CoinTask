@@ -75,7 +75,7 @@ public class TrialController : MonoBehaviour {
 			practiceTrials.Add(practiceTrial);
 		}
 		#else
-		Trial  practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract, false);	//2 special objects for practice trial
+		Trial  practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract,1, false);	//2 special objects for practice trial
 		practiceTrials.Add(practiceTrial);
 		#endif
 	}
@@ -105,17 +105,17 @@ public class TrialController : MonoBehaviour {
 			}
 
 			//generate all trials, two & three object, including counter-balanced trials
-			//List<Trial> ListOfTwoItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numTwoItemTrials, 2, false, false);
+			List<Trial> ListOfTwoItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numTwoItemTrials, 2, false, false);
 			List<Trial> ListOfThreeItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numThreeItemTrials, 3, false, false);
 			List<Trial> ListOfFourItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numFourItemTrials, 4, false, false);
 			List<Trial> ListOfFiveItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numFiveItemTrials, 5, false, false);
-			List<Trial> ListOfSixItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numSixItemTrials, 6, false, false);
+			//List<Trial> ListOfSixItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numSixItemTrials, 6, false, false);
 
 
 			//generate blocks from trials
 			int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
 			Debug.Log ("total number of BLOCKS are: " + numTrialBlocks);
-			GenerateTrialBlocks (ListOfThreeItemTrials,ListOfFourItemTrials,ListOfFiveItemTrials,ListOfSixItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
+			GenerateTrialBlocks (ListOfTwoItemTrials,ListOfThreeItemTrials,ListOfFourItemTrials,ListOfFiveItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
 		}
 	}
 
@@ -126,8 +126,15 @@ public class TrialController : MonoBehaviour {
 		//generate first block of completely unique, no-stim trials (no counter-trials)
 			//half should be two-item trials, half should be three-item trials
 		for (int i = 0; i < Config_CoinTask.numTrialsPerBlock / 2; i++) {
-			Trial t2 = new Trial (2, false);
-			Trial t3 = new Trial (3, false);
+			int halfChance = Random.Range (0, 2);
+			Trial t2, t3;
+			if (halfChance == 0) {
+				t2 = new Trial (2,1, false);
+				t3 = new Trial (3,1, false);
+			} else {
+				t2 = new Trial (2, 2, false);
+				t3 = new Trial (3,2,false);
+			}
 
 			currBlock.Add (t2);
 			currBlock.Add (t3);
@@ -144,8 +151,15 @@ public class TrialController : MonoBehaviour {
 		int blocksLeft = (Config_CoinTask.numTestTrials / Config_CoinTask.numTrialsPerBlock) - 1; //as of 7/5/2016, should be 4 trials left
 		int numOrigTrials = Config_CoinTask.numTrialsPerBlock * blocksLeft;
 		for(int i = 0; i < numOrigTrials / 2; i++){
-			Trial t2 = new Trial (2, false);
-			Trial t3 = new Trial (3, false);
+			Trial t2, t3;
+			int halfChance = Random.Range (0, 2);
+			if (halfChance == 0) {
+				t2 = new Trial (2,1, false);
+				t3 = new Trial (3,1, false);
+			} else {
+				t2 = new Trial (2, 2, false);
+				t3 = new Trial (3,2,false);
+			}
 
 			twoItemOrigTrials.Add (t2);
 			threeItemOrigTrials.Add (t3);
@@ -270,7 +284,7 @@ public class TrialController : MonoBehaviour {
 				}
 
 				//make and add manual trials
-				Trial trial = new Trial(numSpecial, false); //non-stim.
+				Trial trial = new Trial(numSpecial, 1, false); //non-stim.
 				//add specific objects to the generated trial
 				int objectNameIndex = 5;
 				for (int i = 0; i < numSpecial; i++) {
@@ -288,7 +302,14 @@ public class TrialController : MonoBehaviour {
 	List<Trial> GenerateTrialsWithCounterTrials(int numTrialsToGenerate, int numSpecial, bool shouldStim, bool shouldStimCounter){
 		List<Trial> trialList = new List<Trial>();
 		for(int i = 0; i < numTrialsToGenerate / 2; i++){ //we're adding trial and a counter trial
-			Trial trial = new Trial(numSpecial, shouldStim);
+			Trial trial;
+			int halfChance = Random.Range (0, 2);
+			if (halfChance == 0) {
+				trial = new Trial(numSpecial,1, shouldStim);
+			} else {
+				trial = new Trial(numSpecial,2, shouldStim);
+			}
+
 			Trial counterTrial = trial.GetCounterSelf(shouldStimCounter);
 			
 			trialList.Add(trial);
@@ -771,15 +792,47 @@ public class TrialController : MonoBehaviour {
 		//show instructions for location selection 
 		trialLogger.LogRecallPhaseStarted(true);
 		Debug.Log ("starting recall phase");
+		int totalRecallObjects = exp.objectController.CurrentTrialSpecialObjects.Count + currentTrial.FoilObjectLocationsXZ.Count; //number of spawnables + number of foils; recall for all of them
 		//ask player to locate each object individually
-		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
+		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( totalRecallObjects);
 		List<Vector3> correctPositions = new List<Vector3> ();
+		List<Vector3> foilPositions = new List<Vector3> ();
+
+
+		List<bool> isFoil = new List<bool> ();
+		int foilsToBeAccountedFor = currentTrial.FoilObjectLocationsXZ.Count;
+		for (int i = 0; i < randomSpecialObjectOrder.Count-1; i++) {
+			int halfChance = Random.Range (0, 2);
+			if (halfChance == 0 && foilsToBeAccountedFor > 0) {
+				isFoil.Add (true);
+				foilsToBeAccountedFor--;
+			} else {
+				isFoil.Add (false);
+			}
+		}
+
+
+		//if all foils still haven't been added, do so for the last remaining isFoil index
+		if (foilsToBeAccountedFor > 0) {
+			isFoil.Add (true);
+		}
+
 
 		string trialLstContents = "";
+		int foilsAdded = 0;
 
 		for (int i = 0; i < randomSpecialObjectOrder.Count; i++) {
-			correctPositions.Add (exp.objectController.CurrentTrialSpecialObjects [randomSpecialObjectOrder [i]].transform.position);
-			trialLstContents += exp.objectController.CurrentTrialSpecialObjects [randomSpecialObjectOrder [i]].GetComponent<SpawnableObject>().GetDisplayName() + "\n";
+			if (isFoil [i]) {
+				foilPositions.Add (currentTrial.FoilObjectLocationsXZ [foilsAdded]);
+				correctPositions.Add (currentTrial.FoilObjectLocationsXZ [foilsAdded]);
+				foilsAdded++;
+				trialLstContents += "Foil\n";
+			}
+			else
+			{
+				correctPositions.Add (exp.objectController.CurrentTrialSpecialObjects [randomSpecialObjectOrder [i]].transform.position);
+				trialLstContents += exp.objectController.CurrentTrialSpecialObjects [randomSpecialObjectOrder [i]].GetComponent<SpawnableObject> ().GetDisplayName () + "\n";
+			}
 		}
 		List<Vector3> chosenPositions = new List<Vector3> (); //chosen positions will be in the same order as the random special object order
 		List<Config_CoinTask.MemoryState> rememberResponses = new List<Config_CoinTask.MemoryState> (); //keep track of whether or not the player remembered each object
@@ -787,7 +840,7 @@ public class TrialController : MonoBehaviour {
 		List<int> recallTypes=new List<int>();
 
 
-		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
+		for (int i = 0; i < randomSpecialObjectOrder.Count; i++) {
 
 			//show instructions for location selection
 			int randomOrderIndex = randomSpecialObjectOrder[i];

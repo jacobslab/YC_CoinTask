@@ -184,7 +184,7 @@ public class ObjectController : MonoBehaviour {
 
 	public List<Vector2> GenerateOrderedDefaultObjectPositions (int numDefaultObjects, Vector3 distancePos){ //ORDERED BY DISTANCE TO PLAYER START POS
 		List<Vector2> defaultPositions = new List<Vector2> ();
-
+		List<Vector2> foilPositions = new List<Vector2> ();
 		for (int i = 0; i < numDefaultObjects; i++) {
 			bool objectsAreFarEnough = false;
 
@@ -231,7 +231,64 @@ public class ObjectController : MonoBehaviour {
 		Vector2 distancePosXZ = new Vector2 (distancePos.x, distancePos.z);
 		defaultPositions = SortByNextClosest(defaultPositions, distancePosXZ);
 
+
+
 		return defaultPositions;
+	}
+
+	public List<Vector2> GenerateFoilObjectPositions (int numFoils, List<Vector2> defaultPositions, Vector3 distancePos){ //ORDERED BY DISTANCE TO PLAYER START POS
+		List<Vector2> foilPositions = new List<Vector2> ();
+		for (int i = 0; i < numFoils; i++) {
+			bool objectsAreFarEnough = false;
+
+			int numTries = 0;
+			int maxNumTries = 1000; //ARBITRARY.
+
+			Vector3 randomEnvPosition = Vector3.zero;
+			Vector2 randomEnvPositionVec2 = Vector2.zero;
+
+			float smallestDistance = 0.0f; //will get filled in by CheckObjectsFarEnoughXZ function
+			float currentBiggestSmallestDistance = 0; //if we fail at positioning in the allotted number of tries, we want to position the treasure chest with the maximal distance to the closest neighbor chest.
+			Vector2 smallestDistancePosition = Vector2.zero;
+
+			while( !objectsAreFarEnough && numTries < maxNumTries){
+				// generate a random position
+				randomEnvPosition = exp.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.objectToWallBuffer );
+				randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
+
+				//increment numTries
+				numTries++;
+
+				//check if the generated position is far enough from all other positions including the already generated foil position
+				objectsAreFarEnough = CheckObjectsFarEnoughXZ( randomEnvPositionVec2, defaultPositions, out smallestDistance);
+
+				//if not, and the smallest distance is larger than the currents largest small distance...
+				if( !objectsAreFarEnough && smallestDistance > currentBiggestSmallestDistance ){
+					currentBiggestSmallestDistance = smallestDistance;
+					smallestDistancePosition = randomEnvPositionVec2;
+				}
+			}
+
+			if(numTries == maxNumTries){
+				Debug.Log("Tried " + maxNumTries + " times to place default objects!");
+				Debug.Log("DISTANCE: " + currentBiggestSmallestDistance + " POSITION: " + smallestDistancePosition);
+				defaultPositions.Add(smallestDistancePosition);
+				foilPositions.Add(smallestDistancePosition);
+			}
+			else{
+				defaultPositions.Add(randomEnvPositionVec2);
+				foilPositions.Add(randomEnvPositionVec2);
+			}
+
+		}
+
+		//insertion sort by distance
+		Vector2 distancePosXZ = new Vector2 (distancePos.x, distancePos.z);
+		foilPositions = SortByNextClosest(foilPositions, distancePosXZ);
+
+
+
+		return foilPositions;
 	}
 
 	List<Vector2> SortByNextClosest(List<Vector2> positions, Vector2 distancePos){

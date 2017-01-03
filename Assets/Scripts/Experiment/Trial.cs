@@ -14,6 +14,7 @@ public class Trial {
 	public Quaternion avatarTowerRot;
 	public int numSpecialObjects;
 	public List<Vector2> DefaultObjectLocationsXZ;
+	public List<Vector2> FoilObjectLocationsXZ;
 	public List<Vector2> SpecialObjectLocationsXZ;
 
 	public List<string> ManualSpecialObjectNames { get { return manualSpecialObjectNames; } }
@@ -24,7 +25,7 @@ public class Trial {
 		SpecialObjectLocationsXZ = new List<Vector2> ();
 	}
 
-	public Trial(int numSpecial, bool shouldStim){
+	public Trial(int numSpecial, int numFoils, bool shouldStim){
 
 		numSpecialObjects = numSpecial;
 
@@ -58,10 +59,11 @@ public class Trial {
 
 
 		int numDefaultObjects = 0;
-		numDefaultObjects = numSpecial;
+		numDefaultObjects = numSpecial; 
 
 		//init default and special locations
 		DefaultObjectLocationsXZ = exp.objectController.GenerateOrderedDefaultObjectPositions (numDefaultObjects, avatarStartPos);
+		FoilObjectLocationsXZ = exp.objectController.GenerateFoilObjectPositions (numFoils, DefaultObjectLocationsXZ, avatarStartPos);
 		SpecialObjectLocationsXZ = exp.objectController.GenerateSpecialObjectPositions (DefaultObjectLocationsXZ, numSpecialObjects);
 	}
 
@@ -125,6 +127,7 @@ public class Trial {
 
 
 		counterTrial.DefaultObjectLocationsXZ = new List<Vector2> ();
+		counterTrial.FoilObjectLocationsXZ = new List<Vector2> ();
 		counterTrial.SpecialObjectLocationsXZ = new List<Vector2> ();
 		//counter the object positions
 		for (int i = 0; i < DefaultObjectLocationsXZ.Count; i++) {
@@ -134,7 +137,13 @@ public class Trial {
 			Vector2 counteredPositionXZ = new Vector2(counteredPosition.x, counteredPosition.z);
 			counterTrial.DefaultObjectLocationsXZ.Add(counteredPositionXZ);
 		}
-		
+		for (int i = 0; i < FoilObjectLocationsXZ.Count; i++) {
+			Vector3 currPosition = new Vector3( FoilObjectLocationsXZ[i].x, 0, FoilObjectLocationsXZ[i].y );
+			Vector3 counteredPosition = GetReflectedPositionXZ( currPosition );
+
+			Vector2 counteredPositionXZ = new Vector2(counteredPosition.x, counteredPosition.z);
+			counterTrial.FoilObjectLocationsXZ.Add(counteredPositionXZ);
+		}
 		for (int i = 0; i < SpecialObjectLocationsXZ.Count; i++) {
 			Vector3 currPosition = new Vector3( SpecialObjectLocationsXZ[i].x, 0, SpecialObjectLocationsXZ[i].y );
 			Vector3 counteredPosition = GetReflectedPositionXZ( currPosition );
