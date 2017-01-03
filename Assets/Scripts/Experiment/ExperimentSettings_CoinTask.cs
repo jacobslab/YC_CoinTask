@@ -46,7 +46,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		Object
 	}
 
-	public static RecallType myRecall=RecallType.Location;
+	public static RecallType myRecall=RecallType.Object;
 	public Dropdown recallType;
 
 

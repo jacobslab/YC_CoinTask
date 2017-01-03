@@ -1140,15 +1140,15 @@ public class TrialController : MonoBehaviour {
 			UsefulFunctions.FaceObject( specialObj, exp.player.gameObject, false);
 			
 			//create an indicator for each special object
-			float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;
-			Vector3 correctPosition = new Vector3 (specialObj.transform.position.x, indicatorHeight, specialObj.transform.position.z);
-			GameObject correctPositionIndicator = Instantiate( exp.environmentController.myPositionSelector.CorrectPositionIndicator, correctPosition, exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.rotation) as GameObject;
-			correctPositionIndicator.GetComponent<SpawnableObject>().SetNameID(correctPositionIndicator.transform, i);
-			CorrectPositionIndicators.Add(correctPositionIndicator); 
+//			float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;
+//			Vector3 correctPosition = new Vector3 (specialObj.transform.position.x, indicatorHeight, specialObj.transform.position.z);
+//			GameObject correctPositionIndicator = Instantiate( exp.environmentController.myPositionSelector.CorrectPositionIndicator, correctPosition, exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.rotation) as GameObject;
+//			correctPositionIndicator.GetComponent<SpawnableObject>().SetNameID(correctPositionIndicator.transform, i);
+//			CorrectPositionIndicators.Add(correctPositionIndicator); 
 
 			//create an indicator for each chosen position
 			//spawn the indicator at the height of the original indicator
-			exp.environmentController.myPositionSelector.EnableSelection (true); //turn on selector for spawning indicator
+			exp.environmentController.myPositionSelector.EnableVisibility (true); //turn on selector for spawning indicator
 			float chosenIndicatorHeight = exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.position.y;
 			Vector3 chosenIndicatorPosition = new Vector3(chosenPosition.x, chosenIndicatorHeight, chosenPosition.z);
 
@@ -1165,8 +1165,8 @@ public class TrialController : MonoBehaviour {
 			ChosenPositionIndicators.Add(chosenPositionIndicator);
 			
 			//calculate the memory points and display them
-			exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
-
+			//exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
+			exp.environmentController.myPositionSelector.MoveToPosition(chosenIndicatorPosition);
 			//int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position, rememberResponses[i]);//, areYouSureResponses[i] );
 
 			//change chosen indicator color to reflect right or wrong
@@ -1182,10 +1182,10 @@ public class TrialController : MonoBehaviour {
 
 
 			//connect the chosen and correct indicators via a line
-			SetConnectingLines( correctPositionIndicator, chosenPosition, chosenPositionColor);
+		//	SetConnectingLines( correctPositionIndicator, chosenPosition, chosenPositionColor);
 
 
-			CorrectPositionIndicatorController correctPosController = correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>();
+		//	CorrectPositionIndicatorController correctPosController = correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>();
 
 			//correctPosController.SetPointsText(points);
 			//memoryScore += points;
@@ -1201,7 +1201,7 @@ public class TrialController : MonoBehaviour {
 		}
 		
 		//disable original selector
-		exp.environmentController.myPositionSelector.EnableSelection(false);
+		exp.environmentController.myPositionSelector.EnableVisibility(false);
 
 #if MRIVERSION
 		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxFeedbackTime));
