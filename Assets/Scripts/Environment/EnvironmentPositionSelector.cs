@@ -10,6 +10,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	public GameObject PositionSelectorVisuals;
 	public GameObject CorrectPositionIndicator;
 	public GameObject ObjectRecallIndicator;
+	public GameObject FoilRecallIndicator;
 	public PositionSelectorLogTrack logTrack;
 
 
@@ -27,6 +28,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	void Start () {
 		EnableSelection(false);
 		EnableVisibility (false);
+		EnableFoilVisibility (false);
 	}
 	
 	// Update is called once per frame
@@ -136,6 +138,11 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	public Vector3 GetSelectorPosition(){
 		return PositionSelector.transform.position;
+	}
+
+	public void EnableFoilVisibility(bool foilCanBeSeen)
+	{
+		FoilRecallIndicator.GetComponent<VisibilityToggler> ().TurnVisible (foilCanBeSeen);
 	}
 
 	public void EnableVisibility(bool shouldBeVisible)
