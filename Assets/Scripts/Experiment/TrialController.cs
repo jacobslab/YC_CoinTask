@@ -35,9 +35,9 @@ public class TrialController : MonoBehaviour {
 	int currentTrialBlockNumber;
 	int totalTrialNumber=0;
 	int currentTrialNumber;
-	int recallTime=2;
+	int recallTime=1; //change to 4 eventually
 	[HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
-	
+
 	List<List<Trial>> ListOfTrialBlocks;
 	List<Trial> practiceTrials;
 
@@ -75,7 +75,7 @@ public class TrialController : MonoBehaviour {
 			practiceTrials.Add(practiceTrial);
 		}
 		#else
-		Trial  practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract, false);	//2 special objects for practice trial
+		Trial  practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract,1, false);	//2 special objects for practice trial
 		practiceTrials.Add(practiceTrial);
 		#endif
 	}
@@ -126,9 +126,15 @@ public class TrialController : MonoBehaviour {
 		//generate first block of completely unique, no-stim trials (no counter-trials)
 			//half should be two-item trials, half should be three-item trials
 		for (int i = 0; i < Config_CoinTask.numTrialsPerBlock / 2; i++) {
-			Trial t2 = new Trial (2, false);
-			Trial t3 = new Trial (3, false);
-
+			int halfChance = Random.Range (0, 2);
+			Trial t2, t3;
+			if (halfChance == 0) {
+				t2 = new Trial (2, 1, false);
+				t3 = new Trial (3, 1, false);
+			} else {
+				t2 = new Trial (2, 2, false);
+				t3 = new Trial (3, 2, false);
+			}
 			currBlock.Add (t2);
 			currBlock.Add (t3);
 		}
@@ -144,9 +150,15 @@ public class TrialController : MonoBehaviour {
 		int blocksLeft = (Config_CoinTask.numTestTrials / Config_CoinTask.numTrialsPerBlock) - 1; //as of 7/5/2016, should be 4 trials left
 		int numOrigTrials = Config_CoinTask.numTrialsPerBlock * blocksLeft;
 		for(int i = 0; i < numOrigTrials / 2; i++){
-			Trial t2 = new Trial (2, false);
-			Trial t3 = new Trial (3, false);
-
+			int halfChance = Random.Range (0, 2);
+			Trial t2, t3;
+			if (halfChance == 0) {
+				t2 = new Trial (2, 1, false);
+				t3 = new Trial (3, 1, false);
+			} else {
+				t2 = new Trial (2, 2, false);
+				t3 = new Trial (3, 2, false);
+			}
 			twoItemOrigTrials.Add (t2);
 			threeItemOrigTrials.Add (t3);
 
@@ -270,7 +282,13 @@ public class TrialController : MonoBehaviour {
 				}
 
 				//make and add manual trials
-				Trial trial = new Trial(numSpecial, false); //non-stim.
+				int halfChance=Random.Range(0,2);
+				Trial trial;
+				if (halfChance == 0) {
+					trial = new Trial (numSpecial,1, false); //non-stim.
+				} else {
+					trial = new Trial (numSpecial,2, false); //non-stim.
+				}
 				//add specific objects to the generated trial
 				int objectNameIndex = 5;
 				for (int i = 0; i < numSpecial; i++) {
@@ -288,7 +306,13 @@ public class TrialController : MonoBehaviour {
 	List<Trial> GenerateTrialsWithCounterTrials(int numTrialsToGenerate, int numSpecial, bool shouldStim, bool shouldStimCounter){
 		List<Trial> trialList = new List<Trial>();
 		for(int i = 0; i < numTrialsToGenerate / 2; i++){ //we're adding trial and a counter trial
-			Trial trial = new Trial(numSpecial, shouldStim);
+			int halfChance = Random.Range (0, 2);
+			Trial trial;
+			if (halfChance == 0) {
+				trial = new Trial(numSpecial,1, shouldStim);
+			} else {
+				trial = new Trial(numSpecial,2, shouldStim);
+			}
 			Trial counterTrial = trial.GetCounterSelf(shouldStimCounter);
 			
 			trialList.Add(trial);
@@ -637,6 +661,7 @@ public class TrialController : MonoBehaviour {
 	//...one the pause for encoding ends, we increment.
 	public void IncrementNumDefaultObjectsCollected(){
 		numDefaultObjectsCollected++;
+		Debug.Log ("numdefaultobjects index is: " + numDefaultObjectsCollected);
 		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
 			CreateNextDefaultObject ( numDefaultObjectsCollected );
 		}
@@ -644,6 +669,7 @@ public class TrialController : MonoBehaviour {
 
 	void CreateNextDefaultObject ( int currentIndex ){
 		if (currentTrial != null) {
+			Debug.Log ("current index:" + currentIndex);
 			//SetUpNextDefaultObject (currentIndex);
 			if (currentIndex < currentTrial.DefaultObjectLocationsXZ.Count) {
 
@@ -660,7 +686,8 @@ public class TrialController : MonoBehaviour {
 	IEnumerator RunTrial(Trial trial){
 
 		currentTrial = trial;
-
+		//generate foil objects
+		exp.objectController.CreateFoilObjects ();
 		if (isPracticeTrial) {
 			trialLogger.Log (-1, currentTrial.DefaultObjectLocationsXZ.Count, currentTrial.SpecialObjectLocationsXZ.Count, ExperimentSettings_CoinTask.isOneByOneReveal, false);
 			Debug.Log("Logged practice trial.");
@@ -730,10 +757,11 @@ public class TrialController : MonoBehaviour {
 		#else //if not MRI version, just wait until all chests are collected;
 		//while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
 		while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
+			Debug.Log ("collected: " + numDefaultObjectsCollected+"/"+(numDefaultObjectsToCollect).ToString());
 			yield return 0;
 		}
 		#endif
-
+		Debug.Log("num collected is: " + numDefaultObjectsCollected + " and to collect is : " + (numDefaultObjectsToCollect).ToString());
 		//Add time bonus
 		trialTimer.StopTimer ();
 		timeBonus = exp.scoreController.CalculateTimeBonus (trialTimer.GetSecondsInt());
@@ -772,14 +800,30 @@ public class TrialController : MonoBehaviour {
 		trialLogger.LogRecallPhaseStarted(true);
 		Debug.Log ("starting recall phase");
 		//ask player to locate each object individually
-		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
+		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( numDefaultObjectsToCollect); //this includes special and foil objects
 		List<Vector3> correctPositions = new List<Vector3> ();
 
 		string trialLstContents = "";
-
+		int foilObjectsAdded = 0;
+		int specialObjectsAdded = 0;
+		//List<GameObject> recallObjects = new List<GameObject> ();
 		for (int i = 0; i < randomSpecialObjectOrder.Count; i++) {
-			correctPositions.Add (exp.objectController.CurrentTrialSpecialObjects [randomSpecialObjectOrder [i]].transform.position);
-			trialLstContents += exp.objectController.CurrentTrialSpecialObjects [randomSpecialObjectOrder [i]].GetComponent<SpawnableObject>().GetDisplayName() + "\n";
+			
+			int halfChance = Random.Range (0, 2);
+			if (halfChance == 1 && specialObjectsAdded < currentTrial.SpecialObjectLocationsXZ.Count) {
+				exp.objectController.RecallObjectList.Add (exp.objectController.CurrentTrialSpecialObjects [specialObjectsAdded++]);
+			} else if (foilObjectsAdded < exp.objectController.CurrentTrialFoilObjects) {
+				exp.objectController.RecallObjectList.Add (exp.objectController.FoilObjects [foilObjectsAdded++]);
+			} else {
+				exp.objectController.RecallObjectList.Add (exp.objectController.CurrentTrialSpecialObjects [specialObjectsAdded++]);
+			}
+		}
+		Debug.Log ("number of recall objects is: " + exp.objectController.RecallObjectList.Count + " and should be" + randomSpecialObjectOrder.Count);
+		Debug.Log ("number of special objects is: " + specialObjectsAdded + "/" + exp.objectController.CurrentTrialSpecialObjects.Count);
+		Debug.Log ("number of foil objects is: " + foilObjectsAdded + "/" + exp.objectController.CurrentTrialFoilObjects);
+		for (int i = 0; i < exp.objectController.RecallObjectList.Count; i++) {
+			correctPositions.Add (exp.objectController.RecallObjectList[randomSpecialObjectOrder [i]].transform.position);
+			trialLstContents += exp.objectController.RecallObjectList[randomSpecialObjectOrder [i]].GetComponent<SpawnableObject> ().GetDisplayName () + "\n";
 		}
 		List<Vector3> chosenPositions = new List<Vector3> (); //chosen positions will be in the same order as the random special object order
 		List<Config_CoinTask.MemoryState> rememberResponses = new List<Config_CoinTask.MemoryState> (); //keep track of whether or not the player remembered each object
@@ -787,11 +831,11 @@ public class TrialController : MonoBehaviour {
 		List<int> recallTypes=new List<int>();
 
 
-		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
+		for (int i = 0; i < exp.objectController.RecallObjectList.Count; i++) {
 
 			//show instructions for location selection
 			int randomOrderIndex = randomSpecialObjectOrder[i];
-			GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
+			GameObject specialObj = exp.objectController.RecallObjectList [randomOrderIndex];
 			Vector3 specialObjPosition = correctPositions [randomOrderIndex];
 			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
 			string specialItemDisplayName = specialSpawnable.GetDisplayName ();
@@ -890,8 +934,8 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
 				exp.currInstructions.SetInstructionsBlank();
 				#else
-				yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, false, false, 3f));
-				Debug.Log("skipped instructions in 3 seconds"); 
+				yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, false, false, 0f));
+				Debug.Log("skipped instructions immediately"); 
 				//yield return new WaitForSeconds(3f);
 				#endif
 				//log the chosen position and correct position
@@ -913,8 +957,8 @@ public class TrialController : MonoBehaviour {
 					//DO AUDIO RECORDING
 
 				//play on record beep
-				exp.audioController.audioRecorder.beepHigh.Play();
-				yield return new WaitForSeconds (0.6f);
+//				exp.audioController.audioRecorder.beepHigh.Play();
+//				yield return new WaitForSeconds (0.6f);
 
 				//turn off instructions
 				exp.currInstructions.SetTextPanelOff ();
@@ -922,8 +966,8 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine (exp.audioController.audioRecorder.Record (exp.sessionDirectory + "audio", fileName, recallTime));
 
 				//play off beep
-				exp.audioController.audioRecorder.beepLow.Play();
-				yield return new WaitForSeconds (0.6f);
+//				exp.audioController.audioRecorder.beepLow.Play();
+//				yield return new WaitForSeconds (0.6f);
 
 
 
@@ -951,7 +995,7 @@ public class TrialController : MonoBehaviour {
 
 				trialLogger.LogInstructionEvent ();
 
-				if (i <= exp.objectController.CurrentTrialSpecialObjects.Count - 1) {
+				if (i <= exp.objectController.RecallObjectList.Count - 1) {
 					//jitter if it's not the last object to be shown
 					yield return StartCoroutine (exp.WaitForJitter (Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
 				}
@@ -1116,7 +1160,7 @@ public class TrialController : MonoBehaviour {
 		for (int i = 0; i < specialObjectOrder.Count; i++){
 
 			Vector3 chosenPosition = chosenPositions[i];
-
+			chosenPosition = new Vector3 (chosenPosition.x, 0f,chosenPosition.z); //to make sure explosive lands on the ground
 			//throw bomb to selected location
 			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't actually want its visuals showing up as we wait
 
@@ -1127,7 +1171,7 @@ public class TrialController : MonoBehaviour {
 			int randomOrderIndex = specialObjectOrder[i];
 
 			//turn on each special object & scale up for better visibility
-			GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
+			GameObject specialObj = exp.objectController.RecallObjectList [randomOrderIndex];
 			specialObjectListRecallOrder.Add(specialObj);
 
 
@@ -1233,6 +1277,10 @@ public class TrialController : MonoBehaviour {
 		DestroyGameObjectList (CorrectPositionIndicators);
 		DestroyGameObjectList (ChosenPositionIndicators);
 		DestroyGameObjectList (exp.objectController.CurrentTrialSpecialObjects);
+		DestroyGameObjectList (exp.objectController.RecallObjectList);
+		DestroyGameObjectList (exp.objectController.FoilObjects);
+		//reset num foil objects 
+		exp.objectController.CurrentTrialFoilObjects=0;
 
 		trialLogger.LogFeedback(false);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, false);

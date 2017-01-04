@@ -24,7 +24,7 @@ public class Trial {
 		SpecialObjectLocationsXZ = new List<Vector2> ();
 	}
 
-	public Trial(int numSpecial, bool shouldStim){
+	public Trial(int numSpecial,int numFoils, bool shouldStim){
 
 		numSpecialObjects = numSpecial;
 
@@ -58,10 +58,15 @@ public class Trial {
 
 
 		int numDefaultObjects = 0;
-		numDefaultObjects = numSpecial;
+		numDefaultObjects = numSpecial+numFoils;
+		Debug.Log ("number of special objects is: " + numSpecial);
+		Debug.Log ("number of foil objects is: " + numFoils);
 
 		//init default and special locations
 		DefaultObjectLocationsXZ = exp.objectController.GenerateOrderedDefaultObjectPositions (numDefaultObjects, avatarStartPos);
+		//FoilObjectLocationsXZ = exp.objectController.GenerateFoilPositions (numFoils, DefaultObjectLocationsXZ, avatarStartPos);
+		Debug.Log ("number of default positions is: " + DefaultObjectLocationsXZ.Count+"/"+numDefaultObjects);
+		//Debug.Log ("number of foil positions is: " + FoilObjectLocationsXZ.Count);
 		SpecialObjectLocationsXZ = exp.objectController.GenerateSpecialObjectPositions (DefaultObjectLocationsXZ, numSpecialObjects);
 	}
 
