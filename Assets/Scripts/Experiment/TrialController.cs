@@ -740,6 +740,13 @@ public class TrialController : MonoBehaviour {
 
 		exp.uiController.goText.Play ();
 
+
+		//reset time variables according to the memory load of the current trial
+		ScoreController.timeBonusTimeMin=Mathf.CeilToInt(22 * ((currentTrial.SpecialObjectLocationsXZ.Count/2)*0.75f)); //base is 22
+		ScoreController.timeBonusTimeMed=Mathf.CeilToInt(44* ((currentTrial.SpecialObjectLocationsXZ.Count/2)*0.75f)); //base is 44
+		//readjusting timer bar width to make them move appropriately to the adjusted time
+		exp.scoreController.timerBar.barTimes[0]=ScoreController.timeBonusTimeMin;
+		exp.scoreController.timerBar.barTimes [1] = ScoreController.timeBonusTimeMed - ScoreController.timeBonusTimeMin;
 		//start a game timer
 		trialTimer.StartTimer ();
 

@@ -17,10 +17,10 @@ public class ScoreController : MonoBehaviour {
 
 	
 	//Time bonus time variables!
-	static int timeBonusTimeMin = 22;
+	public static int timeBonusTimeMin = 22;
 	public static int TimeBonusTimeMin { get { return timeBonusTimeMin; } }
 	
-	static int timeBonusTimeMed = 44;
+	public static int timeBonusTimeMed = 44;
 	public static int TimeBonusTimeMed { get { return timeBonusTimeMed; } }
 	
 	//static int timeBonusTimeMax = 52;
@@ -77,6 +77,7 @@ public class ScoreController : MonoBehaviour {
 	public TextMesh maybeScoreExplanation;
 	public TextMesh noScoreExplanation;
 
+	public TimerBar timerBar;
 
 	// Use this for initialization
 	void Start () {

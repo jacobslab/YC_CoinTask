@@ -21,7 +21,7 @@ public class TimerBar : MonoBehaviour {
 
 	Vector3[] barPositions;
 	float[] barWidths;
-	float[] barTimes;
+	public float[] barTimes;
 
 
 	enum TimeState {
@@ -57,7 +57,9 @@ public class TimerBar : MonoBehaviour {
 
 		barTimes = new float[2];
 		barTimes [0] = ScoreController.TimeBonusTimeMin;
+		Debug.Log(barTimes[0]);
 		barTimes [1] = ScoreController.TimeBonusTimeMed - ScoreController.TimeBonusTimeMin;
+		Debug.Log (barTimes [1]);
 		//barTimes [2] = ScoreController.TimeBonusTimeBig - ScoreController.TimeBonusTimeMed;
 
 		Reset ();
@@ -71,6 +73,7 @@ public class TimerBar : MonoBehaviour {
 				if(timeState != TimeState.minTime){
 					SetState(TimeState.minTime, topBonusUI.GetComponentInChildren<Text> ().text, topBonusUI.position);
 				}
+				Debug.Log (ScoreController.timeBonusTimeMin);
 				MoveBar (topBar, 0);
 			} 
 			else if (myTimer.GetSecondsInt () < ScoreController.TimeBonusTimeMed) { //make mid bar smaller
