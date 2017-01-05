@@ -66,4 +66,5 @@ public class VisibilityToggler : MonoBehaviour {
 	public float GetAlpha(){
 		return currentAlpha;
 	}
+
 }

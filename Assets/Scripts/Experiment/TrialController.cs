@@ -962,7 +962,7 @@ public class TrialController : MonoBehaviour {
 
 
 					//DO AUDIO RECORDING
-
+				exp.environmentController.myPositionSelector.StartTimer();
 				//play on record beep
 				exp.audioController.audioRecorder.beepHigh.Play();
 
@@ -1211,7 +1211,8 @@ public class TrialController : MonoBehaviour {
 
 			//create an indicator for each chosen position
 			//spawn the indicator at the height of the original indicator
-			exp.environmentController.myPositionSelector.EnableVisibility (true); //turn on selector for spawning indicator
+			if(!isFoil[randomOrderIndex])
+				exp.environmentController.myPositionSelector.EnableVisibility (true); //turn on selector for spawning indicator
 			float chosenIndicatorHeight = exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.position.y;
 			Vector3 chosenIndicatorPosition = new Vector3(chosenPosition.x, chosenIndicatorHeight, chosenPosition.z);
 
@@ -1237,7 +1238,9 @@ public class TrialController : MonoBehaviour {
 			
 			//calculate the memory points and display them
 			//exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
-			exp.environmentController.myPositionSelector.MoveToPosition(chosenIndicatorPosition);
+
+			if(!isFoil[randomOrderIndex])
+				exp.environmentController.myPositionSelector.MoveToPosition(chosenIndicatorPosition);
 			//int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position, rememberResponses[i]);//, areYouSureResponses[i] );
 
 			//change chosen indicator color to reflect right or wrong

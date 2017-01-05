@@ -58,7 +58,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	public void MoveToPosition(Vector3 destinationPosition)
 	{
-		PositionSelector.transform.position = new Vector3(destinationPosition.x,PositionSelector.transform.position.y,destinationPosition.z);
+		ObjectRecallIndicator.transform.position = new Vector3(destinationPosition.x,PositionSelector.transform.position.y,destinationPosition.z);
 	}
 
 	void GetMovementInput(){
@@ -153,6 +153,11 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	public void EnableSelection(bool shouldEnable){
 		shouldSelect = shouldEnable;
 		EnableSelectionIndicator (shouldEnable);
+	}
+
+	public void StartTimer()
+	{
+		StartCoroutine(ObjectRecallIndicator.GetComponent<CircleTimerManager>().InitiateTimerCountdown(Config_CoinTask.recallTime));
 	}
 
 	void EnableObjectRecallIndicator(bool shouldBeVisible)
