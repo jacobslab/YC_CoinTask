@@ -74,6 +74,17 @@ public class TrialLogTrack : LogTrack {
 		Debug.Log ("JITTER ENDED LOGGED: " + jitter);
 	}
 
+	public void LogWaitForISIBegan(float interTime)
+	{
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "ISI_STARTED" + separator + interTime);
+		Debug.Log ("ISI LOGGED: " + interTime);
+	}
+
+	public void LogWaitForISIEnded(float interTime)
+	{
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "ISI_ENDED" + separator + interTime);
+		Debug.Log ("ISI LOGGED: " + interTime);
+	}
 
 
 

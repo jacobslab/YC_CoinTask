@@ -1027,7 +1027,9 @@ public class TrialController : MonoBehaviour {
 
 				if (i <= exp.objectController.RecallObjectList.Count - 1) {
 					//jitter if it's not the last object to be shown
-					yield return StartCoroutine (exp.WaitForJitter (Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
+					yield return StartCoroutine (exp.WaitForJitter (Config_CoinTask.randomPALJitterMin, Config_CoinTask.randomPALJitterMax));
+					yield return StartCoroutine(exp.WaitForISI(Config_CoinTask.isiTime));
+					Debug.Log ("waited for jitter and ISI time");
 				}
 
 				Debug.Log ("moving to the position");
@@ -1154,7 +1156,12 @@ public class TrialController : MonoBehaviour {
 
 				if (i <= exp.objectController.CurrentTrialSpecialObjects.Count - 1) {
 					//jitter if it's not the last object to be shown
-					yield return StartCoroutine (exp.WaitForJitter (Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
+					//yield return StartCoroutine (exp.WaitForJitter (Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
+
+					//we will jitter using PAL variables for now
+					yield return StartCoroutine (exp.WaitForJitter (Config_CoinTask.randomPALJitterMin, Config_CoinTask.randomPALJitterMax));
+					yield return StartCoroutine(exp.WaitForISI(Config_CoinTask.isiTime));
+					Debug.Log ("waited for jitter and ISI time");
 				}
 			}
 
@@ -1190,7 +1197,7 @@ public class TrialController : MonoBehaviour {
 		for (int i = 0; i < specialObjectOrder.Count; i++){
 
 			Vector3 chosenPosition = chosenPositions[i];
-			chosenPosition = new Vector3 (chosenPosition.x, 0f,chosenPosition.z); //to make sure explosive lands on the ground
+			chosenPosition = new Vector3 (chosenPosition.x, 1.2f,chosenPosition.z); //to make sure explosive lands on the ground
 			//throw bomb to selected location
 			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't actually want its visuals showing up as we wait
 

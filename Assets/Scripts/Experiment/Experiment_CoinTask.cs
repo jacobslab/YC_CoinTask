@@ -281,6 +281,18 @@ public class Experiment_CoinTask : MonoBehaviour {
 		trialController.GetComponent<TrialLogTrack>().LogWaitForJitterEnded(currentTime);
 	}
 
+	public IEnumerator WaitForISI(float interTime)
+	{
+		trialController.GetComponent<TrialLogTrack>().LogWaitForISIBegan(interTime);
+		float currentTime = 0.0f;
+		while (currentTime < interTime) {
+			currentTime += Time.deltaTime;
+			yield return 0;
+		}
+
+		trialController.GetComponent<TrialLogTrack>().LogWaitForISIEnded(currentTime);
+	}
+
 
 	public void OnExit(){ //call in scene controller when switching to another scene!
 		if (ExperimentSettings_CoinTask.isLogging) {
