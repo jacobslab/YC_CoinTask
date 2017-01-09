@@ -147,9 +147,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		}
 
 		if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH1) {
-			if(Config_CoinTask.isSyncbox || Config_CoinTask.isSystem2){ //only add the folder if it's not the demo version.
+			//if(Config_CoinTask.isSyncbox || Config_CoinTask.isSystem2){ //only add the folder if it's not the demo version.
 				defaultLoggingPath += TH1Folder;
-			}
+			//}
 		} 
 		else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH2) {
 			defaultLoggingPath += TH2Folder;
