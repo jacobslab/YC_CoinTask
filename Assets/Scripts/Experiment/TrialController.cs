@@ -91,6 +91,7 @@ public class TrialController : MonoBehaviour {
 	}
 
 	void InitStandardTrials(){
+		UnityEngine.Debug.Log("about to init TIRALS");
 		ListOfTrialBlocks = new List<List<Trial>> ();
 
 		if (File.Exists (ExperimentSettings_CoinTask.manualTrialFilePath)) {
@@ -114,7 +115,7 @@ public class TrialController : MonoBehaviour {
 
 			//generate blocks from trials
 			int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
-			Debug.Log ("total number of BLOCKS are: " + numTrialBlocks);
+			UnityEngine.Debug.Log ("total number of BLOCKS are: " + numTrialBlocks);
 			GenerateTrialBlocks (ListOfThreeItemTrials,ListOfFourItemTrials,ListOfFiveItemTrials,ListOfSixItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
 		}
 	}
@@ -305,19 +306,27 @@ public class TrialController : MonoBehaviour {
 
 	List<Trial> GenerateTrialsWithCounterTrials(int numTrialsToGenerate, int numSpecial, bool shouldStim, bool shouldStimCounter){
 		List<Trial> trialList = new List<Trial>();
-		for(int i = 0; i < numTrialsToGenerate / 2; i++){ //we're adding trial and a counter trial
-			int halfChance = Random.Range (0, 2);
+		int halfChance = Random.Range (0, 2);
+		for(int i = 0; i < numTrialsToGenerate / 3; i++){ //we're adding trial and a counter trial
+			
 			Trial trial;
 			if (halfChance == 0) {
 				trial = new Trial(numSpecial,1, shouldStim);
+				halfChance = 1;
 			} else {
 				trial = new Trial(numSpecial,2, shouldStim);
+				halfChance = 0;
 			}
 			Trial counterTrial = trial.GetCounterSelf(shouldStimCounter);
 			
 			trialList.Add(trial);
 			trialList.Add(counterTrial);
 		}
+		Trial oneFoilTrial=new Trial(numSpecial,1,shouldStim);
+		Trial twoFoilTrial = new Trial (numSpecial, 2, shouldStimCounter);
+
+		trialList.Add (oneFoilTrial);
+		trialList.Add (twoFoilTrial);
 
 		return trialList;
 	}

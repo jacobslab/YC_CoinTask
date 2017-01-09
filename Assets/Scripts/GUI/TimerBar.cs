@@ -73,7 +73,7 @@ public class TimerBar : MonoBehaviour {
 				if(timeState != TimeState.minTime){
 					SetState(TimeState.minTime, topBonusUI.GetComponentInChildren<Text> ().text, topBonusUI.position);
 				}
-				Debug.Log (ScoreController.timeBonusTimeMin);
+				//Debug.Log (ScoreController.timeBonusTimeMin);
 				MoveBar (topBar, 0);
 			} 
 			else if (myTimer.GetSecondsInt () < ScoreController.TimeBonusTimeMed) { //make mid bar smaller

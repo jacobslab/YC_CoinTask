@@ -247,8 +247,8 @@ public class ObjectController : MonoBehaviour {
 			}
 
 			if(numTries == maxNumTries){
-				Debug.Log("Tried " + maxNumTries + " times to place default objects!");
-				Debug.Log("DISTANCE: " + currentBiggestSmallestDistance + " POSITION: " + smallestDistancePosition);
+//				Debug.Log("Tried " + maxNumTries + " times to place default objects!");
+//				Debug.Log("DISTANCE: " + currentBiggestSmallestDistance + " POSITION: " + smallestDistancePosition);
 				defaultPositions.Add(smallestDistancePosition);
 			}
 			else{

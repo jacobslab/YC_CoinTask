@@ -59,13 +59,13 @@ public class Trial {
 
 		int numDefaultObjects = 0;
 		numDefaultObjects = numSpecial+numFoils;
-		Debug.Log ("number of special objects is: " + numSpecial);
-		Debug.Log ("number of foil objects is: " + numFoils);
+		//Debug.Log ("number of special objects is: " + numSpecial);
+		//Debug.Log ("number of foil objects is: " + numFoils);
 
 		//init default and special locations
 		DefaultObjectLocationsXZ = exp.objectController.GenerateOrderedDefaultObjectPositions (numDefaultObjects, avatarStartPos);
 		//FoilObjectLocationsXZ = exp.objectController.GenerateFoilPositions (numFoils, DefaultObjectLocationsXZ, avatarStartPos);
-		Debug.Log ("number of default positions is: " + DefaultObjectLocationsXZ.Count+"/"+numDefaultObjects);
+		//Debug.Log ("number of default positions is: " + DefaultObjectLocationsXZ.Count+"/"+numDefaultObjects);
 		//Debug.Log ("number of foil positions is: " + FoilObjectLocationsXZ.Count);
 		SpecialObjectLocationsXZ = exp.objectController.GenerateSpecialObjectPositions (DefaultObjectLocationsXZ, numSpecialObjects);
 	}
@@ -147,6 +147,7 @@ public class Trial {
 			Vector2 counteredPositionXZ = new Vector2(counteredPosition.x, counteredPosition.z);
 			counterTrial.SpecialObjectLocationsXZ.Add(counteredPositionXZ);
 		}
+
 		
 		return counterTrial;
 	}
