@@ -141,7 +141,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 	void InitLoggingPath(){
 		ResetDefaultLoggingPath ();
-		
+		Debug.Log ("reset log path");
 		if(!Directory.Exists(defaultLoggingPath)) {
 			Directory.CreateDirectory(defaultLoggingPath);
 		}
@@ -149,6 +149,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH1) {
 			//if(Config_CoinTask.isSyncbox || Config_CoinTask.isSystem2){ //only add the folder if it's not the demo version.
 				defaultLoggingPath += TH1Folder;
+			Debug.Log ("assigned it ");
 			//}
 		} 
 		else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH2) {
@@ -168,6 +169,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 		if(!Directory.Exists(defaultLoggingPath)){ //if that TH folder doesn't exist, make it!
 			Directory.CreateDirectory(defaultLoggingPath);
+			Debug.Log ("created new directory");
 		}
 
 		if (defaultLoggingPathDisplay != null) {

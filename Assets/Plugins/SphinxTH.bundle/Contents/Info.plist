@@ -5,11 +5,11 @@
 	<key>BuildMachineOSBuild</key>
 	<string>15G1108</string>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>English</string>
 	<key>CFBundleExecutable</key>
 	<string>SphinxTH</string>
 	<key>CFBundleIdentifier</key>
-	<string>lab.jacobs.SphinxTH</string>
+	<string>com.apple.SphinxTH</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -24,6 +24,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>CSResourcesFileMapped</key>
+	<true/>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>

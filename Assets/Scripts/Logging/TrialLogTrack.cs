@@ -294,7 +294,7 @@ public class TrialLogTrack : LogTrack {
 
 	public void LogObjectToRecall(SpawnableObject spawnableToRecall){
 		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "RECALL_SPECIAL" + separator + spawnableToRecall.GetName ());
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "RECALL_SPECIAL" + separator + spawnableToRecall.GetDisplayName());
 			Debug.Log ("Logged object recall event.");
 		}
 	}

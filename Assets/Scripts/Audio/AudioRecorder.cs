@@ -95,7 +95,7 @@ public class AudioRecorder : MonoBehaviour {
 	}
 
 	public void StartMicrophone (int duration) {
-		audio.clip = Microphone.Start(selectedDevice, true, duration, maxFreq);//Starts recording
+		audio.clip = Microphone.Start(selectedDevice, true, duration, 16000);//Starts recording
 		while (!(Microphone.GetPosition(selectedDevice) > 0)){} // Wait until the recording has started
 		//audio.Play(); // Play the audio source!
 	}

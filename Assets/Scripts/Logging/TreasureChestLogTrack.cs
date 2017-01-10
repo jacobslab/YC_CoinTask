@@ -33,7 +33,7 @@ public class TreasureChestLogTrack : LogTrack { //currently a treasure chest.
 	string GetNameToLog(){
 		string name = gameObject.name;
 		if (spawnableObject) {
-			name = spawnableObject.GetName();
+			name = spawnableObject.GetDisplayName();
 		}
 		return name;
 	}

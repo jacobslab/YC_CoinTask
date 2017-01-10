@@ -322,7 +322,7 @@ public class Replay : MonoBehaviour {
 									if(objInScene != null){ //if it did grab the prefab...
 										objInScene = exp.objectController.SpawnObject(objInScene, Vector3.zero); //position and rotation should be set next...
 										SpawnableObject objInSceneSpawnable = objInScene.GetComponent<SpawnableObject>();
-										objInScene.name = objInSceneSpawnable.GetName();
+										objInScene.name = objInSceneSpawnable.GetDisplayName();
 
 										if(isUIObj){
 											objInScene.name += "UICopy";
