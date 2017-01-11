@@ -336,7 +336,7 @@ public class TrialController : MonoBehaviour {
 	void GenerateTrialBlocks(List<Trial> threeItemTrials, List<Trial> fourItemTrials,int numBlocks, int numTrialsPerBlock){
 		for(int i = 0; i < numBlocks; i++){
 			List<Trial> newBlock = new List<Trial>();
-			for(int j = 0; j < numTrialsPerBlock / 4; j++){ //half two item, half one item
+			for(int j = 0; j < 3; j++){ //half two item, half one item
 				int randomThreeItemIndex = Random.Range (0, threeItemTrials.Count);
 				int randomFourItemIndex = Random.Range (0, fourItemTrials.Count);
 //				int randomFiveItemIndex = Random.Range (0, fiveItemTrials.Count);
@@ -519,6 +519,12 @@ public class TrialController : MonoBehaviour {
 
 	IEnumerator RunTrials(){
 		//RUN THE REST OF THE BLOCKS
+		int totalTrials=0;
+		for (int i = 0; i < ListOfTrialBlocks.Count; i++) {
+			List<Trial> currentTrialBlock = ListOfTrialBlocks[i];
+			totalTrials += currentTrialBlock.Count;
+		}
+		UnityEngine.Debug.Log ("TOTAL TRIALS: " + totalTrials);
 		for( int i = 0; i < ListOfTrialBlocks.Count; i++){
 			List<Trial> currentTrialBlock = ListOfTrialBlocks[i];
 			currentTrialBlockNumber = i;
@@ -775,7 +781,7 @@ public class TrialController : MonoBehaviour {
 		#else //if not MRI version, just wait until all chests are collected;
 		//while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
 		while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
-			Debug.Log ("collected: " + numDefaultObjectsCollected+"/"+(numDefaultObjectsToCollect).ToString());
+		//	Debug.Log ("collected: " + numDefaultObjectsCollected+"/"+(numDefaultObjectsToCollect).ToString());
 			yield return 0;
 		}
 		#endif

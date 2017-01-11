@@ -62,8 +62,9 @@ public class Trial {
 
 		int numDefaultObjects = 0;
 		numDefaultObjects = numSpecial+numFoils;
-		/*
+
 		totalTrials++;
+		/*
 		switch (numDefaultObjects) {
 		case 4:
 			fourNum++;
@@ -75,8 +76,9 @@ public class Trial {
 
 		Debug.Log ("Four: " + fourNum);
 		Debug.Log ("Five: " + fiveNum);
-		Debug.Log ("total: " + totalTrials);
 		*/
+		Debug.Log ("total: " + totalTrials);
+
 		//Debug.Log ("number of special objects is: " + numSpecial);
 		//Debug.Log ("number of foil objects is: " + numFoils);
 
@@ -165,9 +167,10 @@ public class Trial {
 			Vector2 counteredPositionXZ = new Vector2(counteredPosition.x, counteredPosition.z);
 			counterTrial.SpecialObjectLocationsXZ.Add(counteredPositionXZ);
 		}
-		/*
-		int numDefaultObjects = counterTrial.DefaultObjectLocationsXZ.Count;
+
+		//int numDefaultObjects = counterTrial.DefaultObjectLocationsXZ.Count;
 		totalTrials++;
+		/*
 		switch (numDefaultObjects) {
 		case 4:
 			fourNum++;
@@ -179,8 +182,9 @@ public class Trial {
 
 		Debug.Log ("Four: " + fourNum);
 		Debug.Log ("Five: " + fiveNum);
+		*/
 		Debug.Log ("total: " + totalTrials);
-*/
+
 		return counterTrial;
 	}
 }

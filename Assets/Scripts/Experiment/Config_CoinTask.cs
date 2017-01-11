@@ -103,7 +103,7 @@ public class Config_CoinTask : MonoBehaviour {
 //
 //	public static int numFiveItemTrials = 6;
 //	public static int numSixItemTrials = 6;
-	public static int numTrialsPerBlock = 5;
+	public static int numTrialsPerBlock = 6;
 
 
 	//FEEDBACK SETTINGS:
