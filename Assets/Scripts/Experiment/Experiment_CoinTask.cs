@@ -27,6 +27,10 @@ public class Experiment_CoinTask : MonoBehaviour {
 	public static int sessionID;
 
 
+	//pocketsphinx
+	public SphinxTest sphinxTest;
+
+
 	//session controller
 	public TrialController trialController;
 

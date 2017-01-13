@@ -856,6 +856,7 @@ public class TrialController : MonoBehaviour {
 		List<Config_CoinTask.MemoryState> rememberResponses = new List<Config_CoinTask.MemoryState> (); //keep track of whether or not the player remembered each object
 		//List<bool> areYouSureResponses = new List<bool> (); //keep track of whether or not the player wanted to double down on each object
 		List<int> recallTypes=new List<int>();
+		List<int> recallAnswers = new List<int> ();
 
 
 		for (int i = 0; i < exp.objectController.RecallObjectList.Count; i++) {
@@ -866,6 +867,7 @@ public class TrialController : MonoBehaviour {
 			Vector3 specialObjPosition = correctPositions [randomOrderIndex];
 			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
 			string specialItemDisplayName = specialSpawnable.GetDisplayName ();
+			int currentRecallNumber = i;
 			//set TCP state true
 			switch(randomOrderIndex){
 			case 0:
@@ -906,6 +908,7 @@ public class TrialController : MonoBehaviour {
 				exp.environmentController.myPositionSelector.EnableVisibility (true);
 				Debug.Log ("this object is: " + specialObj.name);
 				exp.environmentController.myPositionSelector.MoveToPosition (specialObj.transform.position);
+				string currentRecallObject = specialObj.name;
 				chosenPositions.Add (specialObj.transform.position);
 				//yield return new WaitForSeconds (2f);
 				//trialLogger.LogInstructionEvent ();
@@ -1003,13 +1006,17 @@ public class TrialController : MonoBehaviour {
 				exp.currInstructions.SetTextPanelOff ();
 
 				//make a .LST file with all the names of the objects in the trial
-				string trialLstName = exp.sessionDirectory + "audio/" + fileName + ".lst";
-				System.IO.File.WriteAllText(trialLstName, trialLstContents);
+				string trialLstName = exp.sessionDirectory + "audio/" + fileName + ".txt";
+				System.IO.File.WriteAllText(trialLstName, currentRecallObject);
 
 
 				//disable position selection
 				exp.environmentController.myPositionSelector.EnableVisibility(false);
 				trialLogger.LogRecallChoiceStarted (false,1);
+
+				//check audio response
+				UnityEngine.Debug.Log("CHECKING SPHINX RESPONSE: " +  currentTrialNumber + " and  "  +currentRecallNumber);
+				recallAnswers.Add(exp.sphinxTest.CheckAudioResponse(currentTrialNumber-1,currentRecallNumber));
 
 				switch (randomOrderIndex) {
 				case 0:
@@ -1186,7 +1193,7 @@ public class TrialController : MonoBehaviour {
 
 		trialLogger.LogRecallPhaseStarted(false);
 		
-		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses,isFoil));
+		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses,isFoil,recallAnswers));
 
 
 		//increment subject's trial count
@@ -1199,7 +1206,7 @@ public class TrialController : MonoBehaviour {
 	}
 
 	int currTrialNum = 0;
-	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<Config_CoinTask.MemoryState> rememberResponses,List<bool>isFoil){
+	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<Config_CoinTask.MemoryState> rememberResponses,List<bool>isFoil,List<int> recallAnswers){
 		trialLogger.LogFeedback(true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
 
@@ -1266,7 +1273,19 @@ public class TrialController : MonoBehaviour {
 
 
 			ChosenPositionIndicators.Add(chosenPositionIndicator);
-			
+
+
+
+
+
+
+
+			///SHOW CORRECT OR WRONG HERE BASED ON RECALLANSWERS LIST
+
+
+
+
+
 			//calculate the memory points and display them
 			//exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
 

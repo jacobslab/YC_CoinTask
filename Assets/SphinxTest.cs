@@ -21,8 +21,8 @@ public class SphinxTest : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		string usbOpenFeedback = Marshal.PtrToStringAuto (SphinxRun(0,1));
-		UnityEngine.Debug.Log(usbOpenFeedback);
+//		string usbOpenFeedback = Marshal.PtrToStringAuto (SphinxRun(0,1));
+//		UnityEngine.Debug.Log(usbOpenFeedback);
 
 		UnityEngine.Debug.Log (PrintANumber ());
 		UnityEngine.Debug.Log (AddTwoIntegers (3, 5));
@@ -38,5 +38,21 @@ public class SphinxTest : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	public int CheckAudioResponse(int trialNumber, int recallNumber)
+	{
+
+		UnityEngine.Debug.Log("INSIDE SPHINX RESPONSE");
+		string response = Marshal.PtrToStringAuto (SphinxRun(trialNumber,recallNumber));
+		//UnityEngine.Debug.Log(response);
+
+		if (response == "Found") {
+			UnityEngine.Debug.Log("SPHINX FOUND");
+			return 1;
+		} else {
+			UnityEngine.Debug.Log("SPHINX NOT ");
+			return 0;
+		}
 	}
 }
