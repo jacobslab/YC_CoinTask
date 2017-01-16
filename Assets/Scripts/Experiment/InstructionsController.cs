@@ -161,7 +161,7 @@ public class InstructionsController : MonoBehaviour {
 	}
 
 	public void DisplayText(string line){
-		Debug.Log ("setting line " + line);
+//		Debug.Log ("setting line " + line);
 		SetText(line);
 	}
 

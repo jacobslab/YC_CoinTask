@@ -306,11 +306,11 @@ public class TrialLogTrack : LogTrack {
 				{
 				case 1:
 					subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "OBJECT_RECALL_CHOICE_STARTED");
-					Debug.Log ("Logged recall choice started event.");
+//					Debug.Log ("Logged recall choice started event.");
 					break;
 				case 2:
 					subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "LOCATION_RECALL_CHOICE_STARTED");
-					Debug.Log ("Logged recall choice started event.");
+			//		Debug.Log ("Logged recall choice started event.");
 					break;
 				}
 			}

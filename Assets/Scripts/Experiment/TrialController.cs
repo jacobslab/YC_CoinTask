@@ -827,6 +827,8 @@ public class TrialController : MonoBehaviour {
 		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( numDefaultObjectsToCollect); //this includes special and foil objects
 		List<Vector3> correctPositions = new List<Vector3> ();
 		List<bool> isFoil = new List<bool> ();
+		List<int> recallAnswers = new List<int> ();
+
 		string trialLstContents = "";
 		int foilObjectsAdded = 0;
 		int specialObjectsAdded = 0;
@@ -850,13 +852,13 @@ public class TrialController : MonoBehaviour {
 		Debug.Log ("number of foil objects is: " + foilObjectsAdded + "/" + exp.objectController.CurrentTrialFoilObjects);
 		for (int i = 0; i < exp.objectController.RecallObjectList.Count; i++) {
 			correctPositions.Add (exp.objectController.RecallObjectList[randomSpecialObjectOrder [i]].transform.position);
+			recallAnswers.Add (0);
 			trialLstContents += exp.objectController.RecallObjectList[randomSpecialObjectOrder [i]].GetComponent<SpawnableObject> ().GetDisplayName () + "\n";
 		}
 		List<Vector3> chosenPositions = new List<Vector3> (); //chosen positions will be in the same order as the random special object order
 		List<Config_CoinTask.MemoryState> rememberResponses = new List<Config_CoinTask.MemoryState> (); //keep track of whether or not the player remembered each object
 		//List<bool> areYouSureResponses = new List<bool> (); //keep track of whether or not the player wanted to double down on each object
 		List<int> recallTypes=new List<int>();
-		List<int> recallAnswers = new List<int> ();
 
 
 		for (int i = 0; i < exp.objectController.RecallObjectList.Count; i++) {
@@ -908,7 +910,7 @@ public class TrialController : MonoBehaviour {
 				exp.environmentController.myPositionSelector.EnableVisibility (true);
 				Debug.Log ("this object is: " + specialObj.name);
 				exp.environmentController.myPositionSelector.MoveToPosition (specialObj.transform.position);
-				string currentRecallObject = specialObj.name;
+				string currentRecallObject = specialItemDisplayName;
 				chosenPositions.Add (specialObj.transform.position);
 				//yield return new WaitForSeconds (2f);
 				//trialLogger.LogInstructionEvent ();
@@ -1016,7 +1018,12 @@ public class TrialController : MonoBehaviour {
 
 				//check audio response
 				UnityEngine.Debug.Log("CHECKING SPHINX RESPONSE: " +  currentTrialNumber + " and  "  +currentRecallNumber);
-				recallAnswers.Add(exp.sphinxTest.CheckAudioResponse(currentTrialNumber-1,currentRecallNumber));
+				recallAnswers[randomOrderIndex]=exp.sphinxTest.CheckAudioResponse(currentTrialNumber-1,currentRecallNumber);
+
+//				if (Random.value > 0.5) {
+//					recallAnswers.Add (1);
+//				} else
+//					recallAnswers.Add (0);
 
 				switch (randomOrderIndex) {
 				case 0:
@@ -1236,6 +1243,7 @@ public class TrialController : MonoBehaviour {
 			specialObjectListRecallOrder.Add(specialObj);
 
 			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
+			int currentRecallAnswer = recallAnswers [randomOrderIndex];
 			specialSpawnable.TurnVisible(true);
 			specialSpawnable.Scale(2.0f);
 			UsefulFunctions.FaceObject( specialObj, exp.player.gameObject, false);
@@ -1243,14 +1251,12 @@ public class TrialController : MonoBehaviour {
 			//create an indicator for each special object
 //			float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;
 //			Vector3 correctPosition = new Vector3 (specialObj.transform.position.x, indicatorHeight, specialObj.transform.position.z);
-//			GameObject correctPositionIndicator = Instantiate( exp.environmentController.myPositionSelector.CorrectPositionIndicator, correctPosition, exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.rotation) as GameObject;
-//			correctPositionIndicator.GetComponent<SpawnableObject>().SetNameID(correctPositionIndicator.transform, i);
-//			CorrectPositionIndicators.Add(correctPositionIndicator); 
+
 
 			//create an indicator for each chosen position
 			//spawn the indicator at the height of the original indicator
-			if(!isFoil[randomOrderIndex])
-				exp.environmentController.myPositionSelector.EnableVisibility (true); //turn on selector for spawning indicator
+//			if(!isFoil[randomOrderIndex])
+//				exp.environmentController.myPositionSelector.EnableVisibility (true); //turn on selector for spawning indicator
 			float chosenIndicatorHeight = exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.position.y;
 			Vector3 chosenIndicatorPosition = new Vector3(chosenPosition.x, chosenIndicatorHeight, chosenPosition.z);
 
@@ -1259,13 +1265,16 @@ public class TrialController : MonoBehaviour {
 //			chosenPositionIndicator = Instantiate (exp.environmentController.myPositionSelector.PositionSelectorVisuals, chosenIndicatorPosition, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.rotation) as GameObject;
 //			else
 
+			GameObject correctPositionIndicator = Instantiate( exp.environmentController.myPositionSelector.CorrectPositionIndicator, new Vector3(chosenIndicatorPosition.x,4.82f,chosenIndicatorPosition.z), exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.rotation) as GameObject;
+			correctPositionIndicator.GetComponent<SpawnableObject>().SetNameID(correctPositionIndicator.transform, i);
+			CorrectPositionIndicators.Add(correctPositionIndicator); 
 
 			GameObject chosenPositionIndicator; 
 
 			if(!isFoil[randomOrderIndex])
 				chosenPositionIndicator = Instantiate (exp.environmentController.myPositionSelector.ObjectRecallIndicator, chosenIndicatorPosition, exp.environmentController.myPositionSelector.ObjectRecallIndicator.transform.rotation) as GameObject;
 			else
-				chosenPositionIndicator = Instantiate (exp.environmentController.myPositionSelector.FoilRecallIndicator, chosenIndicatorPosition, exp.environmentController.myPositionSelector.ObjectRecallIndicator.transform.rotation) as GameObject;
+				chosenPositionIndicator = Instantiate (exp.environmentController.myPositionSelector.FoilRecallIndicator, new Vector3(chosenIndicatorPosition.x,5.61f,chosenIndicatorPosition.z), exp.environmentController.myPositionSelector.ObjectRecallIndicator.transform.rotation) as GameObject;
 			
 
 			chosenPositionIndicator.GetComponent<SpawnableObject>().SetNameID(chosenPositionIndicator.transform, i);
@@ -1289,20 +1298,22 @@ public class TrialController : MonoBehaviour {
 			//calculate the memory points and display them
 			//exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
 
-			if(!isFoil[randomOrderIndex])
-				exp.environmentController.myPositionSelector.MoveToPosition(chosenIndicatorPosition);
+//			if(!isFoil[randomOrderIndex])
+//				exp.environmentController.myPositionSelector.MoveToPosition(chosenIndicatorPosition);
 			//int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position, rememberResponses[i]);//, areYouSureResponses[i] );
 
 			//change chosen indicator color to reflect right or wrong
-			ChosenIndicatorController chosenIndicatorController = chosenPositionIndicator.GetComponent<ChosenIndicatorController>();
-			Color chosenPositionColor = chosenIndicatorController.RightColor;
-//			if(points > 0){
-//				chosenIndicatorController.ChangeToRightColor();
-//			}
-//			else if (points <= 0){
-//				chosenIndicatorController.ChangeToWrongColor();
-//				chosenPositionColor = chosenIndicatorController.WrongColor;
-//			}
+			CorrectPositionIndicatorController correctIndicatorController = correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>();
+//			Color chosenPositionColor = correctIndicatorController.ChangeToRightColor();
+			if(currentRecallAnswer==1){
+				Debug.Log ("changing to green");
+				correctIndicatorController.ChangeToRightColor();
+			}
+			else if (currentRecallAnswer == 0){
+				Debug.Log ("changing to red");
+				correctIndicatorController.ChangeToWrongColor();
+				//chosenPositionColor = correctIndicatorController.ChangeToWrongColor();
+			}
 
 
 			//connect the chosen and correct indicators via a line
