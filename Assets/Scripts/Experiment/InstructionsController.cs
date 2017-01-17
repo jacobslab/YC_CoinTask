@@ -44,21 +44,23 @@ public class InstructionsController : MonoBehaviour {
 		"\n\nUse the joystick to control your movement." + 
 		"\n\nDrive into treasure chests to open them. Remember where each object is located!" +
 		"\n\nPress (X) to continue.";
+//
+//	public string initialInstructions2 = "When you are shown different locations in the environment, " +
+//		"\nsay the name of the object you remembered in that location" +
+//		"\n\nIf there was nothing in that location: say “nothing”. " +
+//		"\nIf you can’t remember, say “don’t know”" +
+//		"\n\nThe time you have to respond is indicated by the timer circle around the location marker.";
+//
+//	public string initialInstructions3 = "TIPS FOR MAXIMIZING YOUR SCORE" + 
+//		"\n\nGet a time bonus by driving to the chests quickly." +
+//		"\n\nIf you are more than 75% sure, you should select [YES]." +
+//		"\n\nIf you are at least 50% sure, you should select [MAYBE]." +
+//		"\n\nOtherwise, you should select [NO]." +
+//		"\n\nPress (X) to begin!";
 
-	public string initialInstructions2 = "When you are asked about remembering an object's location, you must answer [ YES ], [ MAYBE ], or [ NO ], and choose a location." +
-		"\n\nYou will win points for correct locations and you will lose points for incorrect locations." +
-		"\n\nPress (X) to continue.";
-
-	public string initialInstructions3 = "TIPS FOR MAXIMIZING YOUR SCORE" + 
-		"\n\nGet a time bonus by driving to the chests quickly." +
-		"\n\nIf you are more than 75% sure, you should select [YES]." +
-		"\n\nIf you are at least 50% sure, you should select [MAYBE]." +
-		"\n\nOtherwise, you should select [NO]." +
-		"\n\nPress (X) to begin!";
-
-	public string yesExplanationInstruction = "win 200 points / lose 200 points";
-	public string maybeExplanationInstruction = "win 100 points / lose 50 points";
-	public string noExplanationInstruction = "win 50 points / lose 0 points";
+//	public string yesExplanationInstruction = "win 200 points / lose 200 points";
+//	public string maybeExplanationInstruction = "win 100 points / lose 50 points";
+//	public string noExplanationInstruction = "win 50 points / lose 0 points";
 
 	//go & hurry up
 	public string GoText = "GO!";

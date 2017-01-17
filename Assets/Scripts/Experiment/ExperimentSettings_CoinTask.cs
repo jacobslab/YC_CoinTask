@@ -122,7 +122,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			} else if (Config_CoinTask.isSyncbox) {
 				defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM/data/";
 			} else {
-				defaultLoggingPath = System.IO.Directory.GetCurrentDirectory () + "/TextFiles/";
+			defaultLoggingPath = System.IO.Directory.GetCurrentDirectory() + "/TextFiles/";
+
+			Debug.Log("current dir: " + System.IO.Directory.GetCurrentDirectory());
 			}
 			#endif
 		#endif
@@ -141,9 +143,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 	void InitLoggingPath(){
 		ResetDefaultLoggingPath ();
-		Debug.Log ("reset log path");
+		Debug.Log ("reset log path: "+ defaultLoggingPath);
 		if(!Directory.Exists(defaultLoggingPath)) {
-			Directory.CreateDirectory(defaultLoggingPath);
+			Directory.CreateDirectory(Path.GetDirectoryName(defaultLoggingPath));
 		}
 
 		if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH1) {

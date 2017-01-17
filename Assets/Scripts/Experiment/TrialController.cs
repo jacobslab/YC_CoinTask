@@ -30,6 +30,13 @@ public class TrialController : MonoBehaviour {
 	public CanvasGroup scoreInstructionsGroup;
 
 	public Trial currentTrial;
+	string initialInstructions2 = "When you are shown different locations in the environment, " +
+		"\n\nsay the name of the object you remembered in that location" +
+		"\n\nIf there was nothing in that location: say “NOTHING”. " +
+		"\nIf you can’t remember, say “DON'T KNOW”" +
+		"\n\nThe time you have to respond is indicated by the timer circle around the location marker" + 
+		"\n\n Press (X) to Begin!";
+	
 
 	bool objectRecall=false;
 	int currentTrialBlockNumber;
@@ -467,9 +474,9 @@ public class TrialController : MonoBehaviour {
 #else
 			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 1.0f;
-			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 0.0f;
-			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+	//		yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 #endif
 
 			#if MRIVERSION
@@ -956,7 +963,7 @@ public class TrialController : MonoBehaviour {
 
 				//show single selection instruction and wait for selection button press
 				string selectObjectText = exp.currInstructions.selectTheLocationText;
-				selectObjectText = "Say out the name of the object you remember to have found in this location";
+				selectObjectText = "Name the object remembered in this location";
 				exp.currInstructions.SetTextPanelOn ();
 
 
@@ -1018,8 +1025,10 @@ public class TrialController : MonoBehaviour {
 
 				//check audio response
 				UnityEngine.Debug.Log("CHECKING SPHINX RESPONSE: " +  currentTrialNumber + " and  "  +currentRecallNumber);
-				recallAnswers[randomOrderIndex]=exp.sphinxTest.CheckAudioResponse(currentTrialNumber-1,currentRecallNumber);
+				int sphinxNum = currentTrialNumber - 1;
+				recallAnswers[randomOrderIndex]=exp.sphinxTest.CheckAudioResponse(sphinxNum,currentRecallNumber);
 
+				trialLogger.LogSphinxEvent ();
 //				if (Random.value > 0.5) {
 //					recallAnswers.Add (1);
 //				} else
@@ -1308,10 +1317,12 @@ public class TrialController : MonoBehaviour {
 			if(currentRecallAnswer==1){
 				Debug.Log ("changing to green");
 				correctIndicatorController.ChangeToRightColor();
+				trialLogger.LogCorrectAnswer ();
 			}
 			else if (currentRecallAnswer == 0){
 				Debug.Log ("changing to red");
 				correctIndicatorController.ChangeToWrongColor();
+				trialLogger.LogWrongAnswer ();
 				//chosenPositionColor = correctIndicatorController.ChangeToWrongColor();
 			}
 

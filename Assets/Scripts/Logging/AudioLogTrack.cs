@@ -42,11 +42,11 @@ public class AudioLogTrack : LogTrack {
 	}
 
 
-	public void LogRecording(bool status){
+	public void LogRecording(string fileName,bool status){
 		if (status)
-			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "RECORDING_STARTED");
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "RECORDING_STARTED" + separator + fileName);
 		else
-			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "RECORDING_ENDED");
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "RECORDING_ENDED"+ separator + fileName);
 	}
 
 	string GetNameToLog(){

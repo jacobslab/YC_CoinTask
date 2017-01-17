@@ -79,12 +79,12 @@ public class AudioRecorder : MonoBehaviour {
 		if (Microphone.devices.Length > 0) {
 			Color origTextColor = recordText.color;
 			recordText.color = Color.red;
-			audioLogger.LogRecording(true);
+			audioLogger.LogRecording(fileName,true);
 			StartMicrophone (duration);
 			yield return new WaitForSeconds (duration);
 
 			StopMicrophone ();
-			audioLogger.LogRecording(false);
+			audioLogger.LogRecording(fileName,false);
 			recordText.color = origTextColor;
 
 			SavWav.Save (filePath, fileName, audio.clip);

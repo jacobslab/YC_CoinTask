@@ -35,6 +35,11 @@ public class Replay : MonoBehaviour {
 	//a bool to determine if we should start the log file processing. replay should start once 
 	static bool shouldStartProcessingLog = false;
 
+	//audio recording
+	string audioPath="";
+	public AudioSource recordAud;
+	private AudioClip voiceClip;
+
 
 	//PARSING VARIABLES
 	public InputField minTimeStampInput;
@@ -56,6 +61,7 @@ public class Replay : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		objsInSceneDict = new Dictionary<String, GameObject> ();
+		recordAud = GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -122,7 +128,19 @@ public class Replay : MonoBehaviour {
 
 	void SetLogFile(string chosenLogFile){
 		logFilePath = chosenLogFile;
+		SetAudioPath (chosenLogFile);
 		Debug.Log (logFilePath);
+	}
+
+	void SetAudioPath(string logFile)
+	{
+		string[] newtest = logFile.Split ('/');
+		string finalString = "";
+		for(int i=0;i<newtest.Length-1;i++)
+		{
+			finalString += newtest [i]+"/";
+		}
+		audioPath = finalString+"audio/";
 	}
 
 	void SetFPS(int newFPS){
@@ -270,98 +288,96 @@ public class Replay : MonoBehaviour {
 					else if (i == 2){
 						string objName = splitLine[i];
 						
-						if(objName != "Mouse" && objName != "Keyboard" && objName != "Trial Info" && objName!="Experiment Info"){
+						if (objName != "Mouse" && objName != "Keyboard" && objName != "Trial Info" && objName != "Experiment Info" && objName!="RECORDING_STARTED") {
 
 							GameObject objInScene;
 								
-							if(objsInSceneDict.ContainsKey(objName)){
+							if (objsInSceneDict.ContainsKey (objName)) {
 								
-								objInScene = objsInSceneDict[objName];
+								objInScene = objsInSceneDict [objName];
 
-								if(objInScene == null){
+								if (objInScene == null) {
 									//Object got destroyed before it could be removed from the list.
 									//This can happen in cases like an auto-destructing particle emitter.
 									//...So we should remove it from the objsInSceneDict.
-									if(splitLine[i+1] == "DESTROYED"){
-										objsInSceneDict.Remove(objName);
+									if (splitLine [i + 1] == "DESTROYED") {
+										objsInSceneDict.Remove (objName);
 									}
 								}
-							//	if (objName == "Connecting to EEG UI")
+								//	if (objName == "Connecting to EEG UI")
 								//Debug.Log (objName + "awwww eyyyyyy");
 
-							}
-							else{
+							} else {
 
-								objInScene = GameObject.Find(objName);
+								objInScene = GameObject.Find (objName);
 
-								if(objInScene != null){
-									objsInSceneDict.Add(objName, objInScene);
-								}
-								else{ //if the object is not in the scene, but is in the log file, we should instantiate it!
-										//we could also check for the SPAWNED keyword
+								if (objInScene != null) {
+									objsInSceneDict.Add (objName, objInScene);
+								} else { //if the object is not in the scene, but is in the log file, we should instantiate it!
+									//we could also check for the SPAWNED keyword
 
 									//TODO: use new functions in spawnable object?
 									//separate out the object name from a numeric ID
-									Regex numAlpha = new Regex("(?<Alpha>[a-zA-Z ']*)(?<Numeric>[0-9]*)");
-									Match match = numAlpha.Match(objName);
-									string objShortName = match.Groups["Alpha"].Value;
-									string objID = match.Groups["Numeric"].Value;
+									Regex numAlpha = new Regex ("(?<Alpha>[a-zA-Z ']*)(?<Numeric>[0-9]*)");
+									Match match = numAlpha.Match (objName);
+									string objShortName = match.Groups ["Alpha"].Value;
+									string objID = match.Groups ["Numeric"].Value;
 
 									string origName = objShortName;
 
-									objShortName = Regex.Replace( objShortName, "UICopy", "" ); //for recall cue UI copy!
+									objShortName = Regex.Replace (objShortName, "UICopy", ""); //for recall cue UI copy!
 
 									//TODO: UNDO THIS WHEN GOING BACK TO NORMAL LOG FILES
 									bool isUIObj = false;
-									if(objShortName != origName){
+									if (objShortName != origName) {
 										isUIObj = true;
 									}
 
-									objInScene = exp.objectController.ChooseSpawnableObject(objShortName);
+									objInScene = exp.objectController.ChooseSpawnableObject (objShortName);
 									
-									if(objInScene != null){ //if it did grab the prefab...
-										objInScene = exp.objectController.SpawnObject(objInScene, Vector3.zero); //position and rotation should be set next...
-										SpawnableObject objInSceneSpawnable = objInScene.GetComponent<SpawnableObject>();
-										objInScene.name = objInSceneSpawnable.GetDisplayName();
+									if (objInScene != null) { //if it did grab the prefab...
+										objInScene = exp.objectController.SpawnObject (objInScene, Vector3.zero); //position and rotation should be set next...
+										SpawnableObject objInSceneSpawnable = objInScene.GetComponent<SpawnableObject> ();
+										objInScene.name = objInSceneSpawnable.GetDisplayName ();
 
-										if(isUIObj){
+										if (isUIObj) {
 											objInScene.name += "UICopy";
 										}
 
 										//ID's are in the format 000 - 999
-										char[] splitNum = objID.ToCharArray();
-										if(splitNum.Length > 0){
-											int numHundreds = int.Parse(splitNum[0].ToString());
-											int numTens = int.Parse(splitNum[1].ToString());
-											int numOnes = int.Parse(splitNum[2].ToString());
-											int objIDint = (numHundreds*100) + (numTens*10) + numOnes;
+										char[] splitNum = objID.ToCharArray ();
+										if (splitNum.Length > 0) {
+											int numHundreds = int.Parse (splitNum [0].ToString ());
+											int numTens = int.Parse (splitNum [1].ToString ());
+											int numOnes = int.Parse (splitNum [2].ToString ());
+											int objIDint = (numHundreds * 100) + (numTens * 10) + numOnes;
 
-											objInSceneSpawnable.SetNameID(objInScene.transform, objIDint);
+											objInSceneSpawnable.SetNameID (objInScene.transform, objIDint);
 										}
 
-										objsInSceneDict.Add(objName, objInScene);
+										objsInSceneDict.Add (objName, objInScene);
 									}
 
 								}
 
 							}
-							if(objInScene != null){
-								if(objName == "coconut"){
-									Rigidbody r = objInScene.GetComponent<Rigidbody>();
+							if (objInScene != null) {
+								if (objName == "coconut") {
+									Rigidbody r = objInScene.GetComponent<Rigidbody> ();
 									r.constraints = RigidbodyConstraints.FreezeAll;
 									r.useGravity = false;
 								}
 
 								//NOW MOVE & ROTATE THE OBJECT.
-								string loggedProperty = splitLine[i+1];
+								string loggedProperty = splitLine [i + 1];
 								
-								if(loggedProperty == "POSITION"){
+								if (loggedProperty == "POSITION") {
 									
-									float posX = float.Parse(splitLine[i+2]);
-									float posY = float.Parse(splitLine[i+3]);
-									float posZ = float.Parse(splitLine[i+4]);
+									float posX = float.Parse (splitLine [i + 2]);
+									float posY = float.Parse (splitLine [i + 3]);
+									float posZ = float.Parse (splitLine [i + 4]);
 
-								//TODO: GET RID OF THIS LATER. JUST FOR MODIFIED LOGFILE
+									//TODO: GET RID OF THIS LATER. JUST FOR MODIFIED LOGFILE
 									/*if(objName == "Box1" || objName == "Box2" || objName == "Box3" || objName == "Coin" || objName == "BoxSelector" || objName == "BoxSelectorVisuals"){
 										posZ = 517.4979f;
 									}
@@ -371,11 +387,11 @@ public class Replay : MonoBehaviour {
 									}*/
 
 
-									if(objName.Contains("TimerBar") || objName.Contains("TimerCircle")){
+									if (objName.Contains ("TimerBar") || objName.Contains ("TimerCircle")) {
 										//map from 15 inch mac pro resolution (standard patient resolution) to current resolution
 
-										Vector2 oldRes = new Vector2(1430, 900);
-										Vector2 currRes = new Vector2(Camera.main.pixelWidth, Camera.main.pixelHeight);
+										Vector2 oldRes = new Vector2 (1430, 900);
+										Vector2 currRes = new Vector2 (Camera.main.pixelWidth, Camera.main.pixelHeight);
 
 										float widthPosRatio = posX / oldRes.x;
 										float heightPosRatio = posY / oldRes.y;
@@ -386,234 +402,210 @@ public class Replay : MonoBehaviour {
 										//posX = newPosX;
 										//posY = newPosY;
 										objInScene.GetComponent<RectTransform> ().localPosition = new Vector2 (posX, posY);
-									}
-									else
-									objInScene.transform.position = new Vector3(posX, posY, posZ);
+									} else
+										objInScene.transform.position = new Vector3 (posX, posY, posZ);
 									
-								}
-								else if(loggedProperty == "ROTATION"){
+								} else if (loggedProperty == "ROTATION") {
 									
-									float rotX = float.Parse(splitLine[i+2]);
-									float rotY = float.Parse(splitLine[i+3]);
-									float rotZ = float.Parse(splitLine[i+4]);
+									float rotX = float.Parse (splitLine [i + 2]);
+									float rotY = float.Parse (splitLine [i + 3]);
+									float rotZ = float.Parse (splitLine [i + 4]);
 
-									objInScene.transform.rotation = Quaternion.Euler(rotX, rotY, rotZ);
+									objInScene.transform.rotation = Quaternion.Euler (rotX, rotY, rotZ);
 
-								}
-								else if(loggedProperty == "SCALE"){
+								} else if (loggedProperty == "SCALE") {
 									
-									float scaleX = float.Parse(splitLine[i+2]);
-									float scaleY = float.Parse(splitLine[i+3]);
-									float scaleZ = float.Parse(splitLine[i+4]);
+									float scaleX = float.Parse (splitLine [i + 2]);
+									float scaleY = float.Parse (splitLine [i + 3]);
+									float scaleZ = float.Parse (splitLine [i + 4]);
 									
-									objInScene.transform.localScale = new Vector3(scaleX, scaleY, scaleZ);
+									objInScene.transform.localScale = new Vector3 (scaleX, scaleY, scaleZ);
 									
-								}
-
-								else if(loggedProperty == "ENABLED_CHILDREN"){
-									string shouldEnableString = splitLine[i+2];
+								} else if (loggedProperty == "ENABLED_CHILDREN") {
+									string shouldEnableString = splitLine [i + 2];
 									bool shouldEnable = true;
-									if(shouldEnableString == "False"){
+									if (shouldEnableString == "False") {
 										shouldEnable = false;
 									}
 
-									UsefulFunctions.EnableChildren( objInScene.transform, shouldEnable );
+									UsefulFunctions.EnableChildren (objInScene.transform, shouldEnable);
 									
-								}
-
-								else if(loggedProperty == "VISIBILITY"){
-									VisibilityToggler visibilityToggler = objInScene.GetComponent<VisibilityToggler>();
-									if(visibilityToggler != null){
+								} else if (loggedProperty == "VISIBILITY") {
+									VisibilityToggler visibilityToggler = objInScene.GetComponent<VisibilityToggler> ();
+									if (visibilityToggler != null) {
 										bool visibleState = true;
-										if(splitLine[i+2] == "false" || splitLine[i+2] == "False"){
+										if (splitLine [i + 2] == "false" || splitLine [i + 2] == "False") {
 											visibleState = false;
 										}
-										visibilityToggler.TurnVisible(visibleState);
+										visibilityToggler.TurnVisible (visibleState);
+									} else {
+										Debug.Log ("no visibility toggler!");
 									}
-									else{
-										Debug.Log("no visibility toggler!");
-									}
-								}
+								} else if (loggedProperty == "OBJECT_COLOR") {
+									Renderer renderer = objInScene.GetComponent<Renderer> ();
+									if (renderer != null) {
+										float r = float.Parse (splitLine [i + 2]);
+										float g = float.Parse (splitLine [i + 3]);
+										float b = float.Parse (splitLine [i + 4]);
+										float a = float.Parse (splitLine [i + 5]);
 
-								else if(loggedProperty == "OBJECT_COLOR"){
-									Renderer renderer = objInScene.GetComponent<Renderer>();
-									if(renderer != null){
-										float r = float.Parse(splitLine[i+2]);
-										float g = float.Parse(splitLine[i+3]);
-										float b = float.Parse(splitLine[i+4]);
-										float a = float.Parse(splitLine[i+5]);
-
-										Color color = new Color(r, g, b, a);
+										Color color = new Color (r, g, b, a);
 
 										renderer.material.color = color;
+									} else {
+										Debug.Log ("no renderer!");
 									}
-									else{
-										Debug.Log("no renderer!");
-									}
-								}
-
-								else if(loggedProperty == "CANVAS_GROUP_ALPHA"){
-									CanvasGroup canvasGroup = objInScene.GetComponent<CanvasGroup>();
-									if(canvasGroup != null){
-										float alpha = float.Parse(splitLine[i+2]);
+								} else if (loggedProperty == "CANVAS_GROUP_ALPHA") {
+									CanvasGroup canvasGroup = objInScene.GetComponent<CanvasGroup> ();
+									if (canvasGroup != null) {
+										float alpha = float.Parse (splitLine [i + 2]);
 										
 										canvasGroup.alpha = alpha;
-									}
-									else{
-										Debug.Log("no canvas group!");
+									} else {
+										Debug.Log ("no canvas group!");
 									}
 								}
 
 								//SHADOW CAST CHANGE
-								else if (loggedProperty == "SHADOW_SETTING"){
-									string shadowSetting = splitLine[i+2];
+								else if (loggedProperty == "SHADOW_SETTING") {
+									string shadowSetting = splitLine [i + 2];
 									bool shouldSetShadows = true;
-									if(shadowSetting == "Off"){
+									if (shadowSetting == "Off") {
 										shouldSetShadows = false;
 									}
 									//set the shadow setting
-									objInScene.GetComponent<SpawnableObject>().SetShadowCasting(shouldSetShadows);
+									objInScene.GetComponent<SpawnableObject> ().SetShadowCasting (shouldSetShadows);
 								}
 								
 								//LAYER CHANGE
-								else if (loggedProperty == "LAYER_CHANGE"){
-									int newLayer = int.Parse(splitLine[i+2]);
+								else if (loggedProperty == "LAYER_CHANGE") {
+									int newLayer = int.Parse (splitLine [i + 2]);
 									
 									//set the layer
-									UsefulFunctions.SetLayerRecursively(objInScene, newLayer);
-								}
-
-								else if(loggedProperty == "CAMERA_ENABLED"){
-									Camera objCamera = objInScene.GetComponent<Camera>();
-									if(objCamera != null){
-										if(splitLine[i+2] == "true" || splitLine[i+2] == "True"){
+									UsefulFunctions.SetLayerRecursively (objInScene, newLayer);
+								} else if (loggedProperty == "CAMERA_ENABLED") {
+									Camera objCamera = objInScene.GetComponent<Camera> ();
+									if (objCamera != null) {
+										if (splitLine [i + 2] == "true" || splitLine [i + 2] == "True") {
 											objCamera.enabled = true;
-										}
-										else{
+										} else {
 											objCamera.enabled = false;
 										}
 									}
-								}
-								else if(loggedProperty == "DESTROYED"){
-									Debug.Log("Destroying object! " + objInScene.name);
-									objsInSceneDict.Remove( objName );
-									GameObject.Destroy(objInScene);
+								} else if (loggedProperty == "DESTROYED") {
+									Debug.Log ("Destroying object! " + objInScene.name);
+									objsInSceneDict.Remove (objName);
+									GameObject.Destroy (objInScene);
 								}
 
 								//TEXT_MESH TEXT
-								else if(loggedProperty == "TEXT_MESH"){
-									TextMesh text = objInScene.GetComponent<TextMesh>();
+								else if (loggedProperty == "TEXT_MESH") {
+									TextMesh text = objInScene.GetComponent<TextMesh> ();
 									text.text = "";
-									for(int j = i+2; j < splitLine.Length; j++){ //the text may have been split unnecessarily if there is a splitCharacter in the text
-										text.text += splitLine[j]; //add each piece of the split text
-										if(j+1 < splitLine.Length){
+									for (int j = i + 2; j < splitLine.Length; j++) { //the text may have been split unnecessarily if there is a splitCharacter in the text
+										text.text += splitLine [j]; //add each piece of the split text
+										if (j + 1 < splitLine.Length) {
 											text.text += Logger_Threading.LogTextSeparator; //add back the split characters into the text!
 										}
 									}
 									
-									text.text = text.text.Replace("_NEWLINE_", "\n");
-								}
-								else if(loggedProperty == "TEXT_MESH_COLOR"){
-									TextMesh text = objInScene.GetComponent<TextMesh>();
-									float r = float.Parse(splitLine[i+2]);
-									float g = float.Parse(splitLine[i+3]);
-									float b = float.Parse(splitLine[i+4]);
-									float a = float.Parse(splitLine[i+5]);
-									text.color = new Color(r, g, b, a);
+									text.text = text.text.Replace ("_NEWLINE_", "\n");
+								} else if (loggedProperty == "TEXT_MESH_COLOR") {
+									TextMesh text = objInScene.GetComponent<TextMesh> ();
+									float r = float.Parse (splitLine [i + 2]);
+									float g = float.Parse (splitLine [i + 3]);
+									float b = float.Parse (splitLine [i + 4]);
+									float a = float.Parse (splitLine [i + 5]);
+									text.color = new Color (r, g, b, a);
 								}
 
 
 								//UI - TEXT ...sadly I know this is repetitive :(
-								else if(loggedProperty == "TEXT"){
-									Text text = objInScene.GetComponent<Text>();
+								else if (loggedProperty == "TEXT") {
+									Text text = objInScene.GetComponent<Text> ();
 									text.text = "";
-									for(int j = i+2; j < splitLine.Length; j++){ //the text may have been split unnecessarily if there is a splitCharacter in the text
-										text.text += splitLine[j]; //add each piece of the split text
-										if(j+1 < splitLine.Length){
+									for (int j = i + 2; j < splitLine.Length; j++) { //the text may have been split unnecessarily if there is a splitCharacter in the text
+										text.text += splitLine [j]; //add each piece of the split text
+										if (j + 1 < splitLine.Length) {
 											text.text += Logger_Threading.LogTextSeparator; //add back the split characters into the text!
 										}
 									}
 
-									text.text = text.text.Replace("_NEWLINE_", "\n");
-								}
-								else if(loggedProperty == "TEXT_COLOR"){
-									Text text = objInScene.GetComponent<Text>();
-									float r = float.Parse(splitLine[i+2]);
-									float g = float.Parse(splitLine[i+3]);
-									float b = float.Parse(splitLine[i+4]);
-									float a = float.Parse(splitLine[i+5]);
-									text.color = new Color(r, g, b, a);
+									text.text = text.text.Replace ("_NEWLINE_", "\n");
+								} else if (loggedProperty == "TEXT_COLOR") {
+									Text text = objInScene.GetComponent<Text> ();
+									float r = float.Parse (splitLine [i + 2]);
+									float g = float.Parse (splitLine [i + 3]);
+									float b = float.Parse (splitLine [i + 4]);
+									float a = float.Parse (splitLine [i + 5]);
+									text.color = new Color (r, g, b, a);
 								}
 
 								//UI - PANEL
-								else if (loggedProperty == "PANEL"){
-									Image image = objInScene.GetComponent<Image>();
-									float r = float.Parse(splitLine[i+2]);
-									float g = float.Parse(splitLine[i+3]);
-									float b = float.Parse(splitLine[i+4]);
-									float a = float.Parse(splitLine[i+5]);
-									image.color = new Color(r, g, b, a);
+								else if (loggedProperty == "PANEL") {
+									Image image = objInScene.GetComponent<Image> ();
+									float r = float.Parse (splitLine [i + 2]);
+									float g = float.Parse (splitLine [i + 3]);
+									float b = float.Parse (splitLine [i + 4]);
+									float a = float.Parse (splitLine [i + 5]);
+									image.color = new Color (r, g, b, a);
 								}
 
 								//TREASURE CHESTS
-								else if (loggedProperty == "TREASURE_OPEN"){
+								else if (loggedProperty == "TREASURE_OPEN") {
 									//i+3 -- IS_SPECIAL
 									//i+5 -- OPENER PIVOT
-									string openerName = splitLine[i+5];
-									DefaultItem tChest = objInScene.GetComponent<DefaultItem>();
-									if(tChest != null){
-										GameObject opener = objInScene.transform.Find( openerName ).gameObject;
-										StartCoroutine( tChest.Open(opener) );
+									string openerName = splitLine [i + 5];
+									DefaultItem tChest = objInScene.GetComponent<DefaultItem> ();
+									if (tChest != null) {
+										GameObject opener = objInScene.transform.Find (openerName).gameObject;
+										StartCoroutine (tChest.Open (opener));
 									}
-								}
-
-								else if (loggedProperty == "TREASURE_LABEL"){
-									string labelText = splitLine[i+2];
-									DefaultItem tChest = objInScene.GetComponent<DefaultItem>();
-									if(tChest != null){
-										tChest.SetSpecialObjectText(labelText);
+								} else if (loggedProperty == "TREASURE_LABEL") {
+									string labelText = splitLine [i + 2];
+									DefaultItem tChest = objInScene.GetComponent<DefaultItem> ();
+									if (tChest != null) {
+										tChest.SetSpecialObjectText (labelText);
 									}
 								}
 
 								//PARTICLE SYSTEMS
-								else if (loggedProperty == "PARTICLE_SYSTEM_PLAYING"){
-									string particleSystemName = splitLine [i+2];
-									ParticleSystem particles = objInScene.GetComponent<ParticleSystem>();
-									if(particles == null){
-										particles = objInScene.transform.FindChild( particleSystemName ).GetComponent<ParticleSystem>();
+								else if (loggedProperty == "PARTICLE_SYSTEM_PLAYING") {
+									string particleSystemName = splitLine [i + 2];
+									ParticleSystem particles = objInScene.GetComponent<ParticleSystem> ();
+									if (particles == null) {
+										particles = objInScene.transform.FindChild (particleSystemName).GetComponent<ParticleSystem> ();
 									}
 
-									particles.Play();
+									particles.Play ();
 
-								}
-								else if (loggedProperty == "PARTICLE_SYSTEM_STOPPED"){
-									string particleSystemName = splitLine [i+2];
-									ParticleSystem particles = objInScene.GetComponent<ParticleSystem>();
-									if(particles == null){
-										particles = objInScene.transform.FindChild( particleSystemName ).GetComponent<ParticleSystem>();
+								} else if (loggedProperty == "PARTICLE_SYSTEM_STOPPED") {
+									string particleSystemName = splitLine [i + 2];
+									ParticleSystem particles = objInScene.GetComponent<ParticleSystem> ();
+									if (particles == null) {
+										particles = objInScene.transform.FindChild (particleSystemName).GetComponent<ParticleSystem> ();
 									}
 									
-									particles.Stop();
+									particles.Stop ();
 									
 								}
 
 								//PARTICLE EMITTERS
-								else if (loggedProperty == "PARTICLE_EMITTER_PLAYING"){
-									string particleSystemName = splitLine [i+2];
-									ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter>();
-									if(particles == null){
-										particles = objInScene.transform.FindChild( particleSystemName ).GetComponent<ParticleEmitter>();
+								else if (loggedProperty == "PARTICLE_EMITTER_PLAYING") {
+									string particleSystemName = splitLine [i + 2];
+									ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter> ();
+									if (particles == null) {
+										particles = objInScene.transform.FindChild (particleSystemName).GetComponent<ParticleEmitter> ();
 									}
 
 
 									particles.emit = true;
 									
-								}
-								else if (loggedProperty == "PARTICLE_EMITTER_STOPPED"){
-									string particleSystemName = splitLine [i+2];
-									ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter>();
-									if(particles == null){
-										particles = objInScene.transform.FindChild( particleSystemName ).GetComponent<ParticleEmitter>();
+								} else if (loggedProperty == "PARTICLE_EMITTER_STOPPED") {
+									string particleSystemName = splitLine [i + 2];
+									ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter> ();
+									if (particles == null) {
+										particles = objInScene.transform.FindChild (particleSystemName).GetComponent<ParticleEmitter> ();
 									}
 									
 									particles.emit = false;
@@ -621,62 +613,65 @@ public class Replay : MonoBehaviour {
 								}
 
 								//AUDIO
-								else if (loggedProperty == "AUDIO_PLAYING"){
-									string audioSourceName = splitLine [i+2];
-									AudioSource audio = objInScene.GetComponent<AudioSource>();
-									if(audio == null){
-										audio = objInScene.transform.FindChild( audioSourceName ).GetComponent<AudioSource>();
+								else if (loggedProperty == "AUDIO_PLAYING") {
+									string audioSourceName = splitLine [i + 2];
+									AudioSource audio = objInScene.GetComponent<AudioSource> ();
+									if (audio == null) {
+										audio = objInScene.transform.FindChild (audioSourceName).GetComponent<AudioSource> ();
 									}
 									
 									
-									audio.Play();
+									audio.Play ();
 									
-								}
-								else if (loggedProperty == "AUDIO_STOPPED"){
-									string audioSourceName = splitLine [i+2];
-									AudioSource audio = objInScene.GetComponent<AudioSource>();
-									if(audio == null){
-										audio = objInScene.transform.FindChild( audioSourceName ).GetComponent<AudioSource>();
+								} else if (loggedProperty == "AUDIO_STOPPED") {
+									string audioSourceName = splitLine [i + 2];
+									AudioSource audio = objInScene.GetComponent<AudioSource> ();
+									if (audio == null) {
+										audio = objInScene.transform.FindChild (audioSourceName).GetComponent<AudioSource> ();
 									}
 									
-									audio.Stop();
+									audio.Stop ();
 									
 								}
 
 								//LINE RENDERERS
-								else if (loggedProperty == "LINE_RENDERER_POSITION"){
-									int positionIndex = int.Parse(splitLine[i+2]);
-									float posX = float.Parse(splitLine[i+3]);
-									float posY = float.Parse(splitLine[i+4]);
-									float posZ = float.Parse(splitLine[i+5]);
+								else if (loggedProperty == "LINE_RENDERER_POSITION") {
+									int positionIndex = int.Parse (splitLine [i + 2]);
+									float posX = float.Parse (splitLine [i + 3]);
+									float posY = float.Parse (splitLine [i + 4]);
+									float posZ = float.Parse (splitLine [i + 5]);
 
-									objInScene.GetComponent<LineRenderer>().SetPosition(positionIndex, new Vector3(posX, posY, posZ));
-								}
+									objInScene.GetComponent<LineRenderer> ().SetPosition (positionIndex, new Vector3 (posX, posY, posZ));
+								} else if (loggedProperty == "LINE_RENDERER_COLOR") {
 
-								else if (loggedProperty == "LINE_RENDERER_COLOR"){
-
-									float startR = float.Parse(splitLine[i+2]);
-									float startG = float.Parse(splitLine[i+3]);
-									float startB = float.Parse(splitLine[i+4]);
-									float startA = float.Parse(splitLine[i+5]);
-									Color startColor = new Color(startR, startG, startB, startA);
+									float startR = float.Parse (splitLine [i + 2]);
+									float startG = float.Parse (splitLine [i + 3]);
+									float startB = float.Parse (splitLine [i + 4]);
+									float startA = float.Parse (splitLine [i + 5]);
+									Color startColor = new Color (startR, startG, startB, startA);
 
 									//string positionIndex = int.Parse(splitLine[i+7]);
-									float endR = float.Parse(splitLine[i+6]);
-									float endG = float.Parse(splitLine[i+7]);
-									float endB = float.Parse(splitLine[i+8]);
-									float endA = float.Parse(splitLine[i+9]);
-									Color endColor = new Color(endR, endG, endB, endA);
+									float endR = float.Parse (splitLine [i + 6]);
+									float endG = float.Parse (splitLine [i + 7]);
+									float endB = float.Parse (splitLine [i + 8]);
+									float endA = float.Parse (splitLine [i + 9]);
+									Color endColor = new Color (endR, endG, endB, endA);
 
 									
-									objInScene.GetComponent<LineRenderer>().SetColors(startColor, endColor);
+									objInScene.GetComponent<LineRenderer> ().SetColors (startColor, endColor);
 								}
 
-							}
-							else{
-								Debug.Log("REPLAY: No obj in scene named " + objName + " at timestamp: " + currentTimeStamp);
+							} else {
+								Debug.Log ("REPLAY: No obj in scene named " + objName + " at timestamp: " + currentTimeStamp);
 							}
 							
+						} else if (objName == "RECORDING_STARTED") {
+							string audioNum= splitLine [i + 1];
+							string audioFile = audioPath + audioNum + ".wav";
+							UnityEngine.Debug.Log("AUDIO: " + audioFile);
+							voiceClip=Resources.Load (audioFile, typeof(AudioClip)) as AudioClip;
+							recordAud.clip = voiceClip;
+							recordAud.Play();
 						}
 					}
 

@@ -51,6 +51,7 @@ public class SphinxTest : MonoBehaviour {
 
 	public void SetPath(string audioPath)
 	{
+		UnityEngine.Debug.Log ("set sphinx audio path to " + audioPath);
 		SetAudioPath(audioPath);
 	}
 

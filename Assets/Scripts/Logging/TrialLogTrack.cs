@@ -86,6 +86,18 @@ public class TrialLogTrack : LogTrack {
 		Debug.Log ("ISI LOGGED: " + interTime);
 	}
 
+	public void LogCorrectAnswer()
+	{
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "SPHINX_RESPONSE" + separator + "CORRECT");
+		Debug.Log ("Correct Answer");
+	}
+
+	public void LogWrongAnswer()
+	{
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (),"SPHINX_RESPONSE" + separator + "CORRECT");
+		Debug.Log ("Wrong Answer");
+	}
+
 
 
 	public void LogAreYouSureResponse(bool response){
@@ -295,6 +307,14 @@ public class TrialLogTrack : LogTrack {
 	public void LogObjectToRecall(SpawnableObject spawnableToRecall){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "RECALL_SPECIAL" + separator + spawnableToRecall.GetDisplayName());
+			Debug.Log ("Logged sphinx event.");
+		}
+	}
+
+	public void LogSphinxEvent()
+	{
+		if (ExperimentSettings_CoinTask.isLogging) {
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "SPHINX_EVENT");
 			Debug.Log ("Logged object recall event.");
 		}
 	}
