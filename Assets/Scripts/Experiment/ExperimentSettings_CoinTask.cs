@@ -38,6 +38,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public static LanguageSetting myLanguage = LanguageSetting.Spanish;
 	#endif
 	public Dropdown languageDropdown;
+	public Dropdown setDropdown;
 
 
 	//TOGGLES & SETTINGS
@@ -143,11 +144,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 				defaultLoggingPath += MRIFolder;
 			}
 		}
-
 		if(!Directory.Exists(defaultLoggingPath)){ //if that TH folder doesn't exist, make it!
 			Directory.CreateDirectory(defaultLoggingPath);
 		}
-
 		if (defaultLoggingPathDisplay != null) {
 			defaultLoggingPathDisplay.text = defaultLoggingPath;
 		}
@@ -203,6 +202,26 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		}
 		return true;
 	}
+
+	public void ChangeSetNumber()
+	{
+
+		if (setDropdown != null) {
+			switch (setDropdown.options [setDropdown.value].text) {
+			case "A":
+				Config_CoinTask.currentSetNumber = Config_CoinTask.SetNumber.A;
+				break;
+			case "B":
+				Config_CoinTask.currentSetNumber = Config_CoinTask.SetNumber.B;
+				break;
+			case "C":
+				Config_CoinTask.currentSetNumber = Config_CoinTask.SetNumber.C;
+				break;
+			}
+		}
+		Debug.Log ("drop value is: " + setDropdown.options [setDropdown.value].text);
+	}
+
 
 	public void ChangeLoggingPath(){
 		if (Directory.Exists (loggingPathInputField.text)) {

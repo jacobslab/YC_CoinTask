@@ -16,6 +16,7 @@ public class Trial {
 	public List<Vector2> DefaultObjectLocationsXZ;
 	public List<Vector2> SpecialObjectLocationsXZ;
 
+	static int total=0;
 	public List<string> ManualSpecialObjectNames { get { return manualSpecialObjectNames; } }
 	List<string> manualSpecialObjectNames;
 
@@ -26,6 +27,8 @@ public class Trial {
 
 	public Trial(int numSpecial, bool shouldStim){
 
+		total++;
+		Debug.Log ("total is:" + total);
 		numSpecialObjects = numSpecial;
 
 		manualSpecialObjectNames = new List<string> (); //may or may not be filled in manually.
@@ -99,6 +102,8 @@ public class Trial {
 	public Trial GetCounterSelf(bool shouldStim){
 		Trial counterTrial = new Trial ();
 
+		total++;
+		Debug.Log ("total is:" + total);
 		counterTrial.isStim = shouldStim;
 
 		counterTrial.numSpecialObjects = numSpecialObjects;

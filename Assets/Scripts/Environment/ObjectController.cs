@@ -36,7 +36,10 @@ public class ObjectController : MonoBehaviour {
 		gameObjectList_Spawnable_SetC = new List<GameObject> ();
 		tempList=new List<GameObject>();
 		CurrentTrialSpecialObjects = new List<GameObject> ();
-		CreateSpecialObjectList ();
+		if ((!File.Exists (exp.subjectDirectory + "SetA/SetAList.txt")))
+			CreateSpecialObjectList ();
+		else
+			ReadObjectLists ();
 		setAList = new string[50];
 		setBList = new string[50];
 		setCList = new string[50];
@@ -45,6 +48,32 @@ public class ObjectController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	void ReadObjectLists()
+	{
+
+		Object[] prefabs;
+		prefabs = Resources.LoadAll("Prefabs/Objects");
+
+		for(int i=0;i<prefabs.Length;i++)
+			tempList.Add((GameObject)prefabs[i]);
+
+
+		string[] listObj = new string[50];
+		switch (Config_CoinTask.currentSetNumber) {
+		case Config_CoinTask.SetNumber.A:
+			listObj=System.IO.File.ReadAllLines (exp.subjectDirectory + "SetA/" + "SetAList.txt");
+			break;
+		case Config_CoinTask.SetNumber.B:
+			listObj=System.IO.File.ReadAllLines (exp.subjectDirectory + "SetB/" + "SetBList.txt");
+			break;
+		case Config_CoinTask.SetNumber.C:
+			listObj=System.IO.File.ReadAllLines (exp.subjectDirectory + "SetC/" + "SetCList.txt");
+			break;
+		}
+
+		Debug.Log ("list obj count is: " + listObj.Length);
 	}
 
 	void CreateSpecialObjectList(){
@@ -82,13 +111,25 @@ public class ObjectController : MonoBehaviour {
 				tempList.Remove(tempObj);
 			}
 		}
-		for (int j = 0; j < tempList.Count; j++) {
-			gameObjectList_Spawnable_SetB.Add ((GameObject)tempList [j]);
-			string tempString = tempList[j].ToString ();
+		while (gameObjectList_Spawnable_SetB.Count < 50) {
+			for (int j = 0; j < 50; j++) {
+				GameObject tempObj = (GameObject)tempList [Random.Range(0,tempList.Count)];
+				gameObjectList_Spawnable_SetB.Add (tempObj);
+				string tempString = tempObj.ToString ();
+				int startIndex = tempString.IndexOf ("(");
+				int endIndex = tempString.IndexOf (")");
+				tempString = tempString.Remove (startIndex - 1, endIndex - startIndex + 2);
+				secondList.Add (tempString.ToString ());
+				tempList.Remove (tempObj);
+			}
+		}
+		for (int k = 0; k < tempList.Count; k++) {
+			gameObjectList_Spawnable_SetC.Add ((GameObject)tempList [k]);
+			string tempString = tempList [k].ToString ();
 			int startIndex = tempString.IndexOf ("(");
 			int endIndex = tempString.IndexOf (")");
-			tempString=tempString.Remove (startIndex-1, endIndex - startIndex + 2);
-			secondList.Add(tempString.ToString ());
+			tempString = tempString.Remove (startIndex - 1, endIndex - startIndex + 2);
+			thirdList.Add (tempString.ToString ());
 		}
 
 		for (int i = 0; i < firstList.Count; i++)
@@ -96,16 +137,31 @@ public class ObjectController : MonoBehaviour {
 
 		for (int i = 0; i < secondList.Count; i++)
 			setBList = secondList.ToArray();
+
+
+		for (int i = 0; i < thirdList.Count; i++)
+			setCList = thirdList.ToArray();
+		
 		PrintObjects ();
-		Debug.Log ("the number of stim objects are : " + gameObjectList_Spawnable_SetA.Count);
-		Debug.Log ("the number of NON-Stim objects are : " + gameObjectList_Spawnable_SetB.Count);
+		Debug.Log ("the number of Set A objects are : " + gameObjectList_Spawnable_SetA.Count);
+		Debug.Log ("the number of Set B objects are : " + gameObjectList_Spawnable_SetB.Count);
+		Debug.Log ("the number of Set C objects are : " + gameObjectList_Spawnable_SetC.Count);
 		}
 
 	void PrintObjects()
 	{
-		System.IO.File.WriteAllLines (ExperimentSettings_CoinTask.defaultLoggingPath + "SetAList.txt",setAList );
-		System.IO.File.WriteAllLines (ExperimentSettings_CoinTask.defaultLoggingPath+ "SetBList.txt", setBList);
-	//	System.IO.File.WriteAllLines (ExperimentSettings_CoinTask.defaultLoggingPath+ "SetCList.txt", setCList);
+		if (!File.Exists (exp.subjectDirectory + "SetA/SetAList.txt")) {
+			Debug.Log ("set A directory doesn't exist. creating");
+			System.IO.File.WriteAllLines (exp.subjectDirectory+"SetA/" + "SetAList.txt", setAList);
+		}
+		if (!File.Exists (exp.subjectDirectory + "SetB/SetBList.txt")) {
+			Debug.Log ("set B directory doesn't exist. creating");
+			System.IO.File.WriteAllLines (exp.subjectDirectory+"SetB/" + "SetBList.txt", setBList);
+		}
+		if (!File.Exists (exp.subjectDirectory + "SetC/SetCList.txt")) {
+			Debug.Log ("set C directory doesn't exist. creating");
+			System.IO.File.WriteAllLines (exp.subjectDirectory+"SetC/" + "SetCList.txt", setCList);
+		}
 	}
 
 	//used in replay
@@ -149,7 +205,7 @@ public class ObjectController : MonoBehaviour {
 	GameObject ChooseRandomObject(){
 		GameObject chosenObject;
 		//MAKE NYSPI related changes here
-		if (Config_CoinTask.setA) {
+		if (Config_CoinTask.currentSetNumber == Config_CoinTask.SetNumber.A) {
 			if (gameObjectList_Spawnable_SetA.Count == 0) {
 				Debug.Log ("No MORE objects to pick! Recreating object list.");
 				CreateSpecialObjectList (); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
@@ -161,10 +217,9 @@ public class ObjectController : MonoBehaviour {
 
 
 			int randomObjectIndex = Random.Range (0, gameObjectList_Spawnable_SetA.Count);
-			 chosenObject = gameObjectList_Spawnable_SetA [randomObjectIndex];
+			chosenObject = gameObjectList_Spawnable_SetA [randomObjectIndex];
 			gameObjectList_Spawnable_SetA.RemoveAt (randomObjectIndex);
-		} 
-		else {
+		} else if (Config_CoinTask.currentSetNumber == Config_CoinTask.SetNumber.B) {
 			if (gameObjectList_Spawnable_SetB.Count == 0) {
 				Debug.Log ("No MORE objects to pick! Recreating object list.");
 				CreateSpecialObjectList (); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
@@ -178,6 +233,22 @@ public class ObjectController : MonoBehaviour {
 			int randomObjectIndex = Random.Range (0, gameObjectList_Spawnable_SetB.Count);
 			chosenObject = gameObjectList_Spawnable_SetB [randomObjectIndex];
 			gameObjectList_Spawnable_SetB.RemoveAt (randomObjectIndex);
+		} else if (Config_CoinTask.currentSetNumber == Config_CoinTask.SetNumber.C) {
+			if (gameObjectList_Spawnable_SetC.Count == 0) {
+				Debug.Log ("No MORE objects to pick! Recreating object list.");
+				CreateSpecialObjectList (); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
+				if (gameObjectList_Spawnable_SetC.Count == 0) {
+					Debug.Log ("No objects to pick at all!"); //if there are still no objects in the list, then there weren't any to begin with...
+					return null;
+				}
+			}
+
+
+			int randomObjectIndex = Random.Range (0, gameObjectList_Spawnable_SetB.Count);
+			chosenObject = gameObjectList_Spawnable_SetB [randomObjectIndex];
+			gameObjectList_Spawnable_SetB.RemoveAt (randomObjectIndex);
+		} else {
+			chosenObject = null;
 		}
 		return chosenObject;
 	}
