@@ -52,7 +52,7 @@ public class ScreenRecorder : MonoBehaviour {
 		else if (recordingType == RecordingType.continuousVideo) {
 			string numFramesPadded = numFrames.ToString();
 			numFramesPadded = numFramesPadded.PadLeft(Config_CoinTask.replayPadding, '0');
-			name = string.Format ("{0}/"+timeStamp+"_{1}.png", 
+			name = string.Format ("{0}/"+"{1}.png", 
 			                      path, //change to path variable? 
 			                      numFramesPadded);
 

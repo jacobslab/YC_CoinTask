@@ -23,6 +23,10 @@ public class CircleTimerManager : MonoBehaviour {
 
 	void TurnVisible(bool isVisible)
 	{
+		if(isVisible)
+			transform.GetChild (0).GetComponent<CanvasGroup> ().alpha = 1f;
+		else
+			transform.GetChild (0).GetComponent<CanvasGroup> ().alpha = 0f;
 		circleTimer.transform.parent.GetChild (0).GetComponent<Image> ().enabled = isVisible; //the green radial circle
 		circleTimer.GetComponent<Image> ().enabled = isVisible;
 	}

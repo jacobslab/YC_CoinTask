@@ -766,8 +766,8 @@ public class TrialController : MonoBehaviour {
 
 
 		//reset time variables according to the memory load of the current trial
-		ScoreController.timeBonusTimeMin=Mathf.CeilToInt(22 * ((currentTrial.SpecialObjectLocationsXZ.Count/2)*0.75f)); //base is 22
-		ScoreController.timeBonusTimeMed=Mathf.CeilToInt(44* ((currentTrial.SpecialObjectLocationsXZ.Count/2)*0.75f)); //base is 44
+//		ScoreController.timeBonusTimeMin=Mathf.CeilToInt(22 * ((currentTrial.SpecialObjectLocationsXZ.Count/2)*0.75f)); //base is 22
+//		ScoreController.timeBonusTimeMed=Mathf.CeilToInt(44* ((currentTrial.SpecialObjectLocationsXZ.Count/2)*0.75f)); //base is 44
 		//readjusting timer bar width to make them move appropriately to the adjusted time
 		exp.scoreController.timerBar.barTimes[0]=ScoreController.timeBonusTimeMin;
 		exp.scoreController.timerBar.barTimes [1] = ScoreController.timeBonusTimeMed - ScoreController.timeBonusTimeMin;
@@ -1314,6 +1314,10 @@ public class TrialController : MonoBehaviour {
 			//change chosen indicator color to reflect right or wrong
 			CorrectPositionIndicatorController correctIndicatorController = correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>();
 //			Color chosenPositionColor = correctIndicatorController.ChangeToRightColor();
+//			if (Random.value > 0.5f)
+//				currentRecallAnswer = 1;
+//			else
+//				currentRecallAnswer = 0;
 			if(currentRecallAnswer==1){
 				Debug.Log ("changing to green");
 				correctIndicatorController.ChangeToRightColor();

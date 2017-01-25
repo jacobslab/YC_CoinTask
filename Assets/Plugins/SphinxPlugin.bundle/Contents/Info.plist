@@ -7,9 +7,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>ASimplePlugin</string>
+	<string>SphinxPlugin</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.yourcompany.ASimplePlugin</string>
+	<string>com.yourcompany.SphinxPlugin</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>

@@ -7,22 +7,22 @@ using System.Diagnostics;
 public class SphinxTest : MonoBehaviour {
 	
 
-	[DllImport ("ASimplePlugin")]
+	[DllImport ("SphinxPlugin")]
 	private static extern IntPtr SphinxRun(int trialNumber, int recallNumber);
 
-	[DllImport ("ASimplePlugin")]
+	[DllImport ("SphinxPlugin")]
 	private static extern int PrintANumber();
 
-	[DllImport ("ASimplePlugin")]
+	[DllImport ("SphinxPlugin")]
 	private static extern int AddTwoIntegers(int i1,int i2);
 
-	[DllImport ("ASimplePlugin")]
+	[DllImport ("SphinxPlugin")]
 	private static extern float AddTwoFloats(float f1,float f2); 
 
-	[DllImport ("ASimplePlugin")]
+	[DllImport ("SphinxPlugin")]
 	private static extern int SetAudioPath(string someStr);
 
-	[DllImport ("ASimplePlugin")]
+	[DllImport ("SphinxPlugin")]
 	private static extern IntPtr GetAudioPath();
 	// Use this for initialization
 	void Start () {
