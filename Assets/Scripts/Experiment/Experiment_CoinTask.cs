@@ -165,13 +165,13 @@ public class Experiment_CoinTask : MonoBehaviour {
 		if(!Directory.Exists(subjectDirectory)){
 			Directory.CreateDirectory(subjectDirectory);
 		}
-		while (File.Exists(sessionDirectory + sessionStartedFileName)){//Directory.Exists(sessionDirectory)) {
-			sessionID++;
-
-			sessionIDString = "_" + sessionID.ToString();
-			
-			sessionDirectory = subjectDirectory + "session" + sessionIDString + "/";
-		}
+//		while (File.Exists(sessionDirectory + sessionStartedFileName)){//Directory.Exists(sessionDirectory)) {
+//			sessionID++;
+//
+//			sessionIDString = "_" + sessionID.ToString();
+//			
+//			sessionDirectory = subjectDirectory + "session" + sessionIDString + "/";
+//		}
 		
 //		//delete old files.
 //		if(Directory.Exists(sessionDirectory)){

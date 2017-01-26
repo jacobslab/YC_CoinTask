@@ -53,6 +53,9 @@ public class ObjectController : MonoBehaviour {
 	void ReadObjectLists()
 	{
 
+		gameObjectList_Spawnable_SetA.Clear();
+		gameObjectList_Spawnable_SetB.Clear();
+		gameObjectList_Spawnable_SetC.Clear();
 		Object[] prefabs;
 		prefabs = Resources.LoadAll("Prefabs/Objects");
 
@@ -74,6 +77,41 @@ public class ObjectController : MonoBehaviour {
 		}
 
 		Debug.Log ("list obj count is: " + listObj.Length);
+
+		List<GameObject> tempObjList = new List<GameObject> ();
+		List<GameObject> spawnList = new List<GameObject> ();
+		//find object in a list
+		for (int i = 0; i < listObj.Length; i++) {
+			//if object name is equal to name in list, then add that to the tempObjList
+			for (int j = 0; j < prefabs.Length; j++) {
+				if (prefabs [j].name == listObj [i]) {
+					tempObjList.Add ((GameObject)tempList [j]);
+				}
+			}
+		}
+
+		//randomly select gameobjects from tempObjList and add to spawnList
+
+		for (int j = 0; j < tempObjList.Count; j++) {
+			GameObject tempObj = (GameObject) tempObjList[Random.Range(0,tempObjList.Count)];
+			spawnList.Add (tempObj);
+			Debug.Log (tempObj.name);
+			tempObjList.Remove (tempObj);
+		}
+
+
+		//set spawnList to the current set's spawn list
+		switch (Config_CoinTask.currentSetNumber) {
+		case Config_CoinTask.SetNumber.A:
+			gameObjectList_Spawnable_SetA = spawnList;
+			break;
+		case Config_CoinTask.SetNumber.B:
+			gameObjectList_Spawnable_SetB = spawnList;
+			break;
+		case Config_CoinTask.SetNumber.C:
+			gameObjectList_Spawnable_SetC = spawnList;
+			break;
+		}
 	}
 
 	void CreateSpecialObjectList(){
