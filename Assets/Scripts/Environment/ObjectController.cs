@@ -36,10 +36,10 @@ public class ObjectController : MonoBehaviour {
 		gameObjectList_Spawnable_SetC = new List<GameObject> ();
 		tempList=new List<GameObject>();
 		CurrentTrialSpecialObjects = new List<GameObject> ();
-		if ((!File.Exists (exp.subjectDirectory + "SetA/SetAList.txt")))
-			CreateSpecialObjectList ();
-		else
-			ReadObjectLists ();
+//		if ((!File.Exists (exp.subjectDirectory + "SetA/SetAList.txt")))
+//			CreateSpecialObjectList ();
+//		else
+		ReadObjectLists ();
 		setAList = new string[50];
 		setBList = new string[50];
 		setCList = new string[50];
@@ -66,17 +66,15 @@ public class ObjectController : MonoBehaviour {
 		string[] listObj = new string[50];
 		switch (Config_CoinTask.currentSetNumber) {
 		case Config_CoinTask.SetNumber.A:
-			listObj=System.IO.File.ReadAllLines (exp.subjectDirectory + "SetA/" + "SetAList.txt");
+			listObj=System.IO.File.ReadAllLines (Application.dataPath+"/SetAList.txt");
 			break;
 		case Config_CoinTask.SetNumber.B:
-			listObj=System.IO.File.ReadAllLines (exp.subjectDirectory + "SetB/" + "SetBList.txt");
+			listObj=System.IO.File.ReadAllLines (Application.dataPath + "/SetBList.txt");
 			break;
 		case Config_CoinTask.SetNumber.C:
-			listObj=System.IO.File.ReadAllLines (exp.subjectDirectory + "SetC/" + "SetCList.txt");
+			listObj=System.IO.File.ReadAllLines (Application.dataPath + "/SetCList.txt");
 			break;
 		}
-
-		Debug.Log ("list obj count is: " + listObj.Length);
 
 		List<GameObject> tempObjList = new List<GameObject> ();
 		List<GameObject> spawnList = new List<GameObject> ();
@@ -90,26 +88,32 @@ public class ObjectController : MonoBehaviour {
 			}
 		}
 
-		//randomly select gameobjects from tempObjList and add to spawnList
+		Debug.Log ("list obj count is: " + tempObjList.Count);
 
-		for (int j = 0; j < tempObjList.Count; j++) {
-			GameObject tempObj = (GameObject) tempObjList[Random.Range(0,tempObjList.Count)];
+		//randomly select gameobjects from tempObjList and add to spawnList
+		string contents="";
+		for (int j = 0; j <50; j++) {
+			
+			GameObject tempObj = (GameObject) tempObjList[49-j];
 			spawnList.Add (tempObj);
 			Debug.Log (tempObj.name);
+			contents += tempObj.name + "\n";
 			tempObjList.Remove (tempObj);
 		}
-
 
 		//set spawnList to the current set's spawn list
 		switch (Config_CoinTask.currentSetNumber) {
 		case Config_CoinTask.SetNumber.A:
 			gameObjectList_Spawnable_SetA = spawnList;
+			System.IO.File.WriteAllText (exp.subjectDirectory + "SetA/" + "ActualListOrder.txt",contents);
 			break;
 		case Config_CoinTask.SetNumber.B:
 			gameObjectList_Spawnable_SetB = spawnList;
+			System.IO.File.WriteAllText (exp.subjectDirectory + "SetB/" + "ActualListOrder.txt",contents);
 			break;
 		case Config_CoinTask.SetNumber.C:
 			gameObjectList_Spawnable_SetC = spawnList;
+			System.IO.File.WriteAllText (exp.subjectDirectory + "SetC/" + "ActualListOrder.txt",contents);
 			break;
 		}
 	}
@@ -122,6 +126,7 @@ public class ObjectController : MonoBehaviour {
 		List<string> firstList = new List<string> ();
 		List<string> secondList = new List<string> ();
 		List<string> thirdList = new List<string> ();
+		string contents = "";
 		#if MRIVERSION
 		if(Config_CoinTask.isPractice){
 			prefabs = Resources.LoadAll("Prefabs/MRIPracticeObjects");
@@ -141,6 +146,7 @@ public class ObjectController : MonoBehaviour {
 			if(!gameObjectList_Spawnable_SetA.Contains(tempObj))
 			{
 				gameObjectList_Spawnable_SetA.Add(tempObj);
+				contents += tempObj.name + "\n";
 				string tempString = tempObj.ToString ();
 				int startIndex = tempString.IndexOf ("(");
 				int endIndex = tempString.IndexOf (")");
@@ -180,10 +186,11 @@ public class ObjectController : MonoBehaviour {
 		for (int i = 0; i < thirdList.Count; i++)
 			setCList = thirdList.ToArray();
 		
-		PrintObjects ();
+	//	PrintObjects ();
 		Debug.Log ("the number of Set A objects are : " + gameObjectList_Spawnable_SetA.Count);
 		Debug.Log ("the number of Set B objects are : " + gameObjectList_Spawnable_SetB.Count);
 		Debug.Log ("the number of Set C objects are : " + gameObjectList_Spawnable_SetC.Count);
+		System.IO.File.WriteAllText (exp.subjectDirectory + "SetA/" + "ActualListOrder.txt", contents);
 		}
 
 	void PrintObjects()
@@ -246,7 +253,7 @@ public class ObjectController : MonoBehaviour {
 		if (Config_CoinTask.currentSetNumber == Config_CoinTask.SetNumber.A) {
 			if (gameObjectList_Spawnable_SetA.Count == 0) {
 				Debug.Log ("No MORE objects to pick! Recreating object list.");
-				CreateSpecialObjectList (); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
+				//CreateSpecialObjectList (); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
 				if (gameObjectList_Spawnable_SetA.Count == 0) {
 					Debug.Log ("No objects to pick at all!"); //if there are still no objects in the list, then there weren't any to begin with...
 					return null;
@@ -260,7 +267,7 @@ public class ObjectController : MonoBehaviour {
 		} else if (Config_CoinTask.currentSetNumber == Config_CoinTask.SetNumber.B) {
 			if (gameObjectList_Spawnable_SetB.Count == 0) {
 				Debug.Log ("No MORE objects to pick! Recreating object list.");
-				CreateSpecialObjectList (); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
+				//CreateSpecialObjectList (); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
 				if (gameObjectList_Spawnable_SetB.Count == 0) {
 					Debug.Log ("No objects to pick at all!"); //if there are still no objects in the list, then there weren't any to begin with...
 					return null;
@@ -274,7 +281,7 @@ public class ObjectController : MonoBehaviour {
 		} else if (Config_CoinTask.currentSetNumber == Config_CoinTask.SetNumber.C) {
 			if (gameObjectList_Spawnable_SetC.Count == 0) {
 				Debug.Log ("No MORE objects to pick! Recreating object list.");
-				CreateSpecialObjectList (); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
+				//CreateSpecialObjectList (); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
 				if (gameObjectList_Spawnable_SetC.Count == 0) {
 					Debug.Log ("No objects to pick at all!"); //if there are still no objects in the list, then there weren't any to begin with...
 					return null;
@@ -282,9 +289,9 @@ public class ObjectController : MonoBehaviour {
 			}
 
 
-			int randomObjectIndex = Random.Range (0, gameObjectList_Spawnable_SetB.Count);
-			chosenObject = gameObjectList_Spawnable_SetB [randomObjectIndex];
-			gameObjectList_Spawnable_SetB.RemoveAt (randomObjectIndex);
+			int randomObjectIndex = Random.Range (0, gameObjectList_Spawnable_SetC.Count);
+			chosenObject = gameObjectList_Spawnable_SetC [randomObjectIndex];
+			gameObjectList_Spawnable_SetC.RemoveAt (randomObjectIndex);
 		} else {
 			chosenObject = null;
 		}

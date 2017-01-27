@@ -20,7 +20,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static Version BuildVersion = Version.TH1;
 #endif
 
-	public static string VersionNumber = "2.042";
+	public static string VersionNumber = "NYSPI\t ";
 
 #if MRIVERSION
 	public static bool isSyncbox = false;
