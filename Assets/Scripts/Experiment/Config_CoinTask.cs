@@ -11,16 +11,17 @@ public class Config_CoinTask : MonoBehaviour {
 	{
 		TH1,
 		TH2,
-		TH3,	
+		TH3,
+		THR,
 		MRI
 	}
 #if MRIVERSION
 	public static Version BuildVersion = Version.MRI;
 #else
-	public static Version BuildVersion = Version.TH1;
+	public static Version BuildVersion = Version.THR;
 #endif
 
-	public static string VersionNumber = "2.043";
+	public static string VersionNumber = "0.9";
 
 #if MRIVERSION
 	public static bool isSyncbox = false;
