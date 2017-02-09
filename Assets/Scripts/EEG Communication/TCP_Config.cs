@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using NetMQ;
+using NetMQ.Sockets;
 public class TCP_Config : MonoBehaviour {
 
 	public static float numSecondsBeforeAlignment = 10.0f;
@@ -9,6 +10,7 @@ public class TCP_Config : MonoBehaviour {
 	public static string HostIPAddress = "192.168.137.200"; //"169.254.50.2" for Mac Pro Desktop.
 	public static int ConnectionPort = 8888; //8001 for Mac Pro Desktop communication
 
+	private SubscriberSocket subscriber;
 
 	public static char MSG_START = '{';
 	public static char MSG_END = '}';
@@ -51,6 +53,7 @@ public class TCP_Config : MonoBehaviour {
 
 
 	void Start(){
+
 
 	}
 

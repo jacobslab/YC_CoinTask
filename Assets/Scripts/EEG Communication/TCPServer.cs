@@ -13,7 +13,8 @@ using System.Net.Sockets;
 using System.Diagnostics;
 
 using System.Threading;
-
+using NetMQ;
+using NetMQ.Sockets;
 using LitJson;
 
 public class TCPServer : MonoBehaviour {

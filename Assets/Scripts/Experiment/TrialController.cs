@@ -17,6 +17,9 @@ public class TrialController : MonoBehaviour {
 	public SimpleTimer trialTimer;
 	public SimpleTimer MRITimer;
 
+	//mic test
+	public MicInput micTest;
+
 	TrialLogTrack trialLogger;
 
 	bool isPracticeTrial = false;
@@ -434,8 +437,13 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine( WaitForEEGHardwareConnection() );
 			}
 			else{
+				Camera.main.gameObject.GetComponent<AudioListener> ().enabled = false;
 				exp.uiController.exitPanel.alpha = 0.0f;
 				exp.uiController.ConnectionUI.alpha = 0.0f;
+				micTest.gameObject.SetActive (true);
+				yield return StartCoroutine (micTest.RunMicTest ());
+				micTest.gameObject.SetActive (false);
+				Camera.main.gameObject.GetComponent<AudioListener> ().enabled = true;
 			}
 				
 #if (!(MRIVERSION))
@@ -544,19 +552,19 @@ public class TrialController : MonoBehaviour {
 			}
 
 			//FINISHED A TRIAL BLOCK, SHOW UI
-//			trialLogger.LogInstructionEvent();
-//			StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
-//			exp.uiController.blockCompletedUI.Play(i, exp.scoreController.score, ListOfTrialBlocks.Count);
-//			trialLogger.LogBlockScreenStarted(true);
-//			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
-//
-//			yield return StartCoroutine(exp.WaitForActionButton());
-//
-//			exp.uiController.blockCompletedUI.Stop();
-//			trialLogger.LogBlockScreenStarted(false);
-//			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, false);
-//
-//			exp.scoreController.Reset();
+			trialLogger.LogInstructionEvent();
+			StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
+			exp.uiController.blockCompletedUI.Play(i, exp.scoreController.score, ListOfTrialBlocks.Count);
+			trialLogger.LogBlockScreenStarted(true);
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
+
+			yield return StartCoroutine(exp.WaitForActionButton());
+
+			exp.uiController.blockCompletedUI.Stop();
+			trialLogger.LogBlockScreenStarted(false);
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, false);
+
+			exp.scoreController.Reset();
 
 			Debug.Log ("TRIAL Block: " + i);
 		}

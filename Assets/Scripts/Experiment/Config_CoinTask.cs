@@ -69,6 +69,8 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public static float isiTime = 1.0f;
 
+	public static int selectedMic=0;
+
 	//recall
 	public static int recallTime=6;
 	
@@ -170,6 +172,11 @@ public class Config_CoinTask : MonoBehaviour {
 
 	void Start(){
 
+	}
+
+	public void SetNewMic()
+	{
+		selectedMic = Experiment_CoinTask.Instance.trialController.micTest.micDrops.value;
 	}
 
 	public static int GetTotalNumTrials(){
