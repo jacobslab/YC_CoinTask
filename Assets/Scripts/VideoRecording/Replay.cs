@@ -231,7 +231,7 @@ public class Replay : MonoBehaviour {
 
 
 			splitLine = currentLogFileLine.Split(splitCharacter);
-
+			Debug.Log (splitLine);
 			if(splitLine.Length > 0){
 				for (int i = 0; i < splitLine.Length; i++){
 
@@ -332,7 +332,7 @@ public class Replay : MonoBehaviour {
 									if (objShortName != origName) {
 										isUIObj = true;
 									}
-
+									Debug.Log (objShortName.ToString());
 									objInScene = exp.objectController.ChooseSpawnableObject (objShortName);
 									
 									if (objInScene != null) { //if it did grab the prefab...

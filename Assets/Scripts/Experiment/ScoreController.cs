@@ -12,9 +12,6 @@ public class ScoreController : MonoBehaviour {
 	public Text scoreText;
 	int scoreTextScore = 0;
 	int amountLeftToAdd = 0; //amount left to add to the score text
-
-
-
 	
 	//Time bonus time variables!
 	public static int timeBonusTimeMin = 22;
@@ -71,27 +68,44 @@ public class ScoreController : MonoBehaviour {
 	public static int LastBoxSwapScore { get { return lastBoxSwapScore; } }
 
 
-
-
 	public TextMesh yesScoreExplanation;
 	public TextMesh maybeScoreExplanation;
 	public TextMesh noScoreExplanation;
 
 	public TimerBar timerBar;
 
+	public GameObject goldTrophy;
+	public GameObject silverTrophy;
+	public GameObject bronzeTrophy;
+	public Transform centralTransform;
+	public Transform goldTrophyTransform;
+	public Transform silverTrophyTransform;
+	public Transform bronzeTrophyTransform;
+	public bool giveBronze=false;
+	public bool giveSilver=false;
+	public bool giveGold=false;
+	public AudioSource tada;
+	public GameObject trophyCanvas;
+
 	// Use this for initialization
 	void Start () {
 		//yesScoreExplanation.text = "win " + memoryScoreYesRight + "/" + "lose " + memoryScoreYesWrong;
 		//maybeScoreExplanation.text = "win " + memoryScoreMaybeRight + "/" + "lose " + memoryScoreMaybeWrong;
 		//noScoreExplanation.text = "win " + memoryScoreNoRight + "/" + "lose " + memoryScoreNoWrong;
-
+		bronzeTrophy.SetActive(false);
+		goldTrophy.SetActive (false);
+		silverTrophy.SetActive (false);
+		trophyCanvas.SetActive (false);
 		Reset ();
 		StartCoroutine (UpdateScoreText());
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (Input.GetKeyDown (KeyCode.G)) {
+			giveBronze = true;
+			StartCoroutine ("GiveTrophies");
+		}
 	}
 
 	void AddToScore(int amountToAdd){
@@ -140,6 +154,8 @@ public class ScoreController : MonoBehaviour {
 		}
 	}
 
+
+
 	void SetScoreText(int scoreToDisplay){
 		//scoreText.text = "$ " + (scoreTextScore);
 		scoreText.text = exp.currInstructions.pointsText + ": " + (scoreToDisplay);
@@ -160,7 +176,33 @@ public class ScoreController : MonoBehaviour {
 		Experiment_CoinTask.Instance.uiController.scoreRecapUI.SetBoxSwapBonusText(boxSwapperNegPoints);
 	}
 
+	public IEnumerator GiveTrophies()
+	{
+		if (giveBronze) {
+			yield return StartCoroutine (TransformTrophy (bronzeTrophy));
+			giveBronze = false;
+		}
+		yield return null;
+	}
 
+	IEnumerator TransformTrophy(GameObject trophy)
+	{
+		bronzeTrophy.transform.localPosition = centralTransform.localPosition;
+		bronzeTrophy.SetActive (true);
+		trophyCanvas.SetActive (true);
+		AudioController.PlayAudio (tada);
+		yield return new WaitForSeconds (1f);
+		float timer = 0f;
+		while (timer < 1.5f) {
+			//Debug.Log (timer);
+			timer += Time.deltaTime;
+			bronzeTrophy.transform.localPosition = Vector3.Lerp (bronzeTrophy.transform.localPosition, bronzeTrophyTransform.localPosition, timer / 1.5f);
+			yield return 0;
+		}
+		timer = 0f;
+		trophyCanvas.SetActive (false);
+		yield return null;
+	}
 	public void AddSpecialPoints(){
 		AddToScore(specialObjectPoints);
 		scoreLogger.LogTreasureOpenScoreAdded (specialObjectPoints);

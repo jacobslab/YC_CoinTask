@@ -1234,6 +1234,7 @@ public class TrialController : MonoBehaviour {
 		trialLogger.LogFeedback(true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
 
+		int consecutiveScore = 0;
 		memoryScore = 0;
 
 		List<GameObject> CorrectPositionIndicators = new List<GameObject> ();
@@ -1311,7 +1312,6 @@ public class TrialController : MonoBehaviour {
 
 
 
-
 			//calculate the memory points and display them
 			//exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
 
@@ -1330,11 +1330,19 @@ public class TrialController : MonoBehaviour {
 				Debug.Log ("changing to green");
 				correctIndicatorController.ChangeToRightColor();
 				trialLogger.LogCorrectAnswer ();
+				consecutiveScore++;
+				Debug.Log ("cons:" + consecutiveScore);
+				if (consecutiveScore >= 3) {
+					Debug.Log ("award bronze");
+					exp.scoreController.giveBronze = true;
+					consecutiveScore = 0;
+				}
 			}
 			else if (currentRecallAnswer == 0){
 				Debug.Log ("changing to red");
 				correctIndicatorController.ChangeToWrongColor();
 				trialLogger.LogWrongAnswer ();
+				consecutiveScore = 0;
 				//chosenPositionColor = correctIndicatorController.ChangeToWrongColor();
 			}
 
@@ -1367,7 +1375,7 @@ public class TrialController : MonoBehaviour {
 		//wait for selection button press
 		yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 #endif
-
+		yield return StartCoroutine (exp.scoreController.GiveTrophies ());
 		currTrialNum++;
 
 
