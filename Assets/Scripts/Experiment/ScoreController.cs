@@ -180,9 +180,14 @@ public class ScoreController : MonoBehaviour {
 	{
 		if (giveBronze) {
 			yield return StartCoroutine (TransformTrophy (bronzeTrophy));
-			giveBronze = false;
 		}
 		yield return null;
+	}
+	public void ResetTrophies()
+	{
+		giveBronze = false;
+		giveGold = false;
+		giveSilver = false;
 	}
 
 	IEnumerator TransformTrophy(GameObject trophy)
