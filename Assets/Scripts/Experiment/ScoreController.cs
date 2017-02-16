@@ -74,17 +74,33 @@ public class ScoreController : MonoBehaviour {
 
 	public TimerBar timerBar;
 
+	//trophies
 	public GameObject goldTrophy;
 	public GameObject silverTrophy;
 	public GameObject bronzeTrophy;
+
 	public Transform centralTransform;
+
 	public Transform goldTrophyTransform;
 	public Transform silverTrophyTransform;
 	public Transform bronzeTrophyTransform;
+
 	public bool giveBronze=false;
 	public bool giveSilver=false;
 	public bool giveGold=false;
+
+	bool bronzeAwarded=false;
+	bool silverAwarded=false;
+	bool goldAwarded=false;
+
+	public int silverProgress=0;
+	public int goldProgress=0;
+
 	public AudioSource tada;
+	public Text trophyText;
+	string goldText="Congrats! \n You have won a Gold Trophy \n for a perfect performance";
+	string silverText="Congrats! \n You have won a Silver Trophy \n for a fantastic performance";
+	string bronzeText="Congrats! \n You have won a Bronze Trophy \n for being on a winning streak";
 	public GameObject trophyCanvas;
 
 	// Use this for initialization
@@ -104,6 +120,8 @@ public class ScoreController : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.G)) {
 			giveBronze = true;
+			giveSilver = true;
+			giveGold = true;
 			StartCoroutine ("GiveTrophies");
 		}
 	}
@@ -178,8 +196,17 @@ public class ScoreController : MonoBehaviour {
 
 	public IEnumerator GiveTrophies()
 	{
-		if (giveBronze) {
+		if (giveBronze && !bronzeAwarded) {
 			yield return StartCoroutine (TransformTrophy (bronzeTrophy));
+			bronzeAwarded = true;
+		}
+		if (giveSilver && !silverAwarded) {
+			yield return StartCoroutine (TransformTrophy (silverTrophy));
+			silverAwarded = true;
+		}
+		if (giveGold && !goldAwarded) {
+			yield return StartCoroutine (TransformTrophy (goldTrophy));
+			goldAwarded = true;
 		}
 		yield return null;
 	}
@@ -188,12 +215,33 @@ public class ScoreController : MonoBehaviour {
 		giveBronze = false;
 		giveGold = false;
 		giveSilver = false;
+
+		bronzeAwarded = false;
+		goldAwarded = false;
+		silverAwarded = false;
+
+		trophyCanvas.SetActive (false);
+
+		bronzeTrophy.SetActive (false);
+		silverTrophy.SetActive (false);
+		goldTrophy.SetActive (false);
 	}
 
 	IEnumerator TransformTrophy(GameObject trophy)
 	{
-		bronzeTrophy.transform.localPosition = centralTransform.localPosition;
-		bronzeTrophy.SetActive (true);
+		trophy.transform.localPosition = centralTransform.localPosition;
+		trophy.SetActive (true);
+		switch (trophy.GetComponent<Trophy> ().trophyType) {
+		case 1:
+			trophyText.text = bronzeText;
+			break;
+		case 2:
+			trophyText.text = silverText;
+			break;
+		case 3:
+			trophyText.text = goldText;
+			break;
+		}
 		trophyCanvas.SetActive (true);
 		AudioController.PlayAudio (tada);
 		yield return new WaitForSeconds (1f);
@@ -201,7 +249,7 @@ public class ScoreController : MonoBehaviour {
 		while (timer < 1.5f) {
 			//Debug.Log (timer);
 			timer += Time.deltaTime;
-			bronzeTrophy.transform.localPosition = Vector3.Lerp (bronzeTrophy.transform.localPosition, bronzeTrophyTransform.localPosition, timer / 1.5f);
+			trophy.transform.localPosition = Vector3.Lerp (trophy.transform.localPosition, trophy.GetComponent<Trophy>().canvasTransform.localPosition, timer / 1.5f);
 			yield return 0;
 		}
 		timer = 0f;

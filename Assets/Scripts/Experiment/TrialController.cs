@@ -1234,6 +1234,8 @@ public class TrialController : MonoBehaviour {
 		trialLogger.LogFeedback(true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
 
+		int correctRecallCues= 0; 
+		int totalRecallCues = 0;
 		int consecutiveScore = 0;
 		memoryScore = 0;
 
@@ -1326,13 +1328,17 @@ public class TrialController : MonoBehaviour {
 //				currentRecallAnswer = 1;
 //			else
 //				currentRecallAnswer = 0;
+
+			//increment total cues
+			totalRecallCues++;
 			if(currentRecallAnswer==1){
 				Debug.Log ("changing to green");
 				correctIndicatorController.ChangeToRightColor();
 				trialLogger.LogCorrectAnswer ();
-				consecutiveScore++;
+				correctRecallCues++; //increment correct recall cues
+				consecutiveScore++; // increment consecutive score and then check if it passes threshold
 				Debug.Log ("cons:" + consecutiveScore);
-				if (consecutiveScore >= 3) {
+				if (consecutiveScore >= Config_CoinTask.bronzeThreshold) {
 					Debug.Log ("award bronze");
 					exp.scoreController.giveBronze = true;
 					consecutiveScore = 0;
@@ -1375,6 +1381,19 @@ public class TrialController : MonoBehaviour {
 		//wait for selection button press
 		yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 #endif
+		float recallRate = correctRecallCues / totalRecallCues;
+		if (recallRate >=0.8f) {
+			exp.scoreController.silverProgress++;
+			if (exp.scoreController.silverProgress >=Config_CoinTask.silverThreshold) {
+				exp.scoreController.giveSilver = true;
+			}
+		}
+		if (recallRate >= 1f) {
+			exp.scoreController.goldProgress++;
+			if (exp.scoreController.goldProgress >= Config_CoinTask.goldThreshold) {
+				exp.scoreController.giveGold = true;
+			}
+		}
 		yield return StartCoroutine (exp.scoreController.GiveTrophies ());
 		currTrialNum++;
 
