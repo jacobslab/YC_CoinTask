@@ -20,8 +20,7 @@ public class BlockCompleteUI : MonoBehaviour {
 	void Update () {
 	
 	}
-
-	public void Play(int currentBlockIndex, int currentBlockScore, int maxNumBlocks){
+	public IEnumerator Play(int currentBlockIndex, int currentBlockScore, int maxNumBlocks){
 		Enable (true);
 
 		if (funParticles != null) {
@@ -29,13 +28,23 @@ public class BlockCompleteUI : MonoBehaviour {
 			funParticles.Play ();
 		}
 
-		if (currentBlockIndex < BlockScores.Length) {
-			BlockScores[currentBlockIndex].text = currentBlockScore.ToString();
-		} else {
-			Debug.Log("NOT ENOUGH BLOCK SCORE TEXTMESHES");
-		}
+
+
+//		if (currentBlockIndex < BlockScores.Length) {
+//			BlockScores[currentBlockIndex].text = currentBlockScore.ToString();
+//		} else {
+//			Debug.Log("NOT ENOUGH BLOCK SCORE TEXTMESHES");
+//		}
 
 		BlockText.text = exp.currInstructions.blockLower + " " + (currentBlockIndex + 1) + "/" + maxNumBlocks + " " + exp.currInstructions.completed;
+		yield return null;
+	}
+
+	public IEnumerator RedeemTrophies(int blockIndex)
+	{
+		//redeem trophies
+		yield return StartCoroutine(exp.scoreController.RedeemTrophies(blockIndex));
+		yield return null;
 	}
 
 	public void Stop(){

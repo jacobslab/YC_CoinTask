@@ -78,6 +78,9 @@ public class Config_CoinTask : MonoBehaviour {
 	public static int bronzeThreshold=3; //must give 3 consecutive correct within a single trial
 	public static int silverThreshold=3; // must have 80% or more recall rate for 3 trials
 	public static int goldThreshold=3; // must have 100% recall rate for 3 trials
+	public static float trophyDisplayTime=1f;
+	public static float trophyTransformTime=1.5f;
+	public static float trophyRedeemTime=1.5f;
 	
 #if MRIVERSION
 	public static int numTestTrials = 8; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT

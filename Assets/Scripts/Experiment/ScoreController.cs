@@ -124,6 +124,7 @@ public class ScoreController : MonoBehaviour {
 			giveGold = true;
 			StartCoroutine ("GiveTrophies");
 		}
+			
 	}
 
 	void AddToScore(int amountToAdd){
@@ -227,6 +228,43 @@ public class ScoreController : MonoBehaviour {
 		goldTrophy.SetActive (false);
 	}
 
+	IEnumerator RedeemTrophy(GameObject trophy, TextMesh textTransform,int scoreIncrease)
+	{
+		float timer = 0f;
+
+		int currentBlockScore = int.Parse (textTransform.text);
+		while (timer < Config_CoinTask.trophyRedeemTime) {
+			timer += Time.deltaTime;
+			trophy.transform.position = Vector3.Lerp (trophy.transform.position, textTransform.transform.position, timer/Config_CoinTask.trophyRedeemTime);
+			yield return 0;
+			if (timer > 0.8f)
+				trophy.SetActive (false);
+			textTransform.text= Mathf.FloorToInt(currentBlockScore+ scoreIncrease - ((Config_CoinTask.trophyRedeemTime-timer) * scoreIncrease)).ToString();
+		}
+		currentBlockScore+= scoreIncrease;
+		textTransform.text = currentBlockScore.ToString ();
+		yield return null;
+
+	}
+
+	public IEnumerator RedeemTrophies(int blockIndex)
+	{
+		exp.uiController.blockCompletedUI.BlockScores [blockIndex].text = "0";
+		if(giveBronze)
+		{
+			yield return RedeemTrophy (bronzeTrophy, exp.uiController.blockCompletedUI.BlockScores [blockIndex],250);
+		}
+		if(giveSilver)
+		{
+			yield return RedeemTrophy (silverTrophy, exp.uiController.blockCompletedUI.BlockScores [blockIndex],500);
+		}
+		if(giveGold)
+		{
+			yield return RedeemTrophy (goldTrophy, exp.uiController.blockCompletedUI.BlockScores [blockIndex],1000);
+		}
+		yield return null;
+	}
+
 	IEnumerator TransformTrophy(GameObject trophy)
 	{
 		trophy.transform.localPosition = centralTransform.localPosition;
@@ -244,9 +282,9 @@ public class ScoreController : MonoBehaviour {
 		}
 		trophyCanvas.SetActive (true);
 		AudioController.PlayAudio (tada);
-		yield return new WaitForSeconds (1f);
+		yield return new WaitForSeconds (Config_CoinTask.trophyDisplayTime);
 		float timer = 0f;
-		while (timer < 1.5f) {
+		while (timer < Config_CoinTask.trophyTransformTime) {
 			//Debug.Log (timer);
 			timer += Time.deltaTime;
 			trophy.transform.localPosition = Vector3.Lerp (trophy.transform.localPosition, trophy.GetComponent<Trophy>().canvasTransform.localPosition, timer / 1.5f);

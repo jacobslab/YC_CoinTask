@@ -101,7 +101,7 @@ public class TrialController : MonoBehaviour {
 	}
 
 	void InitStandardTrials(){
-		UnityEngine.Debug.Log("about to init TIRALS");
+		UnityEngine.Debug.Log("about to init TRIALS");
 		ListOfTrialBlocks = new List<List<Trial>> ();
 
 		if (File.Exists (ExperimentSettings_CoinTask.manualTrialFilePath)) {
@@ -391,6 +391,19 @@ public class TrialController : MonoBehaviour {
 			GetPauseInput ();
 #endif
 		}
+
+		if(Input.GetKeyDown(KeyCode.U))
+		{
+
+			StartCoroutine ("MockBlockTrophy");
+				}
+	}
+
+	IEnumerator MockBlockTrophy()
+	{
+		yield return exp.uiController.blockCompletedUI.Play(0, exp.scoreController.score, ListOfTrialBlocks.Count);
+		yield return exp.uiController.blockCompletedUI.RedeemTrophies (0);
+		yield return null;
 	}
 
 	bool isPauseButtonPressed = false;
@@ -554,10 +567,14 @@ public class TrialController : MonoBehaviour {
 			//FINISHED A TRIAL BLOCK, SHOW UI
 			trialLogger.LogInstructionEvent();
 			StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
-			exp.uiController.blockCompletedUI.Play(i, exp.scoreController.score, ListOfTrialBlocks.Count);
+			yield return exp.uiController.blockCompletedUI.Play(i, exp.scoreController.score, ListOfTrialBlocks.Count);
+
 			trialLogger.LogBlockScreenStarted(true);
 			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
+			//redeem trophies to the current block score's text mesh
+			yield return exp.uiController.blockCompletedUI.RedeemTrophies (i);
 
+			//press x to continue
 			yield return StartCoroutine(exp.WaitForActionButton());
 
 			exp.uiController.blockCompletedUI.Stop();
