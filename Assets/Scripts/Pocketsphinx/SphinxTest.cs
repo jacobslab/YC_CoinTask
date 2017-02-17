@@ -55,10 +55,10 @@ public class SphinxTest : MonoBehaviour {
 		SetAudioPath(audioPath);
 	}
 
-	public int CheckAudioResponse(int trialNumber, int recallNumber)
+	public int CheckAudioResponse(int trialNumber, int recallNumber,string actualName)
 	{
 
-		UnityEngine.Debug.Log("INSIDE SPHINX RESPONSE");
+		UnityEngine.Debug.Log("INSIDE SPHINX RESPONSE " + actualName);
 		string response = Marshal.PtrToStringAuto (SphinxRun(trialNumber,recallNumber));
 		UnityEngine.Debug.Log(response);
 
