@@ -466,8 +466,11 @@ public class TrialController : MonoBehaviour {
 			List<Trial> currentTrialBlock = ListOfTrialBlocks[i];
 			while (currentTrialBlock.Count > 0) {
 				Trial nextTrial = PickRandomTrial (currentTrialBlock);
-
 				yield return StartCoroutine (RunTrial ( nextTrial ));
+				//change fog status
+				Config_CoinTask.isFog = !Config_CoinTask.isFog;
+				Debug.Log ("FOG STATUS : " + Config_CoinTask.isFog);
+				RenderSettings.fog = Config_CoinTask.isFog;
 
 			}
 
@@ -637,8 +640,6 @@ public class TrialController : MonoBehaviour {
 
 		currentTrial = trial;
 
-		//turn on FOG
-		RenderSettings.fog = true;
 		if (isPracticeTrial) {
 			trialLogger.Log (-1, currentTrial.DefaultObjectLocationsXZ.Count, currentTrial.SpecialObjectLocationsXZ.Count, ExperimentSettings_CoinTask.isOneByOneReveal, false);
 			Debug.Log("Logged practice trial.");

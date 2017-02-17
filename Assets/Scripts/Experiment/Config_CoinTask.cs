@@ -41,6 +41,10 @@ public class Config_CoinTask : MonoBehaviour {
 	public static string ActionButtonName = "Action Button";
 //	#endif
 
+
+	//fog
+	public static bool isFog=true;
+
 	//REPLAY
 	public static int replayPadding = 6;
 
