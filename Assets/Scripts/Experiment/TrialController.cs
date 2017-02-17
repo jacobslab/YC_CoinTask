@@ -1346,12 +1346,14 @@ public class TrialController : MonoBehaviour {
 //			else
 //				currentRecallAnswer = 0;
 
+			int points = 0;
 			//increment total cues
 			totalRecallCues++;
 			if(currentRecallAnswer==1){
 				Debug.Log ("changing to green");
 				correctIndicatorController.ChangeToRightColor();
 				trialLogger.LogCorrectAnswer ();
+				points = 100;
 				correctRecallCues++; //increment correct recall cues
 				consecutiveScore++; // increment consecutive score and then check if it passes threshold
 				Debug.Log ("cons:" + consecutiveScore);
@@ -1363,6 +1365,7 @@ public class TrialController : MonoBehaviour {
 			}
 			else if (currentRecallAnswer == 0){
 				Debug.Log ("changing to red");
+				points = 0;
 				correctIndicatorController.ChangeToWrongColor();
 				trialLogger.LogWrongAnswer ();
 				consecutiveScore = 0;
@@ -1374,12 +1377,12 @@ public class TrialController : MonoBehaviour {
 		//	SetConnectingLines( correctPositionIndicator, chosenPosition, chosenPositionColor);
 
 
-		//	CorrectPositionIndicatorController correctPosController = correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>();
+			CorrectPositionIndicatorController correctPosController = correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>();
 
-			//correctPosController.SetPointsText(points);
-			//memoryScore += points;
+			correctPosController.SetPointsText(points);
+			memoryScore += points;
 
-			//objectScores.Add(points);
+			objectScores.Add(points);
 
 
 			//WAIT BEFORE NEXT FEEDBACK
@@ -1415,21 +1418,21 @@ public class TrialController : MonoBehaviour {
 		currTrialNum++;
 
 
-//		trialLogger.LogInstructionEvent();
-//		trialLogger.LogScoreScreenStarted(true);
-//		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
-//		exp.uiController.scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
-//
-//#if MRIVERSION
-//		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxScoreScreenTime));
-//#else
-//		yield return StartCoroutine (exp.WaitForActionButton ());
-//#endif
-//
-//		exp.uiController.scoreRecapUI.Stop ();
-//		trialLogger.LogScoreScreenStarted(false);
-//		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);
-//
+		trialLogger.LogInstructionEvent();
+		trialLogger.LogScoreScreenStarted(true);
+		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
+		exp.uiController.scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
+
+#if MRIVERSION
+		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxScoreScreenTime));
+#else
+		yield return StartCoroutine (exp.WaitForActionButton ());
+#endif
+
+		exp.uiController.scoreRecapUI.Stop ();
+		trialLogger.LogScoreScreenStarted(false);
+		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);
+
 
 		//delete all indicators & special objects
 		DestroyGameObjectList (CorrectPositionIndicators);
