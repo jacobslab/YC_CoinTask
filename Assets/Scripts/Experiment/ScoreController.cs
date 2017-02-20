@@ -14,10 +14,10 @@ public class ScoreController : MonoBehaviour {
 	int amountLeftToAdd = 0; //amount left to add to the score text
 	
 	//Time bonus time variables!
-	public static int timeBonusTimeMin = 22;
+	public static int timeBonusTimeMin = 30;
 	public static int TimeBonusTimeMin { get { return timeBonusTimeMin; } }
 	
-	public static int timeBonusTimeMed = 44;
+	public static int timeBonusTimeMed = 60;
 	public static int TimeBonusTimeMed { get { return timeBonusTimeMed; } }
 	
 	//static int timeBonusTimeMax = 52;

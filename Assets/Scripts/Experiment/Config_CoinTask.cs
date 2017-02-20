@@ -27,7 +27,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
 #else
-	public static bool isSyncbox = true;
+	public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
 #endif
 
@@ -70,7 +70,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float isiTime = 1.0f;
 
 	public static int selectedMic=0;
-	public static float micLoudThreshold = 0.35f;
+	public static float micLoudThreshold = 0.25f;
 
 	//recall
 	public static int recallTime=6;
@@ -79,9 +79,9 @@ public class Config_CoinTask : MonoBehaviour {
 	public static int bronzeThreshold=3; //must give 3 consecutive correct within a single trial
 	public static int silverThreshold=3; // must have 80% or more recall rate for 3 trials
 	public static int goldThreshold=3; // must have 100% recall rate for 3 trials
-	public static float trophyDisplayTime=1f;
-	public static float trophyTransformTime=1.5f;
-	public static float trophyRedeemTime=1.5f;
+	public static float trophyDisplayTime=2f;
+	public static float trophyTransformTime=2f;
+	public static float trophyRedeemTime=2f;
 	
 #if MRIVERSION
 	public static int numTestTrials = 8; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
