@@ -58,8 +58,9 @@ public class SphinxTest : MonoBehaviour {
 	public int CheckAudioResponse(int trialNumber, int recallNumber,string actualName,string kws_threshold)
 	{
 
-		UnityEngine.Debug.Log("INSIDE SPHINX RESPONSE " + actualName);
+		UnityEngine.Debug.Log("INSIDE SPHINX RESPONSE " + actualName + " for " + kws_threshold);
 		int threshInt = int.Parse (kws_threshold);
+		UnityEngine.Debug.Log ("thres int is: " + threshInt.ToString ());
 		string response = Marshal.PtrToStringAuto (SphinxRun(trialNumber,recallNumber,threshInt));
 		UnityEngine.Debug.Log(response);
 

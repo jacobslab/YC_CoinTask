@@ -98,9 +98,9 @@ public class ScoreController : MonoBehaviour {
 
 	public AudioSource tada;
 	public Text trophyText;
-	string goldText="Congrats! \n You have won a Gold Trophy \n for a perfect performance";
-	string silverText="Congrats! \n You have won a Silver Trophy \n for a fantastic performance";
-	string bronzeText="Congrats! \n You have won a Bronze Trophy \n for being on a winning streak";
+	string goldText="Congrats! \n You have won a Gold Trophy \n for being 100% for 3 trials";
+	string silverText="Congrats! \n You have won a Silver Trophy \n for being in Top 10% for 3 trials";
+	string bronzeText="Congrats! \n You have won a Bronze Trophy \n for getting three correct in a row";
 	public GameObject trophyCanvas;
 
 	// Use this for initialization
@@ -198,14 +198,17 @@ public class ScoreController : MonoBehaviour {
 	public IEnumerator GiveTrophies()
 	{
 		if (giveBronze && !bronzeAwarded) {
+			bronzeTrophy.GetComponent<TrophyLogTrack> ().LogTrophyAwardedEvent ();
 			yield return StartCoroutine (TransformTrophy (bronzeTrophy));
 			bronzeAwarded = true;
 		}
 		if (giveSilver && !silverAwarded) {
+			silverTrophy.GetComponent<TrophyLogTrack> ().LogTrophyAwardedEvent ();
 			yield return StartCoroutine (TransformTrophy (silverTrophy));
 			silverAwarded = true;
 		}
 		if (giveGold && !goldAwarded) {
+			goldTrophy.GetComponent<TrophyLogTrack> ().LogTrophyAwardedEvent ();
 			yield return StartCoroutine (TransformTrophy (goldTrophy));
 			goldAwarded = true;
 		}
@@ -247,19 +250,22 @@ public class ScoreController : MonoBehaviour {
 
 	}
 
-	public IEnumerator RedeemTrophies(int blockIndex)
+	public IEnumerator RedeemTrophies(int blockIndex,int currentBlockScore)
 	{
-		exp.uiController.blockCompletedUI.BlockScores [blockIndex].text = "0";
+		exp.uiController.blockCompletedUI.BlockScores [blockIndex].text = currentBlockScore.ToString ();
 		if(giveBronze)
 		{
+			bronzeTrophy.GetComponent<TrophyLogTrack> ().LogTrophyRedeemedEvent ();
 			yield return RedeemTrophy (bronzeTrophy, exp.uiController.blockCompletedUI.BlockScores [blockIndex],250);
 		}
 		if(giveSilver)
 		{
+			silverTrophy.GetComponent<TrophyLogTrack> ().LogTrophyRedeemedEvent ();
 			yield return RedeemTrophy (silverTrophy, exp.uiController.blockCompletedUI.BlockScores [blockIndex],500);
 		}
 		if(giveGold)
 		{
+			goldTrophy.GetComponent<TrophyLogTrack> ().LogTrophyRedeemedEvent ();
 			yield return RedeemTrophy (goldTrophy, exp.uiController.blockCompletedUI.BlockScores [blockIndex],1000);
 		}
 		yield return null;

@@ -401,8 +401,8 @@ public class TrialController : MonoBehaviour {
 
 	IEnumerator MockBlockTrophy()
 	{
-		yield return exp.uiController.blockCompletedUI.Play(0, exp.scoreController.score, ListOfTrialBlocks.Count);
-		yield return exp.uiController.blockCompletedUI.RedeemTrophies (0);
+		yield return exp.uiController.blockCompletedUI.Play(0, ListOfTrialBlocks.Count);
+		yield return exp.uiController.blockCompletedUI.RedeemTrophies (0, exp.scoreController.score);
 		yield return null;
 	}
 
@@ -453,11 +453,13 @@ public class TrialController : MonoBehaviour {
 				Camera.main.gameObject.GetComponent<AudioListener> ().enabled = false;
 				exp.uiController.exitPanel.alpha = 0.0f;
 				exp.uiController.ConnectionUI.alpha = 0.0f;
-				micTest.gameObject.SetActive (true);
-				yield return StartCoroutine (micTest.RunMicTest ());
-				micTest.gameObject.SetActive (false);
 				Camera.main.gameObject.GetComponent<AudioListener> ().enabled = true;
 			}
+			trialLogger.LogMicTestEvent (true);
+			micTest.gameObject.SetActive (true);
+			yield return StartCoroutine (micTest.RunMicTest ());
+			micTest.gameObject.SetActive (false);
+			trialLogger.LogMicTestEvent (false);
 				
 #if (!(MRIVERSION))
 	#if (!UNITY_WEBPLAYER)
@@ -567,12 +569,12 @@ public class TrialController : MonoBehaviour {
 			//FINISHED A TRIAL BLOCK, SHOW UI
 			trialLogger.LogInstructionEvent();
 			StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
-			yield return exp.uiController.blockCompletedUI.Play(i, exp.scoreController.score, ListOfTrialBlocks.Count);
+			yield return exp.uiController.blockCompletedUI.Play(i, ListOfTrialBlocks.Count);
 
 			trialLogger.LogBlockScreenStarted(true);
 			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
 			//redeem trophies to the current block score's text mesh
-			yield return exp.uiController.blockCompletedUI.RedeemTrophies (i);
+			yield return exp.uiController.blockCompletedUI.RedeemTrophies (i, exp.scoreController.score);
 
 			//press x to continue
 			yield return StartCoroutine(exp.WaitForActionButton());
@@ -947,7 +949,7 @@ public class TrialController : MonoBehaviour {
 				exp.environmentController.myPositionSelector.EnableVisibility (true);
 				Debug.Log ("this object is: " + specialObj.name);
 				exp.environmentController.myPositionSelector.MoveToPosition (specialObj.transform.position);
-				string currentRecallObject = specialItemDisplayName + "  /1e-"+kws_threshold.ToString()+"/";
+				string currentRecallObject = specialItemDisplayName;
 				chosenPositions.Add (specialObj.transform.position);
 				//yield return new WaitForSeconds (2f);
 				//trialLogger.LogInstructionEvent ();
@@ -1423,6 +1425,8 @@ public class TrialController : MonoBehaviour {
 				exp.scoreController.giveGold = true;
 			}
 		}
+
+		trialLogger.LogTrophyEvent();
 		yield return StartCoroutine (exp.scoreController.GiveTrophies ());
 		currTrialNum++;
 

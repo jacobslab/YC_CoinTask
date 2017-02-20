@@ -23,7 +23,7 @@ public class QuestionUI : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Enable (false);
-		origObjNameSize = ObjectNameTextMesh.fontSize;
+	//	origObjNameSize = ObjectNameTextMesh.fontSize;
 	}
 
 	//no object

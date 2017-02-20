@@ -20,7 +20,7 @@ public class BlockCompleteUI : MonoBehaviour {
 	void Update () {
 	
 	}
-	public IEnumerator Play(int currentBlockIndex, int currentBlockScore, int maxNumBlocks){
+	public IEnumerator Play(int currentBlockIndex, int maxNumBlocks){
 		Enable (true);
 
 		if (funParticles != null) {
@@ -40,10 +40,10 @@ public class BlockCompleteUI : MonoBehaviour {
 		yield return null;
 	}
 
-	public IEnumerator RedeemTrophies(int blockIndex)
+	public IEnumerator RedeemTrophies(int blockIndex,int currentBlockScore)
 	{
 		//redeem trophies
-		yield return StartCoroutine(exp.scoreController.RedeemTrophies(blockIndex));
+		yield return StartCoroutine(exp.scoreController.RedeemTrophies(blockIndex,currentBlockScore));
 		yield return null;
 	}
 
