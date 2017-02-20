@@ -8,7 +8,7 @@ public class SphinxTest : MonoBehaviour {
 	
 
 	[DllImport ("SphinxPlugin")]
-	private static extern IntPtr SphinxRun(int trialNumber, int recallNumber);
+	private static extern IntPtr SphinxRun(int trialNumber, int recallNumber,int kws_threshold);
 
 	[DllImport ("SphinxPlugin")]
 	private static extern int PrintANumber();
@@ -55,11 +55,12 @@ public class SphinxTest : MonoBehaviour {
 		SetAudioPath(audioPath);
 	}
 
-	public int CheckAudioResponse(int trialNumber, int recallNumber,string actualName)
+	public int CheckAudioResponse(int trialNumber, int recallNumber,string actualName,string kws_threshold)
 	{
 
 		UnityEngine.Debug.Log("INSIDE SPHINX RESPONSE " + actualName);
-		string response = Marshal.PtrToStringAuto (SphinxRun(trialNumber,recallNumber));
+		int threshInt = int.Parse (kws_threshold);
+		string response = Marshal.PtrToStringAuto (SphinxRun(trialNumber,recallNumber,threshInt));
 		UnityEngine.Debug.Log(response);
 
 		if (response == "found") {

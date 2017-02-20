@@ -9,7 +9,7 @@ public class SpawnableObject : MonoBehaviour {
 
 	VisibilityToggler myVisibilityToggler;
 	public bool isVisible { get { return myVisibilityToggler.GetVisibility (); } }
-
+	public string sphinxThreshold="";
 	ObjectLogTrack myLogTrack;
 
 	Vector3 origScale;

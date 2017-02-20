@@ -885,8 +885,12 @@ public class TrialController : MonoBehaviour {
 		for (int i = 0; i < exp.objectController.RecallObjectList.Count; i++) {
 			correctPositions.Add (exp.objectController.RecallObjectList[randomSpecialObjectOrder [i]].transform.position);
 			recallAnswers.Add (0);
-			trialLstContents += exp.objectController.RecallObjectList[randomSpecialObjectOrder [i]].GetComponent<SpawnableObject> ().GetDisplayName () + "\n";
+			trialLstContents += exp.objectController.RecallObjectList [randomSpecialObjectOrder [i]].GetComponent<SpawnableObject> ().GetDisplayName () + "\n";
 		}
+//		for (int i = 0; i < exp.objectController.RecallObjectList.Count; i++) {
+//			string trialLstName = exp.sessionDirectory + "audio/" + totalTrialNumber.ToString()+"_"+i.ToString() + ".lst";
+//			System.IO.File.WriteAllText(trialLstName, trialLstContents);
+//		}
 		List<Vector3> chosenPositions = new List<Vector3> (); //chosen positions will be in the same order as the random special object order
 		List<Config_CoinTask.MemoryState> rememberResponses = new List<Config_CoinTask.MemoryState> (); //keep track of whether or not the player remembered each object
 		//List<bool> areYouSureResponses = new List<bool> (); //keep track of whether or not the player wanted to double down on each object
@@ -901,6 +905,7 @@ public class TrialController : MonoBehaviour {
 			Vector3 specialObjPosition = correctPositions [randomOrderIndex];
 			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
 			string specialItemDisplayName = specialSpawnable.GetDisplayName ();
+			string kws_threshold = specialSpawnable.sphinxThreshold;
 			int currentRecallNumber = i;
 			//set TCP state true
 			switch(randomOrderIndex){
@@ -935,14 +940,14 @@ public class TrialController : MonoBehaviour {
 
 		
 
-			if (ExperimentSettings_CoinTask.myRecall==ExperimentSettings_CoinTask.RecallType.Object) {
+			if (ExperimentSettings_CoinTask.myRecall == ExperimentSettings_CoinTask.RecallType.Object) {
 				objectRecall = false;
 				recallTypes.Add (1);
 				Debug.Log ("starting object recall");
 				exp.environmentController.myPositionSelector.EnableVisibility (true);
 				Debug.Log ("this object is: " + specialObj.name);
 				exp.environmentController.myPositionSelector.MoveToPosition (specialObj.transform.position);
-				string currentRecallObject = specialItemDisplayName;
+				string currentRecallObject = specialItemDisplayName + "  /1e-"+kws_threshold.ToString()+"/";
 				chosenPositions.Add (specialObj.transform.position);
 				//yield return new WaitForSeconds (2f);
 				//trialLogger.LogInstructionEvent ();
@@ -982,7 +987,7 @@ public class TrialController : MonoBehaviour {
 //					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, true);
 //					break;
 //				}
-				trialLogger.LogRecallChoiceStarted (true,1);
+				trialLogger.LogRecallChoiceStarted (true, 1);
 //
 //				exp.uiController.doYouRememberObjectUI.Stop ();
 
@@ -1001,8 +1006,8 @@ public class TrialController : MonoBehaviour {
 
 
 				//set your own instructions
-				exp.currInstructions.SetInstructionsTransparentOverlay();
-				exp.currInstructions.DisplayText(selectObjectText);
+				exp.currInstructions.SetInstructionsTransparentOverlay ();
+				exp.currInstructions.DisplayText (selectObjectText);
 
 				//yield return new WaitForSeconds(3f);
 				#endif
@@ -1016,32 +1021,36 @@ public class TrialController : MonoBehaviour {
 				//add current chosen position to list of chosen positions
 				//chosenPositions.Add (exp.environmentController.myPositionSelector.GetSelectorPosition ());
 
-				int logTrialNumber=i; //just the object number for this current trial
+				int logTrialNumber = i; //just the object number for this current trial
 
-				string fileName=totalTrialNumber.ToString()+"_"+logTrialNumber.ToString(); //totalTrialNumber_logTrialNumber
+				string fileName = totalTrialNumber.ToString () + "_" + logTrialNumber.ToString (); //totalTrialNumber_logTrialNumber
 
 
 
-					//DO AUDIO RECORDING
-				exp.environmentController.myPositionSelector.StartTimer();
+				//DO AUDIO RECORDING
+				exp.environmentController.myPositionSelector.StartTimer ();
 				//play on record beep
-				exp.audioController.audioRecorder.beepHigh.Play();
+				exp.audioController.audioRecorder.beepHigh.Play ();
 
 
 				//start recording
 				yield return StartCoroutine (exp.audioController.audioRecorder.Record (exp.sessionDirectory + "audio", fileName, recallTime));
 
 				//play off beep
-				exp.audioController.audioRecorder.beepLow.Play();
+				exp.audioController.audioRecorder.beepLow.Play ();
 
 				//turn off instructions
 				exp.currInstructions.TurnOffInstructions ();
-				exp.cameraController.SetInGame();
+				exp.cameraController.SetInGame ();
 				exp.currInstructions.SetTextPanelOff ();
 
+				//make a .TXT file with name of current recall object; meant for pocketsphinx
+				string trialTxtName = exp.sessionDirectory + "audio/" + fileName + ".txt";
+				System.IO.File.WriteAllText(trialTxtName, currentRecallObject); //includes name and the kws_threshold 
+
 				//make a .LST file with all the names of the objects in the trial
-				string trialLstName = exp.sessionDirectory + "audio/" + fileName + ".txt";
-				System.IO.File.WriteAllText(trialLstName, currentRecallObject);
+				string trialLstName = exp.sessionDirectory + "audio/" + fileName + ".lst";
+				System.IO.File.WriteAllText(trialLstName, trialLstContents);
 
 
 				//disable position selection
@@ -1051,7 +1060,7 @@ public class TrialController : MonoBehaviour {
 				//check audio response
 				UnityEngine.Debug.Log("CHECKING SPHINX RESPONSE: " +  currentTrialNumber + " and  "  +currentRecallNumber);
 				int sphinxNum = currentTrialNumber - 1;
-				recallAnswers[randomOrderIndex]=exp.sphinxTest.CheckAudioResponse(sphinxNum,currentRecallNumber,currentRecallObject);
+				recallAnswers[randomOrderIndex]=exp.sphinxTest.CheckAudioResponse(sphinxNum,currentRecallNumber,currentRecallObject,kws_threshold);
 
 				trialLogger.LogSphinxEvent ();
 //				if (Random.value > 0.5) {
