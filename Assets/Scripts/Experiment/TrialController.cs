@@ -18,7 +18,7 @@ public class TrialController : MonoBehaviour {
 	public SimpleTimer MRITimer;
 
 	//mic test
-	public MicInput micTest;
+	public InputMic micTest;
 
 	TrialLogTrack trialLogger;
 
