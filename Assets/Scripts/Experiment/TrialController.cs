@@ -34,7 +34,7 @@ public class TrialController : MonoBehaviour {
 
 	public Trial currentTrial;
 	string initialInstructions2 = "When you are shown different locations in the environment, " +
-		"\n\nsay the name of the object you remembered in that location" +
+		"\nsay the name of the object you remembered in that location" +
 		"\n\nIf there was nothing in that location: say “NOTHING”. " +
 		"\nIf you can’t remember, say “DON'T KNOW”" +
 		"\n\nThe time you have to respond is indicated by the timer circle around the location marker" + 

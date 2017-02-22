@@ -88,7 +88,7 @@ public class ScoreRecapUI : MonoBehaviour {
 	string FormatScore(int score){
 		string scoreText = score.ToString ();
 		if(score > 0){
-			scoreText = "+" + scoreText;
+			scoreText = scoreText;
 		}
 
 		return scoreText;
