@@ -26,7 +26,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
 #else
-	public static bool isSyncbox = false;
+	public static bool isSyncbox = true;
 	public static bool isSystem2 = false;
 #endif
 
@@ -43,7 +43,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 
 	//fog
-	public static bool isFog=true;
+	public static bool isFog=false; //to make sure first trial is NON-FOG
 
 	//REPLAY
 	public static int replayPadding = 6;

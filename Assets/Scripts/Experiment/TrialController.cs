@@ -315,6 +315,7 @@ public class TrialController : MonoBehaviour {
 
 	
 	void Update(){
+        Debug.Log(Config_CoinTask.isFog);
 		if(!isConnectingToHardware){
 #if MRIVERSION
 			if(Config_CoinTask.isPractice){ // only pause in MRI practice, not in the real task
@@ -364,7 +365,9 @@ public class TrialController : MonoBehaviour {
 	//FILL THIS IN DEPENDING ON EXPERIMENT SPECIFICATIONS
 	public IEnumerator RunExperiment(){
 		if (!ExperimentSettings_CoinTask.isReplay) {
-			exp.player.controls.ShouldLockControls = true;
+
+            RenderSettings.fog = Config_CoinTask.isFog;
+            exp.player.controls.ShouldLockControls = true;
 
 			if(Config_CoinTask.isSystem2 || Config_CoinTask.isSyncbox){
 				yield return StartCoroutine( WaitForEEGHardwareConnection() );
@@ -461,8 +464,9 @@ public class TrialController : MonoBehaviour {
 	}
 
 	IEnumerator RunTrials(){
-		//RUN THE REST OF THE BLOCKS
-		for( int i = 0; i < ListOfTrialBlocks.Count; i++){
+
+        //RUN THE REST OF THE BLOCKS
+        for ( int i = 0; i < ListOfTrialBlocks.Count; i++){
 			List<Trial> currentTrialBlock = ListOfTrialBlocks[i];
 			while (currentTrialBlock.Count > 0) {
 				Trial nextTrial = PickRandomTrial (currentTrialBlock);
