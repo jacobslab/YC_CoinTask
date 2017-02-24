@@ -3,7 +3,7 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.IO;
-
+using UnityEngine.SceneManagement;
 public class TrialController : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
@@ -391,7 +391,8 @@ public class TrialController : MonoBehaviour {
 			GetPauseInput ();
 #endif
 		}
-
+		if (Input.GetKeyDown (KeyCode.Alpha3))
+			SceneManager.LoadScene (2);
 		if(Input.GetKeyDown(KeyCode.U))
 		{
 

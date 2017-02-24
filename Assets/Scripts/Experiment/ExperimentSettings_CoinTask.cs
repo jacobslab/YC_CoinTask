@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using System.IO;
-
+using UnityEngine.SceneManagement;
 public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main menu AND experiment
 
 
@@ -19,7 +19,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		}
 	}
 
-	public GameObject quitButton; //must turn this off in web build
+//	public GameObject quitButton; //must turn this off in web build
 
 	//subject selection controller
 	public SubjectSelectionController subjectSelectionController;
@@ -57,6 +57,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 	public Toggle oculusToggle; //only exists in main menu -- make sure to null check
 	public Toggle loggingToggle; //only exists in main menu -- make sure to null check
+
+	public Button returnMenuButton;
+	public Button quitButton;
 
 	public GameObject loggingPathOptions; //for easy un-enabling in web version
 
@@ -99,18 +102,31 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			return;
 		}
 		_instance = this;
-
+		if (SceneManager.GetActiveScene ().name != "EndMenu") {
 #if UNITY_WEBPLAYER
 		InitWebSettings ();
 #else
-		DoMicTest();
-		InitLoggingPath ();
+			DoMicTest ();
+			InitLoggingPath ();
 #endif
-		InitMainMenuLabels ();
+			InitMainMenuLabels ();
+		} else
+			AttachSceneController ();
 
 		QualitySettings.vSyncCount = 1;
 	}
 
+	void AttachSceneController()
+	{
+		GameObject sceneControl = GameObject.Find ("SceneController");
+		if (sceneControl != null) {
+			returnMenuButton.onClick.RemoveAllListeners ();
+			returnMenuButton.onClick.AddListener (() => SceneController.Instance.LoadMainMenu ());
+
+			quitButton.onClick.RemoveAllListeners ();
+			quitButton.onClick.AddListener (() => SceneController.Instance.Quit ());
+		}
+	}
 	void ResetDefaultLoggingPath(){
 		#if (!UNITY_WEBPLAYER)
 			#if MRIVERSION
@@ -212,7 +228,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		loggingToggle.enabled = false;
 		loggingPathOptions.SetActive(false);
 		subjectSelectionController.SubjectInputField.gameObject.SetActive(false);
-		quitButton.SetActive (false);
+		quitButton.enabled=false;
 	}
 
 	// Use this for initialization
