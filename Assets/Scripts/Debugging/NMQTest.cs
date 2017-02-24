@@ -6,10 +6,17 @@ using NetMQ.Sockets;
 
 public class NMQTest : MonoBehaviour {
 
+	string serverAppend="@tcp://";
+	string port=":5556";
+
+	string HostIPAddress="127.0.0.1";
+	string clientAppend=">tcp://";
 	// Use this for initialization
 	void Start () {
-		using (var server = new ResponseSocket("@tcp://127.0.0.1:5556"))
-		using (var client = new RequestSocket(">tcp://127.0.0.1:5556"))
+		UnityEngine.Debug.Log (serverAppend + HostIPAddress + port);
+		UnityEngine.Debug.Log (clientAppend + HostIPAddress + port);
+		using (var server = new ResponseSocket(serverAppend+HostIPAddress+port))
+		using (var client = new RequestSocket(clientAppend+HostIPAddress+port))
 		{
 			// client sends message consisting of two frames
 			UnityEngine.Debug.Log("Client sending");

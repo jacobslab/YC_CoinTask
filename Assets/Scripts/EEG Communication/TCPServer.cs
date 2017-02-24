@@ -51,7 +51,7 @@ public class TCPServer : MonoBehaviour {
 	}
 
 	void Start(){
-		if(Config_CoinTask.isSystem2){
+		if(Config_CoinTask.isSystem2 || Config_CoinTask.isSYS3){
 			RunServer ();
 		}
 	}
@@ -89,14 +89,14 @@ public class TCPServer : MonoBehaviour {
 			}
 		}
 		//DEBUGGING
-		/*
-		if (Input.GetKeyDown (KeyCode.A)) {
-			myServer.isServerConnected = true;
-		}
-		if (Input.GetKeyDown (KeyCode.S)) {
-			myServer.canStartGame = true;
-		}
-		*/
+
+//		if (Input.GetKeyDown (KeyCode.A)) {
+//			myServer.isServerConnected = true;
+//		}
+//		if (Input.GetKeyDown (KeyCode.S)) {
+//			myServer.canStartGame = true;
+//		}
+
 	}
 
 	public void Log(long time, TCP_Config.EventType eventType){
@@ -156,15 +156,18 @@ public class ThreadedServer : ThreadedJob{
 	//int numClockAlignmentTries = 0;
 	//const int timeBetweenClockAlignmentTriesMS = 500;//500; //half a second
 	//const int maxNumClockAlignmentTries = 120; //for a total of 60 seconds of attempted alignment
+	string serverAppend="@tcp://";
+	string port=":5556";
 
+	string HostIPAddress="127.0.0.1";
+	string clientAppend=">tcp://";
 
 
 
 	public string messagesToSend = "";
 	string incompleteMessage = "";
 
-	Socket s;
-	TcpListener myList;
+	RequestSocket myList;
 
     int socketTimeoutMS = 500; // 500 milliseconds will be the time period within which socket messages will be exchanged
 		
@@ -254,19 +257,20 @@ public class ThreadedServer : ThreadedJob{
 		// use the same in the client
 		
 		/* Initializes the Listener */
-		myList = new TcpListener(ipAd,TCP_Config.ConnectionPort);
+
+		myList = new RequestSocket(clientAppend+TCP_Config.HostIPAddress+":"+TCP_Config.ConnectionPort);
 		
 		/* Start Listening at the specified port */        
-		myList.Start();
+	//	myList.Start();
 		
-		UnityEngine.Debug.Log("The server is running at port" + TCP_Config.ConnectionPort + "...");    
-		UnityEngine.Debug.Log("The local End point is  :" + myList.LocalEndpoint );
+		UnityEngine.Debug.Log("The server is running on " + TCP_Config.HostIPAddress + " at port " + TCP_Config.ConnectionPort + "...");    
+//		UnityEngine.Debug.Log("The local End point is  :" + myList.LocalEndpoint );
 		UnityEngine.Debug.Log("Waiting for a connection.....");
 		
-		s = myList.AcceptSocket();
+//		s = myList.AcceptSocket();
 
         //uncheck if you want a NON-BLOCKING SOCKET
-        s.Blocking = false;
+//        s.Blocking = false;
 		isServerConnected = true;
 
 		//THIS IS VERY IMPORTANT.
@@ -278,9 +282,10 @@ public class ThreadedServer : ThreadedJob{
 	}
 	
 	void CleanupConnections(){
-		/* clean up */            
-		s.Close();
-		myList.Stop();
+		/* clean up */  
+		myList.Close ();
+//		s.Close();
+//		myList.Stop();
 		isServerConnected = false;
 	}
 
@@ -361,7 +366,10 @@ public class ThreadedServer : ThreadedJob{
 	void SendMessage(string message){
 		try{
 			ASCIIEncoding asen=new ASCIIEncoding();
-			s.Send(asen.GetBytes(message));
+			var msg=new NetMQMessage();
+			msg.Append(asen.GetBytes(message));
+			myList.SendMultipartMessage(msg);
+//			s.Send(asen.GetBytes(message));
 			UnityEngine.Debug.Log("\nSent Message: " + message);
 		}
 		catch (Exception e) {
@@ -442,15 +450,23 @@ public class ThreadedServer : ThreadedJob{
 
 			byte[] b=new byte[1000];
           //  int k = s.Receive(b);
-		    int k=s.Receive(b,0,1000,SocketFlags.None,out error);
+			var msg=new NetMQMessage();
+			msg=myList.ReceiveMultipartMessage();
+			UnityEngine.Debug.Log("Client received {0} frames" + msg.FrameCount);
+
+			foreach (var frame in msg)
+				UnityEngine.Debug.Log("Frame={0}"+ frame.ConvertToString());
+
+		
+//		    int k=s.Receive(b,0,1000,SocketFlags.None,out error);
            
           //  UnityEngine.Debug.Log("Received something!");
-			if(k > 0){
-
-				for (int i=0; i<k; i++) {
-					messageBuffer += Convert.ToChar(b[i]);
-				}
-			}
+//			if(k > 0){
+//
+//				for (int i=0; i<k; i++) {
+//					messageBuffer += Convert.ToChar(b[i]);
+//				}
+//			}
 			//UnityEngine.Debug.Log (messageBuffer);
 		}
 
@@ -530,9 +546,10 @@ public class ThreadedServer : ThreadedJob{
 			//do nothing
 			break;
 
+
 		case "MESSAGE":
 			dataContent = (string)messageData["data"];
-			if(dataContent == "STARTED"){
+			if(dataContent == "CONNECTED"){ //changed it from "STARTED" to "CONNECTED" for SYS3
 				canStartGame = true;
 			}
 			break;

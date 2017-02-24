@@ -183,7 +183,7 @@ public class Trial {
 		Debug.Log ("Four: " + fourNum);
 		Debug.Log ("Five: " + fiveNum);
 		*/
-		Debug.Log ("total: " + totalTrials);
+		//Debug.Log ("total: " + totalTrials);
 
 		return counterTrial;
 	}
