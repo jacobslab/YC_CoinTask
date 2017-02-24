@@ -86,7 +86,7 @@ public class InstructionsController : MonoBehaviour {
 	public string pressToStart = "Press (X) to start!";
 
 	//score screen
-	public string trialCompleteText = "Trial Complete!";
+	public string trialCompleteText = "Scoreboard";
 	public string timeBonusText = "time bonus";
 	public string boxSwapBonusText = "box swap bonus";
 	public string trialScoreText = "Trial Score";

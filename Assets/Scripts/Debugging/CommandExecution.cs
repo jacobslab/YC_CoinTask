@@ -25,6 +25,7 @@ public class CommandExecution : MonoBehaviour {
 			return;
 		}
 		_instance = this;
+		ExecuteCommand();
 	}
 
 	// Use this for initialization
@@ -61,7 +62,7 @@ public class CommandExecution : MonoBehaviour {
 //#endif
 		string filepath=System.IO.Directory.GetCurrentDirectory();
 		UnityEngine.Debug.Log (filepath);
-		var processInfo = new ProcessStartInfo ("./trying", " > output.txt");
+		var processInfo = new ProcessStartInfo ("open","InputVolume.app");
 		//processInfo.FileName = "/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal";
 		//processInfo.Arguments="-c \" " + "shutdown -s now" + " \"";
         processInfo.CreateNoWindow = true;
