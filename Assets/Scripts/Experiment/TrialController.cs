@@ -447,7 +447,8 @@ public class TrialController : MonoBehaviour {
 		if (!ExperimentSettings_CoinTask.isReplay) {
 			exp.player.controls.ShouldLockControls = true;
 
-			if(Config_CoinTask.isSystem2 || Config_CoinTask.isSyncbox){
+			micTest.gameObject.SetActive (false);
+			if(Config_CoinTask.isSystem2 || Config_CoinTask.isSyncbox || Config_CoinTask.isSYS3){
 				yield return StartCoroutine( WaitForEEGHardwareConnection() );
 			}
 			else{
@@ -599,7 +600,7 @@ public class TrialController : MonoBehaviour {
 				//Debug.Log("Waiting for system 2 connection...");
 				yield return 0;
 			}
-			exp.uiController.ConnectionText.text = "Press START on host PC...";
+			exp.uiController.ConnectionText.text = "Connecting to CONTROL PC...";
 			while (!TCPServer.Instance.canStartGame) {
 				Debug.Log ("Waiting for system 2 start command...");
 				yield return 0;
