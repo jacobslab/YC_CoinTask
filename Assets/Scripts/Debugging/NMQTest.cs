@@ -28,7 +28,7 @@ public class NMQTest : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		m_publisher.SendFrame ("{\"data\":\"CONNECTED\",\"type\":\"MESSAGE\",\"time\":1488297347602}");
+		m_publisher.SendFrame ("{\"data\":\"\",\"type\":\"CONNECTED\",\"time\":1488297347602}");
 	}
 
 	void OnApplicationQuit()
