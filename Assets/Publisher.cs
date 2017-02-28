@@ -3,10 +3,11 @@ using NetMQ;
 using NetMQ.Sockets;
 using AsyncIO;
 
-public class NMQTest : MonoBehaviour
+public class Publisher : MonoBehaviour
 {
-	//private NetMQContext m_context;
+
 	private PublisherSocket m_publisher;
+
 
 	// Use this for initialization
 	void Start()
@@ -15,20 +16,17 @@ public class NMQTest : MonoBehaviour
 
 		//	m_context = NetMQContext.Create();
 		m_publisher=new PublisherSocket();
-		m_publisher.Bind ("tcp://"+TCP_Config.HostIPAddress+":"+TCP_Config.ConnectionPort);
-//		m_publisher.SendFrame ("A");
+		m_publisher.Bind ("tcp://localhost:8889");
+		//		m_publisher.SendFrame ("A");
 
 
-		//		m_pull = new PullSocket();
-		//		m_pull.Options.Linger = System.TimeSpan.Zero;
-		//		m_pull.Connect("tcp://127.0.0.1:8888");
-
+		Debug.Log("Connected");
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		m_publisher.SendFrame ("{\"data\":\"CONNECTED\",\"type\":\"MESSAGE\",\"time\":1488297347602}");
+		m_publisher.SendFrame ("CONNECTED");
 	}
 
 	void OnApplicationQuit()

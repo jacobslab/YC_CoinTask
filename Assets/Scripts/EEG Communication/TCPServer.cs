@@ -25,6 +25,7 @@ public class TCPServer : MonoBehaviour {
 	public bool isConnected { get { return GetIsConnected(); } }
 	public bool canStartGame { get { return GetCanStartGame(); } }
 
+	SubscriberSocket myList;
 
 
 	//int QUEUE_SIZE = 20;  //Blocks if the queue is full
@@ -75,6 +76,11 @@ public class TCPServer : MonoBehaviour {
 	}*/
 
 	void RunServer () {
+		myList = new SubscriberSocket();
+		myList.Options.Linger = System.TimeSpan.Zero;
+		myList.Subscribe("");
+		myList.Connect("tcp://localhost:8889");
+
 		myServer = new ThreadedServer ();
 		myServer.Start ();
 	}
@@ -87,7 +93,16 @@ public class TCPServer : MonoBehaviour {
 				StartCoroutine (AlignClocks ());
 				myServer.SendInitMessages ();
 			}
-		}
+//			string message = "";
+//			string rcvd;
+//
+//			//	Debug.Log("Update");
+//
+//			while (myList.TryReceiveFrameString(out rcvd))
+//			{
+//				message = message + " - " + rcvd;
+//				UnityEngine.Debug.Log(rcvd);
+//		}
 		//DEBUGGING
 
 		//		if (Input.GetKeyDown (KeyCode.A)) {
@@ -97,6 +112,7 @@ public class TCPServer : MonoBehaviour {
 		//			myServer.canStartGame = true;
 		//		}
 
+	}
 	}
 
 	public void Log(long time, TCP_Config.EventType eventType){
@@ -201,13 +217,15 @@ public class ThreadedServer : ThreadedJob{
 			}*/
 
 			//SEND HEARTBEAT
+//			SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds,TCP_Config.EventType.MESSAGE,"CONNECTED");
+
 			SendHeartbeatPolled();
 
 			CheckForMessages();
 
 			SendMessages();
 
-			UnityEngine.Debug.Log("MAIN LOOP EXECUTED");
+			//UnityEngine.Debug.Log("MAIN LOOP EXECUTED");
 
 
 		}
@@ -248,6 +266,7 @@ public class ThreadedServer : ThreadedJob{
 		//start heartbeat
 		StartHeartbeatPoll();
 
+
 		//wait for "STARTED" message to be received
 	}
 
@@ -258,14 +277,14 @@ public class ThreadedServer : ThreadedJob{
 		// use the same in the client
 
 		myPub=new PublisherSocket();
-		myPub.Bind ("tcp://192.168.137.200:8889");
+		myPub.Bind ("tcp://"+TCP_Config.HostIPAddress+":"+8888);
 
 		/* Initializes the subscriber */
 
 		mySub = new SubscriberSocket();
 		mySub.Options.Linger = System.TimeSpan.Zero;
 		mySub.Subscribe("");
-		mySub.Connect("tcp://192.168.137.200:8889");
+		mySub.Connect("tcp://"+TCP_Config.HostIPAddress+":"+TCP_Config.ConnectionPort);
 		//		myList = new RequestSocket(clientAppend+TCP_Config.HostIPAddress+":"+TCP_Config.ConnectionPort);
 
 		/* Start Listening at the specified port */        
@@ -286,7 +305,7 @@ public class ThreadedServer : ThreadedJob{
 		//...because socket.Receive() is a blocking call.
 		//s.ReceiveTimeout = socketTimeoutMS;
 
-		UnityEngine.Debug.Log("CONNECTED!");
+//		UnityEngine.Debug.Log("CONNECTED!");
 	}
 
 	void CleanupConnections(){
@@ -360,13 +379,13 @@ public class ThreadedServer : ThreadedJob{
 	void SendMessages(){
 		if(messagesToSend != ""){
 			string messagesToSendCopy = messagesToSend;
-			UnityEngine.Debug.Log("SENDING MESSAGE: " + messagesToSendCopy);
+//			UnityEngine.Debug.Log("SENDING MESSAGE: " + messagesToSendCopy);
 			SendMessage(messagesToSendCopy);
 			if(messagesToSend == messagesToSendCopy){
 				messagesToSend = "";
 			}
 			else{
-				UnityEngine.Debug.Log("CLEARED SENT PART OF MESSAGES TO SEND");
+//				UnityEngine.Debug.Log("CLEARED SENT PART OF MESSAGES TO SEND");
 				messagesToSend = messagesToSend.Substring(messagesToSendCopy.Length);
 			}
 		}
@@ -381,7 +400,7 @@ public class ThreadedServer : ThreadedJob{
 			msg.Append(asen.GetBytes(message));
 			myPub.SendMultipartMessage(msg);
 			//			s.Send(asen.GetBytes(message));
-			UnityEngine.Debug.Log("\nSent Message: " + message);
+//			UnityEngine.Debug.Log("\nSent Message: " + message);
 		}
 		catch (Exception e) {
 			UnityEngine.Debug.Log("Send Message Error....." + e.StackTrace);
@@ -389,14 +408,15 @@ public class ThreadedServer : ThreadedJob{
 	}
 
 	void EchoMessage(string message){
-		messagesToSend += ("ECHO: " + message);
+//		messagesToSend += ("ECHO: " + message);
+		messagesToSend+=JsonMessageController.FormatSimpleJSONEvent (GameClock.SystemTime_Milliseconds,"MESSAGE","CONNECTED");
 	}
 
 	public string SendSimpleJSONEvent(long systemTime, TCP_Config.EventType eventType, string eventData){
 
 		string jsonEventString = JsonMessageController.FormatSimpleJSONEvent (systemTime, eventType.ToString(), eventData);
 
-		UnityEngine.Debug.Log (jsonEventString);
+//		UnityEngine.Debug.Log (jsonEventString);
 
 		messagesToSend += jsonEventString;
 
@@ -459,9 +479,10 @@ public class ThreadedServer : ThreadedJob{
 		string rcvd;
 		SocketError error = SocketError.VersionNotSupported;
 		try{
+//			UnityEngine.Debug.Log("trying to receive message");
 			while (mySub.TryReceiveFrameString(out rcvd))
 			{
-				message = message + " - " + rcvd;
+				message = rcvd;
 				UnityEngine.Debug.Log(rcvd);
 			}
 		}
@@ -469,18 +490,18 @@ public class ThreadedServer : ThreadedJob{
 			UnityEngine.Debug.Log("Receive Message Error....." + e.StackTrace);
 		}
 
-
+		messageBuffer = message;
 
 		return messageBuffer;
 	}
 
 	//CURRENTLY ASSUMING MESSAGES AREN'T GETTING SPLIT IN HALF.
 	public void ProcessJSONMessageBuffer(string messageBuffer){
-
+//		UnityEngine.Debug.Log ("about to start processsing");
 		if (messageBuffer != "") {
 
 			char[] individualCharacters = messageBuffer.ToCharArray();
-
+			UnityEngine.Debug.Log ("Processing buffer");
 			int numOpenCharacter = 0;
 			int numCloseCharacter = 0;
 			string message = "";
@@ -529,7 +550,7 @@ public class ThreadedServer : ThreadedJob{
 		JsonData messageData = JsonMapper.ToObject(jsonMessage);
 
 		typeContent = (string)messageData ["type"];
-
+		UnityEngine.Debug.Log ("Type fo content is: " + typeContent);
 		switch ( typeContent ){
 		case "SUBJECTID":
 			//do nothing
@@ -643,11 +664,13 @@ public class ThreadedServer : ThreadedJob{
 		if(hasSentFirstHeartbeat){
 			long t1 = GameClock.SystemTime_Milliseconds;
 			if ((t1 - firstBeat) > nextBeat ){
-				UnityEngine.Debug.Log("HI HEARTBEAT");
+//				UnityEngine.Debug.Log("HI HEARTBEAT");
 				nextBeat = nextBeat + intervalMS;
 				delta = t1 - lastBeat;
 				lastBeat = t1;
 				SendSimpleJSONEvent(lastBeat, TCP_Config.EventType.HEARTBEAT, intervalMS.ToString());
+
+//				EchoMessage ("CONNECTED");
 			}
 		}
 		else {

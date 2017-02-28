@@ -33,12 +33,12 @@ public class TrialController : MonoBehaviour {
 	public CanvasGroup scoreInstructionsGroup;
 
 	public Trial currentTrial;
-	string initialInstructions2 = "When you are shown different locations in the environment, " +
-		"\nsay the name of the object you remembered in that location" +
-		"\n\nIf there was nothing in that location: say “NOTHING”. " +
-		"\nIf you can’t remember, say “DON'T KNOW”" +
-		"\n\nThe time you have to respond is indicated by the timer circle around the location marker" + 
-		"\n\n Press (X) to Begin!";
+	string initialInstructions2 = "After traveling to the treasure chests, you will be moved to the edge of the environment and we will highlight a location on the ground." +
+		"\nYour job is now to try to say out loud the object that you saw at that location.\n" +
+		"\nIf you can’t remember, say, “pass" +
+		"\nIf we show you a new location where there was no treasure chest, say “trick”\n" +
+		"\nYou will have 6 seconds to respond to each item.";
+	
 	
 
 	bool objectRecall=false;
@@ -602,7 +602,7 @@ public class TrialController : MonoBehaviour {
 			}
 			exp.uiController.ConnectionText.text = "Connecting to CONTROL PC...";
 			while (!TCPServer.Instance.canStartGame) {
-				Debug.Log ("Waiting for system 2 start command...");
+//				Debug.Log ("Waiting for system 2 start command...");
 				yield return 0;
 			}
 		}

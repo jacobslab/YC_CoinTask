@@ -39,11 +39,13 @@ public class InstructionsController : MonoBehaviour {
 	public string pointsText = "Points";
 
 	//instructions
-	public string initialInstructions1 = "Welcome to Treasure Island!" + 
-		"\n\nYou are going on a treasure hunt." + 
-		"\n\nUse the joystick to control your movement." + 
-		"\n\nDrive into treasure chests to open them. Remember where each object is located!" +
-		"\n\nPress (X) to continue.";
+	public string initialInstructions1 = "Welcome to Treasure Island!" +
+		"\nYou are going on a treasure hunt." +
+		"\nUse the joystick to control your movement." +
+		"\nDrive into treasure chests to open them. Your job is to try to remember where each object is located!"+ 
+		"\nPress (X) to continue.";
+	
+
 //
 //	public string initialInstructions2 = "When you are shown different locations in the environment, " +
 //		"\nsay the name of the object you remembered in that location" +
