@@ -31,6 +31,9 @@ public class TrialController : MonoBehaviour {
 
 	public Trial currentTrial;
 
+	public GameObject fogHut;
+	public GameObject noFogHut;
+
 	[HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
 	
 	List<List<Trial>> ListOfTrialBlocks;
@@ -465,16 +468,19 @@ public class TrialController : MonoBehaviour {
 
 	IEnumerator RunTrials(){
 
+		if (Config_CoinTask.isFog) {
+			fogHut.SetActive (true);
+			noFogHut.SetActive (false);
+		} else {
+			noFogHut.SetActive (true);
+			fogHut.SetActive (false);
+		}
         //RUN THE REST OF THE BLOCKS
         for ( int i = 0; i < ListOfTrialBlocks.Count; i++){
 			List<Trial> currentTrialBlock = ListOfTrialBlocks[i];
 			while (currentTrialBlock.Count > 0) {
 				Trial nextTrial = PickRandomTrial (currentTrialBlock);
 				yield return StartCoroutine (RunTrial ( nextTrial ));
-				//change fog status
-				Config_CoinTask.isFog = !Config_CoinTask.isFog;
-				Debug.Log ("FOG STATUS : " + Config_CoinTask.isFog);
-				RenderSettings.fog = Config_CoinTask.isFog;
 
 			}
 
@@ -493,6 +499,10 @@ public class TrialController : MonoBehaviour {
 
 			exp.scoreController.Reset();
 
+			//change fog status
+			Config_CoinTask.isFog = !Config_CoinTask.isFog;
+			Debug.Log ("FOG STATUS : " + Config_CoinTask.isFog);
+			RenderSettings.fog = Config_CoinTask.isFog;
 			Debug.Log ("TRIAL Block: " + i);
 		}
 	}
