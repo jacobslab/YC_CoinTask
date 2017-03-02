@@ -70,6 +70,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public static string manualTrialFilePath; //if you want to define trials & objects manually
 	public InputField manualTrialPathInputField;
 
+	public Slider fogDensityField;
+	public Text valueText;
+
 
 
 	//SINGLETON
@@ -115,6 +118,13 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			}
 			#endif
 		#endif
+	}
+
+	public void UpdateFogDensityValues()
+	{
+		float value = fogDensityField.value;
+		Config_CoinTask.fogDensity = value;
+		valueText.text = value.ToString ();
 	}
 
 	void InitLoggingPath(){

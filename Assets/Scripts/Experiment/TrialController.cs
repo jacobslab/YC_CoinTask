@@ -370,6 +370,7 @@ public class TrialController : MonoBehaviour {
 		if (!ExperimentSettings_CoinTask.isReplay) {
 
             RenderSettings.fog = Config_CoinTask.isFog;
+			RenderSettings.fogDensity = Config_CoinTask.fogDensity;
             exp.player.controls.ShouldLockControls = true;
 
 			if(Config_CoinTask.isSystem2 || Config_CoinTask.isSyncbox){

@@ -43,7 +43,8 @@ public class Config_CoinTask : MonoBehaviour {
 
 
 	//fog
-	public static bool isFog=false	; //to make sure first block is NON-FOG
+	public static bool isFog=false; //to make sure first block is NON-FOG
+	public static float fogDensity=1f;
 
 	//REPLAY
 	public static int replayPadding = 6;
