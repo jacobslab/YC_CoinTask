@@ -17,6 +17,7 @@ public class InputMic : MonoBehaviour {
 	public Image marker;
 	public Text beginExperimentText;
 	public Image loud;
+	public GameObject micTestTexts;
 	private List<string> micList=new List<string>();
 	//mic initialization
 	void Start()
@@ -28,6 +29,7 @@ public class InputMic : MonoBehaviour {
 		beginExperimentText.enabled = false;
 		loud.gameObject.SetActive (true);
 		micDrops.AddOptions (micList);
+		micTestTexts.SetActive (true);
 	}
 	void InitMic(){
 
@@ -43,6 +45,7 @@ public class InputMic : MonoBehaviour {
 			if (timer > 5f) {
 				spokenWord.color = Color.red;
 				spokenWord.text = "Sorry, I cannot hear you! \n Please adjust microphone \n Press (X) to Continue.";
+				micTestTexts.SetActive (false);
 				yield return new WaitForSeconds (1f);
 				spokenWord.color = Color.white;
 				timer = 0f;
@@ -51,6 +54,7 @@ public class InputMic : MonoBehaviour {
 					currentWord = 0;
 				spokenWord.text = wordList [currentWord];
 			}
+				micTestTexts.SetActive (true);
 			if (MicLoudness > Config_CoinTask.micLoudThreshold) {
 				cannotHear = false;
 				loud.gameObject.SetActive (false);

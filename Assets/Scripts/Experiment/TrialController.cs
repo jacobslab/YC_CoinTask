@@ -34,9 +34,9 @@ public class TrialController : MonoBehaviour {
 
 	public Trial currentTrial;
 	string initialInstructions2 = "After traveling to the treasure chests, you will be moved to the edge of the environment and we will highlight a location on the ground." +
-		"\nYour job is now to try to say out loud the object that you saw at that location.\n" +
-		"\nIf you can’t remember, say, “pass" +
-		"\nIf we show you a new location where there was no treasure chest, say “trick”\n" +
+		"\n\nYour job is now to try to say out loud the object that you saw at that location.\n" +
+		"\n\nIf you can’t remember, say, “PASS" +
+		"\nIf we show you a new location where there was no treasure chest, say “TRICK”\n" +
 		"\nYou will have 6 seconds to respond to each item.";
 	
 	
