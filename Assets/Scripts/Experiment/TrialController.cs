@@ -505,6 +505,13 @@ public class TrialController : MonoBehaviour {
 			Debug.Log ("FOG STATUS : " + Config_CoinTask.isFog);
 			RenderSettings.fog = Config_CoinTask.isFog;
 			Debug.Log ("TRIAL Block: " + i);
+			if (Config_CoinTask.isFog) {
+				fogHut.SetActive (true);
+				noFogHut.SetActive (false);
+			} else {
+				noFogHut.SetActive (true);
+				fogHut.SetActive (false);
+			}
 		}
 	}
 
@@ -654,7 +661,7 @@ public class TrialController : MonoBehaviour {
 	IEnumerator RunTrial(Trial trial){
 
 		currentTrial = trial;
-
+			RenderSettings.fog = Config_CoinTask.isFog;
 		if (isPracticeTrial) {
 			trialLogger.Log (-1, currentTrial.DefaultObjectLocationsXZ.Count, currentTrial.SpecialObjectLocationsXZ.Count, ExperimentSettings_CoinTask.isOneByOneReveal, false);
 			Debug.Log("Logged practice trial.");
