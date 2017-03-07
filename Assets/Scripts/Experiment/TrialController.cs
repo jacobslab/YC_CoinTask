@@ -33,6 +33,13 @@ public class TrialController : MonoBehaviour {
 	public CanvasGroup scoreInstructionsGroup;
 
 	public Trial currentTrial;
+
+	string initialInstructions1= "Welcome to Treasure Island!" +
+		"\n\nYou are going on a treasure hunt." +
+		"\n\nUse the joystick to control your movement." +
+		"\nDrive into treasure chests to open them. Your job is to try to remember where each object is located!"+ 
+		"\n\nPress (X) to continue.";
+	
 	string initialInstructions2 = "After traveling to the treasure chests, you will be moved to the edge of the environment and we will highlight a location on the ground." +
 		"\n\nYour job is now to try to say out loud the object that you saw at that location.\n" +
 		"\n\nIf you can’t remember, say, “PASS" +
@@ -482,14 +489,14 @@ public class TrialController : MonoBehaviour {
 
 #if MRIVERSION
 			if(Config_CoinTask.isPractice){
-				yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
-				yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+				yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+				yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 				scoreInstructionsGroup.alpha = 0.0f;
 				yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			}
 			else{
 				exp.currInstructions.SetInstructionsColorful();
-				exp.currInstructions.DisplayText(exp.currInstructions.initialInstructions1);
+				exp.currInstructions.DisplayText(initialInstructions1);
 				scoreInstructionsGroup.alpha = 0.0f;
 				yield return StartCoroutine( WaitForMRIConnectionKey());
 				exp.currInstructions.SetInstructionsBlank();
@@ -497,7 +504,7 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine( WaitForMRIFixationRest());
 			}
 #else
-			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 1.0f;
 			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 0.0f;
