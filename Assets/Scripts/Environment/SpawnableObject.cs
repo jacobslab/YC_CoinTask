@@ -49,16 +49,23 @@ public class SpawnableObject : MonoBehaviour {
 		string name = gameObject.name;
 		name = Regex.Replace (name, "(Clone)", "");
 		name = Regex.Replace (name, "[()]", "");
-
-		return name;
+		if (name == "Trick Location")
+			return "trick";
+		else
+			return name;
 	}
 	
 	public string GetName(GameObject obj){
-		string name = obj.name;
-		name = Regex.Replace( name, "(Clone)", "" );
-		name = Regex.Replace( name, "[()]", "" );
 		
-		return name;
+		string name = obj.name;
+		name = Regex.Replace (name, "(Clone)", "");
+		name = Regex.Replace (name, "[()]", "");
+
+		if (name == "Trick Location")
+			return "trick";
+		else
+			return name;
+
 	}
 
 	/*public string GetNameNoID(){

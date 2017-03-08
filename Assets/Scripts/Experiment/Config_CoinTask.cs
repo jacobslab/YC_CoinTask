@@ -71,7 +71,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float isiTime = 1.0f;
 
 	public static int selectedMic=0;
-	public static float micLoudThreshold = 0.25f;
+	public static float micLoudThreshold = 0.1f;
 
 	//recall
 	public static int recallTime=6;
