@@ -44,7 +44,8 @@ public class TrialController : MonoBehaviour {
 		"\n\nYour job is now to try to say out loud the object that you saw at that location.\n" +
 		"\n\nIf you can’t remember, say, “PASS" +
 		"\nIf we show you a new location where there was no treasure chest, say “TRICK”\n" +
-		"\nYou will have 6 seconds to respond to each item.";
+		"\nYou will have 6 seconds to respond to each item."+
+		"\n\n Press (X) to Continue.";
 	
 	
 
@@ -588,6 +589,10 @@ public class TrialController : MonoBehaviour {
 			//press x to continue
 			yield return StartCoroutine(exp.WaitForActionButton());
 
+
+			//reset trophies
+			exp.scoreController.ResetTrophies();
+
 			exp.uiController.blockCompletedUI.Stop();
 			trialLogger.LogBlockScreenStarted(false);
 			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, false);
@@ -958,7 +963,7 @@ public class TrialController : MonoBehaviour {
 				exp.environmentController.myPositionSelector.EnableVisibility (true);
 				Debug.Log ("this object is: " + specialObj.name);
 				exp.environmentController.myPositionSelector.MoveToPosition (specialObj.transform.position);
-				string currentRecallObject = specialItemDisplayName;
+				string currentRecallObject = specialItemDisplayName.ToLower();
 				chosenPositions.Add (specialObj.transform.position);
 				//yield return new WaitForSeconds (2f);
 				//trialLogger.LogInstructionEvent ();
@@ -1069,8 +1074,8 @@ public class TrialController : MonoBehaviour {
 				trialLogger.LogRecallChoiceStarted (false,1);
 
 				//check audio response
-				UnityEngine.Debug.Log("CHECKING SPHINX RESPONSE: " +  currentTrialNumber + " and  "  +currentRecallNumber);
-				int sphinxNum = currentTrialNumber - 1;
+				UnityEngine.Debug.Log("CHECKING SPHINX RESPONSE: " +  totalTrialNumber + " and  "  +currentRecallNumber);
+				int sphinxNum = totalTrialNumber;
 				recallAnswers[randomOrderIndex]=exp.sphinxTest.CheckAudioResponse(sphinxNum,currentRecallNumber,currentRecallObject,kws_threshold);
 
 				trialLogger.LogSphinxEvent ();
