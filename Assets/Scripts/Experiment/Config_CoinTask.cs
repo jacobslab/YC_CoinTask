@@ -5,33 +5,36 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.VR;
 
-public class Config_CoinTask : MonoBehaviour {
+public class Config_CoinTask : MonoBehaviour
+{
 
 	public enum Version
 	{
 		TH1,
 		TH2,
-		TH3,	
+		TH3,
 		MRI
 	}
-#if MRIVERSION
+	#if MRIVERSION
 	public static Version BuildVersion = Version.MRI;
+
 #else
 	public static Version BuildVersion = Version.TH1;
-#endif
+	#endif
 
 	public static string VersionNumber = "2.042";
 
-#if MRIVERSION
+	#if MRIVERSION
 	public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
+
 #else
 	public static bool isSyncbox = false;
-	public static bool isSystem2 = true;
-#endif
+	public static bool isSystem2 = false;
+	#endif
 
 	//#if MRIVERSION
-//	public static string HorizontalAxisName = "MRI Horizontal";
+	//	public static string HorizontalAxisName = "MRI Horizontal";
 	//public static string VerticalAxisName = "MRI Vertical";
 	//public static string ActionButtonName = "MRI Action Button";
 	//#else
@@ -39,14 +42,15 @@ public class Config_CoinTask : MonoBehaviour {
 	public static string HorizontalAxisName = "Horizontal";
 	public static string VerticalAxisName = "Vertical";
 	public static string ActionButtonName = "Action Button";
-//	#endif
+	//	#endif
 
 	//REPLAY
 	public static int replayPadding = 6;
 
 	//JUICE
 	public static bool isJuice = true;
-	public static bool isSoundtrack = false; //WON'T PLAY IF ISJUICE IS FALSE.
+	public static bool isSoundtrack = false;
+	//WON'T PLAY IF ISJUICE IS FALSE.
 
 
 	//BOX SWAP MINIGAME VARIABLES
@@ -63,7 +67,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float randomJitterMin = 0.0f;
 	public static float randomJitterMax = 0.2f;
 	
-#if MRIVERSION
+	#if MRIVERSION
 	public static int numTestTrials = 8; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
 	
 	
@@ -80,8 +84,10 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public static float MRIFixationTime = 30.0f;
 
+
 #else
-	public static int numTestTrials = 40; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
+	public static int numTestTrials = 40;
+	//IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
 
 
 	//practice settings
@@ -96,9 +102,10 @@ public class Config_CoinTask : MonoBehaviour {
 	//FEEDBACK SETTINGS:
 	public static float feedbackTimeBetweenObjects = 0.5f;
 
-#endif
+	#endif
 
-	public enum MemoryState{
+	public enum MemoryState
+	{
 		yes,
 		maybe,
 		no
@@ -110,13 +117,17 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public static float selectionDiameter = 26.0f;
 
-	public static float objectToWallBuffer = 13.0f; //half of the selection diameter.
-	public static float objectToObjectBuffer { get { return CalculateObjectToObjectBuffer(); } } //calculated base on min time to drive between objects!
-	public static float specialObjectBufferMult = 0.0f; //the distance the object controller will try to keep between special objects. should be a multiple of objectToObjectBuffer
+	public static float objectToWallBuffer = 13.0f;
+	//half of the selection diameter.
+	public static float objectToObjectBuffer { get { return CalculateObjectToObjectBuffer (); } }
+	//calculated base on min time to drive between objects!
+	public static float specialObjectBufferMult = 0.0f;
+	//the distance the object controller will try to keep between special objects. should be a multiple of objectToObjectBuffer
 
-	public static float minDriveTimeBetweenObjects = 0.5f; //half a second driving between objects
+	public static float minDriveTimeBetweenObjects = 0.5f;
+	//half a second driving between objects
 
-#if MRIVERSION
+	#if MRIVERSION
 	public static float rotateToSpecialObjectSpeed = 45.0f;
 	public static float pauseAtTreasureTime = 1.5f;
 
@@ -129,17 +140,21 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float maxLocationChooseTime = 10.0f;
 
 	public static float MRIAutoDriveTimeMult = 2.0f;
+
 #else
 	public static float rotateToSpecialObjectSpeed = 33.33f;
 	public static float pauseAtTreasureTime = 1.5f;
-#endif
+	#endif
 	
-	public static float minInitialInstructionsTime = 0.0f; //TODO: change back to 5.0f
-	public static float minDefaultInstructionTime = 0.0f; //time each learning trial instruction should be displayed for
+	public static float minInitialInstructionsTime = 0.0f;
+	//TODO: change back to 5.0f
+	public static float minDefaultInstructionTime = 0.0f;
+	//time each learning trial instruction should be displayed for
 
 	//tilt variables
 	#if ENABLE_VR
-	public static bool isAvatarTilting = false; //don't tilt in VR!
+	public static bool isAvatarTilting = false;
+	//don't tilt in VR!
 	#else
 	public static bool isAvatarTilting = true;
 	#endif
@@ -150,28 +165,31 @@ public class Config_CoinTask : MonoBehaviour {
 
 	//object buffer variables
 
-	void Awake(){
-		DontDestroyOnLoad(transform.gameObject);
+	void Awake ()
+	{
+		DontDestroyOnLoad (transform.gameObject);
 	}
 
-	void Start(){
+	void Start ()
+	{
 
 	}
 
-	public static int GetTotalNumTrials(){
+	public static int GetTotalNumTrials ()
+	{
 		if (!isPractice) {
 			return numTestTrials;
-		} 
-		else{
-		#if MRIVERSION
+		} else {
+			#if MRIVERSION
 			return numTrialsPract;
-		#else
+			#else
 			return numTestTrials + numTrialsPract;
-		#endif
+			#endif
 		}
 	}
 
-	public static float CalculateObjectToObjectBuffer(){
+	public static float CalculateObjectToObjectBuffer ()
+	{
 		float buffer = 0;
 
 		if (Experiment_CoinTask.Instance != null) {
@@ -182,7 +200,7 @@ public class Config_CoinTask : MonoBehaviour {
 			buffer += Experiment_CoinTask.Instance.objectController.GetMaxDefaultObjectColliderBoundXZ ();
 
 			//Debug.Log ("BUFFER: " + buffer);
-			if(buffer < Config_CoinTask.selectionDiameter){
+			if (buffer < Config_CoinTask.selectionDiameter) {
 				buffer = Config_CoinTask.selectionDiameter;
 			}
 		}

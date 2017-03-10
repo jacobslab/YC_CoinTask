@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerControls : MonoBehaviour{
+public class PlayerControls : MonoBehaviour
+{
 
 	Experiment_CoinTask exp  { get { return Experiment_CoinTask.Instance; } }
 
@@ -9,7 +10,7 @@ public class PlayerControls : MonoBehaviour{
 	public bool ShouldLockControls = false;
 
 	//bool isSmoothMoving = false;
-
+	public Transform cameraRot;
 	public Transform TiltableTransform;
 	public Transform towerPositionTransform1;
 	public Transform towerPositionTransform2;
@@ -18,20 +19,24 @@ public class PlayerControls : MonoBehaviour{
 
 	float RotationSpeed = 50.0f;
 	
-	float maxTimeToMove = 3.75f; //seconds to move across the furthest field distance
-	float minTimeToMove = 1.5f; //seconds to move across the closest field distance
-	float furthestTravelDist; //distance between far start pos and close start tower; set in start
-	float closestTravelDist; //distance between close start pos and close start tower; set in start
+	float maxTimeToMove = 3.75f;
+	//seconds to move across the furthest field distance
+	float minTimeToMove = 1.5f;
+	//seconds to move across the closest field distance
+	float furthestTravelDist;
+	//distance between far start pos and close start tower; set in start
+	float closestTravelDist;
+	//distance between close start pos and close start tower; set in start
 
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 		//when in replay, we don't want physics collision interfering with anything
-		if(ExperimentSettings_CoinTask.isReplay){
-			GetComponent<Collider>().enabled = false;
-		}
-		else{
-			GetComponent<Collider>().enabled = true;
+		if (ExperimentSettings_CoinTask.isReplay) {
+			GetComponent<Collider> ().enabled = false;
+		} else {
+			GetComponent<Collider> ().enabled = true;
 		}
 
 		furthestTravelDist = (startPositionTransform1.position - towerPositionTransform2.position).magnitude; //close start, far tower
@@ -40,45 +45,50 @@ public class PlayerControls : MonoBehaviour{
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
+		if (Input.GetKeyDown (KeyCode.U)) {
+			ShouldLockControls = !ShouldLockControls;
+		}
 
 		if (exp.currentState == Experiment_CoinTask.ExperimentState.inExperiment) {
-			if(!ShouldLockControls){
-				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationY; // TODO: on collision, don't allow a change in angular velocity?
+			if (!ShouldLockControls) {
+				GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationY; // TODO: on collision, don't allow a change in angular velocity?
 
 				//sets velocities
 				GetInput ();
-			}
-			else{
-				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-				SetTilt(0.0f, 1.0f);
+			} else {
+				GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.FreezeAll;
+				SetTilt (0.0f, 1.0f);
+				//SetCameraRotZero ();
 			}
 		}
 	}
 
 	public Camera myCamera;
-	public Transform movementTransform; //for Oculus!
+	public Transform movementTransform;
+	//for Oculus!
 	bool wasNotMoving = false;
-	void GetInput()
+
+	void GetInput ()
 	{
 		//VERTICAL
 		float verticalAxisInput = Input.GetAxis ("Vertical");
-		if ( Mathf.Abs(verticalAxisInput) > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
+		if (Mathf.Abs (verticalAxisInput) > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
 			Vector3 movementDir = movementTransform.forward;
 			float angleDifference = 0;
-			if(wasNotMoving){
+			if (wasNotMoving) {
 				//align forward direction with main camera forward direction!
 				Quaternion cameraRot = myCamera.transform.rotation;
 				angleDifference = movementTransform.rotation.eulerAngles.y - cameraRot.eulerAngles.y;
-				movementTransform.RotateAround(movementTransform.position, Vector3.up, -angleDifference);
+				movementTransform.RotateAround (movementTransform.position, Vector3.up, -angleDifference);
 				movementDir = movementTransform.forward;
 			}
 			wasNotMoving = false;
-			GetComponent<Rigidbody>().velocity = movementDir*verticalAxisInput*Config_CoinTask.driveSpeed; //since we are setting velocity based on input, no need for time.delta time component
-		}
-		else{
+			GetComponent<Rigidbody> ().velocity = movementDir * verticalAxisInput * Config_CoinTask.driveSpeed; //since we are setting velocity based on input, no need for time.delta time component
+		} else {
 			wasNotMoving = true;
-			GetComponent<Rigidbody>().velocity = Vector3.zero;
+			GetComponent<Rigidbody> ().velocity = Vector3.zero;
 		}
 
 		//HORIZONTAL
@@ -87,9 +97,8 @@ public class PlayerControls : MonoBehaviour{
 
 			float percent = horizontalAxisInput / 1.0f;
 			Turn (percent * RotationSpeed * Time.deltaTime); //framerate independent!
-		} 
-		else {
-			if(!TrialController.isPaused){
+		} else {
+			if (!TrialController.isPaused) {
 
 				//resets the player back to center if the game gets paused on a tilt
 				//NOTE: after pause is glitchy on keyboard --> unity seems to be retaining some of the horizontal axis input despite there being none. fine with controller though.
@@ -97,36 +106,43 @@ public class PlayerControls : MonoBehaviour{
 				float zTiltBack = 0.2f;
 				float zTiltEpsilon = 2.0f * zTiltBack;
 				float currentZRot = TiltableTransform.rotation.eulerAngles.z;
-				if(currentZRot > 180.0f){
-					currentZRot = -1.0f*(360.0f - currentZRot);
+				if (currentZRot > 180.0f) {
+					currentZRot = -1.0f * (360.0f - currentZRot);
 				}
 
-				if(currentZRot > zTiltEpsilon){
-					TiltableTransform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, currentZRot - zTiltBack);
-				}
-				else if (currentZRot < -zTiltEpsilon){
-					TiltableTransform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, currentZRot + zTiltBack);
-				}
-				else{
-					SetTilt(0.0f, 1.0f);
+				if (currentZRot > zTiltEpsilon) {
+					TiltableTransform.rotation = Quaternion.Euler (transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, currentZRot - zTiltBack);
+				} else if (currentZRot < -zTiltEpsilon) {
+					TiltableTransform.rotation = Quaternion.Euler (transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, currentZRot + zTiltBack);
+				} else {
+					SetTilt (0.0f, 1.0f);
 				}
 			}
 		}
 
 	}
 
+	void SetCameraRotZero ()
+	{
+		UnityEngine.Debug.Log ("setting cam rot to zero");
+		TiltableTransform.rotation = Quaternion.identity;
+	}
 
-	void Move( float amount ){
+
+	void Move (float amount)
+	{
 		transform.position += transform.forward * amount;
 	}
-	
-	void Turn( float amount ){
-		transform.RotateAround (transform.position, Vector3.up, amount );
+
+	void Turn (float amount)
+	{
+		transform.RotateAround (transform.position, Vector3.up, amount);
 		SetTilt (amount, Time.deltaTime);
 	}
 
 	//based on amount difference of y rotation, tilt in z axis
-	void SetTilt(float amountTurned, float turnTime){
+	void SetTilt (float amountTurned, float turnTime)
+	{
 		if (!TrialController.isPaused) {
 			if (Config_CoinTask.isAvatarTilting) {
 				float turnRate = 0.0f;
@@ -141,22 +157,22 @@ public class PlayerControls : MonoBehaviour{
 			}
 		}
 	}
-		
-	public IEnumerator PlayerLookingAt(GameObject specialItem)
+
+	public IEnumerator PlayerLookingAt (GameObject specialItem)
 	{
 		bool wasLooking = false; // used for OnStartLook and OnEndLook
 		// generate the ray before we raycast it
 		while (!wasLooking) {
 			Ray ray = new Ray (Camera.main.transform.position,
-				         Camera.main.transform.forward);
+				          Camera.main.transform.forward);
 			// this var will tell us where and what it hit
 			RaycastHit rayHitInfo = new RaycastHit ();
 
 			Debug.DrawRay (ray.origin, ray.direction * 1000f, Color.red);
 
 			// actually shooting the raycast now
-			if (Physics.Raycast(ray,out rayHitInfo,1000f)
-			   && rayHitInfo.transform == specialItem.transform) {
+			if (Physics.Raycast (ray, out rayHitInfo, 1000f)
+			    && rayHitInfo.transform == specialItem.transform) {
 				// is the raycast hitting the thing we put this script on?
 				if (wasLooking == false) {
 					wasLooking = true;
@@ -172,7 +188,8 @@ public class PlayerControls : MonoBehaviour{
 		
 	}
 
-	public IEnumerator SmoothMoveTo(Vector3 targetPosition, Quaternion targetRotation, bool isChestAutoDrive){
+	public IEnumerator SmoothMoveTo (Vector3 targetPosition, Quaternion targetRotation, bool isChestAutoDrive)
+	{
 
 		SetTilt (0.0f, 1.0f);
 
@@ -206,7 +223,7 @@ public class PlayerControls : MonoBehaviour{
 		//float angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
 //		bool arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
 		//while ( ( angleDiffY >= epsilon ) || ( angleDiffX >= epsilon ) || (!arePositionsCloseEnough) ){
-		while(tElapsed < timeToTravel){
+		while (tElapsed < timeToTravel) {
 			totalTimeElapsed += Time.deltaTime;
 
 			//tElapsed += (Time.deltaTime * moveAndRotateRate);
@@ -216,8 +233,8 @@ public class PlayerControls : MonoBehaviour{
 			float percentageTime = tElapsed / timeToTravel;
 
 			//will spherically interpolate the rotation for config.spinTime seconds
-			transform.rotation = Quaternion.Slerp(origRotation, targetRotation, percentageTime); //SLERP ALWAYS TAKES THE SHORTEST PATH.
-			transform.position = Vector3.Lerp(origPosition, targetPosition, percentageTime);
+			transform.rotation = Quaternion.Slerp (origRotation, targetRotation, percentageTime); //SLERP ALWAYS TAKES THE SHORTEST PATH.
+			transform.position = Vector3.Lerp (origPosition, targetPosition, percentageTime);
 
 			//calculate new differences
 			//angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
@@ -238,7 +255,8 @@ public class PlayerControls : MonoBehaviour{
 		yield return 0;
 	}
 
-	float GetTimeToTravel(float distanceFromTarget){
+	public float GetTimeToTravel (float distanceFromTarget)
+	{
 		//on the very first trial, you may not have explored very far!
 		//Then you get sent back to a home base, and not a tower -- which is much closer.
 		if (distanceFromTarget < closestTravelDist) {
@@ -247,8 +265,7 @@ public class PlayerControls : MonoBehaviour{
 			float timeToTravel = percentDistanceDifference * minTimeToMove; //do a linear relationship here
 
 			return timeToTravel;
-		}
-		else {
+		} else {
 			float minMaxDistanceDifference = furthestTravelDist - closestTravelDist;
 			float percentDistanceDifference = (distanceFromTarget - closestTravelDist) / minMaxDistanceDifference;
 		
@@ -259,10 +276,11 @@ public class PlayerControls : MonoBehaviour{
 		}
 	}
 
-	public IEnumerator RotateTowardSpecialObject(GameObject target){
+	public IEnumerator RotateTowardSpecialObject (GameObject target)
+	{
 		Quaternion origRotation = transform.rotation;
 		Vector3 targetPosition = new Vector3 (target.transform.position.x, transform.position.y, target.transform.position.z);
-		transform.LookAt(targetPosition);
+		transform.LookAt (targetPosition);
 		Quaternion desiredRotation = transform.rotation;
 
 		float angleDifference = origRotation.eulerAngles.y - desiredRotation.eulerAngles.y;
@@ -277,17 +295,17 @@ public class PlayerControls : MonoBehaviour{
 		transform.rotation = origRotation;
 
 		float tElapsed = 0.0f;
-		while (tElapsed < totalTimeToRotate){
-			tElapsed += (Time.deltaTime );
+		while (tElapsed < totalTimeToRotate) {
+			tElapsed += (Time.deltaTime);
 			float turnPercent = tElapsed / totalTimeToRotate;
 
 			float beforeRotY = transform.rotation.eulerAngles.y; //y angle before the rotation
 
 			//will spherically interpolate the rotation
-			transform.rotation = Quaternion.Slerp(origRotation, desiredRotation, turnPercent); //SLERP ALWAYS TAKES THE SHORTEST PATH.
+			transform.rotation = Quaternion.Slerp (origRotation, desiredRotation, turnPercent); //SLERP ALWAYS TAKES THE SHORTEST PATH.
 
 			float angleRotated = transform.rotation.eulerAngles.y - beforeRotY;
-			SetTilt(angleRotated, Time.deltaTime);
+			SetTilt (angleRotated, Time.deltaTime);
 
 			yield return 0;
 		}
@@ -300,7 +318,8 @@ public class PlayerControls : MonoBehaviour{
 	}
 
 	//returns the angle between the facing angle of the player and an XZ position
-	public float GetYAngleBetweenFacingDirAndObjectXZ ( Vector2 objectPos ){
+	public float GetYAngleBetweenFacingDirAndObjectXZ (Vector2 objectPos)
+	{
 
 		//Quaternion origRotation = transform.rotation;
 		//Vector3 origPosition = transform.position;
@@ -308,15 +327,15 @@ public class PlayerControls : MonoBehaviour{
 		Vector3 origPosition = movementTransform.position;
 
 		//new -- we want to check with the camera's rotation. the camera demonstrate's where we're actually facing!
-		movementTransform.rotation = Quaternion.Euler(origRotation.eulerAngles.x, myCamera.transform.rotation.eulerAngles.y, origRotation.eulerAngles.z);
+		movementTransform.rotation = Quaternion.Euler (origRotation.eulerAngles.x, myCamera.transform.rotation.eulerAngles.y, origRotation.eulerAngles.z);
 
 		//float origYRot = origRotation.eulerAngles.y;
 		float origYRot = movementTransform.rotation.eulerAngles.y;
 
 		//transform.position = new Vector3( objectPos.x, origPosition.y, objectPos.y );
 		//transform.RotateAround(origPosition, Vector3.up, -origYRot);
-		movementTransform.position = new Vector3( objectPos.x, origPosition.y, objectPos.y );
-		movementTransform.RotateAround(origPosition, Vector3.up, -origYRot);
+		movementTransform.position = new Vector3 (objectPos.x, origPosition.y, objectPos.y);
+		movementTransform.RotateAround (origPosition, Vector3.up, -origYRot);
 
 		//Vector3 rotatedObjPos = transform.position;
 		Vector3 rotatedObjPos = movementTransform.position;
@@ -331,7 +350,7 @@ public class PlayerControls : MonoBehaviour{
 		//float yAngle = transform.rotation.eulerAngles.y;
 		float yAngle = movementTransform.rotation.eulerAngles.y;
 
-		if(yAngle > 180.0f){
+		if (yAngle > 180.0f) {
 			yAngle = 360.0f - yAngle; //looking for shortest angle no matter the angle
 			yAngle *= -1; //give it a signed value
 		}
