@@ -310,9 +310,11 @@ public class Experiment_CoinTask : MonoBehaviour {
 	}
 
 	void OnApplicationQuit(){
+		
 		if (ExperimentSettings_CoinTask.isLogging) {
 			subjectLog.close ();
 			eegLog.close ();
+			File.Copy ("/Users/" + System.Environment.UserName + "/Library/Logs/Unity/Player.log", sessionDirectory+"Player.log");
 		}
 	}
 

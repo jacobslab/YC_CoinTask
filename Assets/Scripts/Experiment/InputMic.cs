@@ -104,7 +104,7 @@ public class InputMic : MonoBehaviour {
 
 	void Update()
 	{
-//		Debug.Log ("mic" +  LevelMax().ToString());
+		Debug.Log ("mic" +  LevelMax().ToString());
 		// levelMax equals to the highest normalized value power 2, a small number because < 1
 		// pass the value to a static var so we can access it from anywhere
 		MicLoudness = LevelMax ();

@@ -21,13 +21,13 @@ public class Config_CoinTask : MonoBehaviour {
 	public static Version BuildVersion = Version.THR;
 #endif
 
-	public static string VersionNumber = "0.9";
+	public static string VersionNumber = "1.01";
 
 #if MRIVERSION
 	public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
 #else
-	public static bool isSyncbox = true;
+	public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
 	public static bool isSYS3 = false;
 #endif
