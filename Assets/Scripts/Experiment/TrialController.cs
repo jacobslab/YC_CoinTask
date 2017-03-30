@@ -671,6 +671,7 @@ public class TrialController : MonoBehaviour
 		//move player to home location & rotation
 		trialLogger.LogTransportationToHomeEvent (true);
 		//CHANGE FOR OCULUS
+		UnityEngine.Debug.Log ("start pos: " + currentTrial.avatarStartPos);
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));
 		trialLogger.LogTransportationToHomeEvent (false);
 

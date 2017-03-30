@@ -9,13 +9,13 @@ q,score 0,block 0
 QA,score 250,block 0
 ted,score 0,block 0
 test,score 300,block 0
-Nick,score -950,block 0
+Nick,score -450,block 0
 c,score 100,block 0
 dc,score 100,block 0
 fcd,score 200,block 0
 K,score 200,block 0
 T,score 100,block 0
-f,score 350,block 1
+f,score 350,block 0
 t,score 200,block 0
 tg,score 100,block 0
 fr,score 100,block 0
@@ -23,3 +23,10 @@ g,score 0,block 0
 gvfc,score 200,block 0
 fs,score 200,block 0
 fd,score 100,block 0
+bjb,score 0,block 0
+dfdf,score 0,block 0
+gf,score 0,block 0
+v bx,score 0,block 0
+dfs,score 200,block 0
+gffd,score 300,block 0
+fdsf,score 0,block 0
