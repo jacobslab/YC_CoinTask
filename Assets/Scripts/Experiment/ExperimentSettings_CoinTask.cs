@@ -137,7 +137,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/data/THR/";
 		}else if (Config_CoinTask.isSYS3) {
 			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_3.0/data/THR/";
-		} else if (Config_CoinTask.isSyncbox) {
+		} else if (Config_CoinTask.isSyncbox && !Config_CoinTask.isSYS3) {
 				defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM/data/THR/";
 			} else {
 			defaultLoggingPath = System.IO.Directory.GetCurrentDirectory() + "/TextFiles/THR/";
@@ -203,13 +203,28 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	void InitMainMenuLabels(){
 		if (Application.loadedLevel == 0) {
 			ExpNameVersion.text = Config_CoinTask.BuildVersion.ToString () + "/" + Config_CoinTask.VersionNumber;
+		#if SYS3COMBO
+			if (Config_CoinTask.isSyncbox && !Config_CoinTask.isSYS3) {
+		#else
 			if (Config_CoinTask.isSyncbox) {
+		#endif
 				BuildType.text = "Sync Box";
 			} else if (Config_CoinTask.isSystem2) {
 				BuildType.text = "System 2";
-			}else if (Config_CoinTask.isSYS3) {
+			}
+			#if SYS3COMBO
+			else if (Config_CoinTask.isSYS3 && !Config_CoinTask.isSyncbox) {
+			#else 
+			else if(Config_CoinTask.isSYS3){
+			#endif
 				BuildType.text = "SYS3";
-			} else {
+			}
+			#if SYS3COMBO
+			else if (Config_CoinTask.isSYS3 && Config_CoinTask.isSyncbox) {
+				BuildType.text = "SYS3 on Syncbox";
+			} 
+			#endif
+			else {
 				BuildType.text = "Demo";
 			}
 			#if UNITY_WEBPLAYER

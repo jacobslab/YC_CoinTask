@@ -23,14 +23,38 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public static string VersionNumber = "1.01";
 
+
 #if MRIVERSION
-	public static bool isSyncbox = false;
-	public static bool isSystem2 = false;
-#else
 	public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
 	public static bool isSYS3 = false;
 #endif
+
+#if SYS1
+	public static bool isSyncbox = true;
+	public static bool isSystem2 = false;
+	public static bool isSYS3 = false;
+#endif
+
+#if SYS2
+	public static bool isSyncbox= false;
+	public static bool isSystem2 = true;
+	public static bool isSYS3 = false;
+#endif
+
+#if SYS3
+	public static bool isSyncbox= false;
+	public static bool isSystem2 = false;
+	public static bool isSYS3 = true;
+#endif
+
+#if SYS3COMBO
+	public static bool isSyncbox = true;
+	public static bool isSystem2 = false;
+	public static bool isSYS3 = true;
+#endif
+
+
 
 	//#if MRIVERSION
 //	public static string HorizontalAxisName = "MRI Horizontal";
