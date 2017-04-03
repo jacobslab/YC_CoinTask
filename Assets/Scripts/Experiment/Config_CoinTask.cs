@@ -53,7 +53,11 @@ public class Config_CoinTask : MonoBehaviour {
 	public static bool isSystem2 = false;
 	public static bool isSYS3 = true;
 #endif
-
+	#if DEMO
+	public static bool isSyncbox = false;
+	public static bool isSystem2 = false;
+	public static bool isSYS3 = false;
+	#endif
 
 
 	//#if MRIVERSION

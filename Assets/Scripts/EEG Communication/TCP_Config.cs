@@ -6,8 +6,8 @@ using NetMQ.Sockets;
 public class TCP_Config : MonoBehaviour {
 
 	public static float numSecondsBeforeAlignment = 10.0f;
-	public static string HostIPAddress="128.59.87.71";
-//	public static string HostIPAddress = "192.168.137.200"; //"169.254.50.2" for Mac Pro Desktop.
+//	public static string HostIPAddress="128.59.87.71";
+	public static string HostIPAddress = "192.168.137.200"; //"169.254.50.2" for Mac Pro Desktop.
 	public static int ConnectionPort = 8889; //8001 for Mac Pro Desktop communication
 
 	private SubscriberSocket subscriber;
