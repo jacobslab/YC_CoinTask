@@ -1,0 +1,152 @@
+fileFormatVersion: 2
+guid: 77c69c39394bf46e08e7160c1b4d4eb6
+timeCreated: 1485358770
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: camel
+    100002: //RootNode
+    100004: camel1
+    100006: eye_left
+    100008: eye_left01
+    100010: eye_right
+    100012: eye_right01
+    100014: gums
+    100016: teeth1
+    100018: teeth2
+    100020: teeth3
+    100022: teeth4
+    100024: teeth5
+    100026: teeth6
+    100028: teeth7
+    100030: teeth8
+    400000: camel
+    400002: //RootNode
+    400004: camel1
+    400006: eye_left
+    400008: eye_left01
+    400010: eye_right
+    400012: eye_right01
+    400014: gums
+    400016: teeth1
+    400018: teeth2
+    400020: teeth3
+    400022: teeth4
+    400024: teeth5
+    400026: teeth6
+    400028: teeth7
+    400030: teeth8
+    2300000: camel
+    2300002: camel1
+    2300004: eye_left
+    2300006: eye_left01
+    2300008: eye_right
+    2300010: eye_right01
+    2300012: gums
+    2300014: teeth1
+    2300016: teeth2
+    2300018: teeth3
+    2300020: teeth4
+    2300022: teeth5
+    2300024: teeth6
+    2300026: teeth7
+    2300028: teeth8
+    3300000: camel
+    3300002: camel1
+    3300004: eye_left
+    3300006: eye_left01
+    3300008: eye_right
+    3300010: eye_right01
+    3300012: gums
+    3300014: teeth1
+    3300016: teeth2
+    3300018: teeth3
+    3300020: teeth4
+    3300022: teeth5
+    3300024: teeth6
+    3300026: teeth7
+    3300028: teeth8
+    4300000: eye_right
+    4300002: eye_left
+    4300004: camel
+    4300006: eye_left01
+    4300008: eye_right01
+    4300010: camel1
+    4300012: teeth1
+    4300014: teeth4
+    4300016: teeth3
+    4300018: teeth2
+    4300020: teeth8
+    4300022: teeth6
+    4300024: teeth7
+    4300026: teeth5
+    4300028: gums
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
