@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-public class ObjectController : MonoBehaviour {
+public class ObjectController_NYSPI : MonoBehaviour {
 
 
 	//instantiated somewhere (hidden) in the scene at all times. for calculating default object bounds --> requires an active object, and we don't want to instantiate one every time we ask for the bounds.
@@ -14,7 +14,10 @@ public class ObjectController : MonoBehaviour {
 	public GameObject ExplosiveObject;
 	public List<GameObject> CurrentTrialSpecialObjects;
 	List<GameObject>tempList;
-
+	public List<GameObject> RecallObjectList;
+	public List<GameObject> FoilObjects;
+	public int CurrentTrialFoilObjects=0;
+	public GameObject defaultFoilObject;
 	//experiment singleton
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
@@ -28,6 +31,8 @@ public class ObjectController : MonoBehaviour {
 	//List<GameObject> gameObjectList_Spawned; //a list to keep track of the objects currently in the scene
 
 
+	//to keep track of last default object so that helper arrows don't point to foil objects
+	private GameObject previousDefaultObj;
 
 	// Use this for initialization
 	void Start () {
@@ -44,7 +49,15 @@ public class ObjectController : MonoBehaviour {
 		setBList = new string[50];
 		setCList = new string[50];
 	}
-	
+
+	public void CreateFoilObjects()
+	{
+		for (int i = 0; i < 2; i++) {
+			GameObject temp = Instantiate (defaultFoilObject, Vector3.zero, Quaternion.identity) as GameObject;
+			temp.GetComponent<SpawnableObject> ().TurnVisible (false);
+			FoilObjects.Add (temp);
+		}
+	}
 	// Update is called once per frame
 	void Update () {
 	
@@ -57,7 +70,7 @@ public class ObjectController : MonoBehaviour {
 		gameObjectList_Spawnable_SetB.Clear();
 		gameObjectList_Spawnable_SetC.Clear();
 		Object[] prefabs;
-		prefabs = Resources.LoadAll("Prefabs/Objects");
+		prefabs = Resources.LoadAll("Prefabs/Objects_NYSPI");
 
 		for(int i=0;i<prefabs.Length;i++)
 			tempList.Add((GameObject)prefabs[i]);
@@ -135,7 +148,7 @@ public class ObjectController : MonoBehaviour {
 			prefabs = Resources.LoadAll("Prefabs/Objects");
 		}
 		#else
-			prefabs = Resources.LoadAll("Prefabs/Objects");
+			prefabs = Resources.LoadAll("Prefabs/Objects_NYSPI");
 		#endif
 
 		for(int i=0;i<prefabs.Length;i++)
@@ -304,8 +317,10 @@ public class ObjectController : MonoBehaviour {
 		return randomRotY;
 	}
 
+
 	//special positions get passed in so that the default object can get a special tag for later use for spawning special objects
 	public void SpawnDefaultObjects(List<Vector2> defaultPositions, List<Vector2> specialPositions){
+		Debug.Log ("IN SPAWN DEFAULT OBJECTS");
 		for(int i = 0; i < defaultPositions.Count; i++){
 			Vector2 currPos = defaultPositions[i];
 			SpawnDefaultObject( currPos, specialPositions, i );
@@ -314,18 +329,32 @@ public class ObjectController : MonoBehaviour {
 
 	//special positions get passed in so that the default object can get a special tag for later use for spawning special objects
 	public GameObject SpawnDefaultObject (Vector2 positionXZ, List<Vector2> specialPositions, int index) {
-		Vector3 objPos = new Vector3(positionXZ.x, DefaultObject.transform.position.y, positionXZ.y);
-		GameObject newObj = Instantiate(DefaultObject, objPos, DefaultObject.transform.rotation) as GameObject;
-		
-		SpawnableObject newSpawnableObj = newObj.GetComponent<SpawnableObject>();
-		newSpawnableObj.SetNameID(newObj.transform, index);
-		
-		if( specialPositions.Contains(positionXZ) ){
+
+		GameObject newObj;
+		Vector3 objPos;
+		if (specialPositions.Contains (positionXZ)) {
+			objPos= new Vector3(positionXZ.x, DefaultObject.transform.position.y, positionXZ.y);
+			newObj= Instantiate(DefaultObject, objPos, DefaultObject.transform.rotation) as GameObject;
+			SpawnableObject newSpawnableObj = newObj.GetComponent<SpawnableObject>();
+			newSpawnableObj.SetNameID(newObj.transform, index);
 			newObj.tag = "DefaultSpecialObject";
+			previousDefaultObj = newObj;
+		} 
+		else 
+		{
+			Debug.Log ("current foil objects index: " + CurrentTrialFoilObjects);
+			newObj = FoilObjects [CurrentTrialFoilObjects++];
+			objPos= new Vector3(positionXZ.x, DefaultObject.transform.position.y, positionXZ.y);
+			newObj.transform.position = objPos;
+			newObj.tag = "FoilObject";
+			newObj.GetComponent<SpawnableObject> ().TurnVisible (false);
+			exp.trialController.IncrementNumDefaultObjectsCollected ();
+			newObj = previousDefaultObj;
 		}
 
 		return newObj;
 	}
+
 	
 	
 	//for more generic object spawning -- such as in Replay!
@@ -357,6 +386,7 @@ public class ObjectController : MonoBehaviour {
 			float randomRot = GenerateRandomRotationY();
 			newObject.transform.RotateAround(newObject.transform.position, Vector3.up, randomRot);
 
+			Debug.Log ("ADDED A SPECIAL OBJECT");
 			CurrentTrialSpecialObjects.Add(newObject);
 
 			//make object face the player -- MUST MAKE SURE OBJECT FACES Z-AXIS
@@ -393,10 +423,63 @@ public class ObjectController : MonoBehaviour {
 
 				//increment numTries
 				numTries++;
-			
+
 				//check if the generated position is far enough from all other positions
 				objectsAreFarEnough = CheckObjectsFarEnoughXZ( randomEnvPositionVec2, defaultPositions, out smallestDistance);
-			
+
+				//if not, and the smallest distance is larger than the currents largest small distance...
+				if( !objectsAreFarEnough && smallestDistance > currentBiggestSmallestDistance ){
+					currentBiggestSmallestDistance = smallestDistance;
+					smallestDistancePosition = randomEnvPositionVec2;
+				}
+			}
+
+			if(numTries == maxNumTries){
+				//				Debug.Log("Tried " + maxNumTries + " times to place default objects!");
+				//				Debug.Log("DISTANCE: " + currentBiggestSmallestDistance + " POSITION: " + smallestDistancePosition);
+				defaultPositions.Add(smallestDistancePosition);
+			}
+			else{
+				defaultPositions.Add(randomEnvPositionVec2);
+			}
+
+		}
+
+		//		//insertion sort by distance
+		//		Vector2 distancePosXZ = new Vector2 (distancePos.x, distancePos.z);
+		//		defaultPositions = SortByNextClosest(defaultPositions, distancePosXZ);
+
+		return defaultPositions;
+	}
+
+
+	public List<Vector2> GenerateFoilPositions (int numFoils, List<Vector2> existingPositions, Vector3 distancePos){ //ORDERED BY DISTANCE TO PLAYER START POS
+		List<Vector2> foilPositions = new List<Vector2> ();
+		List<Vector2> defaultPositions = existingPositions;
+		for (int i = 0; i < numFoils; i++) {
+			bool objectsAreFarEnough = false;
+
+			int numTries = 0;
+			int maxNumTries = 1000; //ARBITRARY.
+
+			Vector3 randomEnvPosition = Vector3.zero;
+			Vector2 randomEnvPositionVec2 = Vector2.zero;
+
+			float smallestDistance = 0.0f; //will get filled in by CheckObjectsFarEnoughXZ function
+			float currentBiggestSmallestDistance = 0; //if we fail at positioning in the allotted number of tries, we want to position the treasure chest with the maximal distance to the closest neighbor chest.
+			Vector2 smallestDistancePosition = Vector2.zero;
+
+			while( !objectsAreFarEnough && numTries < maxNumTries){
+				// generate a random position
+				randomEnvPosition = exp.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.objectToWallBuffer );
+				randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
+
+				//increment numTries
+				numTries++;
+
+				//check if the generated position is far enough from all other positions
+				objectsAreFarEnough = CheckObjectsFarEnoughXZ( randomEnvPositionVec2, defaultPositions, out smallestDistance);
+
 				//if not, and the smallest distance is larger than the currents largest small distance...
 				if( !objectsAreFarEnough && smallestDistance > currentBiggestSmallestDistance ){
 					currentBiggestSmallestDistance = smallestDistance;
@@ -408,18 +491,20 @@ public class ObjectController : MonoBehaviour {
 				Debug.Log("Tried " + maxNumTries + " times to place default objects!");
 				Debug.Log("DISTANCE: " + currentBiggestSmallestDistance + " POSITION: " + smallestDistancePosition);
 				defaultPositions.Add(smallestDistancePosition);
+				foilPositions.Add (smallestDistancePosition);
 			}
 			else{
 				defaultPositions.Add(randomEnvPositionVec2);
+				foilPositions.Add (randomEnvPositionVec2);
 			}
 
 		}
 
-		//insertion sort by distance
-		Vector2 distancePosXZ = new Vector2 (distancePos.x, distancePos.z);
-		defaultPositions = SortByNextClosest(defaultPositions, distancePosXZ);
+		//		//insertion sort by distance
+		//		Vector2 distancePosXZ = new Vector2 (distancePos.x, distancePos.z);
+		//		defaultPositions = SortByNextClosest(defaultPositions, distancePosXZ);
 
-		return defaultPositions;
+		return foilPositions;
 	}
 
 	List<Vector2> SortByNextClosest(List<Vector2> positions, Vector2 distancePos){
@@ -505,9 +590,9 @@ public class ObjectController : MonoBehaviour {
 		
 		//If there are only two special objects, DONT allow the last chest to have an object.
 		//This will make the treasure chests less predictable when there are two and three item trials.
-		if(numSpecialObjects == 2){
-			numDefaultPositions -= 1;
-		}
+//		if(numSpecialObjects == 2){
+//			numDefaultPositions -= 1;
+//		}
 		
 		List<int> randomIndices = UsefulFunctions.GetRandomIndexOrder( numDefaultPositions );
 		//DON'T allow 1,1,1,0 special object arrangement. For predictability.

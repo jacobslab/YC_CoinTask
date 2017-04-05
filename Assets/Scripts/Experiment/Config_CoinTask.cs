@@ -46,6 +46,15 @@ public class Config_CoinTask : MonoBehaviour {
 	//REPLAY
 	public static int replayPadding = 6;
 
+	public static bool setA=true;
+	public static bool setB=false;
+	public enum SetNumber{
+		A,
+		B,
+		C
+	}
+	public static SetNumber currentSetNumber = SetNumber.A;
+
 	//JUICE
 	public static bool isJuice = true;
 	public static bool isSoundtrack = false; //WON'T PLAY IF ISJUICE IS FALSE.
@@ -102,21 +111,20 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float MRIFixationTime = 30.0f;
 
 #else
-	public static int numTestTrials = 30; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
+	public static int numTestTrials = 20; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
 
 
 	//practice settings
 	public static int numTrialsPract = 1;
 	public static bool isPractice = false;
 	public static int numSpecialObjectsPract = 2;
-	//public static int numTwoItemTrials = 6;
-
-	public static int numThreeItemTrials = 15;
-	public static int numFourItemTrials = 15;
+	public static int numTwoItemTrials = 10;
+	public static int numThreeItemTrials = 10;
+//	public static int numFourItemTrials = 15;
 //
 //	public static int numFiveItemTrials = 6;
 //	public static int numSixItemTrials = 6;
-	public static int numTrialsPerBlock = 6;
+	public static int numTrialsPerBlock = 5;
 
 
 	//FEEDBACK SETTINGS:

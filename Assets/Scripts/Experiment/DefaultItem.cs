@@ -143,7 +143,7 @@ public class DefaultItem : MonoBehaviour {
 		Experiment_CoinTask.Instance.scoreController.AddSpecialPoints();
 		
 		//TODO: spawn with default objects, show on collision???
-		
+		Debug.Log("SPAWNED SPECIAL OBJECT");
 		GameObject specialObject = Experiment_CoinTask.Instance.objectController.SpawnSpecialObject(specialSpawnPos);
 		
 		//set special object text
