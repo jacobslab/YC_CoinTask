@@ -41,8 +41,8 @@ public class ObjectController_NYSPI : MonoBehaviour {
 		gameObjectList_Spawnable_SetC = new List<GameObject> ();
 		tempList=new List<GameObject>();
 		CurrentTrialSpecialObjects = new List<GameObject> ();
-//		if ((!File.Exists (exp.subjectDirectory + "SetA/SetAList.txt")))
-//			CreateSpecialObjectList ();
+		if ((!File.Exists (exp.subjectDirectory + "SetA\\SetAList.txt")))
+			CreateSpecialObjectList ();
 //		else
 		ReadObjectLists ();
 		setAList = new string[50];
@@ -71,7 +71,7 @@ public class ObjectController_NYSPI : MonoBehaviour {
 		gameObjectList_Spawnable_SetC.Clear();
 		Object[] prefabs;
 		prefabs = Resources.LoadAll("Prefabs/Objects_NYSPI");
-
+        Debug.Log("all the loadable prefab count is: " + prefabs.Length);
 		for(int i=0;i<prefabs.Length;i++)
 			tempList.Add((GameObject)prefabs[i]);
 
@@ -79,29 +79,36 @@ public class ObjectController_NYSPI : MonoBehaviour {
 		string[] listObj = new string[50];
 		switch (Config_CoinTask.currentSetNumber) {
 		case Config_CoinTask.SetNumber.A:
-			listObj=System.IO.File.ReadAllLines (Application.dataPath+"/SetAList.txt");
+			listObj=System.IO.File.ReadAllLines (exp.subjectDirectory + "SetA\\SetAList.txt");
 			break;
 		case Config_CoinTask.SetNumber.B:
-			listObj=System.IO.File.ReadAllLines (Application.dataPath + "/SetBList.txt");
+			listObj=System.IO.File.ReadAllLines (Application.dataPath + "SetB\\SetBList.txt");
 			break;
 		case Config_CoinTask.SetNumber.C:
-			listObj=System.IO.File.ReadAllLines (Application.dataPath + "/SetCList.txt");
+			listObj=System.IO.File.ReadAllLines (exp.subjectDirectory+"SetA\\SetCList.txt");
 			break;
 		}
 
 		List<GameObject> tempObjList = new List<GameObject> ();
 		List<GameObject> spawnList = new List<GameObject> ();
+
+        Debug.Log("list obj count is: " + listObj.Length);
+        int index = 0;
 		//find object in a list
 		for (int i = 0; i < listObj.Length; i++) {
 			//if object name is equal to name in list, then add that to the tempObjList
-			for (int j = 0; j < prefabs.Length; j++) {
-				if (prefabs [j].name == listObj [i]) {
+			for (int j = 0; j < tempList.Count; j++) {
+
+				if ((tempList[j].gameObject.name.ToLower()== listObj [i].ToLower()) && (tempList[j].gameObject.name.Length == listObj[i].Length)) {
+                    index++;
+                    Debug.Log(index + ":" + listObj[i]);
 					tempObjList.Add ((GameObject)tempList [j]);
 				}
 			}
 		}
+        Debug.Log("the index is: " + index);
 
-		Debug.Log ("list obj count is: " + tempObjList.Count);
+		Debug.Log ("temp obj  list count is: " + tempObjList.Count);
 
 		//randomly select gameobjects from tempObjList and add to spawnList
 		string contents="";
@@ -118,15 +125,15 @@ public class ObjectController_NYSPI : MonoBehaviour {
 		switch (Config_CoinTask.currentSetNumber) {
 		case Config_CoinTask.SetNumber.A:
 			gameObjectList_Spawnable_SetA = spawnList;
-			System.IO.File.WriteAllText (exp.subjectDirectory + "SetA/" + "ActualListOrder.txt",contents);
+			System.IO.File.WriteAllText (exp.subjectDirectory + "SetA\\" + "ActualListOrder.txt",contents);
 			break;
 		case Config_CoinTask.SetNumber.B:
 			gameObjectList_Spawnable_SetB = spawnList;
-			System.IO.File.WriteAllText (exp.subjectDirectory + "SetB/" + "ActualListOrder.txt",contents);
+			System.IO.File.WriteAllText (exp.subjectDirectory + "SetB\\" + "ActualListOrder.txt",contents);
 			break;
 		case Config_CoinTask.SetNumber.C:
 			gameObjectList_Spawnable_SetC = spawnList;
-			System.IO.File.WriteAllText (exp.subjectDirectory + "SetC/" + "ActualListOrder.txt",contents);
+			System.IO.File.WriteAllText (exp.subjectDirectory + "SetC\\" + "ActualListOrder.txt",contents);
 			break;
 		}
 	}
@@ -199,26 +206,26 @@ public class ObjectController_NYSPI : MonoBehaviour {
 		for (int i = 0; i < thirdList.Count; i++)
 			setCList = thirdList.ToArray();
 		
-	//	PrintObjects ();
+		PrintObjects ();
 		Debug.Log ("the number of Set A objects are : " + gameObjectList_Spawnable_SetA.Count);
 		Debug.Log ("the number of Set B objects are : " + gameObjectList_Spawnable_SetB.Count);
 		Debug.Log ("the number of Set C objects are : " + gameObjectList_Spawnable_SetC.Count);
-		System.IO.File.WriteAllText (exp.subjectDirectory + "SetA/" + "ActualListOrder.txt", contents);
+		System.IO.File.WriteAllText (exp.subjectDirectory + "SetA\\" + "ActualListOrder.txt", contents);
 		}
 
 	void PrintObjects()
 	{
-		if (!File.Exists (exp.subjectDirectory + "SetA/SetAList.txt")) {
+		if (!File.Exists (exp.subjectDirectory + "SetA\\SetAList.txt")) {
 			Debug.Log ("set A directory doesn't exist. creating");
-			System.IO.File.WriteAllLines (exp.subjectDirectory+"SetA/" + "SetAList.txt", setAList);
+			System.IO.File.WriteAllLines (exp.subjectDirectory+"SetA\\" + "SetAList.txt", setAList);
 		}
-		if (!File.Exists (exp.subjectDirectory + "SetB/SetBList.txt")) {
+		if (!File.Exists (exp.subjectDirectory + "SetB\\SetBList.txt")) {
 			Debug.Log ("set B directory doesn't exist. creating");
-			System.IO.File.WriteAllLines (exp.subjectDirectory+"SetB/" + "SetBList.txt", setBList);
+			System.IO.File.WriteAllLines (exp.subjectDirectory+"SetB\\" + "SetBList.txt", setBList);
 		}
-		if (!File.Exists (exp.subjectDirectory + "SetC/SetCList.txt")) {
+		if (!File.Exists (exp.subjectDirectory + "SetC\\SetCList.txt")) {
 			Debug.Log ("set C directory doesn't exist. creating");
-			System.IO.File.WriteAllLines (exp.subjectDirectory+"SetC/" + "SetCList.txt", setCList);
+			System.IO.File.WriteAllLines (exp.subjectDirectory+"SetC\\" + "SetCList.txt", setCList);
 		}
 	}
 

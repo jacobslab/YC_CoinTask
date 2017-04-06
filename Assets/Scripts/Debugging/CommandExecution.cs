@@ -7,7 +7,7 @@ using System.IO;
 public class CommandExecution : MonoBehaviour {
   //  public Text trialText;
     private int testInt = 0;
-	
+    public static string sphinxPath = @"C:\Users\JacobsLab\Desktop\Pocketsphinx\pocketsphinx\";
 	//SINGLETON
 	private static CommandExecution _instance;
 	
@@ -55,20 +55,22 @@ public class CommandExecution : MonoBehaviour {
 
     static void Command()
     {
-//#if (UNITY_STANDALONE || UNITY_EDITOR)
-//        var processInfo = new ProcessStartInfo("powershell.exe", @"notepad.exe");
-//`#elif (UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX)
-	//	var processInfo = new ProcessStartInfo("/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal", @"shutdown -s now");
-//#endif
-		string filepath=System.IO.Directory.GetCurrentDirectory();
+        //#if (UNITY_STANDALONE || UNITY_EDITOR)
+        var processInfo = new ProcessStartInfo("powershell.exe", "echo hi");
+        
+                //var processInfo = new ProcessStartInfo("powershell.exe", sphinxPath+@"bin\Release\Win32\pocketshinx_continuous.exe -inmic yes -hmm " + sphinxPath + @"model\en-us\en-us -lm "+sphinxPath+ @"\model\en-us\en-us.lm.bin -dict "+sphinxPath + @"model\en-us\cmudict-en-us.dict");
+                //`#elif (UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX)
+                //	var processInfo = new ProcessStartInfo("/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal", @"shutdown -s now");
+                //#endif
+                string filepath=System.IO.Directory.GetCurrentDirectory();
 		UnityEngine.Debug.Log (filepath);
-		var processInfo = new ProcessStartInfo ("open","InputVolume.app");
+		//var processInfo = new ProcessStartInfo ("open","InputVolume.app");
 		//processInfo.FileName = "/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal";
 		//processInfo.Arguments="-c \" " + "shutdown -s now" + " \"";
         processInfo.CreateNoWindow = true;
 		processInfo.WorkingDirectory = filepath + "/";
 		//processInfo.RedirectStandardOutput = False;
-        processInfo.UseShellExecute = false;
+     //   processInfo.UseShellExecute = true;
 
         var process = Process.Start(processInfo);
 

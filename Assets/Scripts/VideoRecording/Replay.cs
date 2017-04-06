@@ -140,7 +140,7 @@ public class Replay : MonoBehaviour {
 		{
 			finalString += newtest [i]+"/";
 		}
-		audioPath = finalString+"audio/";
+		audioPath = finalString+"audio\\";
 	}
 
 	void SetFPS(int newFPS){

@@ -1,0 +1,50 @@
+alarm clock
+anchor
+banana
+basketball
+battery
+beachball
+bear
+bell
+bench
+birthday cake
+broccoli
+cabinet
+cage
+ceiling fan
+cello
+cherry
+clothespin
+crown
+donut
+dumpster
+fire hydrant
+fish
+flag
+flowers
+glasses
+goal
+hammer
+hat
+horse
+house
+ladder
+lightbulb
+manhole cover
+music note
+orange
+oven
+paint palette
+phonebooth
+playing cards
+pumpkin seed
+record player
+robotic arm
+rubik's cube
+shirt
+slide
+spoon
+tea kettle
+toaster
+trashcan
+wolf

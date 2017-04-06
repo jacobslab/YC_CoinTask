@@ -1,0 +1,50 @@
+anchor
+apple
+banana
+bear
+bell
+birthday cake
+bucket
+cabinet
+cage
+camel
+cello
+cereal bowl
+chair
+cherry
+cone
+deer
+dice
+dumpster
+fan
+fire hydrant
+flowers
+garlic
+gloves
+goal
+hammer
+hat
+helmet
+hiking stick
+key
+keyboard
+keychain
+lamp
+lock
+mailbox
+manhole cover
+mixer
+paint palette
+phonebooth
+plant
+racket
+refrigerator
+ring
+robotic arm
+rubik's cube
+soda can
+stool
+tea kettle
+toy car
+vase
+wooden crate

@@ -1064,11 +1064,11 @@ public class TrialController : MonoBehaviour {
 				exp.currInstructions.SetTextPanelOff ();
 
 				//make a .TXT file with name of current recall object; meant for pocketsphinx
-				string trialTxtName = exp.sessionDirectory + "audio/" + fileName + ".txt";
+				string trialTxtName = exp.sessionDirectory + "audio\\" + fileName + ".txt";
 				System.IO.File.WriteAllText(trialTxtName, currentRecallObject); //includes name and the kws_threshold 
 
 				//make a .LST file with all the names of the objects in the trial
-				string trialLstName = exp.sessionDirectory + "audio/" + fileName + ".lst";
+				string trialLstName = exp.sessionDirectory + "audio\\" + fileName + ".lst";
 				System.IO.File.WriteAllText(trialLstName, trialLstContents);
 
 
@@ -1429,6 +1429,8 @@ public class TrialController : MonoBehaviour {
 		//wait for selection button press
 		yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 #endif
+
+
 		float recallRate = correctRecallCues / totalRecallCues;
 		if (recallRate >=0.8f) {
 			exp.scoreController.silverProgress++;
@@ -1446,7 +1448,7 @@ public class TrialController : MonoBehaviour {
 		trialLogger.LogTrophyEvent();
 		yield return StartCoroutine (exp.scoreController.GiveTrophies ());
 		currTrialNum++;
-
+        /*
 
 		trialLogger.LogInstructionEvent();
 		trialLogger.LogScoreScreenStarted(true);
@@ -1462,7 +1464,7 @@ public class TrialController : MonoBehaviour {
 		exp.uiController.scoreRecapUI.Stop ();
 		trialLogger.LogScoreScreenStarted(false);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);
-
+        */
 
 		//delete all indicators & special objects
 		DestroyGameObjectList (CorrectPositionIndicators);

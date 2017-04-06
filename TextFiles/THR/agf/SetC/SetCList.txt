@@ -1,0 +1,50 @@
+alarm clock
+banana
+basketball
+beachball
+bed
+bell
+boar
+broccoli
+bucket
+bunk bed
+candle
+casket
+ceiling fan
+chalice
+column
+cone
+crown
+digital camera
+dumpster
+fan
+flowers
+gears
+gloves
+hanger
+hat
+house
+ice scraper
+jewels
+keyboard
+lamp
+lock
+manhole cover
+microphone
+mushroom
+music note
+oven
+phone
+phonebooth
+plant
+rock
+slide
+soap case
+sofa
+spoon
+subwoofer
+sunglasses
+tooth
+trashcan
+vase
+wrench

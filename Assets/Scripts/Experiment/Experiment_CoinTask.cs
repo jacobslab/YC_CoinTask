@@ -129,8 +129,8 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 	void CreateSetFolders()
 	{
-		subjectDirectory = ExperimentSettings_CoinTask.defaultLoggingPath + ExperimentSettings_CoinTask.currentSubject.name + "/";
-		string setName="SetA/"; //for directory
+		subjectDirectory = ExperimentSettings_CoinTask.defaultLoggingPath + ExperimentSettings_CoinTask.currentSubject.name + "\\";
+		string setName="SetA\\"; //for directory
 		string setDirectory=subjectDirectory+setName;
 
 		if (!Directory.Exists (setDirectory)) {
@@ -138,14 +138,14 @@ public class Experiment_CoinTask : MonoBehaviour {
 		}
 
 		//repeat for Set B and C
-		setName="SetB/"; //for directory
+		setName="SetB\\"; //for directory
 		setDirectory=subjectDirectory+setName;
 
 		if (!Directory.Exists (setDirectory)) {
 			Directory.CreateDirectory (setDirectory);
 		}
 
-		setName="SetC/"; //for directory
+		setName="SetC\\"; //for directory
 		setDirectory=subjectDirectory+setName;
 
 		if (!Directory.Exists (setDirectory)) {
@@ -155,15 +155,15 @@ public class Experiment_CoinTask : MonoBehaviour {
 	
 	//TODO: move to logger_threading perhaps? *shrug*
 	void InitLogging(){
-		subjectDirectory = ExperimentSettings_CoinTask.defaultLoggingPath + ExperimentSettings_CoinTask.currentSubject.name + "/";
-		string setName="SetA/"; //for directory
+		subjectDirectory = ExperimentSettings_CoinTask.defaultLoggingPath + ExperimentSettings_CoinTask.currentSubject.name + "\\";
+		string setName="SetA\\"; //for directory
 		//	sessionDirectory = subjectDirectory + "session_0" + "/";
 
 		if (Config_CoinTask.currentSetNumber == Config_CoinTask.SetNumber.A) {
-			setName ="SetA/";
+			setName ="SetA\\";
 		}
 		else if (Config_CoinTask.currentSetNumber == Config_CoinTask.SetNumber.B) {
-			setName = "SetB/";
+			setName = "SetB\\";
 		}
 		else if (Config_CoinTask.currentSetNumber == Config_CoinTask.SetNumber.C) {
 			setName ="SetC/";
@@ -197,6 +197,10 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 		subjectLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "Log" + "_" + setName.Substring (0, 4) + ".txt";
 		eegLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "EEGLog" + "_" + setName.Substring(0,4)+ ".txt";
+
+        string audioPath = sessionDirectory + "audio\\";
+        sphinxTest.SetPath(audioPath);
+        Debug.Log("The audio path is: " + audioPath);
 	}
 
 	//In order to increment the session, this file must be present. Otherwise, the session has not actually started.
@@ -351,8 +355,12 @@ public class Experiment_CoinTask : MonoBehaviour {
 		if (ExperimentSettings_CoinTask.isLogging) {
 			subjectLog.close ();
 			eegLog.close ();
-			File.Copy ("/Users/" + System.Environment.UserName + "/Library/Logs/Unity/Player.log", sessionDirectory+"Player.log");
-		}
+#if UNITY_WIN_STANDALONE
+         //   File.Copy ("/Users/" + System.Environment.UserName + "/AppData/Local/Unity/Player.log", sessionDirectory+"Player.log");
+#else
+            File.Copy ("/Users/" + System.Environment.UserName + "/Library/Logs/Unity/Player.log", sessionDirectory+"Player.log");
+#endif
+        }
 	}
 
 

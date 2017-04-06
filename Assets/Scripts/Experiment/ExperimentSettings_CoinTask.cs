@@ -79,6 +79,8 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public InputField loggingPathInputField;
 	public Text manualTrialFilePathDisplay;
 
+    public Dropdown setDropdown;
+
 	//IF YOU WANT MANUAL TRIAL FILE
 	public static string manualTrialFilePath; //if you want to define trials & objects manually
 	public InputField manualTrialPathInputField;
@@ -114,7 +116,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			AttachSceneController ();
 
 		QualitySettings.vSyncCount = 1;
-	}
+
+        Config_CoinTask.currentSetNumber = Config_CoinTask.SetNumber.A;
+    }
 
 	void AttachSceneController()
 	{
@@ -140,13 +144,18 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		} else if (Config_CoinTask.isSyncbox) {
 				defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM/data/THR/";
 			} else {
-			defaultLoggingPath = System.IO.Directory.GetCurrentDirectory() + "/TextFiles/THR/";
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
 
-			Debug.Log("current dir: " + System.IO.Directory.GetCurrentDirectory());
+            defaultLoggingPath = System.IO.Directory.GetCurrentDirectory() + @"\TextFiles\THR\";
+#else
+            defaultLoggingPath = System.IO.Directory.GetCurrentDirectory() + "/TextFiles/THR/";
+#endif
+
+            Debug.Log("current dir: " + System.IO.Directory.GetCurrentDirectory());
 			}
-			#endif
-		#endif
-	}
+#endif
+#endif
+        }
 
 
 	void DoMicTest(){
@@ -158,6 +167,28 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			}
 		}
 	}
+
+    public void ChooseSetNumber()
+    {
+        switch (setDropdown.value)
+        {
+            case 0:
+                Config_CoinTask.currentSetNumber = Config_CoinTask.SetNumber.A;
+                break;
+            case 1:
+                Config_CoinTask.currentSetNumber = Config_CoinTask.SetNumber.B;
+                break;
+            case 2:
+                Config_CoinTask.currentSetNumber = Config_CoinTask.SetNumber.C;
+                break;
+            default:
+                Config_CoinTask.currentSetNumber = Config_CoinTask.SetNumber.A;
+                break;
+        }
+
+        Debug.Log("the current set number is: " + Config_CoinTask.currentSetNumber.ToString());
+
+    }
 
 	void InitLoggingPath(){
 		ResetDefaultLoggingPath ();

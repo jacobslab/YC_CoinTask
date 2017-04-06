@@ -1,0 +1,50 @@
+airplane
+balloon
+banana
+battery
+beachball
+bed
+bell
+bench
+birthday cake
+cabinet
+camel
+cashew
+casket
+cello
+deer
+dice
+digital camera
+fire hydrant
+garlic
+gloves
+hat
+hazelnut
+hiking stick
+horse
+ice cream
+jewels
+microphone
+mobile phone
+model train
+mushroom
+music note
+orange
+ornaments
+oven
+pencil
+pumpkin
+push pin
+robotic arm
+rose
+sandals
+silverware
+soap case
+spoon
+suitcase
+sword
+toaster
+tooth
+toy car
+wolf
+wooden logs
