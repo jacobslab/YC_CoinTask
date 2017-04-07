@@ -6,28 +6,8 @@ using System.Diagnostics;
 
 public class SphinxTest : MonoBehaviour {
 
-    /*
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-    [DllImport("ASimplePlugin")]
-    private static extern IntPtr SphinxRun(int trialNumber, int recallNumber, int kws_threshold);
 
-    [DllImport("ASimplePlugin")]
-    private static extern int PrintANumber();
-
-    [DllImport("ASimplePlugin")]
-    private static extern int AddTwoIntegers(int i1, int i2);
-
-    [DllImport("ASimplePlugin")]
-    private static extern float AddTwoFloats(float f1, float f2);
-
-    [DllImport("ASimplePlugin")]
-    private static extern int SetAudioPath(string someStr);
-
-    [DllImport("ASimplePlugin")]
-    private static extern IntPtr GetAudioPath();
-   
-
-#else
+#if !UNITY_EDITOR_WIN || !UNITY_STANDALONE_WIN
 
     [DllImport ("SphinxPlugin")]
 	private static extern IntPtr SphinxRun(int trialNumber, int recallNumber,int kws_threshold);
@@ -46,10 +26,12 @@ public class SphinxTest : MonoBehaviour {
 
 	[DllImport ("SphinxPlugin")]
 	private static extern IntPtr GetAudioPath();
+#else
+    public CommandExecution commExec;
 #endif
-*/
-	// Use this for initialization
-	void Start () {
+
+    // Use this for initialization
+    void Start () {
 
 //		string usbOpenFeedback = Marshal.PtrToStringAuto (SphinxRun(0,1));
 //		UnityEngine.Debug.Log(usbOpenFeedback);
@@ -76,7 +58,7 @@ public class SphinxTest : MonoBehaviour {
 	public void SetPath(string audioPath)
 	{
 		UnityEngine.Debug.Log ("set sphinx audio path to " + audioPath);
-		//SetAudioPath(audioPath);
+        Config_CoinTask.audioPath = audioPath;
 	}
 
 	public int CheckAudioResponse(int trialNumber, int recallNumber,string actualName,string kws_threshold)
@@ -85,8 +67,9 @@ public class SphinxTest : MonoBehaviour {
 		UnityEngine.Debug.Log("INSIDE SPHINX RESPONSE " + actualName + " for " + kws_threshold);
 		int threshInt = int.Parse (kws_threshold);
 		UnityEngine.Debug.Log ("thres int is: " + threshInt.ToString ());
-        //string response = Marshal.PtrToStringAuto (SphinxRun(trialNumber,recallNumber,threshInt));
-        string response = "";
+        UnityEngine.Debug.Log(" trial number: " + trialNumber + " recallnumber " + recallNumber + " thresint " + threshInt);
+        string response =commExec.ExecuteCommand(trialNumber,recallNumber,threshInt);
+        //string response = "";
 		UnityEngine.Debug.Log(response);
 
 		if (response == "found") {

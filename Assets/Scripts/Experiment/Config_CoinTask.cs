@@ -126,6 +126,8 @@ public class Config_CoinTask : MonoBehaviour {
 //	public static int numSixItemTrials = 6;
 	public static int numTrialsPerBlock = 4;
 
+    public static string audioPath = "";
+
 
 	//FEEDBACK SETTINGS:
 	public static float feedbackTimeBetweenObjects = 0.5f;
