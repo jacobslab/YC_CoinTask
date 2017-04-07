@@ -27,8 +27,9 @@ public class SphinxTest : MonoBehaviour {
 	[DllImport ("SphinxPlugin")]
 	private static extern IntPtr GetAudioPath();
 #else
-    public CommandExecution commExec;
 #endif
+
+    public CommandExecution commExec;
 
     // Use this for initialization
     void Start () {
@@ -68,7 +69,7 @@ public class SphinxTest : MonoBehaviour {
 		int threshInt = int.Parse (kws_threshold);
 		UnityEngine.Debug.Log ("thres int is: " + threshInt.ToString ());
         UnityEngine.Debug.Log(" trial number: " + trialNumber + " recallnumber " + recallNumber + " thresint " + threshInt);
-        string response =commExec.ExecuteCommand(trialNumber,recallNumber,threshInt);
+        string response =commExec.ExecuteCommand(trialNumber,recallNumber,actualName,threshInt);
         //string response = "";
 		UnityEngine.Debug.Log(response);
 
