@@ -118,12 +118,14 @@ public class ScoreController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.G)) {
+        /*
+        if (Input.GetKeyDown (KeyCode.G)) {
 			giveBronze = true;
 			giveSilver = true;
 			giveGold = true;
 			StartCoroutine ("GiveTrophies");
 		}
+        */
 			
 	}
 

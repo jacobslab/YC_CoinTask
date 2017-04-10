@@ -7,9 +7,9 @@ using System.IO;
 public class CommandExecution : MonoBehaviour {
   //  public Text trialText;
     private int testInt = 0;
-    private string hmmPath= @"model\en-us\en-us";
-    private string lmPath= @"model\en-us\en-us.lm.bin";
-    private string dictPath = @"model\en-us\cmudict-en-us.dict";
+    private string hmmPath= @"model/en-us/en-us";
+    private string lmPath= @"model/en-us/en-us.lm.bin";
+    private string dictPath = @"model/en-us/cmudict-en-us.dict";
     private string sphinxLogPath;
     private string keyphrase;
     private string appDataPath = "";
@@ -63,7 +63,7 @@ public class CommandExecution : MonoBehaviour {
         UnityEngine.Debug.Log("Starting thread");
         thread.Join();
         UnityEngine.Debug.Log("first thread finished executing");
-        string contents = System.IO.File.ReadAllText(Config_CoinTask.audioPath + resultFormat + ".txt");
+        string contents = System.IO.File.ReadAllText(Experiment_CoinTask.Instance.sessionDirectory + "audio\\" + resultFormat + ".txt");
         if (contents.Contains(actualName))
         {
 
@@ -88,9 +88,23 @@ public class CommandExecution : MonoBehaviour {
         proc.StartInfo.UseShellExecute = false;
         proc.StartInfo.FileName = @"powershell.exe";
         // proc.StartInfo.Arguments = "notepad.exe";
-        proc.StartInfo.WorkingDirectory = Config_CoinTask.audioPath;
+#if UNITY_EDITOR_WIN
+        appDataPath=@"C:\Users\JacobsLab\Documents\Github\YC_CoinTask\";
+        proc.StartInfo.WorkingDirectory = appDataPath;
         resultFormat = trialNum.ToString() + "_" + recallNum.ToString();
-        proc.StartInfo.Arguments = appDataPath + @"bin\Release\Win32\pocketsphinx_continuous.exe -infile " + Config_CoinTask.audioPath + resultFormat+".wav -hmm " +appDataPath + hmmPath +" -lm " + appDataPath + lmPath + " -dict " + appDataPath + dictPath +" -logfn " + Config_CoinTask.audioPath + "ok.log" +" -time yes -kws_threshold 1e-"+thres+ " -keyphrase " + actualName + " > " + Config_CoinTask.audioPath+resultFormat+".txt";
+        UnityEngine.Debug.Log("working directory is: " + appDataPath);
+        UnityEngine.Debug.Log("audio path is: " + Config_CoinTask.audioPath);
+        UnityEngine.Debug.Log("result format is: " + resultFormat);
+        proc.StartInfo.Arguments = appDataPath + @"bin\Release\Win32\pocketsphinx_continuous.exe -infile " + Config_CoinTask.audioPath + resultFormat + ".wav -hmm " + appDataPath + hmmPath + " -dict " + appDataPath + dictPath + " -logfn " + Config_CoinTask.audioPath + "ok.log" + " -time yes -kws_threshold 1e-" + thres + " -keyphrase " + actualName + " > " + Experiment_CoinTask.Instance.sessionDirectory + "audio\\" + resultFormat + ".txt";
+#else
+        
+        proc.StartInfo.WorkingDirectory = appDataPath;
+        resultFormat = trialNum.ToString() + "_" + recallNum.ToString();
+        UnityEngine.Debug.Log("working directory is: " + appDataPath);
+        UnityEngine.Debug.Log("audio path is: " + Config_CoinTask.audioPath);
+        UnityEngine.Debug.Log("result format is: " + resultFormat);
+        proc.StartInfo.Arguments = appDataPath + @"bin\Release\Win32\pocketsphinx_continuous.exe -infile " + Config_CoinTask.audioPath + resultFormat+".wav -hmm " +appDataPath + hmmPath +" -dict " + appDataPath + dictPath +" -logfn " + Config_CoinTask.audioPath + "ok.log" +" -time yes -kws_threshold 1e-"+thres+ " -keyphrase " + actualName + " > " + Experiment_CoinTask.Instance.sessionDirectory + "audio\\" + resultFormat + ".txt";
+#endif        
         proc.Start();
      //   string result = proc.StandardOutput.ReadToEnd() + " or " + proc.StandardError.ReadToEnd();
        // UnityEngine.Debug.Log(result);

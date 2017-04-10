@@ -1064,8 +1064,8 @@ public class TrialController : MonoBehaviour {
 				exp.currInstructions.SetTextPanelOff ();
 
 				//make a .TXT file with name of current recall object; meant for pocketsphinx
-				string trialTxtName = exp.sessionDirectory + "audio\\" + fileName + ".txt";
-				System.IO.File.WriteAllText(trialTxtName, currentRecallObject); //includes name and the kws_threshold 
+			//	string trialTxtName = exp.sessionDirectory + "audio\\" + fileName + ".txt";
+			//	System.IO.File.WriteAllText(trialTxtName, currentRecallObject); //includes name and the kws_threshold 
 
 				//make a .LST file with all the names of the objects in the trial
 				string trialLstName = exp.sessionDirectory + "audio\\" + fileName + ".lst";
