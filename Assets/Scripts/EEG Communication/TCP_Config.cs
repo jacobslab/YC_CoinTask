@@ -70,6 +70,10 @@ public class TCP_Config : MonoBehaviour {
 			return SessionType.CLOSED_STIM ;//could change back to openstim... just use closedstim for now
 		case Config_CoinTask.Version.TH3:
 			return SessionType.CLOSED_STIM;
+		case Config_CoinTask.Version.THR_RECORD:
+			return SessionType.NO_STIM;
+		case Config_CoinTask.Version.THR_STIM:
+			return SessionType.CLOSED_STIM;
 		case Config_CoinTask.Version.MRI:
 			return SessionType.NO_STIM;
 		}

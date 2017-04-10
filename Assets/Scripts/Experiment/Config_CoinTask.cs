@@ -12,13 +12,14 @@ public class Config_CoinTask : MonoBehaviour {
 		TH1,
 		TH2,
 		TH3,
-		THR,
+		THR_RECORD,
+		THR_STIM,
 		MRI
 	}
 #if MRIVERSION
 	public static Version BuildVersion = Version.MRI;
 #else
-	public static Version BuildVersion = Version.THR;
+	public static Version BuildVersion = Version.THR_STIM;
 #endif
 
 	public static string VersionNumber = "2.044";
