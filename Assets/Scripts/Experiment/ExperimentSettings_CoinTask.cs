@@ -206,11 +206,16 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		#if SYS3COMBO
 			if (Config_CoinTask.isSyncbox && !Config_CoinTask.isSYS3) {
 		#else
-			if (Config_CoinTask.isSyncbox) {
+			if (Config_CoinTask.isSyncbox && !Config_CoinTask.isSystem2) {
 		#endif
 				BuildType.text = "Sync Box";
-			} else if (Config_CoinTask.isSystem2) {
+			}
+			else if (Config_CoinTask.isSystem2 && !Config_CoinTask.isSyncbox) {
 				BuildType.text = "System 2";
+			}
+			else if(Config_CoinTask.isSystem2 && Config_CoinTask.isSyncbox)
+			{
+				BuildType.text="SYS2 on Syncbox";
 			}
 			#if SYS3COMBO
 			else if (Config_CoinTask.isSYS3 && !Config_CoinTask.isSyncbox) {
