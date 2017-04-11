@@ -112,6 +112,7 @@ public class ScoreController : MonoBehaviour {
 		goldTrophy.SetActive (false);
 		silverTrophy.SetActive (false);
 		trophyCanvas.SetActive (false);
+        ResetTrophies();
 		Reset ();
 		StartCoroutine (UpdateScoreText());
 	}
@@ -126,7 +127,8 @@ public class ScoreController : MonoBehaviour {
 			StartCoroutine ("GiveTrophies");
 		}
         */
-			
+
+       // UnityEngine.Debug.Log(giveSilver);
 	}
 
 	void AddToScore(int amountToAdd){

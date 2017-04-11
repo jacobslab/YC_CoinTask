@@ -81,21 +81,13 @@ public class VideoPlayer : MonoBehaviour {
 		exp.currInstructions.SetInstructionsColorful ();
 		exp.currInstructions.DisplayText ("Play instruction video? (y/n)");
 		Debug.Log("show instructions");
-		bool isValidInput = false;
-		while (!isValidInput) {
-			if (Input.GetKeyUp (KeyCode.Y)) {
-				isValidInput = true;
-				shouldPlay = true;
-			}
-			else if (Input.GetKeyUp (KeyCode.N)) {
-				isValidInput = true;
-				shouldPlay = false;
-			}
-			yield return 0;
-		}
+		//bool isValidInput = false;
+        shouldPlay = true;
+		
 
 		exp.currInstructions.SetInstructionsBlank ();
 		exp.currInstructions.SetInstructionsTransparentOverlay ();
+        yield return null;
 	}
 	
 	void Pause(){

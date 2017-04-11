@@ -1432,6 +1432,7 @@ public class TrialController : MonoBehaviour {
 
 
 		float recallRate = correctRecallCues / totalRecallCues;
+        UnityEngine.Debug.Log("recall rate is: " + recallRate);
 		if (recallRate >=0.8f) {
 			exp.scoreController.silverProgress++;
 			if (exp.scoreController.silverProgress >=Config_CoinTask.silverThreshold) {

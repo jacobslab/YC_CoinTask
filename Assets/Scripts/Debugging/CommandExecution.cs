@@ -95,7 +95,7 @@ public class CommandExecution : MonoBehaviour {
         UnityEngine.Debug.Log("working directory is: " + appDataPath);
         UnityEngine.Debug.Log("audio path is: " + Config_CoinTask.audioPath);
         UnityEngine.Debug.Log("result format is: " + resultFormat);
-        proc.StartInfo.Arguments = appDataPath + @"bin\Release\Win32\pocketsphinx_continuous.exe -infile " + Config_CoinTask.audioPath + resultFormat + ".wav -hmm " + appDataPath + hmmPath + " -dict " + appDataPath + dictPath + " -logfn " + Config_CoinTask.audioPath + "ok.log" + " -time yes -kws_threshold 1e-" + thres + " -keyphrase " + actualName + " > " + Experiment_CoinTask.Instance.sessionDirectory + "audio\\" + resultFormat + ".txt";
+        proc.StartInfo.Arguments = appDataPath + @"bin/Release/Win32/pocketsphinx_continuous.exe -infile " + Config_CoinTask.audioPath + resultFormat + ".wav -hmm " + appDataPath + hmmPath + " -dict " + appDataPath + dictPath + " -logfn " + Config_CoinTask.audioPath + "ok.log" + " -time yes -kws_threshold 1e-" + thres + " -keyphrase " + actualName + " > " + Experiment_CoinTask.Instance.sessionDirectory + "audio\\" + resultFormat + ".txt";
 #else
         
         proc.StartInfo.WorkingDirectory = appDataPath;
