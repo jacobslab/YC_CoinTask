@@ -202,7 +202,12 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public Text BuildType;
 	void InitMainMenuLabels(){
 		if (Application.loadedLevel == 0) {
-			ExpNameVersion.text = Config_CoinTask.BuildVersion.ToString () + "/" + Config_CoinTask.VersionNumber;
+			if(!Config_CoinTask.isTHR_Rec && !Config_CoinTask.isTHR_Stim)
+				ExpNameVersion.text = Config_CoinTask.BuildVersion.ToString () + "/" + Config_CoinTask.VersionNumber;
+			else if(Config_CoinTask.isTHR_Rec)
+				ExpNameVersion.text = "THR_RECORD" + "/" + Config_CoinTask.VersionNumber;
+			else
+				ExpNameVersion.text = "THR_CLOSEDLOOP" + "/" + Config_CoinTask.VersionNumber;
 		#if SYS3COMBO
 			if (Config_CoinTask.isSyncbox && !Config_CoinTask.isSYS3) {
 		#else
