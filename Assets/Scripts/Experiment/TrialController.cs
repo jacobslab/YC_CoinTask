@@ -148,11 +148,11 @@ public class TrialController : MonoBehaviour {
 			int halfChance = Random.Range (0, 2);
 			Trial t2, t3;
 			if (halfChance == 0) {
-				t2 = new Trial (2, 1, false);
-				t3 = new Trial (3, 1, false);
+				t2 = new Trial (3, 1, false);
+				t3 = new Trial (4, 1, false);
 			} else {
-				t2 = new Trial (2, 2, false);
-				t3 = new Trial (3, 2, false);
+				t2 = new Trial (3, 1, false);
+				t3 = new Trial (4, 1, false);
 			}
 			currBlock.Add (t2);
 			currBlock.Add (t3);
@@ -172,11 +172,11 @@ public class TrialController : MonoBehaviour {
 			int halfChance = Random.Range (0, 2);
 			Trial t2, t3;
 			if (halfChance == 0) {
-				t2 = new Trial (2, 1, false);
-				t3 = new Trial (3, 1, false);
+				t2 = new Trial (3, 1, false);
+				t3 = new Trial (4, 1, false);
 			} else {
-				t2 = new Trial (2, 2, false);
-				t3 = new Trial (3, 2, false);
+				t2 = new Trial (3, 1, false);
+				t3 = new Trial (4, 1, false);
 			}
 			twoItemOrigTrials.Add (t2);
 			threeItemOrigTrials.Add (t3);
@@ -934,6 +934,15 @@ public class TrialController : MonoBehaviour {
 				break;
 			case 2:
 				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, true);
+				break;
+			case 3:
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_4, true);
+				break;
+			case 4:
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_5, true);
+				break;
+			case 5:
+				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_6, true);
 				break;
 			}
 

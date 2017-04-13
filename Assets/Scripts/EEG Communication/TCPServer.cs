@@ -200,7 +200,7 @@ public class ThreadedServer : ThreadedJob{
 
 			SendMessages();
 
-			UnityEngine.Debug.Log("MAIN LOOP EXECUTED");
+//			UnityEngine.Debug.Log("MAIN LOOP EXECUTED");
 
 
 		}
