@@ -19,13 +19,13 @@ public class Config_CoinTask : MonoBehaviour {
 #if MRIVERSION
 	public static Version BuildVersion = Version.MRI;
 #else
-	public static Version BuildVersion = Version.TH3;
+	public static Version BuildVersion = Version.TH1;
 #endif
 
 	public static string VersionNumber = "2.044";
 
-	public static bool isTHR_Rec=false;
-	public static bool isTHR_Stim=true;
+	public static bool isTHR_Rec=true;
+	public static bool isTHR_Stim=false;
 
 
 #if MRIVERSION
@@ -118,9 +118,9 @@ public class Config_CoinTask : MonoBehaviour {
 	public static int bronzeThreshold=3; //must give 3 consecutive correct within a single trial
 	public static int silverThreshold=3; // must have 80% or more recall rate for 3 trials
 	public static int goldThreshold=3; // must have 100% recall rate for 3 trials
-	public static float trophyDisplayTime=2f;
-	public static float trophyTransformTime=2f;
-	public static float trophyRedeemTime=2f;
+	public static float trophyDisplayTime=2f; //time trophy is initially displayed on-screen when won
+	public static float trophyTransformTime=2f; //time trophy takes to transform from center to top-right corner
+	public static float trophyRedeemTime=2f; //time trophy takes to be redeemed by moving from top-right to block score transform
 	
 #if MRIVERSION
 	public static int numTestTrials = 8; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
