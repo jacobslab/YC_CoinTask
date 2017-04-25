@@ -89,7 +89,7 @@ public class zmqtest : MonoBehaviour {
 				if (canSend) {
 					string send_message = "hi it's : " + index.ToString ();
 					PrintSomething("sending: " + send_message);
-//					ZMQSend (send_message);
+					ZMQSend (send_message);
 					canSend = false;
 				}
 			}
