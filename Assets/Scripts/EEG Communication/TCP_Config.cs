@@ -160,6 +160,7 @@ public class TCP_Config : MonoBehaviour
         VERSION,
         INFO,
         CONTROL,
+		READY,
         MESSAGE,
         DEFINE,
         SESSION,

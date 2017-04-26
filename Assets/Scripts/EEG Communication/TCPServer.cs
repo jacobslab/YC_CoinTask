@@ -673,6 +673,7 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 using System.Threading;
 using NetMQ;
@@ -687,11 +688,12 @@ public class TCPServer : MonoBehaviour
     ThreadedServer myServer;
     public bool isConnected { get { return GetIsConnected(); } }
     public bool canStartGame { get { return GetCanStartGame(); } }
-
+	public bool isPaired { get { return GetIsPaired (); } }
     SubscriberSocket myList;
 
 
     //int QUEUE_SIZE = 20;  //Blocks if the queue is full
+
 
 
     //SINGLETON
@@ -748,11 +750,6 @@ public class TCPServer : MonoBehaviour
 
     void RunServer()
     {
-        myList = new SubscriberSocket();
-        myList.Options.Linger = System.TimeSpan.Zero;
-        myList.Subscribe("");
-        myList.Connect("tcp://localhost:8889");
-
         myServer = new ThreadedServer();
         myServer.Start();
     }
@@ -762,7 +759,7 @@ public class TCPServer : MonoBehaviour
     {
         if (myServer != null)
         {
-            if (isConnected && !startedAlignClocks)
+			if (isConnected && isPaired && !startedAlignClocks)
             {
                 startedAlignClocks = true;
                 StartCoroutine(AlignClocks());
@@ -813,7 +810,7 @@ public class TCPServer : MonoBehaviour
         {
             if (myServer.isServerConnected)
             {
-                myServer.SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.TRIAL, null, trialNum);
+				myServer.SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.TRIAL, null, trialNum.ToString());
             }
         }
     }
@@ -827,6 +824,10 @@ public class TCPServer : MonoBehaviour
     {
         return myServer.canStartGame;
     }
+	bool GetIsPaired()
+	{
+		return myServer.isPaired;
+	}
 
     void OnApplicationQuit()
     {
@@ -855,6 +856,7 @@ public class ThreadedServer : ThreadedJob
     public bool isServerConnected = false;
     public bool isSynced = false;
     public bool canStartGame = false;
+	public bool isPaired=false;
     Stopwatch clockAlignmentStopwatch;
     //int numClockAlignmentTries = 0;
     //const int timeBetweenClockAlignmentTriesMS = 500;//500; //half a second
@@ -866,12 +868,24 @@ public class ThreadedServer : ThreadedJob
     string clientAppend = ">tcp://";
 
 
+	//ZMQPlugin imports
+	[DllImport ("ZMQPlugin")]
+	private static extern int ZMQConnect(string hostAddress);
+
+
+	[DllImport ("ZMQPlugin")]
+	private static extern IntPtr ZMQReceive();
+
+
+	[DllImport ("ZMQPlugin")]
+	private static extern void ZMQSend(string message,int length);
+
+
+	[DllImport ("ZMQPlugin")]
+	private static extern void ZMQClose();
 
     public string messagesToSend = "";
     string incompleteMessage = "";
-
-    PublisherSocket myPub;
-    SubscriberSocket mySub;
 
     int socketTimeoutMS = 500; // 500 milliseconds will be the time period within which socket messages will be exchanged
 
@@ -884,16 +898,49 @@ public class ThreadedServer : ThreadedJob
     {
         isRunning = true;
         // Do your threaded task. DON'T use the Unity API here
-        while (isRunning)
-        {
-            if (!isServerConnected)
-            {
-                InitControlPC();
-            }
-            TalkToClient();
-        }
+		while (isRunning) {
+			if (!isServerConnected) {
+				InitControlPC ();
+			}
+			//check for messages
+			string message = ReceiveMessageBuffer ();
+
+			ProcessJSONMessageBuffer (message);
+
+			//send messages
+			if (messagesToSend != "") {
+				string messagesToSendCopy = messagesToSend;
+				int length = messagesToSendCopy.ToCharArray ().Length;
+				PrintDebug("length: " +length);
+				string ok = "nice";
+				ZMQSend(messagesToSendCopy,length);
+				if (messagesToSend == messagesToSendCopy) {
+					messagesToSend = "";
+				} else {
+					messagesToSend = messagesToSend.Substring (messagesToSendCopy.Length);
+				}
+			}
+		}
         CleanupConnections();
-    }
+	}
+
+	void PrintDebug(string message)
+	{
+		UnityEngine.Debug.Log (message);
+	}
+
+	void InitControlPC()
+	{
+//		string address = "tcp://localhost:8889";
+		string address = "tcp://" + TCP_Config.HostIPAddress + ":" + TCP_Config.ConnectionPort;
+		int connectionStatus = ZMQConnect (address);
+		if (connectionStatus == 0)
+			PrintDebug("CONNECTED!");
+		else
+			PrintDebug("CANNOT CONNECT");
+
+		isServerConnected = true;
+	}
 
     void TalkToClient()
     {
@@ -911,11 +958,9 @@ public class ThreadedServer : ThreadedJob
             //SEND HEARTBEAT
             //			SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds,TCP_Config.EventType.MESSAGE,"CONNECTED");
 
-            SendHeartbeatPolled();
+//            SendHeartbeatPolled();
 
-            CheckForMessages();
-
-            SendMessages();
+      
 
             //UnityEngine.Debug.Log("MAIN LOOP EXECUTED");
 
@@ -927,14 +972,6 @@ public class ThreadedServer : ThreadedJob
         }
     }
 
-    void InitControlPC()
-    {
-
-        //connect
-        OpenConnections();
-
-        isServerConnected = true;
-    }
 
     public void SendInitMessages()
     {
@@ -948,11 +985,11 @@ public class ThreadedServer : ThreadedJob
         SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.VERSION, null, Config_CoinTask.VersionNumber);
 
         //send exp session
-        SendSessionEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SESSION, Experiment_CoinTask.sessionID, TCP_Config.sessionType);
+		SendSessionEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SESSION, TCP_Config.ExpName,Config_CoinTask.VersionNumber,TCP_Config.SubjectName,Experiment_CoinTask.sessionID);
         SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.VERSION, null, Config_CoinTask.VersionNumber);
 
         //send subject ID
-        SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SUBJECTID, null, TCP_Config.SubjectName);
+		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SUBJECTID, null, TCP_Config.SubjectName);
 
         //NO LONGER REQUEST ALIGNMENT HERE. START IENUMERATOR WHEN TASK IS ACTUALLY STARTING
         //align clocks //SHOULD THIS BE FINISHED BEFORE WE START SENDING HEARTBEATS? -- NO
@@ -961,58 +998,19 @@ public class ThreadedServer : ThreadedJob
         //start heartbeat
         StartHeartbeatPoll();
 
+		//send READY message
+		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.READY, null, null);
+
 
         //wait for "STARTED" message to be received
     }
 
-    void OpenConnections()
-    {
-        IPAddress ipAd = IPAddress.Parse(TCP_Config.HostIPAddress);
-
-        // use local m/c IP address, and 
-        // use the same in the client
-
-        myPub = new PublisherSocket();
-        myPub.Bind("tcp://" + TCP_Config.HostIPAddress + ":" + 8888);
-
-        /* Initializes the subscriber */
-
-        mySub = new SubscriberSocket();
-        mySub.Options.Linger = System.TimeSpan.Zero;
-        mySub.Subscribe("");
-        mySub.Connect("tcp://" + TCP_Config.HostIPAddress + ":" + TCP_Config.ConnectionPort);
-        //		myList = new RequestSocket(clientAppend+TCP_Config.HostIPAddress+":"+TCP_Config.ConnectionPort);
-
-        /* Start Listening at the specified port */
-        //	myList.Start();
-
-        UnityEngine.Debug.Log("The server is running on " + TCP_Config.HostIPAddress + " at port " + TCP_Config.ConnectionPort + "...");
-        //		UnityEngine.Debug.Log("The local End point is  :" + myList.LocalEndpoint );
-        UnityEngine.Debug.Log("Waiting for a connection.....");
-
-        //		s = myList.AcceptSocket();
-
-        //uncheck if you want a NON-BLOCKING SOCKET
-        //        s.Blocking = false;
-        isServerConnected = true;
-
-        //THIS IS VERY IMPORTANT.
-        //WITHOUT THIS, SOCKET WILL HANG ON THINGS LIKE RECEIVING MESSAGES IF THERE ARE NO NEW MESSAGES.
-        //...because socket.Receive() is a blocking call.
-        //s.ReceiveTimeout = socketTimeoutMS;
-
-        //		UnityEngine.Debug.Log("CONNECTED!");
-    }
 
     void CleanupConnections()
     {
         /* clean up */
-        myPub.Close();
-        myPub.Dispose();
-        mySub.Close();
-        mySub.Dispose();
-        //		s.Close();
-        //		myList.Stop();
+        
+		ZMQClose ();
         isServerConnected = false;
     }
 
@@ -1100,19 +1098,7 @@ public class ThreadedServer : ThreadedJob
     //should use other methods (EchoMessage, SendEvent, etc.) to add messages to "messagesToSend"
     void SendMessage(string message)
     {
-        try
-        {
-            ASCIIEncoding asen = new ASCIIEncoding();
-            var msg = new NetMQMessage();
-            msg.Append(asen.GetBytes(message));
-            myPub.SendMultipartMessage(msg);
-            //			s.Send(asen.GetBytes(message));
-            //			UnityEngine.Debug.Log("\nSent Message: " + message);
-        }
-        catch (Exception e)
-        {
-            UnityEngine.Debug.Log("Send Message Error....." + e.StackTrace);
-        }
+//			ZMQSend(message);
     }
 
     void EchoMessage(string message)
@@ -1145,10 +1131,10 @@ public class ThreadedServer : ThreadedJob
         return jsonEventString;
     }
 
-    public string SendSessionEvent(long systemTime, TCP_Config.EventType eventType, int sessionNum, TCP_Config.SessionType sessionType)
+	public string SendSessionEvent(long systemTime, TCP_Config.EventType eventType, string experimentName, string expVersion, string subjectID, int sessionNum)
     {
 
-        string jsonEventString = JsonMessageController.FormatJSONSessionEvent(systemTime, sessionNum, sessionType.ToString());
+		string jsonEventString = JsonMessageController.FormatJSONSessionEvent(systemTime,experimentName, expVersion, subjectID, sessionNum);
 
         UnityEngine.Debug.Log(jsonEventString);
 
@@ -1188,26 +1174,16 @@ public class ThreadedServer : ThreadedJob
         ProcessJSONMessageBuffer(message);
     }
 
-    String ReceiveMessageBuffer()
+    string ReceiveMessageBuffer()
     {
-        String messageBuffer = "";
+        string messageBuffer = "";
         string message = "";
-        string rcvd;
-        SocketError error = SocketError.VersionNotSupported;
-        try
-        {
-            //			UnityEngine.Debug.Log("trying to receive message");
-            while (mySub.TryReceiveFrameString(out rcvd))
-            {
-                message = rcvd;
-                UnityEngine.Debug.Log(rcvd);
-            }
-        }
-        catch (Exception e)
-        {
-            UnityEngine.Debug.Log("Receive Message Error....." + e.StackTrace);
-        }
-
+		string receivedMessage = Marshal.PtrToStringAnsi(ZMQReceive());
+		if(receivedMessage!="none")
+			{
+//				PrintDebug("received: " + receivedMessage);
+			message = receivedMessage;
+			}
         messageBuffer = message;
 
         return messageBuffer;
@@ -1292,13 +1268,12 @@ public class ThreadedServer : ThreadedJob
                 //do nothing
                 break;
 
-
-            case "CONNECTED":
-                //			dataContent = (string)messageData["data"];
-                //			if(dataContent == "CONNECTED"){ //changed it from "STARTED" to "CONNECTED" for SYS3
-                //				canStartGame = true;
-                //			}
-                canStartGame = true;
+			case "START":
+				canStartGame = true;
+				break;
+            
+			case "CONNECTED":
+				isPaired = true;
                 break;
 
             case "SESSION":

@@ -7,7 +7,7 @@ using System.Diagnostics;
 public class zmqtest : MonoBehaviour {
 
 	[DllImport ("ZMQPlugin")]
-	private static extern void ZMQConnect();
+	private static extern int ZMQConnect(string hostAddress);
 
 
 	[DllImport ("ZMQPlugin")]
@@ -15,7 +15,7 @@ public class zmqtest : MonoBehaviour {
 
 
 	[DllImport ("ZMQPlugin")]
-	private static extern void ZMQSend(string message);
+	private static extern void ZMQSend(string message,int length);
 
 
 	[DllImport ("ZMQPlugin")]
@@ -79,17 +79,21 @@ public class zmqtest : MonoBehaviour {
 		protected override void ThreadFunction()
 		{
 			isRunning = true;
-			ZMQConnect();
+			int connectionStatus=ZMQConnect("tcp://localhost:5555");
+			PrintSomething ("connection status " + connectionStatus); 
 			// Do your threaded task. DON'T use the Unity API here
 			while (isRunning) {
-				string message = Marshal.PtrToStringAuto(ZMQReceive());
+				string message = Marshal.PtrToStringAnsi(ZMQReceive());
 //				char msg=zmqreceive();
-				if(message!="none")
-					PrintSomething ("received: " + message.ToString());
+//				PrintSomething(message);
+				if (message != "none") {
+					PrintSomething ("received: " + message.ToString ());
+					PrintSomething ("length: " + message.ToCharArray ().Length.ToString ());
+				}
 				if (canSend) {
 					string send_message = "hi it's : " + index.ToString ();
 					PrintSomething("sending: " + send_message);
-					ZMQSend (send_message);
+					ZMQSend (send_message,128);
 					canSend = false;
 				}
 			}

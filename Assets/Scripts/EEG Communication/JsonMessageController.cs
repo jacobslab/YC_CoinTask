@@ -424,7 +424,7 @@ public class JsonMessageController : MonoBehaviour
         return jsonEventString;
     }
 
-    public static string FormatJSONSessionEvent(long time, int sessionNum, string sessionType)
+    public static string FormatJSONSessionEvent(long time, string expName, string expVersion, string subjectID, int sessionNum)
     {
         StringBuilder sb = new StringBuilder();
         JsonWriter writer = new JsonWriter(sb);
@@ -435,11 +435,18 @@ public class JsonMessageController : MonoBehaviour
         //data object content
         writer.WriteObjectStart();
 
+		writer.WritePropertyName("name");
+		writer.Write(expName);
+
+		writer.WritePropertyName("version");
+		writer.Write(expVersion);
+
+		writer.WritePropertyName("subject");
+		writer.Write(subjectID);
+
         writer.WritePropertyName("session_number");
         writer.Write(sessionNum);
 
-        writer.WritePropertyName("session_type");
-        writer.Write(sessionType);
 
         writer.WriteObjectEnd();
 

@@ -614,7 +614,7 @@ public class TrialController : MonoBehaviour {
 			}
 			exp.uiController.ConnectionText.text = "Connecting to CONTROL PC...";
 			while (!TCPServer.Instance.canStartGame) {
-				Debug.Log ("Waiting for system 2 start command...");
+//				Debug.Log ("Waiting for system 2 start command...");
 				yield return 0;
 			}
 			exp.uiController.ConnectionText.text = "Connecting...";

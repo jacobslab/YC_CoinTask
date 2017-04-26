@@ -22,9 +22,9 @@ public class Config_CoinTask : MonoBehaviour {
 	public static Version BuildVersion = Version.TH1;
 #endif
 
-	public static string VersionNumber = "2.044";
+	public static string VersionNumber = "2.055";
 
-	public static bool isTHR_Rec=true;
+	public static bool isTHR_Rec = true;
 	public static bool isTHR_Stim=false;
 
 
