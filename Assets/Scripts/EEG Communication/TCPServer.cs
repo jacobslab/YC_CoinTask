@@ -902,6 +902,9 @@ public class ThreadedServer : ThreadedJob
 			if (!isServerConnected) {
 				InitControlPC ();
 			}
+
+			//send heartbeat 
+			SendHeartbeatPolled();
 			//check for messages
 			string message = ReceiveMessageBuffer ();
 
@@ -912,7 +915,6 @@ public class ThreadedServer : ThreadedJob
 				string messagesToSendCopy = messagesToSend;
 				int length = messagesToSendCopy.ToCharArray ().Length;
 				PrintDebug("length: " +length);
-				string ok = "nice";
 				ZMQSend(messagesToSendCopy,length);
 				if (messagesToSend == messagesToSendCopy) {
 					messagesToSend = "";
@@ -932,7 +934,7 @@ public class ThreadedServer : ThreadedJob
 	void InitControlPC()
 	{
 //		string address = "tcp://localhost:8889";
-		string address = "tcp://" + TCP_Config.HostIPAddress + ":" + TCP_Config.ConnectionPort;
+		string address = "tcp://*:" + TCP_Config.ConnectionPort;
 		int connectionStatus = ZMQConnect (address);
 		if (connectionStatus == 0)
 			PrintDebug("CONNECTED!");
