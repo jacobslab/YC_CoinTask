@@ -124,9 +124,9 @@ public class TrialController : MonoBehaviour {
 			}
 
 			//generate all trials, two & three object, including counter-balanced trials
-			List<Trial> ListOfTwoItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numTwoItemTrials, 2, false, false);
+		//	List<Trial> ListOfTwoItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numTwoItemTrials, 2, false, false);
 			List<Trial> ListOfThreeItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numThreeItemTrials, 3, false, false);
-//			List<Trial> ListOfFourItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numFourItemTrials, 4, false, false);
+			List<Trial> ListOfFourItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numFourItemTrials, 4, false, false);
 //			List<Trial> ListOfFiveItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numFiveItemTrials, 5, false, false);
 //			List<Trial> ListOfSixItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numSixItemTrials, 6, false, false);
 
@@ -134,7 +134,7 @@ public class TrialController : MonoBehaviour {
 			//generate blocks from trials
 			int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
 			UnityEngine.Debug.Log ("total number of BLOCKS are: " + numTrialBlocks);
-			GenerateTrialBlocks (ListOfTwoItemTrials,ListOfThreeItemTrials,numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
+			GenerateTrialBlocks (ListOfThreeItemTrials, ListOfFourItemTrials,numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
 		}
 	}
 
@@ -325,7 +325,7 @@ public class TrialController : MonoBehaviour {
 	List<Trial> GenerateTrialsWithCounterTrials(int numTrialsToGenerate, int numSpecial, bool shouldStim, bool shouldStimCounter){
 		List<Trial> trialList = new List<Trial>();
 		int halfChance = Random.Range (0, 2);
-		for(int i = 0; i < numTrialsToGenerate / 2; i++){ //we're adding trial and a counter trial
+		for(int i = 0; i < numTrialsToGenerate/2; i++){ //we're adding trial and a counter trial
 			
 //			Trial trial;
 //			if (halfChance == 0) {
@@ -337,24 +337,30 @@ public class TrialController : MonoBehaviour {
 //			}
 			Trial trial = new Trial(numSpecial,1, shouldStim);
 			Trial counterTrial = trial.GetCounterSelf(shouldStimCounter);
-			Trial anotherTrial = new Trial(numSpecial,1, shouldStim);
 			trialList.Add(trial);
 			trialList.Add(counterTrial);
-			trialList.Add (anotherTrial);
 		}
-//		Trial oneFoilTrial=new Trial(numSpecial,1,shouldStim);
-//		Trial twoFoilTrial = new Trial (numSpecial, 2, shouldStimCounter);
-//
-//		trialList.Add (oneFoilTrial);
-//		trialList.Add (twoFoilTrial);
+        if (numTrialsToGenerate % 2 == 0)
+        {
+            Trial anotherTrial = new Trial(numSpecial, 1, shouldStim);
+            trialList.Add(anotherTrial);
+        }
+        else
+        {
 
-		return trialList;
+            Trial anotherTrial = new Trial(numSpecial, 1, shouldStim);
+            Trial counterTrial = anotherTrial.GetCounterSelf(shouldStimCounter);
+            trialList.Add(counterTrial);
+        }
+        UnityEngine.Debug.Log("trials in this list: " + trialList.Count);
+        
+        return trialList;
 	}
 
 	void GenerateTrialBlocks(List<Trial> twoItemTrials, List<Trial> threeItemTrials,int numBlocks, int numTrialsPerBlock){
 		for(int i = 0; i < numBlocks; i++){
 			List<Trial> newBlock = new List<Trial>();
-			for(int j = 0; j < 2; j++){ //half two item, half one item
+			for(int j = 0; j <=2; j++){ //half two item, half one item
 				int randomTwoItemIndex = Random.Range (0, twoItemTrials.Count);
 				Debug.Log ("random two " + twoItemTrials.Count);
 				int randomThreeItemIndex = Random.Range (0, threeItemTrials.Count);
@@ -371,9 +377,22 @@ public class TrialController : MonoBehaviour {
 //				fiveItemTrials.RemoveAt(randomFiveItemIndex);
 //				sixItemTrials.RemoveAt(randomSixItemIndex);
 			}
-			ListOfTrialBlocks.Add(newBlock);
+            if(i%2==0)
+            {
+                int randomIndex = Random.Range(0, twoItemTrials.Count);
+                newBlock.Add(twoItemTrials[randomIndex]);
+                twoItemTrials.RemoveAt(randomIndex);
+            }
+            else
+            {
+                int randomIndex = Random.Range(0, threeItemTrials.Count);
+                newBlock.Add(threeItemTrials[randomIndex]);
+                threeItemTrials.RemoveAt(randomIndex);
+            }
+            ListOfTrialBlocks.Add(newBlock);
 		}
 	}
+
 
 	Trial PickRandomTrial(List<Trial> trialBlock){
 		if (trialBlock.Count > 0) {
@@ -563,6 +582,7 @@ public class TrialController : MonoBehaviour {
 		int totalTrials=0;
 		for (int i = 0; i < ListOfTrialBlocks.Count; i++) {
 			List<Trial> currentTrialBlock = ListOfTrialBlocks[i];
+            UnityEngine.Debug.Log("trials in current block: " + currentTrialBlock.Count);
 			totalTrials += currentTrialBlock.Count;
 		}
 		UnityEngine.Debug.Log ("TOTAL TRIALS: " + totalTrials);

@@ -33,10 +33,13 @@ public class ObjectController_NYSPI : MonoBehaviour {
 
 	//to keep track of last default object so that helper arrows don't point to foil objects
 	private GameObject previousDefaultObj;
+    private int totalSetObjects=49;
 
 	// Use this for initialization
 	void Start () {
-		gameObjectList_Spawnable_SetA = new List<GameObject> ();
+        //set object total per set
+        totalSetObjects = Config_CoinTask.totalObjectsPerSet;
+        gameObjectList_Spawnable_SetA = new List<GameObject> ();
 		gameObjectList_Spawnable_SetB = new List<GameObject> ();
 		gameObjectList_Spawnable_SetC = new List<GameObject> ();
 		tempList=new List<GameObject>();
@@ -45,9 +48,10 @@ public class ObjectController_NYSPI : MonoBehaviour {
 			CreateSpecialObjectList ();
 //		else
 		ReadObjectLists ();
-		setAList = new string[50];
-		setBList = new string[50];
-		setCList = new string[50];
+        
+		setAList = new string[totalSetObjects];
+		setBList = new string[totalSetObjects];
+		setCList = new string[totalSetObjects];
 	}
 
 	public void CreateFoilObjects()
@@ -76,7 +80,7 @@ public class ObjectController_NYSPI : MonoBehaviour {
 			tempList.Add((GameObject)prefabs[i]);
 
 
-		string[] listObj = new string[50];
+		string[] listObj = new string[totalSetObjects];
 		switch (Config_CoinTask.currentSetNumber) {
 		case Config_CoinTask.SetNumber.A:
 			listObj=System.IO.File.ReadAllLines (exp.subjectDirectory + "SetA\\SetAList.txt");
@@ -101,7 +105,7 @@ public class ObjectController_NYSPI : MonoBehaviour {
 
 				if ((tempList[j].gameObject.name.ToLower()== listObj [i].ToLower()) && (tempList[j].gameObject.name.Length == listObj[i].Length)) {
                     index++;
-                    Debug.Log(index + ":" + listObj[i]);
+              //      Debug.Log(index + ":" + listObj[i]);
 					tempObjList.Add ((GameObject)tempList [j]);
 				}
 			}
@@ -112,11 +116,11 @@ public class ObjectController_NYSPI : MonoBehaviour {
 
 		//randomly select gameobjects from tempObjList and add to spawnList
 		string contents="";
-		for (int j = 0; j <50; j++) {
+		for (int j = 0; j <totalSetObjects; j++) {
 			
-			GameObject tempObj = (GameObject) tempObjList[49-j];
+			GameObject tempObj = (GameObject) tempObjList[(totalSetObjects-1)- j];
 			spawnList.Add (tempObj);
-			Debug.Log (tempObj.name);
+		//	Debug.Log (tempObj.name);
 			contents += tempObj.name + "\n";
 			tempObjList.Remove (tempObj);
 		}
@@ -160,7 +164,7 @@ public class ObjectController_NYSPI : MonoBehaviour {
 
 		for(int i=0;i<prefabs.Length;i++)
 			tempList.Add((GameObject)prefabs[i]);
-		while(gameObjectList_Spawnable_SetA.Count < 50)
+		while(gameObjectList_Spawnable_SetA.Count < totalSetObjects)
 		{
 			GameObject tempObj = (GameObject) tempList[Random.Range(0,tempList.Count)];
 			if(!gameObjectList_Spawnable_SetA.Contains(tempObj))
@@ -175,8 +179,8 @@ public class ObjectController_NYSPI : MonoBehaviour {
 				tempList.Remove(tempObj);
 			}
 		}
-		while (gameObjectList_Spawnable_SetB.Count < 50) {
-			for (int j = 0; j < 50; j++) {
+		while (gameObjectList_Spawnable_SetB.Count < totalSetObjects) {
+			for (int j = 0; j < totalSetObjects; j++) {
 				GameObject tempObj = (GameObject)tempList [Random.Range(0,tempList.Count)];
 				gameObjectList_Spawnable_SetB.Add (tempObj);
 				string tempString = tempObj.ToString ();
@@ -281,8 +285,8 @@ public class ObjectController_NYSPI : MonoBehaviour {
 			}
 
 
-			int randomObjectIndex = Random.Range (0, gameObjectList_Spawnable_SetA.Count);
-			chosenObject = gameObjectList_Spawnable_SetA [randomObjectIndex];
+			int randomObjectIndex =0; //setting to 0 because we want the randomization to be the same as the one printed in actualListOrder.txt
+            chosenObject = gameObjectList_Spawnable_SetA [randomObjectIndex];
 			gameObjectList_Spawnable_SetA.RemoveAt (randomObjectIndex);
 		} else if (Config_CoinTask.currentSetNumber == Config_CoinTask.SetNumber.B) {
 			if (gameObjectList_Spawnable_SetB.Count == 0) {
@@ -295,7 +299,8 @@ public class ObjectController_NYSPI : MonoBehaviour {
 			}
 
 
-			int randomObjectIndex = Random.Range (0, gameObjectList_Spawnable_SetB.Count);
+            int randomObjectIndex = 0; //setting to 0 because we want the randomization to be the same as the one printed in actualListOrder.txt
+			//int randomObjectIndex = Random.Range (0, gameObjectList_Spawnable_SetB.Count);
 			chosenObject = gameObjectList_Spawnable_SetB [randomObjectIndex];
 			gameObjectList_Spawnable_SetB.RemoveAt (randomObjectIndex);
 		} else if (Config_CoinTask.currentSetNumber == Config_CoinTask.SetNumber.C) {
@@ -308,8 +313,8 @@ public class ObjectController_NYSPI : MonoBehaviour {
 				}
 			}
 
-
-			int randomObjectIndex = Random.Range (0, gameObjectList_Spawnable_SetC.Count);
+            int randomObjectIndex = 0;//setting to 0 because we want the randomization to be the same as the one printed in actualListOrder.txt
+			//int randomObjectIndex = Random.Range (0, gameObjectList_Spawnable_SetC.Count);
 			chosenObject = gameObjectList_Spawnable_SetC [randomObjectIndex];
 			gameObjectList_Spawnable_SetC.RemoveAt (randomObjectIndex);
 		} else {
