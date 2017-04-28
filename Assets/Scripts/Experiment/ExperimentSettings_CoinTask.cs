@@ -70,9 +70,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 
 	public static string defaultLoggingPath = ""; //SET IN RESETDEFAULTLOGGINGPATH();
-	string TH1Folder = "TH1/";
+	string TH1Folder = "THR1/";
 	string TH2Folder = "TH2/";
-	string TH3Folder = "TH3/";
+	string TH3Folder = "THR3/";
 	string MRIFolder = "MRI/";
 	string MRIPracticeFolder = "MRIPractice/";
 	public Text defaultLoggingPathDisplay;
@@ -166,7 +166,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			Directory.CreateDirectory(Path.GetDirectoryName(defaultLoggingPath));
 		}
 
-		if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH1) {
+		if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.THR1) {
 			//if(Config_CoinTask.isSyncbox || Config_CoinTask.isSystem2){ //only add the folder if it's not the demo version.
 				defaultLoggingPath += TH1Folder;
 			Debug.Log ("assigned it ");
@@ -175,7 +175,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH2) {
 			defaultLoggingPath += TH2Folder;
 		}
-		else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH3) {
+		else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.THR3) {
 			defaultLoggingPath += TH3Folder;
 		}
 		else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.MRI){
@@ -202,9 +202,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public Text BuildType;
 	void InitMainMenuLabels(){
 		if (Application.loadedLevel == 0) {
-			if(!Config_CoinTask.isTHR_Rec && !Config_CoinTask.isTHR_Stim)
+			if(Config_CoinTask.BuildVersion!=Config_CoinTask.Version.THR1 && Config_CoinTask.BuildVersion!=Config_CoinTask.Version.THR3)
 				ExpNameVersion.text = Config_CoinTask.BuildVersion.ToString () + "/" + Config_CoinTask.VersionNumber;
-			else if(Config_CoinTask.isTHR_Rec)
+			else if(Config_CoinTask.BuildVersion==Config_CoinTask.Version.THR1)
 				ExpNameVersion.text = "THR_RECORD" + "/" + Config_CoinTask.VersionNumber;
 			else
 				ExpNameVersion.text = "THR_CLOSEDLOOP" + "/" + Config_CoinTask.VersionNumber;

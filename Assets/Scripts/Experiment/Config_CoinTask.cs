@@ -9,9 +9,9 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public enum Version
 	{
-		TH1,
+		THR1,
 		TH2,
-		TH3,
+		THR3,
 		THR_RECORD,
 		THR_STIM,
 		MRI
@@ -19,13 +19,13 @@ public class Config_CoinTask : MonoBehaviour {
 #if MRIVERSION
 	public static Version BuildVersion = Version.MRI;
 #else
-	public static Version BuildVersion = Version.TH1;
+	public static Version BuildVersion = Version.THR1;
 #endif
 
 	public static string VersionNumber = "2.055";
 
-	public static bool isTHR_Rec = true;
-	public static bool isTHR_Stim=false;
+	public static bool isTHR_Rec = false;
+	public static bool isTHR_Stim=true;
 
 
 #if MRIVERSION

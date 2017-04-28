@@ -140,7 +140,7 @@ public class TCP_Config : MonoBehaviour
 {
 
     public static float numSecondsBeforeAlignment = 10.0f;
-    //	public static string HostIPAddress="128.59.87.71";
+//	public static string HostIPAddress="128.59.87.134";
     public static string HostIPAddress = "192.168.137.200"; //"169.254.50.2" for Mac Pro Desktop.
     public static int ConnectionPort = 8889; // SWITCH to 8888 port for non-SYS3 communication
     private SubscriberSocket subscriber;
@@ -204,11 +204,11 @@ public class TCP_Config : MonoBehaviour
     {
         switch (Config_CoinTask.BuildVersion)
         {
-            case Config_CoinTask.Version.TH1:
+            case Config_CoinTask.Version.THR1:
                 return SessionType.NO_STIM;
             case Config_CoinTask.Version.TH2:
                 return SessionType.CLOSED_STIM;//could change back to openstim... just use closedstim for now
-            case Config_CoinTask.Version.TH3:
+            case Config_CoinTask.Version.THR3:
                 return SessionType.CLOSED_STIM;
             case Config_CoinTask.Version.MRI:
                 return SessionType.NO_STIM;
