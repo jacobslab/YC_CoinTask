@@ -134,13 +134,13 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			#else
 
 		if (Config_CoinTask.isSystem2) {
-			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/data/THR/";
+			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/data/";
 		}else if (Config_CoinTask.isSYS3) {
-			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_3.0/data/THR/";
+			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_3.1/data/";
 		} else if (Config_CoinTask.isSyncbox && !Config_CoinTask.isSYS3) {
-				defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM/data/THR/";
+				defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM/data/";
 			} else {
-			defaultLoggingPath = System.IO.Directory.GetCurrentDirectory() + "/TextFiles/THR/";
+			defaultLoggingPath = System.IO.Directory.GetCurrentDirectory() + "/TextFiles/";
 
 			Debug.Log("current dir: " + System.IO.Directory.GetCurrentDirectory());
 			}

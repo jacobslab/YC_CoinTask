@@ -24,9 +24,6 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public static string VersionNumber = "2.055";
 
-	public static bool isTHR_Rec = false;
-	public static bool isTHR_Stim=true;
-
 
 #if MRIVERSION
 	public static bool isSyncbox = false;

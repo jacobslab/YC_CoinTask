@@ -65,11 +65,11 @@ public class TCP_Config : MonoBehaviour {
 	
 	public static SessionType GetSessionType(){
 		switch (Config_CoinTask.BuildVersion) {
-		case Config_CoinTask.Version.TH1:
+		case Config_CoinTask.Version.THR1:
 			return SessionType.NO_STIM;
 		case Config_CoinTask.Version.TH2:
 			return SessionType.CLOSED_STIM ;//could change back to openstim... just use closedstim for now
-		case Config_CoinTask.Version.TH3:
+		case Config_CoinTask.Version.THR3:
 			return SessionType.CLOSED_STIM;
 		case Config_CoinTask.Version.THR_RECORD:
 			return SessionType.NO_STIM;

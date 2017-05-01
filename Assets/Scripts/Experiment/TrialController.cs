@@ -455,7 +455,7 @@ public class TrialController : MonoBehaviour {
 		if (!ExperimentSettings_CoinTask.isReplay) {
 			exp.player.controls.ShouldLockControls = true;
 
-			micTest.gameObject.SetActive (false);
+			micTest.GetComponent<CanvasGroup> ().alpha = 0f;
 			if(Config_CoinTask.isSystem2 || Config_CoinTask.isSyncbox || Config_CoinTask.isSYS3){
 				yield return StartCoroutine( WaitForEEGHardwareConnection() );
 			}
@@ -466,9 +466,9 @@ public class TrialController : MonoBehaviour {
 				Camera.main.gameObject.GetComponent<AudioListener> ().enabled = true;
 			}
 			trialLogger.LogMicTestEvent (true);
-			micTest.gameObject.SetActive (true);
+			micTest.GetComponent<CanvasGroup> ().alpha = 1f;
 			yield return StartCoroutine (micTest.RunMicTest ());
-			micTest.gameObject.SetActive (false);
+			micTest.GetComponent<CanvasGroup> ().alpha = 0f;
 			trialLogger.LogMicTestEvent (false);
 				
 #if (!(MRIVERSION))
@@ -1094,33 +1094,33 @@ public class TrialController : MonoBehaviour {
 //				} else
 //					recallAnswers.Add (0);
 
-				switch (randomOrderIndex) {
-				case 0:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, false);
-					break;
-				case 1:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, false);
-					break;
-				case 2:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, false);
-					break;
-				case 3:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_4, false);
-					break;
-				case 4:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_5, false);
-					break;
-				case 5:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_6, false);
-					break;
-				case 6:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_7, false);
-					break;
-				case 7:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_8, false);
-					break;
-
-				}
+//				switch (randomOrderIndex) {
+//				case 0:
+//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, false);
+//					break;
+//				case 1:
+//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, false);
+//					break;
+//				case 2:
+//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, false);
+//					break;
+//				case 3:
+//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_4, false);
+//					break;
+//				case 4:
+//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_5, false);
+//					break;
+//				case 5:
+//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_6, false);
+//					break;
+//				case 6:
+//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_7, false);
+//					break;
+//				case 7:
+//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_8, false);
+//					break;
+//
+//				}
 
 
 				trialLogger.LogInstructionEvent ();
