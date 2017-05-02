@@ -423,7 +423,36 @@ public class JsonMessageController : MonoBehaviour
 
         return jsonEventString;
     }
+	public static string FormatJSONTrialEvent(long time,string trialType,string auxNumber, string trialNum)
+	{
+		StringBuilder sb = new StringBuilder();
+		JsonWriter writer = new JsonWriter(sb);
 
+		writer.WriteObjectStart();
+		writer.WritePropertyName("data");
+
+		//data object content
+		writer.WriteObjectStart();
+
+		writer.WritePropertyName("trial");
+		writer.Write(trialNum);
+
+		writer.WriteObjectEnd();
+
+
+		//type
+		writer.WritePropertyName("type");
+		writer.Write("TRIAL");
+
+		//time
+		writer.WritePropertyName("time");
+		writer.Write(time);
+
+
+		writer.WriteObjectEnd();
+
+		return sb.ToString();
+	}
     public static string FormatJSONSessionEvent(long time, string expName, string expVersion, string subjectID, int sessionNum)
     {
         StringBuilder sb = new StringBuilder();
@@ -532,5 +561,43 @@ public class JsonMessageController : MonoBehaviour
         return sb.ToString();
 
     }
+
+	public static string FormatJSONStateEvent(long time, string stateName, bool boolValue, int number)
+	{
+		StringBuilder sb = new StringBuilder();
+		JsonWriter writer = new JsonWriter(sb);
+
+		writer.WriteObjectStart();
+		writer.WritePropertyName("data");
+
+		//data object content
+		writer.WriteObjectStart();
+
+		writer.WritePropertyName("name");
+		writer.Write(stateName);
+
+		writer.WritePropertyName("value");
+		writer.Write(boolValue);
+
+		writer.WritePropertyName("number");
+		writer.Write(number);
+
+		writer.WriteObjectEnd();
+
+
+		//type
+		writer.WritePropertyName("type");
+		writer.Write("STATE");
+
+		//time
+		writer.WritePropertyName("time");
+		writer.Write(time);
+
+
+		writer.WriteObjectEnd();
+
+		return sb.ToString();
+
+	}
 }
 #endif

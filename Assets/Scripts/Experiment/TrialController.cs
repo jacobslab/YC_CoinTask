@@ -927,22 +927,22 @@ public class TrialController : MonoBehaviour {
 			//set TCP state true
 			switch(randomOrderIndex){
 			case 0:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_1, true);
+				TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.RECALLCUE, true,1);
 				break;
 			case 1:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_2, true);
+				TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.RECALLCUE, true,2);
 				break;
 			case 2:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, true);
+				TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.RECALLCUE, true,3);
 				break;
 			case 3:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_4, true);
+				TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.RECALLCUE, true,4);
 				break;
 			case 4:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_5, true);
+				TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.RECALLCUE, true,5);
 				break;
 			case 5:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_6, true);
+				TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.RECALLCUE, true,6);
 				break;
 			}
 
@@ -1134,136 +1134,6 @@ public class TrialController : MonoBehaviour {
 
 				Debug.Log ("moving to the position");
 			} 
-
-
-
-
-
-
-			else {
-				objectRecall = true;
-				recallTypes.Add (2);
-				//show nice UI, log special object
-				trialLogger.LogObjectToRecall (specialSpawnable);
-				GameObject specialObjUICopy = Instantiate (specialObj, Vector3.zero, specialObj.transform.rotation) as GameObject;
-				specialObjUICopy.name += "UICopy";
-
-				specialObjUICopy.transform.parent = exp.cameraController.UICamera.transform; //make this copy follow camera/head movement. mainly for VR.
-
-				//set layer of object & children to PlayerUI
-				specialObjUICopy.GetComponent<SpawnableObject> ().SetLayer ("PlayerUI");
-
-				trialLogger.LogInstructionEvent ();
-				yield return StartCoroutine (exp.uiController.doYouRememberUI.Play (specialObjUICopy, specialItemDisplayName));
-
-#if MRIVERSION
-			Config_CoinTask.MemoryState rememberResponse;
-			isMRITimeout = false;
-			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxAnswerTime));
-			if(isMRITimeout){
-				rememberResponse = Config_CoinTask.MemoryState.no;
-			}
-			else{
-				rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
-			}
-			rememberResponses.Add(rememberResponse);
-			trialLogger.LogRememberResponse(rememberResponse);
-#else
-				yield return StartCoroutine (exp.WaitForActionButton ());
-				Config_CoinTask.MemoryState rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState ();
-				rememberResponses.Add (rememberResponse);
-				trialLogger.LogRememberResponse (rememberResponse);
-#endif
-
-
-
-				//SELECT LOCATION
-				//enable position selection, turn off fancy selection UI
-				exp.environmentController.myPositionSelector.Reset ();
-				exp.environmentController.myPositionSelector.EnableSelection (true);
-
-				switch (randomOrderIndex) {
-				case 0:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_1, false);
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, true);
-					break;
-				case 1:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_2, false);
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, true);
-					break;
-				case 2:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, false);
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, true);
-					break;
-				}
-				trialLogger.LogRecallChoiceStarted (true,2);
-
-				exp.uiController.doYouRememberUI.Stop ();
-
-				//show single selection instruction and wait for selection button press
-				string selectObjectText = exp.currInstructions.selectTheLocationText;
-				if (ExperimentSettings_CoinTask.myLanguage == ExperimentSettings_CoinTask.LanguageSetting.Spanish) {
-					//check for masculine article
-					string[] splitName = specialItemDisplayName.Split (' ');
-					if (splitName [0] == "el") {
-						string displayNameNoEl = specialItemDisplayName.Remove (0, 3);
-						selectObjectText = selectObjectText + "l" + " " + displayNameNoEl + " (X)."; //add the 'l' to "de" to make "del"
-					} else {
-						selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
-					}
-				} else { //english
-					selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
-				}
-				exp.currInstructions.SetTextPanelOn ();
-#if MRIVERSION
-			exp.currInstructions.SetInstructionsTransparentOverlay();
-			exp.currInstructions.DisplayText(selectObjectText);
-			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
-			exp.currInstructions.SetInstructionsBlank();
-#else
-
-				yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
-#endif
-				exp.currInstructions.SetTextPanelOff();
-				//log the chosen position and correct position
-				exp.environmentController.myPositionSelector.logTrack.LogPositionChosen (exp.environmentController.myPositionSelector.GetSelectorPosition (), specialObj.transform.position, specialSpawnable);
-
-				//wait for the position selector to choose the position, runs color changing of the selector
-				yield return StartCoroutine (exp.environmentController.myPositionSelector.ChoosePosition ());
-
-
-				//add current chosen position to list of chosen positions
-				chosenPositions.Add (exp.environmentController.myPositionSelector.GetSelectorPosition ());
-
-				//disable position selection
-				exp.environmentController.myPositionSelector.EnableSelection (false);
-				trialLogger.LogRecallChoiceStarted (false,2);
-
-				switch (randomOrderIndex) {
-				case 0:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, false);
-					break;
-				case 1:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, false);
-					break;
-				case 2:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, false);
-					break;
-				}
-
-
-				trialLogger.LogInstructionEvent ();
-
-				if (i <= exp.objectController.CurrentTrialSpecialObjects.Count - 1) {
-					//jitter if it's not the last object to be shown
-					//yield return StartCoroutine (exp.WaitForJitter (Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
-
-					//we will jitter using PAL variables for now
-					yield return StartCoroutine (exp.WaitForJitter (Config_CoinTask.randomPALJitterMin, Config_CoinTask.randomPALJitterMax));
-					yield return StartCoroutine(exp.WaitForISI(Config_CoinTask.isiTime));
-					Debug.Log ("waited for jitter and ISI time");
-				}
-			}
 
 		}
 

@@ -804,13 +804,27 @@ public class TCPServer : MonoBehaviour
         }
     }
 
+	public void SetStateWithNum(TCP_Config.DefineStates state, bool isEnabled,int num)
+	{
+		if (myServer != null)
+		{
+			if (myServer.isServerConnected)
+			{
+				myServer.SendStateEventWithNum(GameClock.SystemTime_Milliseconds, state.ToString(), isEnabled,num);
+				UnityEngine.Debug.Log("SET THE STATE FOR BIO-M FILE: " + state.ToString() + isEnabled.ToString() + num.ToString());
+			}
+		}
+	}
+
     public void SendTrialNum(int trialNum)
     {
         if (myServer != null)
         {
             if (myServer.isServerConnected)
             {
-				myServer.SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.TRIAL, null, trialNum.ToString());
+				string data = "{\"trial\":" + trialNum.ToString () + "}";
+				myServer.SendTrialEvent (GameClock.SystemTime_Milliseconds, TCP_Config.EventType.TRIAL, null, trialNum.ToString());
+//				myServer.SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.TRIAL, null,data);
             }
         }
     }
@@ -1109,6 +1123,17 @@ public class ThreadedServer : ThreadedJob
         //		messagesToSend+=JsonMessageController.FormatSimpleJSONEvent (GameClock.SystemTime_Milliseconds,"MESSAGE","CONNECTED");
     }
 
+	public string SendTrialEvent(long systemTime, TCP_Config.EventType eventType, string auxNumber, string eventData)
+	{
+		string jsonEventString = JsonMessageController.FormatJSONTrialEvent(systemTime, eventType.ToString(), auxNumber, eventData);
+
+		//		UnityEngine.Debug.Log (jsonEventString);
+
+		messagesToSend += jsonEventString;
+
+		return jsonEventString;
+	}
+
     public string SendSimpleJSONEvent(long systemTime, TCP_Config.EventType eventType, string auxNumber, string eventData)
     {
 
@@ -1156,7 +1181,17 @@ public class ThreadedServer : ThreadedJob
 
         return jsonEventString;
     }
+	public string SendStateEventWithNum(long systemTime, string stateName, bool value, int number)
+	{
 
+		string jsonEventString = JsonMessageController.FormatJSONStateEvent(systemTime, stateName, value,number);
+
+		UnityEngine.Debug.Log(jsonEventString);
+
+		messagesToSend += jsonEventString;
+
+		return jsonEventString;
+	}
     public string SendStateEvent(long systemTime, string stateName, bool value)
     {
 
@@ -1199,7 +1234,7 @@ public class ThreadedServer : ThreadedJob
         {
 
             char[] individualCharacters = messageBuffer.ToCharArray();
-            UnityEngine.Debug.Log("Processing buffer");
+//            UnityEngine.Debug.Log("Processing buffer");
             int numOpenCharacter = 0;
             int numCloseCharacter = 0;
             string message = "";
@@ -1255,7 +1290,7 @@ public class ThreadedServer : ThreadedJob
         JsonData messageData = JsonMapper.ToObject(jsonMessage);
 
         typeContent = (string)messageData["type"];
-        UnityEngine.Debug.Log("Type of content is: " + typeContent);
+//        UnityEngine.Debug.Log("Type of content is: " + typeContent);
         switch (typeContent)
         {
             case "SUBJECTID":
