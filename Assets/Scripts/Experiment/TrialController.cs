@@ -100,7 +100,7 @@ public class TrialController : MonoBehaviour {
 
 	void InitTrials(){
 
-		if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH3) {
+		if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.THR3) {
 			InitTH3Trials ();
 		} else {
 			InitStandardTrials ();

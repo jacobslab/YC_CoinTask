@@ -166,17 +166,17 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			Directory.CreateDirectory(Path.GetDirectoryName(defaultLoggingPath));
 		}
 
-		if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH1) {
+		if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.THR1) {
 			//if(Config_CoinTask.isSyncbox || Config_CoinTask.isSystem2){ //only add the folder if it's not the demo version.
-				defaultLoggingPath += TH1Folder;
+//				defaultLoggingPath += TH1Folder;
 			Debug.Log ("assigned it ");
 			//}
 		} 
 		else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH2) {
 			defaultLoggingPath += TH2Folder;
 		}
-		else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH3) {
-			defaultLoggingPath += TH3Folder;
+		else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.THR3) {
+//			defaultLoggingPath += TH3Folder;
 		}
 		else if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.MRI){
 			if(Config_CoinTask.isPractice){
