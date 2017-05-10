@@ -992,20 +992,20 @@ public class ThreadedServer : ThreadedJob
     public void SendInitMessages()
     {
         //define event
-//        SendDefineEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.DEFINE, TCP_Config.GetDefineList());
+        SendDefineEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.DEFINE, TCP_Config.GetDefineList());
 
         //send name of this experiment
-//        SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.EXPNAME, null, TCP_Config.ExpName);
+        SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.EXPNAME, null, TCP_Config.ExpName);
 
         //send exp version
-//        SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.VERSION, null, Config_CoinTask.VersionNumber);
+        SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.VERSION, null, Config_CoinTask.VersionNumber);
 
         //send exp session
 		SendSessionEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SESSION, TCP_Config.ExpName,Config_CoinTask.VersionNumber,TCP_Config.SubjectName,Experiment_CoinTask.sessionID);
 //        SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.VERSION, null, Config_CoinTask.VersionNumber);
 
         //send subject ID
-//		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SUBJECTID, null, TCP_Config.SubjectName);
+		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.SUBJECTID, null, TCP_Config.SubjectName);
 
         //NO LONGER REQUEST ALIGNMENT HERE. START IENUMERATOR WHEN TASK IS ACTUALLY STARTING
         //align clocks //SHOULD THIS BE FINISHED BEFORE WE START SENDING HEARTBEATS? -- NO

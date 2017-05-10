@@ -167,7 +167,9 @@ public class TrialController : MonoBehaviour {
 		List<Trial> threeItemCounterTrials = new List<Trial> ();
 
 		int blocksLeft = (Config_CoinTask.numTestTrials / Config_CoinTask.numTrialsPerBlock) - 1; //as of 7/5/2016, should be 4 trials left
+		UnityEngine.Debug.Log("blocks left: " + blocksLeft.ToString());
 		int numOrigTrials = Config_CoinTask.numTrialsPerBlock * blocksLeft;
+		UnityEngine.Debug.Log ("numOrigTrials: " + numOrigTrials.ToString ());
 		for(int i = 0; i < numOrigTrials / 2; i++){
 			int halfChance = Random.Range (0, 2);
 			Trial t2, t3;
@@ -188,41 +190,41 @@ public class TrialController : MonoBehaviour {
 		}
 			
 		//now split up the trials into two (shuffled) lists of 16 -- 8 non-stim trials (4 2-item, 4 3-item) and 8 stim trials (4 2-item, 4 3-item) each.
-		List<Trial> listOf16A = GetListOf16Trials(twoItemOrigTrials, threeItemOrigTrials, twoItemCounterTrials, threeItemCounterTrials);
-		List<Trial> listOf16B = GetListOf16Trials(twoItemOrigTrials, threeItemOrigTrials, twoItemCounterTrials, threeItemCounterTrials);
+		List<Trial> listOf12A = GetListOf12Trials(twoItemOrigTrials, threeItemOrigTrials, twoItemCounterTrials, threeItemCounterTrials);
+		List<Trial> listOf12B = GetListOf12Trials(twoItemOrigTrials, threeItemOrigTrials, twoItemCounterTrials, threeItemCounterTrials);
 
 		//add blocks 2,3,4,5
-		AddBlocksFromListOf16 (listOf16A);
-		AddBlocksFromListOf16 (listOf16B);
+		AddBlocksFromListOf12 (listOf12A);
+		AddBlocksFromListOf12 (listOf12B);
 	
 	}
 
-	void AddBlocksFromListOf16(List<Trial> listOf16){
+	void AddBlocksFromListOf12(List<Trial> listOf12){
 
-		//ORDER OF TRIAL TYPES IN THE 16 LIST: 4 2-item non-stim, 4 2-item stim, 4 3-item non-stim, 4 3-item stim
+		//ORDER OF TRIAL TYPES IN THE 16 LIST: 3 3-item non-stim, 3 3-item stim, 3 4-item non-stim, 3 4-item stim
 
 		List<Trial> currBlock;
 
 		//HARD CODED.
-		int numTwoItemTrialsLeft = 8; //includes stim & non-stim
-		int numThreeItemTrialsLeft = 8; //includes stim & non-stim
+		int numTwoItemTrialsLeft = 6; //includes stim & non-stim
+		int numThreeItemTrialsLeft = 6; //includes stim & non-stim
 
-		if (listOf16.Count == 16) {
+		if (listOf12.Count == 12) {
 			//now split each 16-trial list into two random lists of 8 (each with 4 2-item trials and 4 3-item trials)
 			//16A --> block 2, block 3
 			currBlock = new List<Trial>();
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 3; i++) {
 				//pick any 4 2-item trials per block
 				int randIndex = Random.Range (0, numTwoItemTrialsLeft);
-				currBlock.Add (listOf16 [randIndex]);
-				listOf16.RemoveAt (randIndex);
+				currBlock.Add (listOf12 [randIndex]);
+				listOf12.RemoveAt (randIndex);
 				numTwoItemTrialsLeft--;
 			}
-			for (int i = 0; i < 4; i++) { //num 3 item trials should be 4
+			for (int i = 0; i < 3; i++) { //num 3 item trials should be 4
 				//pick any 4 3-item trials
-				int randIndex = Random.Range(4, 4 + numThreeItemTrialsLeft); //start at 4 because there should still be 4 2-item trials left.
-				currBlock.Add (listOf16 [randIndex]);
-				listOf16.RemoveAt (randIndex);
+				int randIndex = Random.Range(3, 3 + numThreeItemTrialsLeft); //start at 4 because there should still be 4 2-item trials left.
+				currBlock.Add (listOf12 [randIndex]);
+				listOf12.RemoveAt (randIndex);
 				numThreeItemTrialsLeft--;
 			}
 
@@ -230,50 +232,50 @@ public class TrialController : MonoBehaviour {
 
 			//make second block from this list of 16 -- add the remaining trials to the new block
 			currBlock = new List<Trial>();
-			for (int i = 0; i < listOf16.Count; i++) {
-				currBlock.Add (listOf16 [i]);
+			for (int i = 0; i < listOf12.Count; i++) {
+				currBlock.Add (listOf12 [i]);
 			}
 			ListOfTrialBlocks.Add (currBlock);
 		}
 		else {
-			Debug.Log ("Error: Not exactly 16 trials!");
+			Debug.Log ("Error: Not exactly 12 trials!");
 		}
 	}
 
-	//makes a list of 16 -- 8 non-stim trials (4 2-item, 4 3-item) and 8 stim trials (4 2-item, 4 3-item) each.
-	List<Trial> GetListOf16Trials(List<Trial> twoItemNonStimList, List<Trial> threeItemNonStimList, List<Trial> twoItemStimList, List<Trial> threeItemStimList){
+	//makes a list of 12 -- 6 non-stim trials (3 3-item, 3 4-item) and 6 stim trials (3 3-item, 3 4-item) each.
+	List<Trial> GetListOf12Trials(List<Trial> twoItemNonStimList, List<Trial> threeItemNonStimList, List<Trial> twoItemStimList, List<Trial> threeItemStimList){
 		//TODO
-		List<Trial> listOf16 = new List<Trial>();
+		List<Trial> listOf12 = new List<Trial>();
 
-		//add 2-item non stim trials
-		for (int i = 0; i < 4; i++) {
+		//add 3-item non stim trials
+		for (int i = 0; i < 3; i++) {
 			int randIndex = Random.Range(0,twoItemNonStimList.Count);
-			listOf16.Add (twoItemNonStimList [randIndex]);
+			listOf12.Add (twoItemNonStimList [randIndex]);
 			twoItemNonStimList.RemoveAt(randIndex);
 		}
 
-		//add 2-item stim trials
-		for (int i = 0; i < 4; i++) {
+		//add 4-item stim trials
+		for (int i = 0; i < 3; i++) {
 			int randIndex = Random.Range(0,twoItemStimList.Count);
-			listOf16.Add (twoItemStimList [randIndex]);
+			listOf12.Add (twoItemStimList [randIndex]);
 			twoItemStimList.RemoveAt(randIndex);
 		}
 
 		//add 3-item non stim trials
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 3; i++) {
 			int randIndex = Random.Range(0,threeItemNonStimList.Count);
-			listOf16.Add (threeItemNonStimList [randIndex]);
+			listOf12.Add (threeItemNonStimList [randIndex]);
 			threeItemNonStimList.RemoveAt(randIndex);
 		}
 
-		//add 3-item stim trials
-		for (int i = 0; i < 4; i++) {
+		//add 4-item stim trials
+		for (int i = 0; i < 3; i++) {
 			int randIndex = Random.Range(0,threeItemStimList.Count);
-			listOf16.Add (threeItemStimList [randIndex]);
+			listOf12.Add (threeItemStimList [randIndex]);
 			threeItemStimList.RemoveAt(randIndex);
 		}
 
-		return listOf16;
+		return listOf12;
 	}
 
 	//ALWAYS NON-STIM. COULD CHANGE THINGS.
