@@ -18,6 +18,8 @@ public class InputMic : MonoBehaviour {
 	public Text beginExperimentText;
 	public Image loud;
 	public GameObject micTestTexts;
+	public CanvasGroup samsonWarningGroup;
+	private bool samsonFound=false;
 	private List<string> micList=new List<string>();
 	//mic initialization
 	void Start()
@@ -25,6 +27,12 @@ public class InputMic : MonoBehaviour {
 		for (int i = 0; i < Microphone.devices.Length; i++) {
 			Debug.Log (Microphone.devices [i].ToString ());
 			micList.Add (Microphone.devices [i].ToString ());
+			if (!Microphone.devices [i].ToString ().Contains ("Samson")) {
+				samsonFound = true;
+			}
+		}
+		if (!samsonFound) {
+			samsonWarningGroup.alpha = 1f;
 		}
 		beginExperimentText.enabled = false;
 		loud.gameObject.SetActive (true);
