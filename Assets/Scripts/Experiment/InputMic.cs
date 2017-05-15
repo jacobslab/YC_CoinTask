@@ -58,6 +58,7 @@ public class InputMic : MonoBehaviour {
 			samsonWarningGroup.alpha = 1f;
 		} else {
 			UnityEngine.Debug.Log ("samson found");
+			samsonWarningGroup.alpha = 0f;
 			if(_device == null) _device = Microphone.devices[chosenMicDrop];
 			_clipRecord = Microphone.Start(_device, true, 999, 44100);
 			micDrops.AddOptions (micList);
