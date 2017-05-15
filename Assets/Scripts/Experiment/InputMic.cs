@@ -24,24 +24,42 @@ public class InputMic : MonoBehaviour {
 	//mic initialization
 	void Start()
 	{
-		for (int i = 0; i < Microphone.devices.Length; i++) {
-			Debug.Log (Microphone.devices [i].ToString ());
-			micList.Add (Microphone.devices [i].ToString ());
-			if (!Microphone.devices [i].ToString ().Contains ("Samson")) {
-				samsonFound = true;
-			}
-		}
-		if (!samsonFound) {
-			samsonWarningGroup.alpha = 1f;
-		}
+		
+
 		beginExperimentText.enabled = false;
 		loud.gameObject.SetActive (true);
 		micDrops.AddOptions (micList);
 		micTestTexts.SetActive (true);
 	}
-	void InitMic(){
 
-		if(_device == null) _device = Microphone.devices[micDrops.value];
+	IEnumerator WaitUntilSamsonConnection()
+	{
+		while (!samsonFound) {
+			InitMic ();
+			yield return new WaitForSeconds (2f);
+			yield return 0;
+		}
+		yield return null;
+	}
+	void InitMic(){
+		int chosenMicDrop = 0;
+		for (int i = 0; i < Microphone.devices.Length; i++) {
+			Debug.Log (Microphone.devices [i].ToString ());
+			micList.Add (Microphone.devices [i].ToString ());
+			if (Microphone.devices [i].ToString ().Contains ("Samson")) {
+				samsonFound = true;
+				chosenMicDrop = i;
+				UnityEngine.Debug.Log ("SAMSON FOUND");
+			}
+		}
+		if (!samsonFound) {
+			UnityEngine.Debug.Log ("samson not found");
+			samsonWarningGroup.alpha = 1f;
+			StartCoroutine ("WaitUntilSamsonConnection");
+		} else {
+			UnityEngine.Debug.Log ("samson found");
+		}
+		if(_device == null) _device = Microphone.devices[chosenMicDrop];
 		_clipRecord = Microphone.Start(_device, true, 999, 44100);
 	}
 	IEnumerator RotateWords()
