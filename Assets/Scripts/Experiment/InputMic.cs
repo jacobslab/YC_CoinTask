@@ -26,9 +26,9 @@ public class InputMic : MonoBehaviour {
 	{
 		
 
+		StartCoroutine ("WaitUntilSamsonConnection");
 		beginExperimentText.enabled = false;
 		loud.gameObject.SetActive (true);
-		micDrops.AddOptions (micList);
 		micTestTexts.SetActive (true);
 	}
 
@@ -43,6 +43,7 @@ public class InputMic : MonoBehaviour {
 	}
 	void InitMic(){
 		int chosenMicDrop = 0;
+		micList.Clear ();
 		for (int i = 0; i < Microphone.devices.Length; i++) {
 			Debug.Log (Microphone.devices [i].ToString ());
 			micList.Add (Microphone.devices [i].ToString ());
@@ -55,12 +56,12 @@ public class InputMic : MonoBehaviour {
 		if (!samsonFound) {
 			UnityEngine.Debug.Log ("samson not found");
 			samsonWarningGroup.alpha = 1f;
-			StartCoroutine ("WaitUntilSamsonConnection");
 		} else {
 			UnityEngine.Debug.Log ("samson found");
+			if(_device == null) _device = Microphone.devices[chosenMicDrop];
+			_clipRecord = Microphone.Start(_device, true, 999, 44100);
+			micDrops.AddOptions (micList);
 		}
-		if(_device == null) _device = Microphone.devices[chosenMicDrop];
-		_clipRecord = Microphone.Start(_device, true, 999, 44100);
 	}
 	IEnumerator RotateWords()
 	{
