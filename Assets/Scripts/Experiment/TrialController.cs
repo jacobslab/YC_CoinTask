@@ -1099,6 +1099,7 @@ public class TrialController : MonoBehaviour {
 				//check audio response
 				UnityEngine.Debug.Log("CHECKING SPHINX RESPONSE: " +  totalTrialNumber + " and  "  +currentRecallNumber);
 				int sphinxNum = totalTrialNumber;
+                currentRecallObject = currentRecallObject.Split(' ')[0];
 				recallAnswers[randomOrderIndex]=exp.sphinxTest.CheckAudioResponse(sphinxNum,currentRecallNumber,currentRecallObject,kws_threshold);
 
 				trialLogger.LogSphinxEvent ();

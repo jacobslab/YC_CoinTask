@@ -63,17 +63,25 @@ public class CommandExecution : MonoBehaviour {
         UnityEngine.Debug.Log("Starting thread");
         thread.Join();
         UnityEngine.Debug.Log("first thread finished executing");
-        string contents = System.IO.File.ReadAllText(Experiment_CoinTask.Instance.sessionDirectory + "audio\\" + resultFormat + ".txt");
-        if (contents.Contains(actualName))
+        if (File.Exists(Config_CoinTask.audioPath + resultFormat + ".txt"))
         {
+            string contents = System.IO.File.ReadAllText(Config_CoinTask.audioPath + resultFormat + ".txt");
+            if (contents.Contains(actualName))
+            {
 
-            UnityEngine.Debug.Log("Found " + actualName + " contents");
-            return "found";
+                UnityEngine.Debug.Log("Found " + actualName + " contents");
+                return "found";
+            }
+            else
+            {
+
+                UnityEngine.Debug.Log(actualName + " NOT FOUND");
+                return "not found";
+            }
         }
         else
         {
-
-            UnityEngine.Debug.Log(actualName + " NOT FOUND");
+            UnityEngine.Debug.Log("COULD NOT FIND FILE");
             return "not found";
         }
 
@@ -89,13 +97,14 @@ public class CommandExecution : MonoBehaviour {
         proc.StartInfo.FileName = @"powershell.exe";
         // proc.StartInfo.Arguments = "notepad.exe";
 #if UNITY_EDITOR_WIN
-        appDataPath=@"C:\Users\JacobsLab\Documents\Github\YC_CoinTask\";
+        appDataPath=@"C:\Users\jacobslab\Desktop\TreasureHunt\";
         proc.StartInfo.WorkingDirectory = appDataPath;
         resultFormat = trialNum.ToString() + "_" + recallNum.ToString();
         UnityEngine.Debug.Log("working directory is: " + appDataPath);
         UnityEngine.Debug.Log("audio path is: " + Config_CoinTask.audioPath);
         UnityEngine.Debug.Log("result format is: " + resultFormat);
-        proc.StartInfo.Arguments = appDataPath + @"bin/Release/Win32/pocketsphinx_continuous.exe -infile " + Config_CoinTask.audioPath + resultFormat + ".wav -hmm " + appDataPath + hmmPath + " -dict " + appDataPath + dictPath + " -logfn " + Config_CoinTask.audioPath + "ok.log" + " -time yes -kws_threshold 1e-" + thres + " -keyphrase " + actualName + " > " + Experiment_CoinTask.Instance.sessionDirectory + "audio\\" + resultFormat + ".txt";
+        proc.StartInfo.Arguments = appDataPath + @"bin/Release/Win32/pocketsphinx_continuous.exe -infile " + Config_CoinTask.audioPath + resultFormat + ".wav -hmm " + appDataPath + hmmPath + " -dict " + appDataPath + dictPath + " -logfn " + Config_CoinTask.audioPath + "ok.log" + " -time yes -kws_threshold 1e-" + thres + " -keyphrase " + actualName + " > " + Config_CoinTask.audioPath + resultFormat + ".txt";
+        
 #else
         
         proc.StartInfo.WorkingDirectory = appDataPath;
@@ -103,11 +112,12 @@ public class CommandExecution : MonoBehaviour {
         UnityEngine.Debug.Log("working directory is: " + appDataPath);
         UnityEngine.Debug.Log("audio path is: " + Config_CoinTask.audioPath);
         UnityEngine.Debug.Log("result format is: " + resultFormat);
-        proc.StartInfo.Arguments = appDataPath + @"bin\Release\Win32\pocketsphinx_continuous.exe -infile " + Config_CoinTask.audioPath + resultFormat+".wav -hmm " +appDataPath + hmmPath +" -dict " + appDataPath + dictPath +" -logfn " + Config_CoinTask.audioPath + "ok.log" +" -time yes -kws_threshold 1e-"+thres+ " -keyphrase " + actualName + " > " + Experiment_CoinTask.Instance.sessionDirectory + "audio\\" + resultFormat + ".txt";
+        proc.StartInfo.Arguments = appDataPath + @"bin\Release\Win32\pocketsphinx_continuous.exe -infile " + Config_CoinTask.audioPath + resultFormat+".wav -hmm " +appDataPath + hmmPath +" -dict " + appDataPath + dictPath +" -logfn " + Config_CoinTask.audioPath + "ok.log" +" -time yes -kws_threshold 1e-"+thres+ " -keyphrase " + actualName + " > " +  Config_CoinTask.audioPath + resultFormat + ".txt";
 #endif        
         proc.Start();
-     //   string result = proc.StandardOutput.ReadToEnd() + " or " + proc.StandardError.ReadToEnd();
-       // UnityEngine.Debug.Log(result);
+        //   string result = proc.StandardOutput.ReadToEnd() + " or " + proc.StandardError.ReadToEnd();
+        // UnityEngine.Debug.Log(result);
+        UnityEngine.Debug.Log("should have printed something at : " + Config_CoinTask.audioPath + resultFormat + ".txt");
         proc.WaitForExit();
         proc.Close();
         UnityEngine.Debug.Log("process executed");
