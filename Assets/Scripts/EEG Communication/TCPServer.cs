@@ -58,7 +58,7 @@ public class TCPServer : MonoBehaviour
 
     void Start()
     {
-        if (Config_CoinTask.isSystem2 || Config_CoinTask.isSYS3)
+        if (Config_CoinTask.isSYS3)
         {
             RunServer();
         }

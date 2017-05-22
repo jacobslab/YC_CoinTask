@@ -458,7 +458,7 @@ public class TrialController : MonoBehaviour {
 			exp.player.controls.ShouldLockControls = true;
 
 			micTest.GetComponent<CanvasGroup> ().alpha = 0f;
-			if(Config_CoinTask.isSystem2 || Config_CoinTask.isSyncbox || Config_CoinTask.isSYS3){
+			if(Config_CoinTask.isSyncbox || Config_CoinTask.isSYS3){
 				yield return StartCoroutine( WaitForEEGHardwareConnection() );
 			}
 			else{
@@ -609,7 +609,7 @@ public class TrialController : MonoBehaviour {
 		isConnectingToHardware = true;
 		Debug.Log ("waiting for eeg connection");
 		exp.uiController.ConnectionUI.alpha = 1.0f;
-		if(Config_CoinTask.isSystem2 || Config_CoinTask.isSYS3){
+		if(Config_CoinTask.isSYS3){
 			while(!TCPServer.Instance.isConnected){
 				Debug.Log("Waiting for system 2 connection...");
 				yield return 0;

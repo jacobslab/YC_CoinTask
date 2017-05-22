@@ -133,9 +133,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			defaultLoggingPath = System.IO.Directory.GetCurrentDirectory() + "/TextFiles/";
 			#else
 
-		if (Config_CoinTask.isSystem2) {
-			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_2.0/data/";
-		}else if (Config_CoinTask.isSYS3) {
+		if (Config_CoinTask.isSYS3) {
 			defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM_3.1/data/";
 		} else if (Config_CoinTask.isSyncbox && !Config_CoinTask.isSYS3) {
 				defaultLoggingPath = "/Users/" + System.Environment.UserName + "/RAM/data/";
@@ -211,16 +209,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		#if SYS3COMBO
 			if (Config_CoinTask.isSyncbox && !Config_CoinTask.isSYS3) {
 		#else
-			if (Config_CoinTask.isSyncbox && !Config_CoinTask.isSystem2) {
+			if (Config_CoinTask.isSyncbox) {
 		#endif
 				BuildType.text = "Sync Box";
-			}
-			else if (Config_CoinTask.isSystem2 && !Config_CoinTask.isSyncbox) {
-				BuildType.text = "System 2";
-			}
-			else if(Config_CoinTask.isSystem2 && Config_CoinTask.isSyncbox)
-			{
-				BuildType.text="SYS2 on Syncbox";
 			}
 			#if SYS3COMBO
 			else if (Config_CoinTask.isSYS3 && !Config_CoinTask.isSyncbox) {
