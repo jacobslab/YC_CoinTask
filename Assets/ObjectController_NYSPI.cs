@@ -86,10 +86,10 @@ public class ObjectController_NYSPI : MonoBehaviour {
 			listObj=System.IO.File.ReadAllLines (exp.subjectDirectory + "SetA\\SetAList.txt");
 			break;
 		case Config_CoinTask.SetNumber.B:
-			listObj=System.IO.File.ReadAllLines (Application.dataPath + "SetB\\SetBList.txt");
+			listObj=System.IO.File.ReadAllLines (exp.subjectDirectory + "SetB\\SetBList.txt");
 			break;
 		case Config_CoinTask.SetNumber.C:
-			listObj=System.IO.File.ReadAllLines (exp.subjectDirectory+"SetA\\SetCList.txt");
+			listObj=System.IO.File.ReadAllLines (exp.subjectDirectory+"SetC\\SetCList.txt");
 			break;
 		}
 
