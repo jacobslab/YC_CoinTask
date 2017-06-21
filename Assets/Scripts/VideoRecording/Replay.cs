@@ -574,7 +574,7 @@ public class Replay : MonoBehaviour {
 									string particleSystemName = splitLine [i + 2];
 									ParticleSystem particles = objInScene.GetComponent<ParticleSystem> ();
 									if (particles == null) {
-										particles = objInScene.transform.FindChild (particleSystemName).GetComponent<ParticleSystem> ();
+										particles = objInScene.transform.Find (particleSystemName).GetComponent<ParticleSystem> ();
 									}
 
 									particles.Play ();
@@ -583,7 +583,7 @@ public class Replay : MonoBehaviour {
 									string particleSystemName = splitLine [i + 2];
 									ParticleSystem particles = objInScene.GetComponent<ParticleSystem> ();
 									if (particles == null) {
-										particles = objInScene.transform.FindChild (particleSystemName).GetComponent<ParticleSystem> ();
+										particles = objInScene.transform.Find (particleSystemName).GetComponent<ParticleSystem> ();
 									}
 									
 									particles.Stop ();
@@ -595,7 +595,7 @@ public class Replay : MonoBehaviour {
 									string particleSystemName = splitLine [i + 2];
 									ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter> ();
 									if (particles == null) {
-										particles = objInScene.transform.FindChild (particleSystemName).GetComponent<ParticleEmitter> ();
+										particles = objInScene.transform.Find (particleSystemName).GetComponent<ParticleEmitter> ();
 									}
 
 
@@ -605,7 +605,7 @@ public class Replay : MonoBehaviour {
 									string particleSystemName = splitLine [i + 2];
 									ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter> ();
 									if (particles == null) {
-										particles = objInScene.transform.FindChild (particleSystemName).GetComponent<ParticleEmitter> ();
+										particles = objInScene.transform.Find (particleSystemName).GetComponent<ParticleEmitter> ();
 									}
 									
 									particles.emit = false;
@@ -617,7 +617,7 @@ public class Replay : MonoBehaviour {
 									string audioSourceName = splitLine [i + 2];
 									AudioSource audio = objInScene.GetComponent<AudioSource> ();
 									if (audio == null) {
-										audio = objInScene.transform.FindChild (audioSourceName).GetComponent<AudioSource> ();
+										audio = objInScene.transform.Find (audioSourceName).GetComponent<AudioSource> ();
 									}
 									
 									
@@ -627,7 +627,7 @@ public class Replay : MonoBehaviour {
 									string audioSourceName = splitLine [i + 2];
 									AudioSource audio = objInScene.GetComponent<AudioSource> ();
 									if (audio == null) {
-										audio = objInScene.transform.FindChild (audioSourceName).GetComponent<AudioSource> ();
+										audio = objInScene.transform.Find (audioSourceName).GetComponent<AudioSource> ();
 									}
 									
 									audio.Stop ();

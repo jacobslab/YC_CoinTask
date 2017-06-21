@@ -3,91 +3,103 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InputMic : MonoBehaviour {
+public class InputMic : MonoBehaviour
+{
 
 	public static float MicLoudness;
 	public Dropdown micDrops;
-	private float maxLoud=0f;
+	private float maxLoud = 0f;
 	private string _device;
 	public bl_ProgressBar volProg;
-	private bool cannotHear=true;
+	private bool cannotHear = true;
 	public Text spokenWord;
 	public string[] wordList;
 	private int currentWord = 0;
 	public Image marker;
 	public Text beginExperimentText;
-	public Image loud;
-	public GameObject micTestTexts;
-	public CanvasGroup samsonWarningGroup;
-	private bool samsonFound=false;
-	private List<string> micList=new List<string>();
+	private List<string> micList = new List<string>();
 	//mic initialization
+	public CanvasGroup micCanvasGroup;
+	AudioSource recAudio;
+	public AudioRecorder recorder;
+	private bool samsonFound=false;
+	public CanvasGroup samsonWarningGroup;
+	private string samsonDeviceName="";
+	AudioClip _clipRecord = new AudioClip();
+	private int samsonIndex=0;
+	void Awake()
+	{
+		recAudio = GetComponent<AudioSource> ();
+		micCanvasGroup.alpha = 0f;
+	}
 	void Start()
 	{
-		
-
-		StartCoroutine ("WaitUntilSamsonConnection");
-		beginExperimentText.enabled = false;
-		loud.gameObject.SetActive (true);
-		micTestTexts.SetActive (true);
-	}
-
-	IEnumerator WaitUntilSamsonConnection()
-	{
-		while (!samsonFound) {
-			InitMic ();
-			yield return new WaitForSeconds (2f);
-			yield return 0;
-		}
-		yield return null;
-	}
-	void InitMic(){
-		int chosenMicDrop = 0;
-		micList.Clear ();
-		for (int i = 0; i < Microphone.devices.Length; i++) {
-			Debug.Log (Microphone.devices [i].ToString ());
-			micList.Add (Microphone.devices [i].ToString ());
-			if (Microphone.devices [i].ToString ().Contains ("Samson")) {
-				samsonFound = true;
-				chosenMicDrop = i;
-				UnityEngine.Debug.Log ("SAMSON FOUND");
-			}
+		for (int i = 0; i < Microphone.devices.Length; i++)
+		{
+			Debug.Log("length of mics is" + Microphone.devices.Length + "  and  " + Microphone.devices[i].ToString());
+			micList.Add(Microphone.devices[i].ToString());
+						if (Microphone.devices [i].ToString ().Contains ("Samson")) {
+				samsonIndex = i;
+				samsonDeviceName = Microphone.devices [samsonIndex].ToString ();
+							samsonFound = true;
+							
+						}
 		}
 		if (!samsonFound) {
-			UnityEngine.Debug.Log ("samson not found");
 			samsonWarningGroup.alpha = 1f;
-		} else {
-			UnityEngine.Debug.Log ("samson found");
-			samsonWarningGroup.alpha = 0f;
-			if(_device == null) _device = Microphone.devices[chosenMicDrop];
-			_clipRecord = Microphone.Start(_device, true, 999, 44100);
-			micDrops.AddOptions (micList);
-		}
+			UnityEngine.Debug.Log ("Samson mic not found");
+		} 
+		beginExperimentText.enabled = false;
+		micDrops.AddOptions(micList);
 	}
 	IEnumerator RotateWords()
 	{
-		spokenWord.text = wordList [0];
+		spokenWord.text = wordList[0];
 		float timer = 0f;
-		while (cannotHear) {
-			timer += Time.deltaTime;
-			if (timer > 5f) {
-				spokenWord.color = Color.red;
-				spokenWord.text = "Sorry, I cannot hear you! \n Please adjust microphone \n Press (X) to Continue.";
-				micTestTexts.SetActive (false);
-				yield return new WaitForSeconds (1f);
-				spokenWord.color = Color.white;
-				timer = 0f;
-				currentWord++;
-				if (currentWord > 4)
-					currentWord = 0;
-				spokenWord.text = wordList [currentWord];
+		while (cannotHear)
+		{
+
+			_clipRecord = new AudioClip ();
+			//            	yield return StartCoroutine (Experiment.Instance.audioRecorder.Record(Experiment.Instance.SessionDirectory, "micTest.wav", 5));
+			if (_device == null && Microphone.devices.Length > 0) {
+				UnityEngine.Debug.Log("samson index is: "  + samsonIndex.ToString());
+				micDrops.value = samsonIndex;
+				UnityEngine.Debug.Log ("setting micdrops value to:" + samsonIndex.ToString ());
+				_device = Microphone.devices [samsonIndex];
+					UnityEngine.Debug.Log ("setting as " + Microphone.devices [samsonIndex].ToString());
+				_clipRecord = Microphone.Start (_device, true, 5, 44100);
+			} else {
+				spokenWord.text = "No microphone detected!";
 			}
-				micTestTexts.SetActive (true);
-			if (MicLoudness > Config_CoinTask.micLoudThreshold) {
-				cannotHear = false;
-				loud.gameObject.SetActive (false);
-				marker.color = Color.green;
+			UnityEngine.Debug.Log ("device is " + _device.ToString ());
+			micCanvasGroup.alpha = 1f;
+			spokenWord.color = Color.red;
+			spokenWord.color = Color.white;
+			timer = 0f;
+			currentWord++;
+			spokenWord.text = wordList[currentWord];
+			yield return new WaitForSeconds (5f);
+			Microphone.End (_device);
+			_device = null;
+			recAudio.PlayOneShot (_clipRecord);
+			spokenWord.text = "Playing back recorded audio...";
+			yield return new WaitForSeconds(5f);
+
+			bool givenResponse = false;
+
+			spokenWord.text = "Proceed (X) \n Retry (A)";
+			while (!givenResponse) {
+				if (Input.GetKeyDown (KeyCode.X) || Input.GetKeyDown (KeyCode.JoystickButton0)) { // x button
+					cannotHear=false;
+					givenResponse = true;
+				} else if (Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.JoystickButton1)) { // a button
+					cannotHear=true;
+					givenResponse = true;
+				}
+				yield return 0;
 			}
+
+
 			yield return 0;
 		}
 		yield return null;
@@ -95,8 +107,12 @@ public class InputMic : MonoBehaviour {
 
 	public IEnumerator RunMicTest()
 	{
-		yield return StartCoroutine ("RotateWords");
-		yield return new WaitForSeconds (4f);
+		//        InitMic();
+		micCanvasGroup.alpha = 1f;
+		yield return StartCoroutine("RotateWords");
+		yield return new WaitForSeconds(1.5f);
+		micCanvasGroup.alpha = 0f;
+		StopMicrophone ();
 		yield return null;
 
 	}
@@ -107,22 +123,23 @@ public class InputMic : MonoBehaviour {
 	}
 
 
-	AudioClip _clipRecord = new AudioClip();
 	int _sampleWindow = 128;
 
-	//get data from microphone into audioclip
-	float  LevelMax()
+	//    //get data from microphone into audioclip
+	float LevelMax()
 	{
 		float levelMax = 0;
 		float[] waveData = new float[_sampleWindow];
-		int micPosition = Microphone.GetPosition(null)-(_sampleWindow+1); // null means the first microphone
+		int micPosition = Microphone.GetPosition(samsonDeviceName) - (_sampleWindow + 1); // null means the first microphone
 		if (micPosition < 0) return 0;
-		_clipRecord.GetData(waveData, micPosition);
-		// Getting a peak on the last 128 samples
-		for (int i = 0; i < _sampleWindow; i++) {
-			float wavePeak = waveData[i] * waveData[i];
-			if (levelMax < wavePeak) {
-				levelMax = wavePeak;
+		if (_clipRecord != null) {
+			_clipRecord.GetData (waveData, micPosition);
+			// Getting a peak on the last 128 samples
+			for (int i = 0; i < _sampleWindow; i++) {
+				float wavePeak = waveData [i] * waveData [i];
+				if (levelMax < wavePeak) {
+					levelMax = wavePeak;
+				}
 			}
 		}
 		return levelMax;
@@ -132,28 +149,37 @@ public class InputMic : MonoBehaviour {
 
 	void Update()
 	{
-//		Debug.Log ("mic" +  LevelMax().ToString());
+
+		//		if (MicLoudness > Config.micLoudnessThreshold)
+		//		{
+		//			cannotHear = false;
+		//			marker.color = Color.green;
+		//		}
+
+		if (Input.GetKeyDown(KeyCode.L))
+			cannotHear = false;
 		// levelMax equals to the highest normalized value power 2, a small number because < 1
 		// pass the value to a static var so we can access it from anywhere
-		MicLoudness = LevelMax ();
-
+		MicLoudness = LevelMax();
+		// Debug.Log(MicLoudness);
 		if (maxLoud < MicLoudness)
 			maxLoud = MicLoudness;
 		if (cannotHear)
 			volProg.Value = MicLoudness;
-		else {
-			beginExperimentText.enabled = true;
-			spokenWord.color = Color.green;
-			spokenWord.text = "I heard you say " + wordList [currentWord];
-		}
+		//        else {
+		//            beginExperimentText.enabled = true;
+		//            spokenWord.color = Color.green;
+		//            spokenWord.text = "I heard you say " + wordList[currentWord];
+		//        }
 	}
 
 	bool _isInitialized;
 	// start mic when scene starts
 	void OnEnable()
 	{
-		InitMic();
-		_isInitialized=true;
+		//        InitMic();
+
+		_isInitialized = true;
 	}
 
 	//stop mic when loading a new level or quit application
@@ -169,24 +195,26 @@ public class InputMic : MonoBehaviour {
 
 
 	// make sure the mic gets started & stopped when application gets focused
-	void OnApplicationFocus(bool focus) {
-		if (focus)
-		{
-			//Debug.Log("Focus");
-
-			if(!_isInitialized){
-				//Debug.Log("Init Mic");
-				InitMic();
-				_isInitialized=true;
-			}
-		}      
-		if (!focus)
-		{
-			//Debug.Log("Pause");
-			StopMicrophone();
-			//Debug.Log("Stop Mic");
-			_isInitialized=false;
-
-		}
-	}
+	//    void OnApplicationFocus(bool focus)
+	//    {
+	//        if (focus)
+	//        {
+	//            //Debug.Log("Focus");
+	//
+	//            if (!_isInitialized)
+	//            {
+	//                //Debug.Log("Init Mic");
+	//                InitMic();
+	//                _isInitialized = true;
+	//            }
+	//        }
+	//        if (!focus)
+	//        {
+	//            //Debug.Log("Pause");
+	//            StopMicrophone();
+	//            //Debug.Log("Stop Mic");
+	//            _isInitialized = false;
+	//
+	//        }
+	//    }
 }

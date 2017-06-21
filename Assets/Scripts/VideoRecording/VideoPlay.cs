@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-
-public class VideoPlayer : MonoBehaviour {
+using UnityEngine.Video;
+public class VideoPlay : MonoBehaviour {
 	
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
-	
-	MovieTexture movie;
+	private VideoPlayer movie;
+//	MovieTexture movie;
 	AudioSource movieAudio;
 	
 	public CanvasGroup group;
@@ -17,33 +17,35 @@ public class VideoPlayer : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		RawImage rim = GetComponent<RawImage>();
-		if(rim != null){
-			if(rim.texture != null){
-				movie = (MovieTexture)rim.mainTexture;
-			}
-		}
-		movieAudio = GetComponent<AudioSource> ();
+		movie=GetComponent<VideoPlayer>();
+		movie.enabled = false;
+//		RawImage rim = GetComponent<RawImage>();
+//		if(rim != null){
+//			if(rim.texture != null){
+//				movie = (MovieTexture)rim.mainTexture;
+//			}
+//		}
+//		movieAudio = GetComponent<AudioSource> ();
 	}
 	
 	bool isMoviePaused = false;
 	void Update () {
-		if (movie != null) {
-			if (movie.isPlaying) {
-				if (Input.GetAxis (Config_CoinTask.ActionButtonName) > 0.2f) { //skip movie!
-					Debug.Log("skip movie");
-					Stop ();
-				}
-				if (TrialController.isPaused) {
-					Pause ();
-				}
-			}
-			if (!TrialController.isPaused) {
-				if (isMoviePaused) {
-					UnPause ();
-				}
-			}
-		} 
+//		if (movie != null) {
+//			if (movie.isPlaying) {
+//				if (Input.GetAxis (Config_CoinTask.ActionButtonName) > 0.2f) { //skip movie!
+//					Debug.Log("skip movie");
+//					Stop ();
+//				}
+//				if (TrialController.isPaused) {
+//					Pause ();
+//				}
+//			}
+//			if (!TrialController.isPaused) {
+//				if (isMoviePaused) {
+//					UnPause ();
+//				}
+//			}
+//		} 
 		//else {
 			//Debug.Log("No movie attached! Can't update.");
 		//}
@@ -51,23 +53,36 @@ public class VideoPlayer : MonoBehaviour {
 
 	bool shouldPlay = false;
 	public IEnumerator Play(){
-		if (movie != null) {
+		if (movie.clip != null) {
 			Debug.Log("playing instruction video");
 			yield return StartCoroutine (AskIfShouldPlay());
 
 			if (shouldPlay) {
+				movie.enabled = true;
 				group.alpha = 1.0f;
 			
-				movie.Stop ();
-				movieAudio.Play ();
-				movie.Play ();
-			
-				while (movie.isPlaying || isMoviePaused) {
+//				movie.Stop ();
+//				movieAudio.Play ();
+//				movie.Play ();
+				float timer = 0f;
+				bool buttonPressed = false;
+				while (timer < 292f && !buttonPressed) {
+					Debug.Log ("timer is:" + timer.ToString ());
+					if (!TrialController.isPaused) {
+						timer += Time.deltaTime;
+						movie.playbackSpeed = 1f;
+						Debug.Log ("playback speed set to one");
+						if (Input.GetKeyDown(KeyCode.X)) {
+							buttonPressed = true;
+						}
+					} else {
+						Debug.Log ("playback speed set to zero");
+						movie.playbackSpeed = 0f;
+					}
 					yield return 0;
 				}
-			
-				isMoviePaused = false;
-			
+//				movie.Stop ();
+				movie.enabled=false;
 				group.alpha = 0.0f;
 			}
 			yield return 0;

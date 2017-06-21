@@ -207,10 +207,14 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			UnityEngine.Debug.Log (buildDate);
 			if(Config_CoinTask.BuildVersion!=Config_CoinTask.Version.THR1 && Config_CoinTask.BuildVersion!=Config_CoinTask.Version.THR3)
 				ExpNameVersion.text = Config_CoinTask.BuildVersion.ToString () + "/" + Config_CoinTask.VersionNumber + " / " + buildDate.ToString();
-			else if(Config_CoinTask.BuildVersion==Config_CoinTask.Version.THR1)
-				ExpNameVersion.text = "THR_RECORD" + "/" + Config_CoinTask.VersionNumber+ " / " + buildDate.ToString();
 			else
-				ExpNameVersion.text = "THR_CLOSEDLOOP" + "/" + Config_CoinTask.VersionNumber+ " / " + buildDate.ToString();
+				ExpNameVersion.text = "THR_EXPERIMENT" + "/" + Config_CoinTask.VersionNumber + " / " + buildDate.ToString ();
+			if (Config_CoinTask.isSYS3) {
+				if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.THR1)
+					ExpNameVersion.text = "THR_RECORD" + "/" + Config_CoinTask.VersionNumber + " / " + buildDate.ToString ();
+				else
+					ExpNameVersion.text = "THR_CLOSEDLOOP" + "/" + Config_CoinTask.VersionNumber + " / " + buildDate.ToString ();
+			}
 		#if SYS3COMBO
 			if (Config_CoinTask.isSyncbox && !Config_CoinTask.isSYS3) {
 		#else

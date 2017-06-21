@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.IO;
-
+using UnityEngine.Video;
 public class Experiment_CoinTask : MonoBehaviour {
 
 	//clock!
@@ -38,7 +38,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	public BoxSwapGameController boxGameController;
 
 	//instruction video player
-	public VideoPlayer instrVideoPlayer;
+	public VideoPlay instrVideoPlayer;
 
 	//score controller
 	public ScoreController scoreController;
@@ -310,7 +310,6 @@ public class Experiment_CoinTask : MonoBehaviour {
 	}
 
 	void OnApplicationQuit(){
-		
 		if (ExperimentSettings_CoinTask.isLogging) {
 			subjectLog.close ();
 			eegLog.close ();
