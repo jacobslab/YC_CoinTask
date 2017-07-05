@@ -125,8 +125,8 @@ public class TrialController : MonoBehaviour {
 
 			//generate all trials, two & three object, including counter-balanced trials
 		//	List<Trial> ListOfTwoItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numTwoItemTrials, 2, false, false);
-			List<Trial> ListOfThreeItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numThreeItemTrials, 3, false, false);
-			List<Trial> ListOfFourItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numFourItemTrials, 4, false, false);
+			List<Trial> ListOfThreeItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numThreeItemTrials, 2, false, false);
+			List<Trial> ListOfFourItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numFourItemTrials, 3, false, false);
 //			List<Trial> ListOfFiveItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numFiveItemTrials, 5, false, false);
 //			List<Trial> ListOfSixItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numSixItemTrials, 6, false, false);
 
@@ -340,6 +340,7 @@ public class TrialController : MonoBehaviour {
 			trialList.Add(trial);
 			trialList.Add(counterTrial);
 		}
+        /*
         if (numTrialsToGenerate % 2 == 0)
         {
             Trial anotherTrial = new Trial(numSpecial, 1, shouldStim);
@@ -351,50 +352,42 @@ public class TrialController : MonoBehaviour {
             Trial anotherTrial = new Trial(numSpecial, 1, shouldStim);
             Trial counterTrial = anotherTrial.GetCounterSelf(shouldStimCounter);
             trialList.Add(counterTrial);
-        }
+        }*/
         UnityEngine.Debug.Log("trials in this list: " + trialList.Count);
         
         return trialList;
 	}
 
-	void GenerateTrialBlocks(List<Trial> twoItemTrials, List<Trial> threeItemTrials,int numBlocks, int numTrialsPerBlock){
-		for(int i = 0; i < numBlocks; i++){
-			List<Trial> newBlock = new List<Trial>();
-			for(int j = 0; j <=2; j++){ //half two item, half one item
-				int randomTwoItemIndex = Random.Range (0, twoItemTrials.Count);
-				Debug.Log ("random two " + twoItemTrials.Count);
-				int randomThreeItemIndex = Random.Range (0, threeItemTrials.Count);
-//				int randomFiveItemIndex = Random.Range (0, fiveItemTrials.Count);
-//				int randomSixItemIndex = Random.Range (0, sixItemTrials.Count);
+    void GenerateTrialBlocks(List<Trial> twoItemTrials, List<Trial> threeItemTrials, int numBlocks, int numTrialsPerBlock)
+    {
+        for (int i = 0; i < numBlocks; i++)
+        {
+            List<Trial> newBlock = new List<Trial>();
+            for (int j = 0; j < 2; j++)
+            { //half two item, half one item
+                int randomTwoItemIndex = Random.Range(0, twoItemTrials.Count);
+                Debug.Log("random two " + twoItemTrials.Count);
+                int randomThreeItemIndex = Random.Range(0, threeItemTrials.Count);
+                //				int randomFiveItemIndex = Random.Range (0, fiveItemTrials.Count);
+                //				int randomSixItemIndex = Random.Range (0, sixItemTrials.Count);
 
-				newBlock.Add(threeItemTrials[randomThreeItemIndex]);
-				newBlock.Add(twoItemTrials[randomTwoItemIndex]);
-//				newBlock.Add(fiveItemTrials[randomFiveItemIndex]);
-//				newBlock.Add(sixItemTrials[randomSixItemIndex]);
+                newBlock.Add(threeItemTrials[randomThreeItemIndex]);
+                newBlock.Add(twoItemTrials[randomTwoItemIndex]);
+                //				newBlock.Add(fiveItemTrials[randomFiveItemIndex]);
+                //				newBlock.Add(sixItemTrials[randomSixItemIndex]);
 
-				threeItemTrials.RemoveAt(randomThreeItemIndex);
-				twoItemTrials.RemoveAt(randomTwoItemIndex);
-//				fiveItemTrials.RemoveAt(randomFiveItemIndex);
-//				sixItemTrials.RemoveAt(randomSixItemIndex);
-			}
-            if(i%2==0)
-            {
-                int randomIndex = Random.Range(0, twoItemTrials.Count);
-                newBlock.Add(twoItemTrials[randomIndex]);
-                twoItemTrials.RemoveAt(randomIndex);
-            }
-            else
-            {
-                int randomIndex = Random.Range(0, threeItemTrials.Count);
-                newBlock.Add(threeItemTrials[randomIndex]);
-                threeItemTrials.RemoveAt(randomIndex);
+                threeItemTrials.RemoveAt(randomThreeItemIndex);
+                twoItemTrials.RemoveAt(randomTwoItemIndex);
+                //				fiveItemTrials.RemoveAt(randomFiveItemIndex);
+                //				sixItemTrials.RemoveAt(randomSixItemIndex);
             }
             ListOfTrialBlocks.Add(newBlock);
-		}
-	}
+        }
+    }
 
 
-	Trial PickRandomTrial(List<Trial> trialBlock){
+
+    Trial PickRandomTrial(List<Trial> trialBlock){
 		if (trialBlock.Count > 0) {
 			int randomTrialIndex = Random.Range (0, trialBlock.Count);
 			Trial randomTrial = trialBlock [randomTrialIndex];

@@ -33,7 +33,7 @@ public class ObjectController_NYSPI : MonoBehaviour {
 
 	//to keep track of last default object so that helper arrows don't point to foil objects
 	private GameObject previousDefaultObj;
-    private int totalSetObjects=49;
+    private int totalSetObjects=50;
 
 	// Use this for initialization
 	void Start () {
@@ -160,7 +160,9 @@ public class ObjectController_NYSPI : MonoBehaviour {
 		}
 		#else
 			prefabs = Resources.LoadAll("Prefabs/Objects_NYSPI");
-		#endif
+#endif
+
+        UnityEngine.Debug.Log("max number of set objects are " + totalSetObjects.ToString());
 
 		for(int i=0;i<prefabs.Length;i++)
 			tempList.Add((GameObject)prefabs[i]);
