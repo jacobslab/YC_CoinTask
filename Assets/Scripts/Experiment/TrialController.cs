@@ -1002,20 +1002,7 @@ public class TrialController : MonoBehaviour {
 //
 //				#endif
 ////
-//				switch (randomOrderIndex) {
-//				case 0:
-//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_1, false);
-//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, true);
-//					break;
-//				case 1:
-//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_2, false);
-//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, true);
-//					break;
-//				case 2:
-//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, false);
-//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, true);
-//					break;
-//				}
+//			
 				trialLogger.LogRecallChoiceStarted (true, 1);
 //
 //				exp.uiController.doYouRememberObjectUI.Stop ();
@@ -1040,15 +1027,7 @@ public class TrialController : MonoBehaviour {
 
 				//yield return new WaitForSeconds(3f);
 				#endif
-				//log the chosen position and correct position
-				//exp.environmentController.myPositionSelector.logTrack.LogPositionChosen (exp.environmentController.myPositionSelector.GetSelectorPosition (), specialObj.transform.position, specialSpawnable);
-
-				//wait for the position selector to choose the position, runs color changing of the selector
-				//yield return StartCoroutine (exp.environmentController.myPositionSelector.ChoosePosition ());
-
-
-				//add current chosen position to list of chosen positions
-				//chosenPositions.Add (exp.environmentController.myPositionSelector.GetSelectorPosition ());
+			
 
 				int logTrialNumber = i; //just the object number for this current trial
 
@@ -1092,39 +1071,6 @@ public class TrialController : MonoBehaviour {
 				recallAnswers[randomOrderIndex]=exp.sphinxTest.CheckAudioResponse(sphinxNum,currentRecallNumber,currentRecallObject,kws_threshold);
 
 				trialLogger.LogSphinxEvent ();
-//				if (Random.value > 0.5) {
-//					recallAnswers.Add (1);
-//				} else
-//					recallAnswers.Add (0);
-
-//				switch (randomOrderIndex) {
-//				case 0:
-//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, false);
-//					break;
-//				case 1:
-//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, false);
-//					break;
-//				case 2:
-//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, false);
-//					break;
-//				case 3:
-//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_4, false);
-//					break;
-//				case 4:
-//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_5, false);
-//					break;
-//				case 5:
-//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_6, false);
-//					break;
-//				case 6:
-//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_7, false);
-//					break;
-//				case 7:
-//					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_8, false);
-//					break;
-//
-//				}
-
 
 				trialLogger.LogInstructionEvent ();
 
