@@ -30,12 +30,15 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public enum LanguageSetting
 	{
 		English,
-		Spanish
+		Spanish,
+		German
 	}
-	#if !SPANISH
-	public static LanguageSetting myLanguage = LanguageSetting.English;
-	#else
+	#if SPANISH
 	public static LanguageSetting myLanguage = LanguageSetting.Spanish;
+	#elif GERMAN
+	public static LanguageSetting myLanguage = LanguageSetting.German;
+	#else
+	public static LanguageSetting myLanguage= LanguageSetting.English;
 	#endif
 	public Dropdown languageDropdown;
 
@@ -271,6 +274,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 				break;
 			case "Spanish":
 				myLanguage = LanguageSetting.Spanish;
+				break;
+			case "German":
+				myLanguage = LanguageSetting.German;
 				break;
 			}
 

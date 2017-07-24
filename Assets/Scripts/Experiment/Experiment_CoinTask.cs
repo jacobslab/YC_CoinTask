@@ -13,6 +13,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//instructions
 	public InstructionsController englishInstructions;
 	public InstructionsController spanishInstructions;
+	public InstructionsController germanInstructions;
 	[HideInInspector] public InstructionsController currInstructions;
 	//public InstructionsController inGameInstructionsController;
 	public CameraController cameraController;
@@ -109,6 +110,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 			break;
 		case ExperimentSettings_CoinTask.LanguageSetting.Spanish:
 			currInstructions = spanishInstructions;
+			break;
+		case ExperimentSettings_CoinTask.LanguageSetting.German:
+			currInstructions = germanInstructions;
 			break;
 		}
 
