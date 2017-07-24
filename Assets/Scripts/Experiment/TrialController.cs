@@ -408,6 +408,7 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine( WaitForMRIFixationRest());
 			}
 #else
+			exp.currInstructions.initialInstructions1=exp.currInstructions.initialInstructions1.Replace("\n","\n");
 			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 1.0f;
 			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
