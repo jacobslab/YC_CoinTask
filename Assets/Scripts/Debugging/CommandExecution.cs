@@ -10,7 +10,7 @@ public class CommandExecution : MonoBehaviour {
 	
 	//SINGLETON
 	private static CommandExecution _instance;
-	
+	private static string dataPath;
 	public static CommandExecution Instance{
 		get{
 			return _instance;
@@ -25,6 +25,7 @@ public class CommandExecution : MonoBehaviour {
 			return;
 		}
 		_instance = this;
+		dataPath=Application.dataPath;
 		ExecuteCommand();
 	}
 
@@ -62,7 +63,7 @@ public class CommandExecution : MonoBehaviour {
 //#endif
 		string filepath=System.IO.Directory.GetCurrentDirectory();
 		UnityEngine.Debug.Log (filepath);
-		var processInfo = new ProcessStartInfo ("open","InputVolume.app");
+//		var processInfo = new ProcessStartInfo ("open",dataPath+"/InputVolume.app");
 		//processInfo.FileName = "/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal";
 		//processInfo.Arguments="-c \" " + "shutdown -s now" + " \"";
         processInfo.CreateNoWindow = true;

@@ -25,6 +25,7 @@ public class TCPServer : MonoBehaviour
     public bool isConnected { get { return GetIsConnected(); } }
     public bool canStartGame { get { return GetCanStartGame(); } }
 	public bool isPaired { get { return GetIsPaired (); } }
+	public bool receivedHeartbeat=false;
     SubscriberSocket myList;
 
 
@@ -207,6 +208,7 @@ public class ThreadedServer : ThreadedJob
     public bool isSynced = false;
     public bool canStartGame = false;
 	public bool isPaired=false;
+	public bool receivedHeartbeat=false;
     Stopwatch clockAlignmentStopwatch;
     //int numClockAlignmentTries = 0;
     //const int timeBetweenClockAlignmentTriesMS = 500;//500; //half a second
@@ -255,6 +257,8 @@ public class ThreadedServer : ThreadedJob
 
 			//send heartbeat 
 			SendHeartbeatPolled();
+			//check for heartbeat
+			CheckHeartbeat();
 			//check for messages
 			string message = ReceiveMessageBuffer ();
 			UnityEngine.Debug.Log ("Received: " + message);
@@ -664,7 +668,8 @@ public class ThreadedServer : ThreadedJob
             case "STATE":
                 break;
 
-            case "HEARTBEAT":
+		case "HEARTBEAT":
+				receivedHeartbeat = true;
                 //do nothing
                 break;
 
@@ -732,6 +737,7 @@ public class ThreadedServer : ThreadedJob
     long intervalMS = 1000;
     long delta = 0; //is this ever used?
 
+	float receiveHeartbeatTimer=0f;
     void StartHeartbeatPoll()
     {
         isHeartbeat = true;
@@ -742,6 +748,21 @@ public class ThreadedServer : ThreadedJob
     {
         isHeartbeat = false;
     }
+
+	void CheckHeartbeat()
+	{
+		if (!receivedHeartbeat) {
+			receiveHeartbeatTimer += .01f;
+			UnityEngine.Debug.Log ("heartbeat timer: " + receiveHeartbeatTimer.ToString ());
+			if (receiveHeartbeatTimer > 10f) {
+				UnityEngine.Debug.Log ("HOST PC DISCONNECTED. ENDING TASK NOW!");
+				End ();
+			}
+		} else {
+			receiveHeartbeatTimer = 0f;
+			receivedHeartbeat = false;
+		}
+	}
 
     void SendHeartbeatPolled()
     {
