@@ -61,19 +61,19 @@ public class CommandExecution : MonoBehaviour {
 //`#elif (UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX)
 	//	var processInfo = new ProcessStartInfo("/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal", @"shutdown -s now");
 //#endif
-		string filepath=System.IO.Directory.GetCurrentDirectory();
-		UnityEngine.Debug.Log (filepath);
-//		var processInfo = new ProcessStartInfo ("open",dataPath+"/InputVolume.app");
-		//processInfo.FileName = "/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal";
-		//processInfo.Arguments="-c \" " + "shutdown -s now" + " \"";
-        processInfo.CreateNoWindow = true;
-		processInfo.WorkingDirectory = filepath + "/";
-		//processInfo.RedirectStandardOutput = False;
-        processInfo.UseShellExecute = false;
-
-        var process = Process.Start(processInfo);
-
-        process.WaitForExit();
-        process.Close();
+//		string filepath=System.IO.Directory.GetCurrentDirectory();
+//		UnityEngine.Debug.Log (filepath);
+////		var processInfo = new ProcessStartInfo ("open",dataPath+"/InputVolume.app");
+//		//processInfo.FileName = "/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal";
+//		//processInfo.Arguments="-c \" " + "shutdown -s now" + " \"";
+//        processInfo.CreateNoWindow = true;
+//		processInfo.WorkingDirectory = filepath + "/";
+//		//processInfo.RedirectStandardOutput = False;
+//        processInfo.UseShellExecute = false;
+//
+//        var process = Process.Start(processInfo);
+//
+//        process.WaitForExit();
+//        process.Close();
     }
 }

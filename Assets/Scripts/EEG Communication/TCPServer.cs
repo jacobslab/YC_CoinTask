@@ -3,7 +3,7 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Timers;
 using System;
 using System.Text;
 using System.Net;
@@ -203,12 +203,14 @@ public class TCPServer : MonoBehaviour
 public class ThreadedServer : ThreadedJob
 {
     public bool isRunning = false;
+	private long lastReceivedHeartbeatTime = 0;
 
     public bool isServerConnected = false;
     public bool isSynced = false;
     public bool canStartGame = false;
 	public bool isPaired=false;
 	public bool receivedHeartbeat=false;
+	public bool hasReceivedFirstHeartbeat=false;
     Stopwatch clockAlignmentStopwatch;
     //int numClockAlignmentTries = 0;
     //const int timeBetweenClockAlignmentTriesMS = 500;//500; //half a second
@@ -261,7 +263,7 @@ public class ThreadedServer : ThreadedJob
 			CheckHeartbeat();
 			//check for messages
 			string message = ReceiveMessageBuffer ();
-			UnityEngine.Debug.Log ("Received: " + message);
+		//	UnityEngine.Debug.Log ("Received: " + message);
 			ProcessJSONMessageBuffer (message);
 
 			//send messages
@@ -381,6 +383,7 @@ public class ThreadedServer : ThreadedJob
         {
             UnityEngine.Debug.Log("Close Server Error....." + e.StackTrace);
         }
+		SceneController.Instance.Quit ();
     }
 
     //CLOCK ALIGNMENT!
@@ -669,6 +672,12 @@ public class ThreadedServer : ThreadedJob
                 break;
 
 		case "HEARTBEAT":
+			if (!hasReceivedFirstHeartbeat) {
+				UnityEngine.Debug.Log ("received FIRST HEARTBEAT");
+				hasReceivedFirstHeartbeat = true;
+			}
+//			UnityEngine.Debug.Log ("received heartbeat at: " + GameClock.SystemTime_MillisecondsString);
+			lastReceivedHeartbeatTime = GameClock.SystemTime_Milliseconds;
 				receivedHeartbeat = true;
                 //do nothing
                 break;
@@ -751,14 +760,15 @@ public class ThreadedServer : ThreadedJob
 
 	void CheckHeartbeat()
 	{
-		if (!receivedHeartbeat) {
-			receiveHeartbeatTimer += .01f;
-			UnityEngine.Debug.Log ("heartbeat timer: " + receiveHeartbeatTimer.ToString ());
+		if (!receivedHeartbeat && hasReceivedFirstHeartbeat) {
+			receiveHeartbeatTimer = (GameClock.SystemTime_Milliseconds - lastReceivedHeartbeatTime)/1000f;
+			//UnityEngine.Debug.Log ("heartbeat timer: " + receiveHeartbeatTimer.ToString ());
 			if (receiveHeartbeatTimer > 10f) {
 				UnityEngine.Debug.Log ("HOST PC DISCONNECTED. ENDING TASK NOW!");
 				End ();
 			}
 		} else {
+			UnityEngine.Debug.Log("reset timer to zero");
 			receiveHeartbeatTimer = 0f;
 			receivedHeartbeat = false;
 		}
@@ -773,7 +783,7 @@ public class ThreadedServer : ThreadedJob
         if (hasSentFirstHeartbeat)
         {
             long t1 = GameClock.SystemTime_Milliseconds;
-			UnityEngine.Debug.Log ("t1: " + t1.ToString () + " firstbeat: " + firstBeat.ToString () + " nextbeat: " + nextBeat.ToString ());
+			//UnityEngine.Debug.Log ("t1: " + t1.ToString () + " firstbeat: " + firstBeat.ToString () + " nextbeat: " + nextBeat.ToString ());
             if ((t1 - firstBeat) > nextBeat)
             {
                 //				UnityEngine.Debug.Log("HI HEARTBEAT");

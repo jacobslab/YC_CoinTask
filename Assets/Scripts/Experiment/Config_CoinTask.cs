@@ -19,7 +19,7 @@ public class Config_CoinTask : MonoBehaviour {
 #if MRIVERSION
 	public static Version BuildVersion = Version.MRI;
 #else
-	public static Version BuildVersion = Version.THR1;
+	public static Version BuildVersion = Version.THR3;
 #endif
 
 	public static string VersionNumber = "2.056";
