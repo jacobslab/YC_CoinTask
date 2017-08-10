@@ -136,7 +136,7 @@ public class TCPServer : MonoBehaviour
             if (myServer.isServerConnected)
             {
                 myServer.SendStateEvent(GameClock.SystemTime_Milliseconds, state.ToString(), isEnabled);
-                UnityEngine.Debug.Log("SET THE STATE FOR BIO-M FILE: " + state.ToString() + isEnabled.ToString());
+//                UnityEngine.Debug.Log("SET THE STATE FOR BIO-M FILE: " + state.ToString() + isEnabled.ToString());
             }
         }
     }
@@ -148,7 +148,7 @@ public class TCPServer : MonoBehaviour
 			if (myServer.isServerConnected)
 			{
 				myServer.SendStateEventWithNum(GameClock.SystemTime_Milliseconds, state.ToString(), isEnabled,num);
-				UnityEngine.Debug.Log("SET THE STATE FOR BIO-M FILE: " + state.ToString() + isEnabled.ToString() + num.ToString());
+//				UnityEngine.Debug.Log("SET THE STATE FOR BIO-M FILE: " + state.ToString() + isEnabled.ToString() + num.ToString());
 			}
 		}
 	}
@@ -269,11 +269,11 @@ public class ThreadedServer : ThreadedJob
 			//send messages
 
 			if (messagesToSend.Count > 0) {
-				UnityEngine.Debug.Log ("we have " + messagesToSend.Count.ToString () + " messages to send");
+//				UnityEngine.Debug.Log ("we have " + messagesToSend.Count.ToString () + " messages to send");
 				for (int i = 0; i < messagesToSend.Count; i++) {
 					string messagesToSendCopy = messagesToSend[i];
 					int length = messagesToSendCopy.ToCharArray ().Length;
-					PrintDebug ("length: " + length);
+//					PrintDebug ("length: " + length);
 					ZMQSend (messagesToSendCopy, length);
 				}
 			}
@@ -357,7 +357,7 @@ public class ThreadedServer : ThreadedJob
         StartHeartbeatPoll();
 
 		//send READY message
-		UnityEngine.Debug.Log("sending ready message");
+//		UnityEngine.Debug.Log("sending ready message");
 		SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.READY, null, null);
 
 
@@ -403,7 +403,7 @@ public class ThreadedServer : ThreadedJob
 
         SendSimpleJSONEvent(GameClock.SystemTime_Milliseconds, TCP_Config.EventType.ALIGNCLOCK, null, "");
         //SendSimpleJSONEvent(0, TCP_Config.EventType.ALIGNCLOCK, "0", ""); //JUST FOR DEBUGGING
-        UnityEngine.Debug.Log("REQUESTING ALIGN CLOCK");
+//        UnityEngine.Debug.Log("REQUESTING ALIGN CLOCK");
 
         clockAlignmentStopwatch.Start();
         //numClockAlignmentTries = 0;
@@ -495,7 +495,7 @@ public class ThreadedServer : ThreadedJob
 
         string jsonEventString = JsonMessageController.FormatSimpleJSONEvent(systemTime, eventType.ToString(), auxNumber.ToString(), eventData);
 
-        UnityEngine.Debug.Log(jsonEventString);
+//        UnityEngine.Debug.Log(jsonEventString);
 
 		messagesToSend.Add(jsonEventString);
 
@@ -507,7 +507,7 @@ public class ThreadedServer : ThreadedJob
 
 		string jsonEventString = JsonMessageController.FormatJSONSessionEvent(systemTime,experimentName, expVersion, subjectID, sessionNum);
 
-        UnityEngine.Debug.Log(jsonEventString);
+//        UnityEngine.Debug.Log(jsonEventString);
 
 		messagesToSend.Add(jsonEventString);
 
@@ -519,7 +519,7 @@ public class ThreadedServer : ThreadedJob
 
         string jsonEventString = JsonMessageController.FormatJSONDefineEvent(systemTime, stateList);
 
-        UnityEngine.Debug.Log(jsonEventString);
+//        UnityEngine.Debug.Log(jsonEventString);
 
 		messagesToSend.Add(jsonEventString);
 
@@ -530,7 +530,7 @@ public class ThreadedServer : ThreadedJob
 
 		string jsonEventString = JsonMessageController.FormatJSONStateEvent(systemTime, stateName, value,number);
 
-		UnityEngine.Debug.Log(jsonEventString);
+//		UnityEngine.Debug.Log(jsonEventString);
 
 		messagesToSend.Add(jsonEventString);
 
@@ -541,7 +541,7 @@ public class ThreadedServer : ThreadedJob
 
         string jsonEventString = JsonMessageController.FormatJSONStateEvent(systemTime, stateName, value);
 
-        UnityEngine.Debug.Log(jsonEventString);
+//        UnityEngine.Debug.Log(jsonEventString);
 
 		messagesToSend.Add(jsonEventString);
 
@@ -603,7 +603,7 @@ public class ThreadedServer : ThreadedJob
 
                 if (numOpenCharacter == numCloseCharacter && numOpenCharacter > 0)
                 { //END OF MESSAGE!
-                    UnityEngine.Debug.Log("DECODE MESSAGE: " + message);
+//                    UnityEngine.Debug.Log("DECODE MESSAGE: " + message);
                     DecodeJSONMessage(message);
 
                     //reset variables
@@ -616,7 +616,7 @@ public class ThreadedServer : ThreadedJob
                 else if (i == individualCharacters.Length - 1 && numOpenCharacter > 0)
                 {
                     incompleteMessage = message;
-                    UnityEngine.Debug.Log("INCOMPLETE MESSAGE: " + incompleteMessage);
+//                    UnityEngine.Debug.Log("INCOMPLETE MESSAGE: " + incompleteMessage);
                 }
 
             }
@@ -654,7 +654,7 @@ public class ThreadedServer : ThreadedJob
 				break;
             
 		case "CONNECTED":
-			UnityEngine.Debug.Log ("connected received");
+//			UnityEngine.Debug.Log ("connected received");
 				isPaired = true;
                 break;
 
@@ -673,7 +673,7 @@ public class ThreadedServer : ThreadedJob
 
 		case "HEARTBEAT":
 			if (!hasReceivedFirstHeartbeat) {
-				UnityEngine.Debug.Log ("received FIRST HEARTBEAT");
+//				UnityEngine.Debug.Log ("received FIRST HEARTBEAT");
 				hasReceivedFirstHeartbeat = true;
 			}
 //			UnityEngine.Debug.Log ("received heartbeat at: " + GameClock.SystemTime_MillisecondsString);
@@ -768,7 +768,7 @@ public class ThreadedServer : ThreadedJob
 				End ();
 			}
 		} else {
-			UnityEngine.Debug.Log("reset timer to zero");
+//			UnityEngine.Debug.Log("reset timer to zero");
 			receiveHeartbeatTimer = 0f;
 			receivedHeartbeat = false;
 		}

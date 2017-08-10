@@ -3,6 +3,7 @@ using System.Collections;
 
 
 using System;
+using System.Text;
 using System.IO;
 using System.Collections.Generic;
 //using System.Runtime.InteropServices;
@@ -135,16 +136,16 @@ public class Logger_Threading : MonoBehaviour{
 	{
 		isRunning = true;
 
-		logfile = new StreamWriter ( fileName, true );
+		logfile = new StreamWriter ( fileName, true,Encoding.ASCII, 0x10000);
 		UnityEngine.Debug.Log ("running logwriter coroutine writing at " + fileName);
 		while (isRunning) {
 
 			while (myLoggerQueue.logQueue.Count > 0) {
 				string msg = myLoggerQueue.GetFromLogQueue ();
 
-//				UnityEngine.Debug.Log ("writing: " + msg);
+				//				UnityEngine.Debug.Log ("writing: " + msg);
 				logfile.WriteLine (msg);
-				yield return 0;
+				//				yield return 0;
 			}
 			yield return 0;
 		}

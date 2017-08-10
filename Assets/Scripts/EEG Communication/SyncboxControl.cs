@@ -57,7 +57,7 @@ public class SyncboxControl : MonoBehaviour {
 	IEnumerator ConnectSyncbox(){
 		while(!isUSBOpen){
 			string usbOpenFeedback = Marshal.PtrToStringAuto (OpenUSB());
-			UnityEngine.Debug.Log(usbOpenFeedback);
+//			UnityEngine.Debug.Log(usbOpenFeedback);
 			if(usbOpenFeedback != "didn't open USB..."){
 				isUSBOpen = true;
 			}
