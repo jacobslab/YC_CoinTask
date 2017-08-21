@@ -72,9 +72,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 
 	public static string defaultLoggingPath = ""; //SET IN RESETDEFAULTLOGGINGPATH();
-	string TH1Folder = "THR/";
+	string TH1Folder = "THR1/";
 	string TH2Folder = "TH2/";
-	string TH3Folder = "THR/";
+	string TH3Folder = "THR3/";
 	string MRIFolder = "MRI/";
 	string MRIPracticeFolder = "MRIPractice/";
 	public Text defaultLoggingPathDisplay;
