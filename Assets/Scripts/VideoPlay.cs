@@ -57,13 +57,13 @@ public class VideoPlay : MonoBehaviour {
 				vid.Stop ();
 				movieAudio.Play ();
 				vid.Play ();
-			
+				yield return new WaitForSeconds (1f);
 				while (vid.isPlaying || isMoviePaused) {
 					yield return 0;
 				}
-			
+				
 				isMoviePaused = false;
-			
+				
 				group.alpha = 0.0f;
 			}
 			yield return 0;

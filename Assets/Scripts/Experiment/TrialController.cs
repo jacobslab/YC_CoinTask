@@ -408,6 +408,7 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine( WaitForMRIFixationRest());
 			}
 #else
+			Debug.Log("showing instructions");
 			exp.currInstructions.initialInstructions1=exp.currInstructions.initialInstructions1.Replace("\n","\n");
 			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 1.0f;
@@ -1002,7 +1003,9 @@ public class TrialController : MonoBehaviour {
 		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxFeedbackTime));
 #else
 		//wait for selection button press
+		exp.uiController.instructionPanel.SetActive(true);
 		yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
+		exp.uiController.instructionPanel.SetActive(false);
 #endif
 
 		currTrialNum++;
