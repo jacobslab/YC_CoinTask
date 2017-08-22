@@ -27,8 +27,6 @@ public class InstructionsController : MonoBehaviour {
 	//UICONTROLLER SETS THESE APPROPRIATELY IN EACH RESPECTIVE GAMEOBJECT.
 	//Localization is set up this way to hopefully make it easier to add a new language. It is difficult, however, to add new text...
 		//...could have done localization on each individual object, but that would make it more difficult to add new languages.
-
-	//pirate text
 	public string pirateWelcomeText = "Welcome to Treasure Hunt!";
 	public string[] pirateEncouragingText = {"Ahoy, matey!", "Great work!", "So much treasure!", "Great treasure hunting matey!"};
 	public string pirateEndText = "You found all of the treasure!";
@@ -109,7 +107,6 @@ public class InstructionsController : MonoBehaviour {
 
 	//finished
 	public string youHaveFinishedText = "You have finished your trials! \nPress (X) to proceed.";
-
 
 	List<string> _instructions;
 

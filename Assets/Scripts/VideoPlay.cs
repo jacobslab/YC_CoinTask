@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-
-public class VideoPlayer : MonoBehaviour {
+using UnityEngine.Video;
+public class VideoPlay : MonoBehaviour {
 	
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 	
-	MovieTexture movie;
+//	MovieTexture movie;
 	AudioSource movieAudio;
-	
+
+	private VideoPlayer vid;
 	public CanvasGroup group;
 	
 	void Awake(){
@@ -17,19 +18,14 @@ public class VideoPlayer : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		RawImage rim = GetComponent<RawImage>();
-		if(rim != null){
-			if(rim.texture != null){
-				movie = (MovieTexture)rim.mainTexture;
-			}
-		}
+		vid = GetComponent<VideoPlayer> ();
 		movieAudio = GetComponent<AudioSource> ();
 	}
-	
+
 	bool isMoviePaused = false;
 	void Update () {
-		if (movie != null) {
-			if (movie.isPlaying) {
+		if (vid.clip!= null) {
+			if (vid.isPlaying) {
 				if (Input.GetAxis (Config_CoinTask.ActionButtonName) > 0.2f) { //skip movie!
 					Debug.Log("skip movie");
 					Stop ();
@@ -51,18 +47,18 @@ public class VideoPlayer : MonoBehaviour {
 
 	bool shouldPlay = false;
 	public IEnumerator Play(){
-		if (movie != null) {
+		if (vid.clip != null) {
 			Debug.Log("playing instruction video");
 			yield return StartCoroutine (AskIfShouldPlay());
 
 			if (shouldPlay) {
 				group.alpha = 1.0f;
 			
-				movie.Stop ();
+				vid.Stop ();
 				movieAudio.Play ();
-				movie.Play ();
+				vid.Play ();
 			
-				while (movie.isPlaying || isMoviePaused) {
+				while (vid.isPlaying || isMoviePaused) {
 					yield return 0;
 				}
 			
@@ -99,8 +95,8 @@ public class VideoPlayer : MonoBehaviour {
 	}
 	
 	void Pause(){
-		if(movie != null){
-			movie.Pause();
+		if(vid.clip != null){
+			vid.Pause();
 			movieAudio.Pause ();
 			isMoviePaused = true;
 		} 
@@ -110,8 +106,8 @@ public class VideoPlayer : MonoBehaviour {
 	}
 	
 	void UnPause(){
-		if(movie != null){
-			movie.Play ();
+		if(vid.clip != null){
+			vid.Play ();
 			movieAudio.UnPause ();
 			isMoviePaused = false;
 		} 
@@ -121,9 +117,9 @@ public class VideoPlayer : MonoBehaviour {
 	}
 	
 	void Stop(){
-		if(movie != null){
+		if(vid.clip != null){
 			isMoviePaused = false;
-			movie.Stop ();
+			vid.Stop ();
 		} 
 		else {
 			Debug.Log("No movie attached! Can't stop.");

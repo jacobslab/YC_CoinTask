@@ -21,7 +21,7 @@ public class UIController : MonoBehaviour {
 
 	public CanvasGroup exitPanel;
 
-
+	public GameObject instructionPanel;
 	//FOR LOCALIZATION
 	public Text pauseInstruction;
 	public Text gamePausedText;
@@ -89,12 +89,13 @@ public class UIController : MonoBehaviour {
 	}
 
 	public void InitText(){
+		instructionPanel.SetActive (false);
 		pauseInstruction.text = exp.currInstructions.pauseText;
 		gamePausedText.text = exp.currInstructions.gamePausedText;
 
 		//box swap screen
 		boxSwapTitle.text = exp.currInstructions.boxSwapBonusTitle;
-		boxSwapExplanation.text = exp.currInstructions.boxSwapExplanation;
+		boxSwapExplanation.text = exp.currInstructions.boxSwapExplanation.Replace("NEWLINE","\n");
 
 		//instructions
 		yesText.text = "[" + exp.currInstructions.yesAnswerText + "]";
@@ -111,12 +112,12 @@ public class UIController : MonoBehaviour {
 			noAnswerText.fontSize = 250;
 		}
 
-		yesExplanationText.text = splitUpLongText (exp.currInstructions.yesPointsText, 28, '/');
-		maybeExplanationText.text = splitUpLongText (exp.currInstructions.maybePointsText, 28, '/');
+		yesExplanationText.text = splitUpLongText (exp.currInstructions.yesPointsText.Replace("NEWLINE","\n"), 28, '/');
+		maybeExplanationText.text = splitUpLongText (exp.currInstructions.maybePointsText.Replace("NEWLINE","\n"), 28, '/');
 		noExplanationText.text = splitUpLongText (exp.currInstructions.noPointsText, 28, '/');
 
 		//do you remember
-		doYouRememberText.text = exp.currInstructions.doYouRememberText;
+		doYouRememberText.text = exp.currInstructions.doYouRememberText.Replace("NEWLINE","\n");
 		recallPressToSelectText.text = exp.currInstructions.pressToSelect;
 
 		//trial score screen

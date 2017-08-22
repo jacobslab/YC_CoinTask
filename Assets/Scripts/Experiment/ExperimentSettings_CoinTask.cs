@@ -92,6 +92,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			return;
 		}
 		_instance = this;
+		SetLanguage ();
 
 #if UNITY_WEBPLAYER
 		InitWebSettings ();

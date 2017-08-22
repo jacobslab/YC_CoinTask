@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.IO;
+using System.Collections.Generic;
 
 public class Experiment_CoinTask : MonoBehaviour {
 
@@ -34,7 +35,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	public BoxSwapGameController boxGameController;
 
 	//instruction video player
-	public VideoPlayer instrVideoPlayer;
+	public VideoPlay instrVideoPlayer;
 
 	//score controller
 	public ScoreController scoreController;
@@ -239,6 +240,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 		else{
 			currInstructions.SetInstructionsTransparentOverlay();
 		}
+		line = line.Replace ("NEWLINE", "\n");
 		currInstructions.DisplayText(line);
 
 		yield return new WaitForSeconds (minDisplayTimeSeconds);
