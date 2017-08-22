@@ -38,17 +38,21 @@ public class InputMic : MonoBehaviour
 		{
 			Debug.Log("length of mics is" + Microphone.devices.Length + "  and  " + Microphone.devices[i].ToString());
 			micList.Add(Microphone.devices[i].ToString());
+			#if !DEMO
 						if (Microphone.devices [i].ToString ().Contains ("Samson")) {
 				samsonIndex = i;
 				samsonDeviceName = Microphone.devices [samsonIndex].ToString ();
 							samsonFound = true;
 							
 						}
+			#endif
 		}
+		#if !DEMO
 		if (!samsonFound) {
 			samsonWarningGroup.alpha = 1f;
 			UnityEngine.Debug.Log ("Samson mic not found");
-		} 
+		}
+		#endif
 		beginExperimentText.enabled = false;
 		micDrops.AddOptions(micList);
 	}
