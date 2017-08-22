@@ -14,8 +14,8 @@ public class GoText : MonoBehaviour {
 	public Color endColor;
 
 	Vector3 startScale;
-	float animationTime = 0.3f;
-	float fadeOutTime = 0.1f;
+	float animationTime = 0.8f;
+	float fadeOutTime = 0.3f;
 
 	// Use this for initialization
 	void Start () {

@@ -51,7 +51,7 @@ public class PirateUI : MonoBehaviour {
 		yield return StartCoroutine (SetVisible (true));
 		
 		//if (typeOfText == PirateTextType.start) {
-		yield return new WaitForSeconds (1.5f);
+		yield return new WaitForSeconds (3f);
 		//}
 		if (shouldAutoStop) {
 			Stop ();
