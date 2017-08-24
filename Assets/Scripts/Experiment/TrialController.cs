@@ -432,7 +432,7 @@ public class TrialController : MonoBehaviour {
 			yield return 0;
 		}
 
-		StartCoroutine(exp.uiController.pirateController.PlayEndingPirate ());
+		yield return StartCoroutine(exp.uiController.pirateController.PlayEndingPirate ());
 #if UNITY_WEBPLAYER
 		yield return StartCoroutine(exp.ShowSingleInstruction("You have finished your trials! \nPress (X) to restart.", true, true, false, 0.0f));
 #else
@@ -475,7 +475,6 @@ public class TrialController : MonoBehaviour {
 
 			//FINISHED A TRIAL BLOCK, SHOW UI
 			trialLogger.LogInstructionEvent();
-			StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
 			exp.uiController.blockCompletedUI.Play(i, exp.scoreController.score, ListOfTrialBlocks.Count);
 			trialLogger.LogBlockScreenStarted(true);
 			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
@@ -484,8 +483,10 @@ public class TrialController : MonoBehaviour {
 
 			exp.uiController.blockCompletedUI.Stop();
 			trialLogger.LogBlockScreenStarted(false);
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, false);
 
+			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, false);
+			if(i<ListOfTrialBlocks.Count-1)
+				yield return StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
 			exp.scoreController.Reset();
 
 			Debug.Log ("TRIAL Block: " + i);

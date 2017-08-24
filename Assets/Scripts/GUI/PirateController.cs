@@ -14,11 +14,11 @@ public class PirateController : MonoBehaviour {
 	}
 
 	public IEnumerator PlayEncouragingPirate(){
-		yield return StartCoroutine(EncouragingPirate.Play(PirateUI.PirateTextType.encouraging, false));
+		yield return StartCoroutine(EncouragingPirate.Play(PirateUI.PirateTextType.encouraging, true));
 	}
 
 	public IEnumerator PlayEndingPirate(){
-		yield return StartCoroutine(StartEndPirate.Play(PirateUI.PirateTextType.end, false));
+		yield return StartCoroutine(StartEndPirate.Play(PirateUI.PirateTextType.end, true));
 	}
 
 }

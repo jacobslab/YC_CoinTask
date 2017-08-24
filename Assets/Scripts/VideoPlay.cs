@@ -119,6 +119,7 @@ public class VideoPlay : MonoBehaviour {
 	void Stop(){
 		if(vid.clip != null){
 			isMoviePaused = false;
+			movieAudio.Stop ();
 			vid.Stop ();
 		} 
 		else {
