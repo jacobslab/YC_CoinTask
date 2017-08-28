@@ -7,19 +7,16 @@ using System.Diagnostics;
 public class SyncboxControl : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
-	[DllImport ("ASimplePlugin")]
+	[DllImport ("FreiburgSyncboxPlugin")]
 	private static extern IntPtr OpenUSB();
-	[DllImport ("ASimplePlugin")]
+	[DllImport ("FreiburgSyncboxPlugin")]
 	private static extern IntPtr CloseUSB();
-	[DllImport ("ASimplePlugin")]
+	[DllImport ("FreiburgSyncboxPlugin")]
 	private static extern IntPtr TurnLEDOn();
-	[DllImport ("ASimplePlugin")]
+	[DllImport ("FreiburgSyncboxPlugin")]
 	private static extern IntPtr TurnLEDOff();
-	[DllImport ("ASimplePlugin")]
-	private static extern long SyncPulse();
-	[DllImport ("ASimplePlugin")]
-	private static extern IntPtr StimPulse(float durationSeconds, float freqHz, bool doRelay);
-	
+
+
 	public bool ShouldSyncPulse = true;
 	public float PulseOnSeconds;
 	public float PulseOffSeconds;
@@ -29,22 +26,22 @@ public class SyncboxControl : MonoBehaviour {
 
 	//SINGLETON
 	private static SyncboxControl _instance;
-	
+
 	public static SyncboxControl Instance{
 		get{
 			return _instance;
 		}
 	}
-	
+
 	void Awake(){
-		
+
 		if (_instance != null) {
 			UnityEngine.Debug.Log("Instance already exists!");
 			Destroy(transform.gameObject);
 			return;
 		}
 		_instance = this;
-		
+
 	}
 
 	// Use this for initialization
@@ -67,7 +64,7 @@ public class SyncboxControl : MonoBehaviour {
 
 		StartCoroutine (RunSyncPulseManual ());
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		GetInput ();
@@ -79,34 +76,27 @@ public class SyncboxControl : MonoBehaviour {
 
 	float syncPulseDuration = 0.05f;
 	float syncPulseInterval = 1.0f;
-	IEnumerator RunSyncPulse(){
+	/*	IEnumerator RunSyncPulse(){
 		Stopwatch executionStopwatch = new Stopwatch ();
-
 		while (ShouldSyncPulse) {
 			executionStopwatch.Reset();
-
 			SyncPulse(); //executes pulse, then waits for the rest of the 1 second interval
-
 			executionStopwatch.Start();
 			long syncPulseOnTime = SyncPulse();
 			LogSYNCOn(syncPulseOnTime);
 			while(executionStopwatch.ElapsedMilliseconds < 1500){
 				yield return 0;
 			}
-
 			executionStopwatch.Stop();
-
 		}
-	}
+	}*/
 
-
-	//WE'RE USING THIS FUNCTION
 	IEnumerator RunSyncPulseManual(){
 		float jitterMin = 0.1f;
 		float jitterMax = syncPulseInterval - syncPulseDuration;
 
 		Stopwatch executionStopwatch = new Stopwatch ();
-		
+
 		while (ShouldSyncPulse) {
 			executionStopwatch.Reset();
 
@@ -124,7 +114,7 @@ public class SyncboxControl : MonoBehaviour {
 			}
 
 			yield return StartCoroutine(WaitForShortTime(timeToWait));
-			
+
 			executionStopwatch.Stop();
 		}
 	}
@@ -147,14 +137,14 @@ public class SyncboxControl : MonoBehaviour {
 		long microseconds = ticks / (TimeSpan.TicksPerMillisecond / 1000);
 		return microseconds;
 	}
-	
+
 	IEnumerator WaitForShortTime(float jitter){
 		float currentTime = 0.0f;
 		while (currentTime < jitter) {
 			currentTime += Time.deltaTime;
 			yield return 0;
 		}
-		
+
 	}
 
 	void LogSYNCOn(long time){
@@ -179,6 +169,10 @@ public class SyncboxControl : MonoBehaviour {
 		if (ExperimentSettings_CoinTask.isLogging) {
 			exp.eegLog.Log (time, exp.eegLog.GetFrameCount (), "SYNC PULSE INFO" + Logger_Threading.LogTextSeparator + timeBeforePulseSeconds*1000); //log milliseconds
 		}
+	}
+
+	void OnDestroy(){
+		UnityEngine.Debug.Log(Marshal.PtrToStringAuto (CloseUSB()));
 	}
 
 	void OnApplicationQuit(){
