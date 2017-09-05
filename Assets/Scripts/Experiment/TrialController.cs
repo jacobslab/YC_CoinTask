@@ -89,7 +89,7 @@ public class TrialController : MonoBehaviour {
 
 		#if MRIVERSION
 		for(int i = 0; i < Config_CoinTask.numTrialsPract; i++){
-			Trial practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract[i], false);	//2 special objects for practice trial
+			Trial practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract[i],1, false);	//2 special objects for practice trial
 			practiceTrials.Add(practiceTrial);
 		}
 		#else
@@ -496,7 +496,7 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 				yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 				scoreInstructionsGroup.alpha = 0.0f;
-				yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+//				yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			}
 			else{
 				exp.currInstructions.SetInstructionsColorful();

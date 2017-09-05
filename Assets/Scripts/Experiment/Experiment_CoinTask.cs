@@ -265,6 +265,10 @@ public class Experiment_CoinTask : MonoBehaviour {
 	
 	public IEnumerator WaitForActionButton(){
 		bool hasPressedButton = false;
+		#if MRIVERSION
+		yield return new WaitForSeconds(2f);
+		yield return null;
+		#else
 		while(Input.GetAxis(Config_CoinTask.ActionButtonName) != 0f){
 			yield return 0;
 		}
@@ -274,6 +278,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 			}
 			yield return 0;
 		}
+		#endif
 	}
 
 	public IEnumerator WaitForJitter(float minJitter, float maxJitter){

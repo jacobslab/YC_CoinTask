@@ -92,7 +92,11 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float micLoudThreshold = 0.1f;
 
 	//recall
+	#if MRIVERSION
+	public static int recallTime=2;
+	#else
 	public static int recallTime=6;
+	#endif
 
 	//trophies
 	public static int bronzeThreshold=3; //must give 3 consecutive correct within a single trial
@@ -108,10 +112,12 @@ public class Config_CoinTask : MonoBehaviour {
 	
 	//practice settings
 	public static int numTrialsPract = 3;
-	public static bool isPractice = true;
+	public static bool isPractice = false;
 	public static int[] numSpecialObjectsPract = {2,2,3};
-	public static int numTwoItemTrials = 20;
-	public static int numThreeItemTrials = 20;
+//	public static int numTwoItemTrials = 20;
+//	public static int numThreeItemTrials = 20;
+	public static int numThreeItemTrials = 4;
+	public static int numFourItemTrials = 4;
 	public static int numTrialsPerBlock = 8;
 	
 	//FEEDBACK SETTINGS:
