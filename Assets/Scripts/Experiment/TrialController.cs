@@ -825,18 +825,18 @@ public class TrialController : MonoBehaviour {
 		//wait for player to collect all default objects
 		int numDefaultObjectsToCollect = currentTrial.DefaultObjectLocationsXZ.Count;
 
-		#if MRIVERSION
-		for(int i = 0; i <numDefaultObjectsToCollect; i++){
-			Debug.Log("WAIT FOR NAVIGATION TIMEOUT");
-			yield return StartCoroutine(WaitForMRINavigationTimeout(Config_CoinTask.maxChestNavigationTime));
-		}
-		#else //if not MRI version, just wait until all chests are collected;
+//		#if MRIVERSION
+//		for(int i = 0; i <numDefaultObjectsToCollect; i++){
+//			Debug.Log("WAIT FOR NAVIGATION TIMEOUT");
+//			yield return StartCoroutine(WaitForMRINavigationTimeout(Config_CoinTask.maxChestNavigationTime));
+//		}
+//		#else //if not MRI version, just wait until all chests are collected;
 		//while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
 		while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
 		//	Debug.Log ("collected: " + numDefaultObjectsCollected+"/"+(numDefaultObjectsToCollect).ToString());
 			yield return 0;
 		}
-		#endif
+//		#endif
 		Debug.Log("num collected is: " + numDefaultObjectsCollected + " and to collect is : " + (numDefaultObjectsToCollect).ToString());
 		//Add time bonus
 		trialTimer.StopTimer ();
@@ -981,20 +981,20 @@ public class TrialController : MonoBehaviour {
 				//yield return new WaitForSeconds (2f);
 				//trialLogger.LogInstructionEvent ();
 				//yield return StartCoroutine (exp.uiController.doYouRememberObjectUI.PlayObjectRecall());
-				#if MRIVERSION
-				Config_CoinTask.MemoryState rememberResponse;
-				isMRITimeout = false;
-				yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxAnswerTime));
-				if(isMRITimeout){
-				rememberResponse = Config_CoinTask.MemoryState.no;
-				}
-				else{
-				rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
-				}
-				rememberResponses.Add(rememberResponse);
-				trialLogger.LogRememberResponse(rememberResponse);
-				#else
-				#endif
+//				#if MRIVERSION
+//				Config_CoinTask.MemoryState rememberResponse;
+//				isMRITimeout = false;
+//				yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxAnswerTime));
+//				if(isMRITimeout){
+//				rememberResponse = Config_CoinTask.MemoryState.no;
+//				}
+//				else{
+//				rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
+//				}
+//				rememberResponses.Add(rememberResponse);
+//				trialLogger.LogRememberResponse(rememberResponse);
+//				#else
+//				#endif
 				//yield return StartCoroutine (exp.WaitForActionButton ());
 //				Config_CoinTask.MemoryState rememberResponse = exp.uiController.doYouRememberObjectUI.myAnswerSelector.GetMemoryState ();
 //				rememberResponses.Add (rememberResponse);
@@ -1013,12 +1013,12 @@ public class TrialController : MonoBehaviour {
 				exp.currInstructions.SetTextPanelOn ();
 
 
-				#if MRIVERSION
-				exp.currInstructions.SetInstructionsTransparentOverlay();
-				exp.currInstructions.DisplayText(selectObjectText);
-				yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
-				exp.currInstructions.SetInstructionsBlank();
-				#else
+//				#if MRIVERSION
+//				exp.currInstructions.SetInstructionsTransparentOverlay();
+//				exp.currInstructions.DisplayText(selectObjectText);
+//				yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
+//				exp.currInstructions.SetInstructionsBlank();
+//				#else
 
 
 				//set your own instructions
@@ -1026,7 +1026,7 @@ public class TrialController : MonoBehaviour {
 				exp.currInstructions.DisplayText (selectObjectText);
 
 				//yield return new WaitForSeconds(3f);
-				#endif
+//				#endif
 			
 
 				int logTrialNumber = i; //just the object number for this current trial
