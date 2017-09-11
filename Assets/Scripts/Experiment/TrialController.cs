@@ -133,7 +133,7 @@ public class TrialController : MonoBehaviour {
 
 			//generate blocks from trials
 			int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
-			UnityEngine.Debug.Log ("total number of BLOCKS are: " + numTrialBlocks);
+			UnityEngine.Debug.Log ("total number of BLOCKS are: " + numTrialBlocks  + " with " + numTestTrials.ToString() + " trials");
 			GenerateTrialBlocks (ListOfThreeItemTrials,ListOfFourItemTrials,numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
 		}
 	}
@@ -356,7 +356,8 @@ public class TrialController : MonoBehaviour {
 	void GenerateTrialBlocks(List<Trial> threeItemTrials, List<Trial> fourItemTrials,int numBlocks, int numTrialsPerBlock){
 		for(int i = 0; i < numBlocks; i++){
 			List<Trial> newBlock = new List<Trial>();
-			for(int j = 0; j < 3; j++){ //half two item, half one item
+			for(int j = 0; j < 6; j++){ //half two item, half one item
+				UnityEngine.Debug.Log("number of 3-trial left: " + threeItemTrials.Count.ToString());
 				int randomThreeItemIndex = Random.Range (0, threeItemTrials.Count);
 				int randomFourItemIndex = Random.Range (0, fourItemTrials.Count);
 //				int randomFiveItemIndex = Random.Range (0, fiveItemTrials.Count);
@@ -581,7 +582,7 @@ public class TrialController : MonoBehaviour {
 
 			//FINISHED A TRIAL BLOCK, SHOW UI
 			trialLogger.LogInstructionEvent();
-			StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
+//			StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
 			yield return exp.uiController.blockCompletedUI.Play(i, ListOfTrialBlocks.Count);
 
 			trialLogger.LogBlockScreenStarted(true);
@@ -1068,8 +1069,11 @@ public class TrialController : MonoBehaviour {
 				//check audio response
 				UnityEngine.Debug.Log("CHECKING SPHINX RESPONSE: " +  totalTrialNumber + " and  "  +currentRecallNumber);
 				int sphinxNum = totalTrialNumber;
+				#if !MRIVERSION
 				recallAnswers[randomOrderIndex]=exp.sphinxTest.CheckAudioResponse(sphinxNum,currentRecallNumber,currentRecallObject,kws_threshold);
-
+				#else
+				recallAnswers[randomOrderIndex]=0;
+				#endif
 				trialLogger.LogSphinxEvent ();
 
 				trialLogger.LogInstructionEvent ();
@@ -1203,28 +1207,28 @@ public class TrialController : MonoBehaviour {
 			int points = 0;
 			//increment total cues
 			totalRecallCues++;
-			if(currentRecallAnswer==1){
-				Debug.Log ("changing to green");
-				correctIndicatorController.ChangeToRightColor();
-				trialLogger.LogCorrectAnswer ();
-				points = 100;
-				correctRecallCues++; //increment correct recall cues
-				consecutiveScore++; // increment consecutive score and then check if it passes threshold
-				Debug.Log ("cons:" + consecutiveScore);
-				if (consecutiveScore >= Config_CoinTask.bronzeThreshold) {
-					Debug.Log ("award bronze");
-					exp.scoreController.giveBronze = true;
-					consecutiveScore = 0;
-				}
-			}
-			else if (currentRecallAnswer == 0){
+//			if(currentRecallAnswer==1){
+//				Debug.Log ("changing to green");
+//				correctIndicatorController.ChangeToRightColor();
+//				trialLogger.LogCorrectAnswer ();
+//				points = 100;
+//				correctRecallCues++; //increment correct recall cues
+//				consecutiveScore++; // increment consecutive score and then check if it passes threshold
+//				Debug.Log ("cons:" + consecutiveScore);
+//				if (consecutiveScore >= Config_CoinTask.bronzeThreshold) {
+//					Debug.Log ("award bronze");
+//					exp.scoreController.giveBronze = true;
+//					consecutiveScore = 0;
+//				}
+//			}
+//			else if (currentRecallAnswer == 0){
 				Debug.Log ("changing to red");
 				points = 0;
 				correctIndicatorController.ChangeToWrongColor();
 				trialLogger.LogWrongAnswer ();
 				consecutiveScore = 0;
 				//chosenPositionColor = correctIndicatorController.ChangeToWrongColor();
-			}
+//			}
 
 
 			//connect the chosen and correct indicators via a line
@@ -1255,39 +1259,39 @@ public class TrialController : MonoBehaviour {
 		//wait for selection button press
 		yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 #endif
-		float recallRate = correctRecallCues / totalRecallCues;
-		if (recallRate >=0.8f) {
-			exp.scoreController.silverProgress++;
-			if (exp.scoreController.silverProgress >=Config_CoinTask.silverThreshold) {
-				exp.scoreController.giveSilver = true;
-			}
-		}
-		if (recallRate >= 1f) {
-			exp.scoreController.goldProgress++;
-			if (exp.scoreController.goldProgress >= Config_CoinTask.goldThreshold) {
-				exp.scoreController.giveGold = true;
-			}
-		}
+//		float recallRate = correctRecallCues / totalRecallCues;
+//		if (recallRate >=0.8f) {
+//			exp.scoreController.silverProgress++;
+//			if (exp.scoreController.silverProgress >=Config_CoinTask.silverThreshold) {
+//				exp.scoreController.giveSilver = true;
+//			}
+//		}
+//		if (recallRate >= 1f) {
+//			exp.scoreController.goldProgress++;
+//			if (exp.scoreController.goldProgress >= Config_CoinTask.goldThreshold) {
+//				exp.scoreController.giveGold = true;
+//			}
+//		}
+//
+//		trialLogger.LogTrophyEvent();
+//		yield return StartCoroutine (exp.scoreController.GiveTrophies ());
+//		currTrialNum++;
 
-		trialLogger.LogTrophyEvent();
-		yield return StartCoroutine (exp.scoreController.GiveTrophies ());
-		currTrialNum++;
 
+//		trialLogger.LogInstructionEvent();
+//		trialLogger.LogScoreScreenStarted(true);
+//		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
+//		exp.uiController.scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
 
-		trialLogger.LogInstructionEvent();
-		trialLogger.LogScoreScreenStarted(true);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
-		exp.uiController.scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
+//#if MRIVERSION
+//		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxScoreScreenTime));
+//#else
+//		yield return StartCoroutine (exp.WaitForActionButton ());
+//#endif
 
-#if MRIVERSION
-		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxScoreScreenTime));
-#else
-		yield return StartCoroutine (exp.WaitForActionButton ());
-#endif
-
-		exp.uiController.scoreRecapUI.Stop ();
-		trialLogger.LogScoreScreenStarted(false);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);
+//		exp.uiController.scoreRecapUI.Stop ();
+//		trialLogger.LogScoreScreenStarted(false);
+//		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);
 
 
 		//delete all indicators & special objects

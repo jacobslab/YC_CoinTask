@@ -93,7 +93,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 	//recall
 	#if MRIVERSION
-	public static int recallTime=2;
+	public static int recallTime=4;
 	#else
 	public static int recallTime=6;
 	#endif
@@ -107,7 +107,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float trophyRedeemTime=2f; //time trophy takes to be redeemed by moving from top-right to block score transform
 	
 #if MRIVERSION
-	public static int numTestTrials = 8; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
+	public static int numTestTrials = 12; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
 	
 	
 	//practice settings
@@ -116,9 +116,9 @@ public class Config_CoinTask : MonoBehaviour {
 	public static int[] numSpecialObjectsPract = {2,2,3};
 //	public static int numTwoItemTrials = 20;
 //	public static int numThreeItemTrials = 20;
-	public static int numThreeItemTrials = 4;
-	public static int numFourItemTrials = 4;
-	public static int numTrialsPerBlock = 6;
+	public static int numThreeItemTrials = 6;
+	public static int numFourItemTrials = 6;
+	public static int numTrialsPerBlock = 12;
 	
 	//FEEDBACK SETTINGS:
 	public static float feedbackTimeBetweenObjects = 0.5f;

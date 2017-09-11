@@ -95,7 +95,7 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 		if (ExperimentSettings_CoinTask.isLogging) {
 			Experiment_CoinTask.Instance.subjectLog.close ();
 			Experiment_CoinTask.Instance.eegLog.close ();
-			File.Copy ("/Users/" + System.Environment.UserName + "/Library/Logs/Unity/Player.log", Experiment_CoinTask.Instance.sessionDirectory+"Player.log");
+//			File.Copy ("/Users/" + System.Environment.UserName + "/Library/Logs/Unity/Player.log", Experiment_CoinTask.Instance.sessionDirectory+"Player.log");
 		}
 		Application.Quit();
 	}
