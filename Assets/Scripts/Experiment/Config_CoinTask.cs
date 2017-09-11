@@ -22,7 +22,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static Version BuildVersion = Version.THR3;
 #endif
 
-	public static string VersionNumber = "2.059";
+	public static string VersionNumber = "2.100";
 
 
 #if MRIVERSION
@@ -118,7 +118,7 @@ public class Config_CoinTask : MonoBehaviour {
 //	public static int numThreeItemTrials = 20;
 	public static int numThreeItemTrials = 4;
 	public static int numFourItemTrials = 4;
-	public static int numTrialsPerBlock = 8;
+	public static int numTrialsPerBlock = 6;
 	
 	//FEEDBACK SETTINGS:
 	public static float feedbackTimeBetweenObjects = 0.5f;
