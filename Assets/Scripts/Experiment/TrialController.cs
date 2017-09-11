@@ -378,7 +378,9 @@ public class TrialController : MonoBehaviour {
 	#if (!UNITY_WEBPLAYER)
 	//		if(!ExperimentSettings_CoinTask.Instance.isWebBuild){
 				trialLogger.LogVideoEvent(true);
+				exp.instrVideoPlayer.EnableVideo();
 				yield return StartCoroutine(exp.instrVideoPlayer.Play());
+				exp.instrVideoPlayer.DisableVideo();
 				trialLogger.LogVideoEvent(false);
 	//		}
 	#endif

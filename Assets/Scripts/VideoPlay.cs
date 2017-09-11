@@ -22,6 +22,18 @@ public class VideoPlay : MonoBehaviour {
 		movieAudio = GetComponent<AudioSource> ();
 	}
 
+	public void EnableVideo()
+	{
+		vid.enabled = true;
+		movieAudio.enabled = true;
+	}
+
+	public void DisableVideo()
+	{
+		vid.enabled = false;
+		movieAudio.enabled = false;
+	}
+
 	bool isMoviePaused = false;
 	void Update () {
 		if (vid.clip!= null) {
@@ -63,7 +75,8 @@ public class VideoPlay : MonoBehaviour {
 				}
 				
 				isMoviePaused = false;
-				
+				vid.Stop ();
+				movieAudio.Stop ();
 				group.alpha = 0.0f;
 			}
 			yield return 0;
