@@ -156,8 +156,8 @@ public class ObjectController : MonoBehaviour {
 		} 
 		else 
 		{
-			Debug.Log ("current foil objects index: " + CurrentTrialFoilObjects);
 			newObj = FoilObjects [CurrentTrialFoilObjects++];
+			Debug.Log ("current foil objects index: " + CurrentTrialFoilObjects);
 			objPos= new Vector3(positionXZ.x, DefaultObject.transform.position.y, positionXZ.y);
 			newObj.transform.position = objPos;
 			newObj.tag = "FoilObject";

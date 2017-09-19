@@ -29,9 +29,10 @@ public class GoText : MonoBehaviour {
 	
 	}
 
-	public void Play(){
+	public void Play(float animTime=0.3f){
 		if (Config_CoinTask.isJuice) {
-			text.text = exp.currInstructions.GoText;
+			animationTime = animTime;
+//			text.text = exp.currInstructions.GoText;
 			StartCoroutine (ScaleUp ());
 			ChangeColor ();
 		}

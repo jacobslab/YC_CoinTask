@@ -266,7 +266,10 @@ public class Experiment_CoinTask : MonoBehaviour {
 	public IEnumerator WaitForActionButton(){
 		bool hasPressedButton = false;
 		#if MRIVERSION
-		yield return new WaitForSeconds(2f);
+//		yield return new WaitForSeconds(2f);
+		while(Input.GetAxis("Vertical")==0f){
+			yield return 0;
+		}
 		yield return null;
 		#else
 		while(Input.GetAxis(Config_CoinTask.ActionButtonName) != 0f){

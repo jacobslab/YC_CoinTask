@@ -20,6 +20,7 @@ public class DefaultItem : MonoBehaviour {
 	public AudioSource defaultCollisionSound;
 	public AudioSource specialCollisionSound;
 
+	private GameObject specialObject;
 	bool isExecutingPlayerCollision = false;
 	//bool shouldDie = false;
 
@@ -57,6 +58,7 @@ public class DefaultItem : MonoBehaviour {
 	void Update () {
 		
 	}
+
 
 	void OnCollisionEnter(Collision collision){
 		if (collision.gameObject.tag == "Player" && (tag == "DefaultObject" || tag == "DefaultSpecialObject") && !isExecutingPlayerCollision) {
@@ -137,6 +139,22 @@ public class DefaultItem : MonoBehaviour {
 				AudioController.PlayAudio(defaultCollisionSound);
 			}
 		}
+	}
+
+	public IEnumerator TurnSpecialObjectInvisible()
+	{
+		if (specialObject != null) {
+			specialObject.GetComponent<SpawnableObject> ().TurnVisible (false);
+		}
+		yield return null;
+	}
+
+	 public IEnumerator QuickSpawnSpecialObject()
+	{
+		specialObject = Experiment_CoinTask.Instance.objectController.SpawnSpecialObject(specialObjectSpawnPoint.position);
+		yield return StartCoroutine(TurnSpecialObjectInvisible());
+		Destroy(gameObject);
+
 	}
 
 	IEnumerator SpawnSpecialObject(Vector3 specialSpawnPos){

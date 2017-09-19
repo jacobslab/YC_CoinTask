@@ -24,6 +24,7 @@ public class SpawnableObject : MonoBehaviour {
 		myVisibilityToggler = GetComponent<VisibilityToggler> ();
 		myLogTrack = GetComponent<ObjectLogTrack> ();
 		origScale = transform.localScale;
+//		StartCoroutine ("TurnInvisibleAuto");
 	}
 
 	void Start(){
@@ -35,6 +36,13 @@ public class SpawnableObject : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	IEnumerator TurnInvisibleAuto()
+	{
+		yield return new WaitForSeconds (1.5f);
+		TurnVisible (false);
+		yield return null;
 	}
 
 	//function to turn off (or on) the object without setting it inactive -- because we want to keep logging on

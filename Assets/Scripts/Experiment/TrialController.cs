@@ -36,16 +36,16 @@ public class TrialController : MonoBehaviour {
 
 	string initialInstructions1= "Welcome to Treasure Island!" +
 		"\n\nYou are going on a treasure hunt." +
-		"\n\nUse the joystick to control your movement." +
+		"\n\nUse the arrow keys to control your movement." +
 		"\nDrive into treasure chests to open them. Your job is to try to remember where each object is located!"+ 
-		"\n\nPress (X) to continue.";
+		"\n\nPress up arrow key to continue.";
 	
 	string initialInstructions2 = "After traveling to the treasure chests, you will be moved to the edge of the environment and we will highlight a location on the ground." +
 		"\n\nYour job is now to try to say out loud the object that you saw at that location.\n" +
 		"\n\nIf you can’t remember, say, “PASS" +
 		"\nIf we show you a new location where there was no treasure chest, say “TRICK”\n" +
 		"\nYou will have 6 seconds to respond to each item."+
-		"\n\n Press (X) to Continue.";
+		"\n\n Press up arrow key to Continue.";
 	
 	
 
@@ -468,11 +468,11 @@ public class TrialController : MonoBehaviour {
 				exp.uiController.ConnectionUI.alpha = 0.0f;
 				Camera.main.gameObject.GetComponent<AudioListener> ().enabled = true;
 			}
-			trialLogger.LogMicTestEvent (true);
-			micTest.GetComponent<CanvasGroup> ().alpha = 1f;
-			yield return StartCoroutine (micTest.RunMicTest ());
-			micTest.GetComponent<CanvasGroup> ().alpha = 0f;
-			trialLogger.LogMicTestEvent (false);
+//			trialLogger.LogMicTestEvent (true);
+//			micTest.GetComponent<CanvasGroup> ().alpha = 1f;
+//			yield return StartCoroutine (micTest.RunMicTest ());
+//			micTest.GetComponent<CanvasGroup> ().alpha = 0f;
+//			trialLogger.LogMicTestEvent (false);
 				
 #if (!(MRIVERSION))
 	#if (!UNITY_WEBPLAYER)
@@ -658,16 +658,18 @@ public class TrialController : MonoBehaviour {
 
 		bool hasPressedButton = false;
 
-		float actionInput = Input.GetAxis(Config_CoinTask.ActionButtonName);
+//		float actionInput = Input.GetAxis(Config_CoinTask.ActionButtonName);
+
+		float actionInput = Input.GetAxis("Vertical");
 		float currSeconds = MRITimer.GetSecondsFloat();
 		while(currSeconds > 0.0f && actionInput != 0.0f){ //if button is down, must lift up before we can continue
 			Debug.Log(actionInput);
 			currSeconds = MRITimer.GetSecondsFloat();
-			actionInput = Input.GetAxis(Config_CoinTask.ActionButtonName);
+			actionInput = Input.GetAxis("Vertical");
 			yield return 0;
 		}
 		while(!hasPressedButton && MRITimer.GetSecondsFloat() > 0.0f){
-			if(Input.GetAxis(Config_CoinTask.ActionButtonName) == 1.0f){
+			if(Input.GetAxis("Vertical") > 0.1f){
 				hasPressedButton = true;
 			}
 			yield return 0;
@@ -807,7 +809,7 @@ public class TrialController : MonoBehaviour {
 		else {
 			TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, true);
 		}
-
+		exp.uiController.goText.text.text = "GO!";
 		exp.uiController.goText.Play ();
 
 
@@ -833,10 +835,39 @@ public class TrialController : MonoBehaviour {
 //		}
 //		#else //if not MRI version, just wait until all chests are collected;
 		//while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
-		while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
+		while (numDefaultObjectsCollected < numDefaultObjectsToCollect && trialTimer.GetSecondsInt() < ScoreController.timeBonusTimeMed) {
 		//	Debug.Log ("collected: " + numDefaultObjectsCollected+"/"+(numDefaultObjectsToCollect).ToString());
 			yield return 0;
 		}
+		if (trialTimer.GetSecondsInt () >= ScoreController.timeBonusTimeMed) {
+			while (numDefaultObjectsCollected < numDefaultObjectsToCollect)
+			{
+				
+					
+				if (currentDefaultObject != null) {
+					currentDefaultObject.GetComponent<DefaultItem> ().TurnSpecialObjectInvisible ();
+					if (currentDefaultObject.tag == "DefaultSpecialObject") {
+						yield return StartCoroutine (currentDefaultObject.GetComponent<DefaultItem> ().QuickSpawnSpecialObject ());
+					}
+				}
+				numDefaultObjectsCollected++;
+				Debug.Log (numDefaultObjectsCollected.ToString () + " / " + numDefaultObjectsToCollect.ToString ());
+				CreateNextDefaultObject (numDefaultObjectsCollected);
+				Debug.Log (numDefaultObjectsCollected.ToString () + " / " + numDefaultObjectsToCollect.ToString ());
+				//IS NOT a foil object; then make it reveal special object and delete the chest
+				if (currentDefaultObject != null && numDefaultObjectsCollected <numDefaultObjectsToCollect) {
+					if (currentDefaultObject.tag == "DefaultSpecialObject") {
+						yield return StartCoroutine (currentDefaultObject.GetComponent<DefaultItem> ().QuickSpawnSpecialObject ());
+					}
+				}
+				yield return 0;
+			}
+		}
+
+		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
+			exp.objectController.CurrentTrialSpecialObjects [i].GetComponent<SpawnableObject> ().TurnVisible (false);
+		}
+//		numDefaultObjectsCollected = numDefaultObjectsToCollect;
 //		#endif
 		Debug.Log("num collected is: " + numDefaultObjectsCollected + " and to collect is : " + (numDefaultObjectsToCollect).ToString());
 		//Add time bonus
@@ -885,9 +916,12 @@ public class TrialController : MonoBehaviour {
 		string trialLstContents = "";
 		int foilObjectsAdded = 0;
 		int specialObjectsAdded = 0;
+
 		//List<GameObject> recallObjects = new List<GameObject> ();
 		for (int i = 0; i < randomSpecialObjectOrder.Count; i++) {
-			
+
+			Debug.Log ("current trial special objects: " + exp.objectController.CurrentTrialSpecialObjects.Count.ToString ());
+			Debug.Log ("special objects added: " + specialObjectsAdded.ToString ());
 			int halfChance = Random.Range (0, 2);
 			if (halfChance == 1 && specialObjectsAdded < currentTrial.SpecialObjectLocationsXZ.Count) {
 				exp.objectController.RecallObjectList.Add (exp.objectController.CurrentTrialSpecialObjects [specialObjectsAdded++]);
@@ -1114,6 +1148,12 @@ public class TrialController : MonoBehaviour {
 		int consecutiveScore = 0;
 		memoryScore = 0;
 
+
+		//go text but now with feedback display
+		exp.uiController.goText.text.text="FEEDBACK";
+		exp.uiController.goText.Play (0.6f);
+
+
 		List<GameObject> CorrectPositionIndicators = new List<GameObject> ();
 		List<GameObject> ChosenPositionIndicators = new List<GameObject> ();
 		List<GameObject> specialObjectListRecallOrder = new List<GameObject>();
@@ -1254,7 +1294,13 @@ public class TrialController : MonoBehaviour {
 		exp.environmentController.myPositionSelector.EnableVisibility(false);
 
 #if MRIVERSION
+		string selectObjectText = exp.currInstructions.selectTheLocationText;
+		selectObjectText = "Press up arrow key to continue!";
+		exp.currInstructions.SetTextPanelOn ();
+		exp.currInstructions.SetInstructionsTransparentOverlay();
+		exp.currInstructions.DisplayText(selectObjectText);
 		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxFeedbackTime));
+		exp.currInstructions.TurnOffInstructions ();
 #else
 		//wait for selection button press
 		yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));

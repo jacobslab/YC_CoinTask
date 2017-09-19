@@ -93,7 +93,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 	//recall
 	#if MRIVERSION
-	public static int recallTime=4;
+	public static int recallTime=3;
 	#else
 	public static int recallTime=6;
 	#endif
@@ -123,7 +123,7 @@ public class Config_CoinTask : MonoBehaviour {
 	//FEEDBACK SETTINGS:
 	public static float feedbackTimeBetweenObjects = 0.5f;
 
-	public static float MRIFixationTime = 30.0f;
+	public static float MRIFixationTime = 15.0f;
 
 #else
 	public static int numTestTrials = 30; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
@@ -172,7 +172,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public static float maxChestNavigationTime = 8.0f;
 	public static float maxInstructionTime = 3.0f;
-	public static float maxFeedbackTime = 3.0f;
+	public static float maxFeedbackTime = 5.0f;
 	public static float maxAnswerTime = 5.0f;
 	public static float maxBoxAnswerTime = 5.0f;
 	public static float maxScoreScreenTime = 5.0f;
