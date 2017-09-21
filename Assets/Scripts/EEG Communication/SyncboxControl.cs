@@ -3,6 +3,10 @@ using System.Collections;
 using System;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+#if UNITY_STANDALONE_WIN
+using LabJack.LabJackUD;
+using LabJack;
+#endif
 
 public class SyncboxControl : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
@@ -15,13 +19,22 @@ public class SyncboxControl : MonoBehaviour {
 	private static extern IntPtr TurnLEDOn();
 	[DllImport ("FreiburgSyncboxPlugin")]
 	private static extern IntPtr TurnLEDOff();
-
+	[DllImport ("FreiburgSyncboxPlugin")]
+	private static extern int CheckUSB ();
 
 	public bool ShouldSyncPulse = true;
 	public float PulseOnSeconds;
 	public float PulseOffSeconds;
 
 	public bool isUSBOpen = false;
+
+	#if UNITY_STANDALONE_WIN
+	//u3 specific
+	private U3 u3;
+	double dblDriverVersion;
+	LJUD.IO ioType = 0;
+	LJUD.CHANNEL channel = 0;
+	#endif
 
 
 	//SINGLETON
@@ -51,46 +64,150 @@ public class SyncboxControl : MonoBehaviour {
 		}
 	}
 
+	#if UNITY_STANDALONE_WIN
+	IEnumerator TurnOnOff()
+	{
+	LJUD.eDO(u3.ljhandle, 0, 1);
+	yield return new WaitForSeconds(2f);
+	LJUD.eDO(u3.ljhandle, 0, 0);
+	yield return null;
+	}
+	public void ShowErrorMessage(LabJackUDException e)
+	{
+	UnityEngine.Debug.Log("ERROR: " + e.ToString());
+
+
+	}
+	#endif
+
 	IEnumerator ConnectSyncbox(){
+
+		string connectionError = "";
 		while(!isUSBOpen){
+			UnityEngine.Debug.Log ("attempting to connect");
+			#if !UNITY_STANDALONE_WIN
 			string usbOpenFeedback = Marshal.PtrToStringAuto (OpenUSB());
 			UnityEngine.Debug.Log(usbOpenFeedback);
 			if(usbOpenFeedback != "didn't open USB..."){
 				isUSBOpen = true;
 			}
+			#else
+			try
+			{
 
+			u3 = new U3(LJUD.CONNECTION.USB, "0", true); // Connection through USB
+			//Start by using the pin_configuration_reset IOType so that all
+			//pin assignments are in the factory default condition.
+
+
+			}
+			catch (LabJackUDException e)
+			{
+			connectionError = e.ToString();
+			ShowErrorMessage(e);
+			}
+			//   StartCoroutine("TurnOnOff");
+			UnityEngine.Debug.Log("connectionerror " + connectionError);
+			if (connectionError == "") {
+			isUSBOpen = true;
+			}
+			else
+			{
+			exp.trialController.ConnectionText.text = "Please connect Syncbox and Restart";
+			}
+			#endif
 			yield return 0;
 		}
-
-		StartCoroutine (RunSyncPulseManual ());
+		ShouldSyncPulse = true;
+		StartCoroutine ("CheckSyncboxConnection");
+		StartCoroutine ("RunSyncPulseManual");
+		yield return null;
 	}
 
 	// Update is called once per frame
 	void Update () {
 		GetInput ();
+
+		//		if (Input.GetKeyDown (KeyCode.A)) {
+		//			int ok = CheckUSB ();
+		//
+		//			UnityEngine.Debug.Log (ok.ToString());
+		//		}
 	}
 
 	void GetInput(){
 		//use this for debugging if you'd like
 	}
 
+	IEnumerator CheckSyncboxConnection()
+	{
+		while (ShouldSyncPulse) {
+			int syncStatus = CheckUSB ();
+			UnityEngine.Debug.Log ("sync status is: " + syncStatus.ToString ());
+			#if FREIBURG
+			if (syncStatus == 0) {
+			UnityEngine.Debug.Log ("Syncbox connected");
+			} 
+			#else
+			if (syncStatus == 1) {
+				UnityEngine.Debug.Log ("Syncbox connected");
+			} 
+			#endif
+			else {
+				isUSBOpen = false;
+				UnityEngine.Debug.Log ("disconnected; initiating reconnection procedure");
+				StartCoroutine (ReconnectSyncbox ());
+			}
+			yield return new WaitForSeconds (2f); //check every 2 seconds
+			yield return 0;
+		}
+		yield return null;
+	}
+
+	IEnumerator ReconnectSyncbox()
+	{
+		//stop running coroutines
+		StopCoroutine ("RunSyncPulseManual");
+		StopCoroutine ("CheckSyncboxConnection");
+
+		//close any lingering USB handles
+		UnityEngine.Debug.Log(Marshal.PtrToStringAuto (CloseUSB()));
+
+		ShouldSyncPulse = false;
+
+		exp.trialController.TogglePause (); //pause the game
+		//		yield return new WaitForSeconds(1f);
+		UnityEngine.Debug.Log ("attempting to reconnect");
+		yield return StartCoroutine(ConnectSyncbox());
+		exp.trialController.TogglePause (); //unpause the game
+		yield return null;
+	}
+
 	float syncPulseDuration = 0.05f;
 	float syncPulseInterval = 1.0f;
-	/*	IEnumerator RunSyncPulse(){
-		Stopwatch executionStopwatch = new Stopwatch ();
-		while (ShouldSyncPulse) {
-			executionStopwatch.Reset();
-			SyncPulse(); //executes pulse, then waits for the rest of the 1 second interval
-			executionStopwatch.Start();
-			long syncPulseOnTime = SyncPulse();
-			LogSYNCOn(syncPulseOnTime);
-			while(executionStopwatch.ElapsedMilliseconds < 1500){
-				yield return 0;
-			}
-			executionStopwatch.Stop();
-		}
-	}*/
+	/*
+		IEnumerator RunSyncPulse(){
+			Stopwatch executionStopwatch = new Stopwatch ();
 
+			while (ShouldSyncPulse) {
+				executionStopwatch.Reset();
+
+				SyncPulse(); //executes pulse, then waits for the rest of the 1 second interval
+
+				executionStopwatch.Start();
+				long syncPulseOnTime = SyncPulse();
+				LogSYNCOn(syncPulseOnTime);
+				while(executionStopwatch.ElapsedMilliseconds < 1500){
+					yield return 0;
+				}
+
+				executionStopwatch.Stop();
+
+			}
+		}
+*/
+
+	//WE'RE USING THIS FUNCTION
 	IEnumerator RunSyncPulseManual(){
 		float jitterMin = 0.1f;
 		float jitterMax = syncPulseInterval - syncPulseDuration;
@@ -99,7 +216,7 @@ public class SyncboxControl : MonoBehaviour {
 
 		while (ShouldSyncPulse) {
 			executionStopwatch.Reset();
-
+			UnityEngine.Debug.Log ("pulse running");
 
 			float jitter = UnityEngine.Random.Range(jitterMin, jitterMax);//syncPulseInterval - syncPulseDuration);
 			yield return StartCoroutine(WaitForShortTime(jitter));
@@ -122,13 +239,21 @@ public class SyncboxControl : MonoBehaviour {
 	//return microseconds it took to turn on LED
 	void ToggleLEDOn(){
 
+		#if !UNITY_STANDALONE_WIN
 		TurnLEDOn ();
+		#else
+		LJUD.eDO(u3.ljhandle, 0, 1);
+		#endif
 		LogSYNCOn (GameClock.SystemTime_Milliseconds);
 	}
 
 	void ToggleLEDOff(){
 
+		#if !UNITY_STANDALONE_WIN
 		TurnLEDOff();
+		#else
+		LJUD.eDO(u3.ljhandle, 0, 0);
+		#endif
 		LogSYNCOff (GameClock.SystemTime_Milliseconds);
 
 	}
@@ -169,10 +294,6 @@ public class SyncboxControl : MonoBehaviour {
 		if (ExperimentSettings_CoinTask.isLogging) {
 			exp.eegLog.Log (time, exp.eegLog.GetFrameCount (), "SYNC PULSE INFO" + Logger_Threading.LogTextSeparator + timeBeforePulseSeconds*1000); //log milliseconds
 		}
-	}
-
-	void OnDestroy(){
-		UnityEngine.Debug.Log(Marshal.PtrToStringAuto (CloseUSB()));
 	}
 
 	void OnApplicationQuit(){
