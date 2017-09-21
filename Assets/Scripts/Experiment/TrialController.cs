@@ -1044,7 +1044,7 @@ public class TrialController : MonoBehaviour {
 
 				//show single selection instruction and wait for selection button press
 				string selectObjectText = exp.currInstructions.selectTheLocationText;
-				selectObjectText = "Name the object remembered in this location";
+				selectObjectText = "Name the object remembered in this location and repeat it two times into the microphone";
 				exp.currInstructions.SetTextPanelOn ();
 
 
