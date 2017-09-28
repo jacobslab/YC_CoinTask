@@ -34,18 +34,16 @@ public class TrialController : MonoBehaviour {
 
 	public Trial currentTrial;
 
-	string initialInstructions1= "Welcome to Treasure Island!" +
-		"\n\nYou are going on a treasure hunt." +
-		"\n\nUse the arrow keys to control your movement." +
+	string initialInstructions1= "Use the arrow keys to control your movement." +
 		"\nDrive into treasure chests to open them. Your job is to try to remember where each object is located!"+ 
-		"\n\nPress up arrow key to continue.";
+		"\n\nPress the F5 key to connect and sync to MRI";
 	
 	string initialInstructions2 = "After traveling to the treasure chests, you will be moved to the edge of the environment and we will highlight a location on the ground." +
 		"\n\nYour job is now to try to say out loud the object that you saw at that location.\n" +
 		"\n\nIf you can’t remember, say, “PASS" +
 		"\nIf we show you a new location where there was no treasure chest, say “TRICK”\n" +
-		"\nYou will have 6 seconds to respond to each item."+
-		"\n\n Press up arrow key to Continue.";
+		"\nYou will have" + Config_CoinTask.recallTime.ToString() + " seconds to respond to each item."+
+		"\n\n Press the up arrow key to Continue.";
 	
 	
 
@@ -1044,7 +1042,7 @@ public class TrialController : MonoBehaviour {
 
 				//show single selection instruction and wait for selection button press
 				string selectObjectText = exp.currInstructions.selectTheLocationText;
-				selectObjectText = "Name the object remembered in this location and repeat it two times into the microphone";
+				selectObjectText = "Repeat the name of the object remembered in this location twice in the microphone";
 				exp.currInstructions.SetTextPanelOn ();
 
 

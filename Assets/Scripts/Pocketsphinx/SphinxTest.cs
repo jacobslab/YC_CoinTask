@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 public class SphinxTest : MonoBehaviour {
 	
-
+	#if !MRIVERSION
 	[DllImport ("SphinxPlugin")]
 	private static extern IntPtr SphinxRun(int trialNumber, int recallNumber,int kws_threshold);
 
@@ -24,6 +24,7 @@ public class SphinxTest : MonoBehaviour {
 
 	[DllImport ("SphinxPlugin")]
 	private static extern IntPtr GetAudioPath();
+	#endif
 	// Use this for initialization
 	void Start () {
 
@@ -31,9 +32,6 @@ public class SphinxTest : MonoBehaviour {
 //		UnityEngine.Debug.Log(usbOpenFeedback);
 
 
-		UnityEngine.Debug.Log (PrintANumber ());
-		UnityEngine.Debug.Log (AddTwoIntegers (3, 5));
-		UnityEngine.Debug.Log (AddTwoFloats (2f, 3f));
 //		string path = Marshal.PtrToStringAuto (GetAudioPath ());
 //		UnityEngine.Debug.Log (path);
 //		//int number = Marshal.ReadInt32(new IntPtr(PrintANumber ()));
@@ -48,7 +46,7 @@ public class SphinxTest : MonoBehaviour {
 	void Update () {
 		
 	}
-
+	#if !MRIVERSION
 	public void SetPath(string audioPath)
 	{
 		UnityEngine.Debug.Log ("set sphinx audio path to " + audioPath);
@@ -73,4 +71,5 @@ public class SphinxTest : MonoBehaviour {
 			return 0;
 		}
 	}
+	#endif
 }

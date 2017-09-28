@@ -93,7 +93,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 	//recall
 	#if MRIVERSION
-	public static int recallTime=3;
+	public static int recallTime=4;
 	#else
 	public static int recallTime=6;
 	#endif
