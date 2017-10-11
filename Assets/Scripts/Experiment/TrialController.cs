@@ -468,6 +468,8 @@ public class TrialController : MonoBehaviour {
 
 				yield return StartCoroutine (RunTrial ( nextTrial ));
 
+                //temp blackout of camera
+                exp.player.controls.myCamera.stereoTargetEye = StereoTargetEyeMask.None;
 			}
 
 			//FINISHED A TRIAL BLOCK, SHOW UI
@@ -652,7 +654,10 @@ public class TrialController : MonoBehaviour {
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));
 		trialLogger.LogTransportationToHomeEvent (false);
 
-		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
+        //TURN on the camera
+        exp.player.controls.myCamera.stereoTargetEye = StereoTargetEyeMask.Both;
+
+        if (ExperimentSettings_CoinTask.isOneByOneReveal) {
 			//Spawn the first default object
 			CreateNextDefaultObject (0);
 		}
@@ -718,9 +723,12 @@ public class TrialController : MonoBehaviour {
 		//lock player movement
 		exp.player.controls.ShouldLockControls = true;
 
-		//bring player to tower
-		//exp.player.TurnOnVisuals (false);
-		trialLogger.LogTrialNavigation (false);
+
+        //turn off the camera
+        exp.player.controls.myCamera.stereoTargetEye = StereoTargetEyeMask.None;
+        //bring player to tower
+        //exp.player.TurnOnVisuals (false);
+        trialLogger.LogTrialNavigation (false);
 		if (currentTrial.isStim) {
 			TCPServer.Instance.SetState (TCP_Config.DefineStates.STIM_NAVIGATION, false);
 		} 
@@ -732,8 +740,12 @@ public class TrialController : MonoBehaviour {
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, false));//PlayerControls.toTowerTime) );
 		trialLogger.LogTransportationToTowerEvent (false);
 
-		//RUN DISTRACTOR GAME
-		trialLogger.LogDistractorGame (true);
+
+        //turn on camera
+        exp.player.controls.myCamera.stereoTargetEye = StereoTargetEyeMask.Both;
+
+        //RUN DISTRACTOR GAME
+        trialLogger.LogDistractorGame (true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, true);
 		yield return StartCoroutine(exp.boxGameController.RunGame());
 		trialLogger.LogDistractorGame (false);

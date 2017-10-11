@@ -7,3 +7,9 @@ Q,score 0,block 0
 s,score 0,block 0
 q,score 0,block 0
 QA,score 250,block 0
+j,score 0,block 0
+fg,score 0,block 1
+f,score 0,block 0
+jh,score 0,block 0
+h,score -650,block 0
+df,score -50,block 0
