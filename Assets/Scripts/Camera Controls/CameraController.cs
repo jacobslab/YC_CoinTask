@@ -11,6 +11,7 @@ public class CameraController : MonoBehaviour {
 	public GameObject AvatarStandardCameraRig;
 	public GameObject UICamera;
 	public GameObject ReplayOverHeadCamera;
+    public GameObject blackoutCamera;
 
 	public GameObject OculusRig;
 
@@ -51,7 +52,21 @@ public class CameraController : MonoBehaviour {
 
 	}
 
-	void TurnOffAllCameras(){
+    public void EnableBlackout()
+    {
+        AvatarStandardCameraRig.GetComponent<Camera>().enabled = false;
+        UICamera.GetComponent<Camera>().enabled = false;
+        blackoutCamera.GetComponent<Camera>().enabled = true;
+    }
+
+    public void DisableBlackout()
+    {
+        AvatarStandardCameraRig.GetComponent<Camera>().enabled = true;
+        UICamera.GetComponent<Camera>().enabled = true;
+        blackoutCamera.GetComponent<Camera>().enabled = false;
+    }
+
+    void TurnOffAllCameras(){
 		EnableCameras(AvatarStandardCameraRig, false);
 
 		if(!ExperimentSettings_CoinTask.isOculus){

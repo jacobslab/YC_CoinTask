@@ -20,12 +20,12 @@ public class ObjectController : MonoBehaviour {
 
 	//object array & list
 	List<GameObject> gameObjectList_Spawnable;
-	//List<GameObject> gameObjectList_Spawned; //a list to keep track of the objects currently in the scene
+    //List<GameObject> gameObjectList_Spawned; //a list to keep track of the objects currently in the scene
+    public GameObject groundTarget;
 
 
-
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		gameObjectList_Spawnable = new List<GameObject> ();
 		CurrentTrialSpecialObjects = new List<GameObject> ();
 		CreateSpecialObjectList (gameObjectList_Spawnable);

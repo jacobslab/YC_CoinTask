@@ -469,7 +469,7 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine (RunTrial ( nextTrial ));
 
                 //temp blackout of camera
-                exp.player.controls.myCamera.stereoTargetEye = StereoTargetEyeMask.None;
+                exp.cameraController.EnableBlackout();
 			}
 
 			//FINISHED A TRIAL BLOCK, SHOW UI
@@ -649,13 +649,14 @@ public class TrialController : MonoBehaviour {
 			Debug.Log("Logged trial #: " + numRealTrials);
 		}
 
+        exp.cameraController.EnableBlackout();
 		//move player to home location & rotation
 		trialLogger.LogTransportationToHomeEvent (true);
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));
 		trialLogger.LogTransportationToHomeEvent (false);
 
         //TURN on the camera
-        exp.player.controls.myCamera.stereoTargetEye = StereoTargetEyeMask.Both;
+        exp.cameraController.DisableBlackout();
 
         if (ExperimentSettings_CoinTask.isOneByOneReveal) {
 			//Spawn the first default object
@@ -725,7 +726,7 @@ public class TrialController : MonoBehaviour {
 
 
         //turn off the camera
-        exp.player.controls.myCamera.stereoTargetEye = StereoTargetEyeMask.None;
+        exp.cameraController.EnableBlackout();
         //bring player to tower
         //exp.player.TurnOnVisuals (false);
         trialLogger.LogTrialNavigation (false);
@@ -742,7 +743,21 @@ public class TrialController : MonoBehaviour {
 
 
         //turn on camera
-        exp.player.controls.myCamera.stereoTargetEye = StereoTargetEyeMask.Both;
+        exp.cameraController.DisableBlackout();
+
+
+        UnityEngine.Debug.Log("finished transport to tower target; now to look at ground target");
+        exp.player.ResetArrows(); //reset arrows;just in case
+        exp.currInstructions.text.text = "Please look at the ground target";
+        while (Vector3.Distance(new Vector2(exp.player.controls.cameraRot.eulerAngles.x, exp.player.controls.cameraRot.eulerAngles.z), new Vector2(currentTrial.avatarTowerRot.eulerAngles.x, currentTrial.avatarTowerRot.eulerAngles.z)) > 15f)
+        {
+            UnityEngine.Debug.Log("waiting for player to look at ground target");
+            UnityEngine.Debug.Log("angle difference: " + Vector3.Distance(exp.player.controls.cameraRot.eulerAngles, currentTrial.avatarTowerRot.eulerAngles));
+            exp.player.SetArrowsByPosition(new Vector2(exp.objectController.groundTarget.transform.position.x, exp.objectController.groundTarget.transform.position.z));
+            yield return 0;
+        }
+        UnityEngine.Debug.Log("finished looking at ground target");
+        exp.currInstructions.text.text = "";
 
         //RUN DISTRACTOR GAME
         trialLogger.LogDistractorGame (true);

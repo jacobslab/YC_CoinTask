@@ -37,8 +37,39 @@ public class Player : MonoBehaviour {
 	public void TurnOnVisuals(bool isVisible){
 		visuals.SetActive (isVisible);
 	}
+    public void SetArrowsByPosition(Vector2 pos)
+    {
 
-	void SetArrows(){
+        float angleBetweenPlayerAndTreasure = controls.GetYAngleBetweenFacingDirAndObjectXZ(pos);
+        UnityEngine.Debug.Log("ANGLE : " + angleBetweenPlayerAndTreasure);
+        //if the angle is bigger than the threshold, turn on the appropriate arrows
+        if (Mathf.Abs(angleBetweenPlayerAndTreasure) > arrowAngleThreshold)
+        {
+            if (angleBetweenPlayerAndTreasure < 0)
+            {
+                UnityEngine.Debug.Log("turn on left arrows");
+                TurnOnLeftArrows(true);
+                TurnOnRightArrows(false);
+            }
+            else
+            {
+
+                UnityEngine.Debug.Log("turn on right arrows");
+                TurnOnRightArrows(true);
+                TurnOnLeftArrows(false);
+            }
+        }
+        //if smaller than the threshold, turn off all arrows
+        else
+        {
+            TurnOnLeftArrows(false);
+            TurnOnRightArrows(false);
+        }
+
+
+
+    }
+    void SetArrows(){
 		if ( ExperimentSettings_CoinTask.isOneByOneReveal && exp.trialController.currentDefaultObject ) {
 			Vector2 currentDefaultPosXZ = new Vector2 ( exp.trialController.currentDefaultObject.transform.position.x, exp.trialController.currentDefaultObject.transform.position.z );
 
@@ -69,7 +100,16 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	public void TurnOnRightArrows(bool shouldTurnOn){
+    public void ResetArrows()
+    {
+        rightArrowsOn = true;
+        leftArrowsOn = true;
+        TurnOnLeftArrows(false);
+        TurnOnRightArrows(false);
+    }
+
+
+    public void TurnOnRightArrows(bool shouldTurnOn){
 		//only toggle them if they aren't in the shouldTurnOn state
 		if (rightArrowsOn == !shouldTurnOn) {
 			UsefulFunctions.EnableChildren (rightArrows.transform, shouldTurnOn);
