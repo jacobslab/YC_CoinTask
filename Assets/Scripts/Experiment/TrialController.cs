@@ -795,7 +795,9 @@ public class TrialController : MonoBehaviour {
             //show instructions for location selection
             int randomOrderIndex = randomSpecialObjectOrder[i];
 			GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
-			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
+
+            Debug.Log("RETRIEVAL POS: " + specialObj.transform.position.ToString());
+            SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
 			string specialItemDisplayName = specialSpawnable.GetDisplayName ();
 
 			//set TCP state true
@@ -974,7 +976,7 @@ public class TrialController : MonoBehaviour {
             specialSpawnable.TurnVisible(true);
             specialSpawnable.Scale(2.0f);
             UsefulFunctions.FaceObject(specialObj, exp.player.gameObject, false);
-
+            Debug.Log("FEEDBACK POS: " + specialObj.transform.position.ToString());
             //create an indicator for each special object
             float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;
             Vector3 correctPosition = new Vector3(specialObj.transform.position.x, indicatorHeight, specialObj.transform.position.z);

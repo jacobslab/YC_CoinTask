@@ -19,7 +19,8 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 		toTargetLine = GetComponent<LineRenderer> ();
 		lineLogTrack = GetComponent<LineRendererLogTrack> ();
 
-		//start off with them both at the start pos.
+        //start off with them both at the start pos.
+        Debug.Log("setting start pos as : " + startPos.ToString());
 		toTargetLine.SetPosition(0, startPos);
 		toTargetLine.SetPosition(1, startPos);
 
@@ -29,6 +30,7 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 	}
 
 	void Start(){
+        Debug.Log("start pos: " + startPos.ToString());
 
 	}
 	
@@ -44,6 +46,7 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 		}
 
 		Vector3 endPos = new Vector3 (targetPos.x, transform.position.y + lineHeight, targetPos.z); //use the current object's height
+        toTargetLine.SetPosition(0, startPos);
 		toTargetLine.SetPosition(1, endPos);
 
 		//log whenever the points change/are set.
@@ -58,7 +61,7 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 	}
 
 	Vector3 GetStartPos(){
-		return new Vector3 (transform.position.x, transform.position.y + lineHeight, transform.position.z);
+		return new Vector3 (transform.GetChild(3).position.x, transform.GetChild(3).position.y + lineHeight, transform.GetChild(3).position.z);
 	}
 
 	public void SetPointsText(int points){
