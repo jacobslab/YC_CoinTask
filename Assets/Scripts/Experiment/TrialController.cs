@@ -3,7 +3,7 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.IO;
-
+using UnityEngine.VR;
 public class TrialController : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
@@ -636,7 +636,7 @@ public class TrialController : MonoBehaviour {
 	//could also create other IEnumerators for other types of trials
 	IEnumerator RunTrial(Trial trial){
 
-		currentTrial = trial;
+        currentTrial = trial;
 
 		if (isPracticeTrial) {
 			trialLogger.Log (-1, currentTrial.DefaultObjectLocationsXZ.Count, currentTrial.SpecialObjectLocationsXZ.Count, ExperimentSettings_CoinTask.isOneByOneReveal, false);
@@ -749,6 +749,7 @@ public class TrialController : MonoBehaviour {
         UnityEngine.Debug.Log("finished transport to tower target; now to look at ground target");
         exp.player.ResetArrows(); //reset arrows;just in case
         exp.currInstructions.text.text = "Please look at the ground target";
+        exp.currInstructions.SetInstructionsTransparentOverlay();
         while (Vector3.Distance(new Vector2(exp.player.controls.cameraRot.eulerAngles.x, exp.player.controls.cameraRot.eulerAngles.z), new Vector2(currentTrial.avatarTowerRot.eulerAngles.x, currentTrial.avatarTowerRot.eulerAngles.z)) > 15f)
         {
             UnityEngine.Debug.Log("waiting for player to look at ground target");
@@ -779,9 +780,20 @@ public class TrialController : MonoBehaviour {
 		//List<bool> areYouSureResponses = new List<bool> (); //keep track of whether or not the player wanted to double down on each object
 
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
-
-			//show instructions for location selection
-			int randomOrderIndex = randomSpecialObjectOrder[i];
+            exp.player.ResetArrows(); //reset arrows;just in case
+            exp.currInstructions.text.text = "Please look at the ground target";
+            exp.currInstructions.SetInstructionsTransparentOverlay();
+            while (Vector3.Distance(new Vector2(exp.player.controls.cameraRot.eulerAngles.x, exp.player.controls.cameraRot.eulerAngles.z), new Vector2(currentTrial.avatarTowerRot.eulerAngles.x, currentTrial.avatarTowerRot.eulerAngles.z)) > 15f)
+            {
+                UnityEngine.Debug.Log("waiting for player to look at ground target");
+                UnityEngine.Debug.Log("angle difference: " + Vector3.Distance(exp.player.controls.cameraRot.eulerAngles, currentTrial.avatarTowerRot.eulerAngles));
+                exp.player.SetArrowsByPosition(new Vector2(exp.objectController.groundTarget.transform.position.x, exp.objectController.groundTarget.transform.position.z));
+                yield return 0;
+            }
+            UnityEngine.Debug.Log("finished looking at ground target");
+            exp.currInstructions.text.text = "";
+            //show instructions for location selection
+            int randomOrderIndex = randomSpecialObjectOrder[i];
 			GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
 			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
 			string specialItemDisplayName = specialSpawnable.GetDisplayName ();
@@ -929,134 +941,139 @@ public class TrialController : MonoBehaviour {
 
 	int currTrialNum = 0;
 	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<Config_CoinTask.MemoryState> rememberResponses){
-		trialLogger.LogFeedback(true);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
+        trialLogger.LogFeedback(true);
+        TCPServer.Instance.SetState(TCP_Config.DefineStates.FEEDBACK, true);
 
-		memoryScore = 0;
+        memoryScore = 0;
 
-		List<GameObject> CorrectPositionIndicators = new List<GameObject> ();
-		List<GameObject> ChosenPositionIndicators = new List<GameObject> ();
-		List<GameObject> specialObjectListRecallOrder = new List<GameObject>();
+        List<GameObject> CorrectPositionIndicators = new List<GameObject>();
+        List<GameObject> ChosenPositionIndicators = new List<GameObject>();
+        List<GameObject> specialObjectListRecallOrder = new List<GameObject>();
 
-		List<int> objectScores = new List<int> ();
+        List<int> objectScores = new List<int>();
 
-		for (int i = 0; i < specialObjectOrder.Count; i++){
+        for (int i = 0; i < specialObjectOrder.Count; i++)
+        {
 
-			Vector3 chosenPosition = chosenPositions[i];
+            Vector3 chosenPosition = chosenPositions[i];
 
-			//throw bomb to selected location
-			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't actually want its visuals showing up as we wait
+            //throw bomb to selected location
+            exp.environmentController.myPositionSelector.EnableSelection(false); //turn off selector -- don't actually want its visuals showing up as we wait
 
 #if !(MRIVERSION)
-			yield return StartCoroutine( exp.objectController.ThrowExplosive( exp.player.transform.position, chosenPosition, i ) );
+            yield return StartCoroutine(exp.objectController.ThrowExplosive(exp.player.transform.position, chosenPosition, i));
 #endif
 
-			int randomOrderIndex = specialObjectOrder[i];
+            int randomOrderIndex = specialObjectOrder[i];
 
-			//turn on each special object & scale up for better visibility
-			GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
-			specialObjectListRecallOrder.Add(specialObj);
+            //turn on each special object & scale up for better visibility
+            GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects[randomOrderIndex];
+            specialObjectListRecallOrder.Add(specialObj);
 
-			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
-			specialSpawnable.TurnVisible(true);
-			specialSpawnable.Scale(2.0f);
-			UsefulFunctions.FaceObject( specialObj, exp.player.gameObject, false);
-			
-			//create an indicator for each special object
-			float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;
-			Vector3 correctPosition = new Vector3 (specialObj.transform.position.x, indicatorHeight, specialObj.transform.position.z);
-			GameObject correctPositionIndicator = Instantiate( exp.environmentController.myPositionSelector.CorrectPositionIndicator, correctPosition, exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.rotation) as GameObject;
-			correctPositionIndicator.GetComponent<SpawnableObject>().SetNameID(correctPositionIndicator.transform, i);
-			CorrectPositionIndicators.Add(correctPositionIndicator); 
+            SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
+            specialSpawnable.TurnVisible(true);
+            specialSpawnable.Scale(2.0f);
+            UsefulFunctions.FaceObject(specialObj, exp.player.gameObject, false);
 
-			//create an indicator for each chosen position
-			//spawn the indicator at the height of the original indicator
-			exp.environmentController.myPositionSelector.EnableSelection (true); //turn on selector for spawning indicator
-			float chosenIndicatorHeight = exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.position.y;
-			Vector3 chosenIndicatorPosition = new Vector3(chosenPosition.x, chosenIndicatorHeight, chosenPosition.z);
-			GameObject chosenPositionIndicator = Instantiate (exp.environmentController.myPositionSelector.PositionSelectorVisuals, chosenIndicatorPosition, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.rotation) as GameObject;
+            //create an indicator for each special object
+            float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;
+            Vector3 correctPosition = new Vector3(specialObj.transform.position.x, indicatorHeight, specialObj.transform.position.z);
+            GameObject correctPositionIndicator = Instantiate(exp.environmentController.myPositionSelector.CorrectPositionIndicator, correctPosition, exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.rotation) as GameObject;
+            correctPositionIndicator.GetComponent<SpawnableObject>().SetNameID(correctPositionIndicator.transform, i);
+            CorrectPositionIndicators.Add(correctPositionIndicator);
 
-			chosenPositionIndicator.GetComponent<SpawnableObject>().SetNameID(chosenPositionIndicator.transform, i);
-			chosenPositionIndicator.GetComponent<VisibilityToggler>().TurnVisible(true);
+            //create an indicator for each chosen position
+            //spawn the indicator at the height of the original indicator
+            exp.environmentController.myPositionSelector.EnableSelection(true); //turn on selector for spawning indicator
+            float chosenIndicatorHeight = exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.position.y;
+            Vector3 chosenIndicatorPosition = new Vector3(chosenPosition.x, chosenIndicatorHeight, chosenPosition.z);
+            GameObject chosenPositionIndicator = Instantiate(exp.environmentController.myPositionSelector.PositionSelectorVisuals, chosenIndicatorPosition, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.rotation) as GameObject;
 
-
-			ChosenPositionIndicators.Add(chosenPositionIndicator);
-			
-			//calculate the memory points and display them
-			exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
-
-			int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position, rememberResponses[i]);//, areYouSureResponses[i] );
-
-			//change chosen indicator color to reflect right or wrong
-			ChosenIndicatorController chosenIndicatorController = chosenPositionIndicator.GetComponent<ChosenIndicatorController>();
-			Color chosenPositionColor = chosenIndicatorController.RightColor;
-			if(points > 0){
-				chosenIndicatorController.ChangeToRightColor();
-			}
-			else if (points <= 0){
-				chosenIndicatorController.ChangeToWrongColor();
-				chosenPositionColor = chosenIndicatorController.WrongColor;
-			}
+            chosenPositionIndicator.GetComponent<SpawnableObject>().SetNameID(chosenPositionIndicator.transform, i);
+            chosenPositionIndicator.GetComponent<VisibilityToggler>().TurnVisible(true);
 
 
-			//connect the chosen and correct indicators via a line
-			SetConnectingLines( correctPositionIndicator, chosenPosition, chosenPositionColor);
+            ChosenPositionIndicators.Add(chosenPositionIndicator);
+
+            //calculate the memory points and display them
+            exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
+
+            int points = exp.scoreController.CalculateMemoryPoints(specialObj.transform.position, rememberResponses[i]);//, areYouSureResponses[i] );
+
+            //change chosen indicator color to reflect right or wrong
+            ChosenIndicatorController chosenIndicatorController = chosenPositionIndicator.GetComponent<ChosenIndicatorController>();
+            Color chosenPositionColor = chosenIndicatorController.RightColor;
+            if (points > 0)
+            {
+                chosenIndicatorController.ChangeToRightColor();
+            }
+            else if (points <= 0)
+            {
+                chosenIndicatorController.ChangeToWrongColor();
+                chosenPositionColor = chosenIndicatorController.WrongColor;
+            }
 
 
-			CorrectPositionIndicatorController correctPosController = correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>();
-
-			correctPosController.SetPointsText(points);
-			memoryScore += points;
-
-			objectScores.Add(points);
+            //connect the chosen and correct indicators via a line
+            SetConnectingLines(correctPositionIndicator, chosenPosition, chosenPositionColor);
 
 
-			//WAIT BEFORE NEXT FEEDBACK
-			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't want its visuals showing up as we wait
+            CorrectPositionIndicatorController correctPosController = correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>();
+
+            correctPosController.SetPointsText(points);
+            memoryScore += points;
+
+            objectScores.Add(points);
+
+
+            //WAIT BEFORE NEXT FEEDBACK
+            exp.environmentController.myPositionSelector.EnableSelection(false); //turn off selector -- don't want its visuals showing up as we wait
 #if !(MRIVERSION)
-			yield return new WaitForSeconds(Config_CoinTask.feedbackTimeBetweenObjects);
+            yield return new WaitForSeconds(Config_CoinTask.feedbackTimeBetweenObjects);
 #endif
-		}
-		
-		//disable original selector
-		exp.environmentController.myPositionSelector.EnableSelection(false);
+        }
+
+        //disable original selector
+        exp.environmentController.myPositionSelector.EnableSelection(false);
 
 #if MRIVERSION
 		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxFeedbackTime));
 #else
-		//wait for selection button press
-		yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
+        //wait for selection button press
+       // exp.uiController.instructionPanel.SetActive(true);
+        yield return StartCoroutine(exp.ShowSingleInstruction(exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
+      //  exp.uiController.instructionPanel.SetActive(false);
 #endif
 
-		currTrialNum++;
+        currTrialNum++;
 
 
-		trialLogger.LogInstructionEvent();
-		trialLogger.LogScoreScreenStarted(true);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
-		exp.uiController.scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
+        trialLogger.LogInstructionEvent();
+        trialLogger.LogScoreScreenStarted(true);
+        TCPServer.Instance.SetState(TCP_Config.DefineStates.SCORESCREEN, true);
+        exp.uiController.scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
 
 #if MRIVERSION
 		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxScoreScreenTime));
 #else
-		yield return StartCoroutine (exp.WaitForActionButton ());
+        yield return StartCoroutine(exp.WaitForActionButton());
 #endif
 
-		exp.uiController.scoreRecapUI.Stop ();
-		trialLogger.LogScoreScreenStarted(false);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);
+        exp.uiController.scoreRecapUI.Stop();
+        trialLogger.LogScoreScreenStarted(false);
+        TCPServer.Instance.SetState(TCP_Config.DefineStates.SCORESCREEN, false);
 
 
-		//delete all indicators & special objects
-		DestroyGameObjectList (CorrectPositionIndicators);
-		DestroyGameObjectList (ChosenPositionIndicators);
-		DestroyGameObjectList (exp.objectController.CurrentTrialSpecialObjects);
+        //delete all indicators & special objects
+        DestroyGameObjectList(CorrectPositionIndicators);
+        DestroyGameObjectList(ChosenPositionIndicators);
+        DestroyGameObjectList(exp.objectController.CurrentTrialSpecialObjects);
 
-		trialLogger.LogFeedback(false);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, false);
+        trialLogger.LogFeedback(false);
+        TCPServer.Instance.SetState(TCP_Config.DefineStates.FEEDBACK, false);
 
-		yield return 0;
-	}
+        yield return 0;
+    }
 
 	void SetConnectingLines( GameObject correctPositionIndicator, Vector3 chosenPosition, Color chosenIndicatorColor){//, EnvironmentPositionSelector.SelectionRadiusType chosenRadiusSize ){
 		correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>().SetLineTarget(chosenPosition, chosenIndicatorColor);

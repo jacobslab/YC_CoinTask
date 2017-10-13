@@ -42,7 +42,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
     public static bool isOculus = true;
 #else
        
-    public static bool isOculus = true;
+    public static bool isOculus = false;
 #endif
     public static bool isReplay = false;
 	public static bool isLogging = true; //if not in replay mode, should log things! or can be toggled off in main menu.
