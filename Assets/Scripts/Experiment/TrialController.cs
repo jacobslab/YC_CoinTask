@@ -31,6 +31,8 @@ public class TrialController : MonoBehaviour {
 
 	public Trial currentTrial;
 
+    public GameObject groundTarget;
+
 	[HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
 	
 	List<List<Trial>> ListOfTrialBlocks;
@@ -49,9 +51,9 @@ public class TrialController : MonoBehaviour {
 			InitPracticeTrials();
 		}
 		InitTrials ();
-		#endif
-
-		trialLogger = GetComponent<TrialLogTrack> ();
+#endif
+        groundTarget.SetActive(false);
+        trialLogger = GetComponent<TrialLogTrack> ();
 	}
 
 	void InitPracticeTrials(){
@@ -748,6 +750,7 @@ public class TrialController : MonoBehaviour {
 
         UnityEngine.Debug.Log("finished transport to tower target; now to look at ground target");
         exp.player.ResetArrows(); //reset arrows;just in case
+        groundTarget.SetActive(true);
         exp.currInstructions.text.text = "Please look at the ground target";
         exp.currInstructions.SetInstructionsTransparentOverlay();
         while (Vector3.Distance(new Vector2(exp.player.controls.cameraRot.eulerAngles.x, exp.player.controls.cameraRot.eulerAngles.z), new Vector2(currentTrial.avatarTowerRot.eulerAngles.x, currentTrial.avatarTowerRot.eulerAngles.z)) > 15f)
@@ -757,6 +760,7 @@ public class TrialController : MonoBehaviour {
             exp.player.SetArrowsByPosition(new Vector2(exp.objectController.groundTarget.transform.position.x, exp.objectController.groundTarget.transform.position.z));
             yield return 0;
         }
+        groundTarget.SetActive(false);
         UnityEngine.Debug.Log("finished looking at ground target");
         exp.currInstructions.text.text = "";
 
@@ -781,6 +785,7 @@ public class TrialController : MonoBehaviour {
 
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
             exp.player.ResetArrows(); //reset arrows;just in case
+            groundTarget.SetActive(true);
             exp.currInstructions.text.text = "Please look at the ground target";
             exp.currInstructions.SetInstructionsTransparentOverlay();
             while (Vector3.Distance(new Vector2(exp.player.controls.cameraRot.eulerAngles.x, exp.player.controls.cameraRot.eulerAngles.z), new Vector2(currentTrial.avatarTowerRot.eulerAngles.x, currentTrial.avatarTowerRot.eulerAngles.z)) > 15f)
@@ -790,6 +795,7 @@ public class TrialController : MonoBehaviour {
                 exp.player.SetArrowsByPosition(new Vector2(exp.objectController.groundTarget.transform.position.x, exp.objectController.groundTarget.transform.position.z));
                 yield return 0;
             }
+            groundTarget.SetActive(false);
             UnityEngine.Debug.Log("finished looking at ground target");
             exp.currInstructions.text.text = "";
             //show instructions for location selection
