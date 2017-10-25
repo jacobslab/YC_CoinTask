@@ -656,6 +656,7 @@ public class TrialController : MonoBehaviour {
 		//move player to home location & rotation
 		trialLogger.LogTransportationToHomeEvent (true);
 		Vector3 avatarStartPos = new Vector3 (Random.Range (exp.environmentController.WallsXNeg.position.x, exp.environmentController.WallsXPos.position.x), currentTrial.avatarStartPos.y, Random.Range (exp.environmentController.WallsZNeg.position.z, exp.environmentController.WallsZPos.position.z));
+		Debug.Log ("transported to : " + avatarStartPos.ToString ());
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (avatarStartPos, currentTrial.avatarStartRot, false));
 		trialLogger.LogTransportationToHomeEvent (false);
 

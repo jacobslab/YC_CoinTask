@@ -17,7 +17,8 @@ public class EnvironmentController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		Debug.Log ("wallsxpos: " + WallsXPos.position.ToString());
+		Debug.Log ("wallsxneg: " + WallsXNeg.position.ToString ());
 	}
 	
 	// Update is called once per frame
@@ -32,23 +33,26 @@ public class EnvironmentController : MonoBehaviour {
 	public Vector3 GetEnvironmentCenter(){
 		float centerX = (WallsXPos.position.x + WallsXNeg.position.x + WallsZNeg.position.x + WallsZPos.position.x) / 4.0f;
 		float centerZ = (WallsXPos.position.z + WallsXNeg.position.z + WallsZNeg.position.z + WallsZPos.position.z) / 4.0f;
-
+//		Debug.Log ("center is: " + centerX.ToString () + " ,0f, " + centerZ.ToString ());
 		return new Vector3(centerX, 0.0f, centerZ);
 	}
 
 	public bool CheckWithinWallsHoriz(Vector3 position, float wallBuffer){
+		Debug.Log ("pos x " + position.x);
 		if(position.x < WallsXPos.position.x - wallBuffer && position.x > WallsXNeg.position.x + wallBuffer){
+			//Debug.Log ("within horiz walls");
 			return true;
 		}
-
+		//Debug.Log ("NOT within horiz walls");
 		return false;
 	}
 
 	public bool CheckWithinWallsVert(Vector3 position, float wallBuffer){
 		if(position.z < WallsZPos.position.z - wallBuffer && position.z > WallsZNeg.position.z + wallBuffer){
+			//.Log ("within vert walls");
 			return true;	
 		}
-		
+		//Debug.Log ("NOT within vert walls");
 		return false;
 	}
 
@@ -99,7 +103,7 @@ public class EnvironmentController : MonoBehaviour {
 				}
 			}
 		}
-
+		Debug.Log ("distance to wall: " + distanceToWall.ToString ());
 		return distanceToWall;
 	}
 
