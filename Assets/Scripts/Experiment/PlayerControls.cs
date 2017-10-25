@@ -67,11 +67,13 @@ public class PlayerControls : MonoBehaviour{
 			Vector3 movementDir = movementTransform.forward;
 			float angleDifference = 0;
 			if(wasNotMoving){
-				//align forward direction with main camera forward direction!
-				Quaternion cameraRot = myCamera.transform.rotation;
+                //align forward direction with main camera forward direction!
+                
+                Quaternion cameraRot = myCamera.transform.rotation;
 				angleDifference = movementTransform.rotation.eulerAngles.y - cameraRot.eulerAngles.y;
 				movementTransform.RotateAround(movementTransform.position, Vector3.up, -angleDifference);
-				movementDir = movementTransform.forward;
+				
+                movementDir = movementTransform.forward;
 			}
 			wasNotMoving = false;
 			GetComponent<Rigidbody>().velocity = movementDir*verticalAxisInput*Config_CoinTask.driveSpeed; //since we are setting velocity based on input, no need for time.delta time component

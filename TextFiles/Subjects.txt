@@ -9,11 +9,11 @@ q,score 0,block 0
 QA,score 250,block 0
 j,score 0,block 0
 fg,score 350,block 0
-f,score 0,block 0
+f,score 300,block 0
 jh,score 0,block 0
 h,score -650,block 0
-df,score 0,block 0
-fd,score 500,block 0
+df,score 200,block 1
+fd,score 200,block 0
 DSF,score 0,block 0
 hh,score 0,block 0
 rt,score 0,block 0
@@ -24,3 +24,5 @@ F,score 550,block 0
 tu,score 300,block 0
 FD,score -150,block 0
 dfs,score 0,block 0
+red,score 0,block 0
+dsf,score 0,block 0

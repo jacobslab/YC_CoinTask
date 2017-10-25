@@ -753,13 +753,14 @@ public class TrialController : MonoBehaviour {
         groundTarget.SetActive(true);
         exp.currInstructions.text.text = "Please look at the ground target";
         exp.currInstructions.SetInstructionsTransparentOverlay();
-        while (Vector3.Distance(new Vector2(exp.player.controls.cameraRot.eulerAngles.x, exp.player.controls.cameraRot.eulerAngles.z), new Vector2(currentTrial.avatarTowerRot.eulerAngles.x, currentTrial.avatarTowerRot.eulerAngles.z)) > 15f)
+        while (Vector3.Distance(new Vector2(exp.player.controls.cameraRot.eulerAngles.x, exp.player.controls.cameraRot.eulerAngles.z), new Vector2(currentTrial.avatarTowerRot.eulerAngles.x, currentTrial.avatarTowerRot.eulerAngles.z)) > 25f)
         {
             UnityEngine.Debug.Log("waiting for player to look at ground target");
             UnityEngine.Debug.Log("angle difference: " + Vector3.Distance(exp.player.controls.cameraRot.eulerAngles, currentTrial.avatarTowerRot.eulerAngles));
             exp.player.SetArrowsByPosition(new Vector2(exp.objectController.groundTarget.transform.position.x, exp.objectController.groundTarget.transform.position.z));
             yield return 0;
         }
+        //yield return StartCoroutine(WaitForPlayerToLookAt(groundTarget));
         groundTarget.SetActive(false);
         UnityEngine.Debug.Log("finished looking at ground target");
         exp.currInstructions.text.text = "";
@@ -788,7 +789,7 @@ public class TrialController : MonoBehaviour {
             groundTarget.SetActive(true);
             exp.currInstructions.text.text = "Please look at the ground target";
             exp.currInstructions.SetInstructionsTransparentOverlay();
-            while (Vector3.Distance(new Vector2(exp.player.controls.cameraRot.eulerAngles.x, exp.player.controls.cameraRot.eulerAngles.z), new Vector2(currentTrial.avatarTowerRot.eulerAngles.x, currentTrial.avatarTowerRot.eulerAngles.z)) > 15f)
+            while (Vector3.Distance(new Vector2(exp.player.controls.cameraRot.eulerAngles.x, exp.player.controls.cameraRot.eulerAngles.z), new Vector2(currentTrial.avatarTowerRot.eulerAngles.x, currentTrial.avatarTowerRot.eulerAngles.z)) > 25f)
             {
                 UnityEngine.Debug.Log("waiting for player to look at ground target");
                 UnityEngine.Debug.Log("angle difference: " + Vector3.Distance(exp.player.controls.cameraRot.eulerAngles, currentTrial.avatarTowerRot.eulerAngles));
