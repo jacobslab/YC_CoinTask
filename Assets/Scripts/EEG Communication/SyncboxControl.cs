@@ -3,10 +3,6 @@ using System.Collections;
 using System;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
-#if UNITY_STANDALONE_WIN
-using LabJack.LabJackUD;
-using LabJack;
-#endif
 
 public class SyncboxControl : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
@@ -28,13 +24,6 @@ public class SyncboxControl : MonoBehaviour {
 
 	public bool isUSBOpen = false;
 
-	#if UNITY_STANDALONE_WIN
-	//u3 specific
-	private U3 u3;
-	double dblDriverVersion;
-	LJUD.IO ioType = 0;
-	LJUD.CHANNEL channel = 0;
-	#endif
 
 
 	//SINGLETON
@@ -63,59 +52,17 @@ public class SyncboxControl : MonoBehaviour {
 			StartCoroutine(ConnectSyncbox());
 		}
 	}
-
-	#if UNITY_STANDALONE_WIN
-	IEnumerator TurnOnOff()
-	{
-	LJUD.eDO(u3.ljhandle, 0, 1);
-	yield return new WaitForSeconds(2f);
-	LJUD.eDO(u3.ljhandle, 0, 0);
-	yield return null;
-	}
-	public void ShowErrorMessage(LabJackUDException e)
-	{
-	UnityEngine.Debug.Log("ERROR: " + e.ToString());
-
-
-	}
-	#endif
-
 	IEnumerator ConnectSyncbox(){
 
 		string connectionError = "";
 		while(!isUSBOpen){
 			UnityEngine.Debug.Log ("attempting to connect");
-			#if !UNITY_STANDALONE_WIN
 			string usbOpenFeedback = Marshal.PtrToStringAuto (OpenUSB());
 			UnityEngine.Debug.Log(usbOpenFeedback);
 			if(usbOpenFeedback != "didn't open USB..."){
 				isUSBOpen = true;
 			}
-			#else
-			try
-			{
 
-			u3 = new U3(LJUD.CONNECTION.USB, "0", true); // Connection through USB
-			//Start by using the pin_configuration_reset IOType so that all
-			//pin assignments are in the factory default condition.
-
-
-			}
-			catch (LabJackUDException e)
-			{
-			connectionError = e.ToString();
-			ShowErrorMessage(e);
-			}
-			//   StartCoroutine("TurnOnOff");
-			UnityEngine.Debug.Log("connectionerror " + connectionError);
-			if (connectionError == "") {
-			isUSBOpen = true;
-			}
-			else
-			{
-			exp.trialController.ConnectionText.text = "Please connect Syncbox and Restart";
-			}
-			#endif
 			yield return 0;
 		}
 		ShouldSyncPulse = true;
@@ -239,21 +186,13 @@ public class SyncboxControl : MonoBehaviour {
 	//return microseconds it took to turn on LED
 	void ToggleLEDOn(){
 
-		#if !UNITY_STANDALONE_WIN
 		TurnLEDOn ();
-		#else
-		LJUD.eDO(u3.ljhandle, 0, 1);
-		#endif
 		LogSYNCOn (GameClock.SystemTime_Milliseconds);
 	}
 
 	void ToggleLEDOff(){
 
-		#if !UNITY_STANDALONE_WIN
 		TurnLEDOff();
-		#else
-		LJUD.eDO(u3.ljhandle, 0, 0);
-		#endif
 		LogSYNCOff (GameClock.SystemTime_Milliseconds);
 
 	}
