@@ -215,7 +215,13 @@ public class TrialLogTrack : LogTrack {
 			}
 		}
 	}
-
+	public void LogStartPosition(Vector3 startPos)
+	{
+		if (ExperimentSettings_CoinTask.isLogging) {
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "HOMEBASE_TRANSPORT_STARTED");
+				Debug.Log ("Logged start position");
+			}
+	}
 	public void LogTransportationToHomeEvent(bool isStarting){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			if(isStarting){
