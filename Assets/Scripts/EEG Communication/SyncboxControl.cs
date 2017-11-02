@@ -1,24 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Text;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
-
+using System.IO;
 public class SyncboxControl : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
-	[DllImport ("FreiburgSyncboxPlugin")]
-	private static extern IntPtr OpenUSB();
-	[DllImport ("FreiburgSyncboxPlugin")]
-	private static extern IntPtr CloseUSB();
-	[DllImport ("FreiburgSyncboxPlugin")]
+	[DllImport ("ASimplePlugin")]
+	private static extern int OpenUSB();
+	[DllImport ("ASimplePlugin")]
+	private static extern int CloseUSB();
+	[DllImport ("ASimplePlugin")]
 	private static extern IntPtr TurnLEDOn();
-	[DllImport ("FreiburgSyncboxPlugin")]
+	[DllImport ("ASimplePlugin")]
 	private static extern IntPtr TurnLEDOff();
-	[DllImport ("FreiburgSyncboxPlugin")]
+	[DllImport ("ASimplePlugin")]
 	private static extern int CheckUSB ();
-
-	public bool ShouldSyncPulse = true;
+    [DllImport("ASimplePlugin")]
+    private static extern int AddTwoIntegers(int a, int b);
+    public bool ShouldSyncPulse = true;
 	public float PulseOnSeconds;
 	public float PulseOffSeconds;
 
@@ -48,7 +50,10 @@ public class SyncboxControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
 		if(Config_CoinTask.isSyncbox){
+            LogSyncInfo("LOGSTART");
+            UnityEngine.Debug.Log(AddTwoIntegers(4, 5));
 			StartCoroutine(ConnectSyncbox());
 		}
 	}
@@ -56,10 +61,12 @@ public class SyncboxControl : MonoBehaviour {
 
 		string connectionError = "";
 		while(!isUSBOpen){
-			UnityEngine.Debug.Log ("attempting to connect");
-			string usbOpenFeedback = Marshal.PtrToStringAuto (OpenUSB());
-			UnityEngine.Debug.Log(usbOpenFeedback);
-			if(usbOpenFeedback != "didn't open USB..."){
+			//UnityEngine.Debug.Log ("attempting to connect");
+			int usbOpenFeedback = OpenUSB();
+            
+			//UnityEngine.Debug.Log("USB Open response: " + usbOpenFeedback.ToString());
+			if(usbOpenFeedback != 0){
+                LogSyncInfo("USB Connected");
 				isUSBOpen = true;
 			}
 
@@ -70,6 +77,14 @@ public class SyncboxControl : MonoBehaviour {
 		StartCoroutine ("RunSyncPulseManual");
 		yield return null;
 	}
+
+    public void LogSyncInfo(string info)
+    {
+        using (StreamWriter outputFile = new StreamWriter(Application.dataPath + @"\syncboxInfo.txt"))
+        {
+            outputFile.WriteLine(info);
+        }
+    }
 
 	// Update is called once per frame
 	void Update () {
@@ -90,10 +105,12 @@ public class SyncboxControl : MonoBehaviour {
 	{
 		while (ShouldSyncPulse) {
 			int syncStatus = CheckUSB ();
-			UnityEngine.Debug.Log ("sync status is: " + syncStatus.ToString ());
+            LogSyncInfo("sync status is: " + syncStatus.ToString());
+            UnityEngine.Debug.Log ("sync status is: " + syncStatus.ToString ());
 			#if FREIBURG
 			if (syncStatus == 0) {
-			UnityEngine.Debug.Log ("Syncbox connected");
+                LogSyncInfo("Syncbox connected");
+                UnityEngine.Debug.Log ("Syncbox connected");
 			} 
 			#else
 			if (syncStatus == 1) {
@@ -102,7 +119,8 @@ public class SyncboxControl : MonoBehaviour {
 			#endif
 			else {
 				isUSBOpen = false;
-				UnityEngine.Debug.Log ("disconnected; initiating reconnection procedure");
+                LogSyncInfo("disconnected; initiating reconnection procedure");
+                UnityEngine.Debug.Log ("disconnected; initiating reconnection procedure");
 				StartCoroutine (ReconnectSyncbox ());
 			}
 			yield return new WaitForSeconds (2f); //check every 2 seconds
@@ -118,13 +136,14 @@ public class SyncboxControl : MonoBehaviour {
 		StopCoroutine ("CheckSyncboxConnection");
 
 		//close any lingering USB handles
-		UnityEngine.Debug.Log(Marshal.PtrToStringAuto (CloseUSB()));
+		UnityEngine.Debug.Log(CloseUSB().ToString());
 
 		ShouldSyncPulse = false;
 
 		exp.trialController.TogglePause (); //pause the game
 		//		yield return new WaitForSeconds(1f);
-		UnityEngine.Debug.Log ("attempting to reconnect");
+        LogSyncInfo("attempting to reconnect");
+        UnityEngine.Debug.Log ("attempting to reconnect");
 		yield return StartCoroutine(ConnectSyncbox());
 		exp.trialController.TogglePause (); //unpause the game
 		yield return null;
@@ -236,7 +255,7 @@ public class SyncboxControl : MonoBehaviour {
 	}
 
 	void OnApplicationQuit(){
-		UnityEngine.Debug.Log(Marshal.PtrToStringAuto (CloseUSB()));
+		UnityEngine.Debug.Log(CloseUSB().ToString());
 	}
 
 }

@@ -512,7 +512,7 @@ public class TrialController : MonoBehaviour {
 		}
 		if (Config_CoinTask.isSyncbox){
 			while(!SyncboxControl.Instance.isUSBOpen){
-				Debug.Log("Waiting for sync box to open...");
+				//Debug.Log("Waiting for sync box to open...");
 				yield return 0;
 			}
 		}
