@@ -28,10 +28,16 @@ public class Player : MonoBehaviour {
 		TurnOnRightArrows (false);
 		TurnOnLeftArrows (false);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		SetArrows ();
+
+    // Update is called once per frame
+    void Update() {
+        if (ExperimentSettings_CoinTask.isArrows)
+            SetArrows();
+        else
+        {
+            rightArrows.SetActive(false);
+            leftArrows.SetActive(false);
+        }
 	}
 
 	public void TurnOnVisuals(bool isVisible){

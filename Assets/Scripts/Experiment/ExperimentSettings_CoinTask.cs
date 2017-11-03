@@ -42,11 +42,13 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
     public static bool isOculus = true;
 #else
        
-    public static bool isOculus = true;
+    public static bool isOculus = false;
+    public static bool isArrows = false;
 #endif
     public static bool isReplay = false;
 	public static bool isLogging = true; //if not in replay mode, should log things! or can be toggled off in main menu.
 
+    public Toggle arrowsToggle;
 	public Toggle oculusToggle; //only exists in main menu -- make sure to null check
 	public Toggle loggingToggle; //only exists in main menu -- make sure to null check
 
@@ -118,6 +120,11 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 #endif
 #endif
 	}
+
+    public void SetArrowsToggle()
+    {
+        isArrows = arrowsToggle.isOn;
+    }
 
 	void InitLoggingPath(){
 		ResetDefaultLoggingPath ();

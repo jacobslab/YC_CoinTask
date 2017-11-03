@@ -28,3 +28,6 @@ red,score 0,block 0
 dsf,score 0,block 0
 g,score 0,block 0
 FG,score 0,block 0
+ds,score 0,block 0
+d,score 0,block 0
+fsd,score 0,block 0
