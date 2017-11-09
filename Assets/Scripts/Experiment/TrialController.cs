@@ -471,7 +471,7 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine (RunTrial ( nextTrial ));
 
                 //temp blackout of camera
-                exp.cameraController.EnableBlackout();
+                //exp.cameraController.EnableBlackout();
 			}
 
 			//FINISHED A TRIAL BLOCK, SHOW UI

@@ -42,7 +42,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
     public static bool isOculus = true;
 #else
        
-    public static bool isOculus = false;
+    public static bool isOculus = true;
     public static bool isArrows = false;
 #endif
     public static bool isReplay = false;
