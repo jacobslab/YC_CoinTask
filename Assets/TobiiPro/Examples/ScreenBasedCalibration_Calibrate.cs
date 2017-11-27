@@ -9,6 +9,7 @@ namespace Tobii.Research.CodeExamples
 		{
 			if (eyeTracker != null)
 			{
+				UnityEngine.Debug.Log ("inside public static");
 				yield return Calibrate(eyeTracker);
 			}
 			yield break;
@@ -16,6 +17,7 @@ namespace Tobii.Research.CodeExamples
 		// <BeginExample>
 		private static IEnumerator Calibrate(IEyeTracker eyeTracker)
 		{
+			UnityEngine.Debug.Log ("inside private static; executing calibration");
 			// Create a calibration object.
 			var calibration = new ScreenBasedCalibration(eyeTracker);
 			// Enter calibration mode.
