@@ -7,6 +7,8 @@ public class EnvironmentController : MonoBehaviour {
 	public Transform WallsZPos;
 	public Transform WallsZNeg;
 
+	public SphereCollider sphereWalls;
+
 	public GameObject HomeBaseIndicatorA;
 	public GameObject HomeBaseIndicatorB;
 
@@ -58,11 +60,13 @@ public class EnvironmentController : MonoBehaviour {
 
 	public Vector3 GetRandomPositionWithinWallsXZ(float wallBuffer){
 		
-		float randomXPos = Random.Range(WallsXPos.position.x - wallBuffer, WallsXNeg.position.x + wallBuffer);
-		float randomZPos = Random.Range(WallsZPos.position.z - wallBuffer, WallsZNeg.position.z + wallBuffer);
-		
-		Vector3 newPosition = new Vector3 (randomXPos, transform.position.y, randomZPos);
+		//float randomXPos = Random.Range(WallsXPos.position.x - wallBuffer, WallsXNeg.position.x + wallBuffer);
+		//float randomZPos = Random.Range(WallsZPos.position.z - wallBuffer, WallsZNeg.position.z + wallBuffer);
 
+		//Vector3 newPosition = new Vector3 (randomXPos, transform.position.y, randomZPos);
+		Vector3 randSphere=Random.insideUnitSphere;
+		Vector3 newPosition = new Vector3 (sphereWalls.transform.position.x + (randSphere.x * sphereWalls.radius), 
+			sphereWalls.transform.position.y, sphereWalls.transform.position.z + (randSphere.z * sphereWalls.radius));
 		
 		return newPosition;
 	}

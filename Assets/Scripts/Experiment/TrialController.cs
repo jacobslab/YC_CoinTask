@@ -655,12 +655,16 @@ public class TrialController : MonoBehaviour {
 
 		//move player to home location & rotation
 		trialLogger.LogTransportationToHomeEvent (true);
-		Vector3 avatarStartPos = new Vector3 (Random.Range (exp.environmentController.WallsXNeg.position.x+5f, exp.environmentController.WallsXPos.position.x-5f), currentTrial.avatarStartPos.y, Random.Range (exp.environmentController.WallsZNeg.position.z+5f, exp.environmentController.WallsZPos.position.z-5f));
+//		Vector3 avatarStartPos = new Vector3 (Random.Range (exp.environmentController.WallsXNeg.position.x+5f, exp.environmentController.WallsXPos.position.x-5f), currentTrial.avatarStartPos.y, Random.Range (exp.environmentController.WallsZNeg.position.z+5f, exp.environmentController.WallsZPos.position.z-5f));
+		Vector3 avatarStartPos = exp.environmentController.GetRandomPositionWithinWallsXZ (Config_CoinTask.objectToWallBuffer);
+		GameObject testobj = GameObject.CreatePrimitive (PrimitiveType.Cube);
+		testobj.transform.parent = transform.parent;
+		testobj.transform.position = avatarStartPos;
 		Debug.Log ("transported to : " + avatarStartPos.ToString ());
 		trialLogger.LogStartPosition (avatarStartPos);
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (avatarStartPos, currentTrial.avatarStartRot, false));
 		trialLogger.LogTransportationToHomeEvent (false);
-
+		Debug.Log ("done transporting");
 		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
 			//Spawn the first default object
 			CreateNextDefaultObject (0);
@@ -678,7 +682,7 @@ public class TrialController : MonoBehaviour {
 		//reset game timer
 		trialTimer.ResetTimer (0);
 
-		if(numRealTrials > 1 || trial.avatarStartPos != exp.player.controls.startPositionTransform1.position){ //note: if numRealTrials > 1, not a practice trial.
+		if(numRealTrials > 1){ //note: if numRealTrials > 1, not a practice trial.
 			trialLogger.LogInstructionEvent ();
 
 			#if !(MRIVERSION)
