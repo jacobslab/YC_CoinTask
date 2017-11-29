@@ -9,6 +9,9 @@ public class EyetrackerManager : MonoBehaviour {
     private IEyeTracker _eyeTracker;
     private EyetrackerLogTrack eyeLogTrack;
     public CommandExecution commExec;
+	public Canvas myCanvas;
+	public RawImage leftEye;
+	public RawImage rightEye;
     public Text leftPosText;
     public Text rightPosText;
     private Queue<GazeDataEventArgs> _queue = new Queue<GazeDataEventArgs>();
@@ -37,6 +40,13 @@ public class EyetrackerManager : MonoBehaviour {
     void Start () {
         leftPosText.text = Vector3.zero.ToString();
         rightPosText.text = Vector3.zero.ToString();
+		Vector2 left, right;
+		RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector3(-56f,-10f,-10f), myCanvas.worldCamera, out left);
+		RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector3(-42f,-10f,-8f), myCanvas.worldCamera, out right);
+
+		leftEye.transform.position = myCanvas.transform.TransformPoint(left);
+		rightEye.transform.position = myCanvas.transform.TransformPoint(right);
+		UnityEngine.Debug.Log ("transforming");
     }
 
     IEnumerator InitiateEyetracker()
@@ -112,12 +122,19 @@ private void PumpGazeData()
 // This method will be called on the main Unity thread
 private void HandleGazeData(GazeDataEventArgs e)
 {
+		Vector2 left, right;
     // Do something with gaze data
    // eyeLogTrack.LogGazeData(new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z));
         Vector3 leftPos = new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z);
         Vector3 rightPos = new Vector3(e.RightEye.GazeOrigin.PositionInUserCoordinates.X, e.RightEye.GazeOrigin.PositionInUserCoordinates.Y, e.RightEye.GazeOrigin.PositionInUserCoordinates.Z);
         leftPosText.text = leftPos.ToString();
         rightPosText.text = rightPos.ToString();
+		RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, leftPos, myCanvas.worldCamera, out left);
+		RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, rightPos, myCanvas.worldCamera, out right);
+
+		leftEye.transform.position = myCanvas.transform.TransformPoint(left);
+		rightEye.transform.position = myCanvas.transform.TransformPoint(right);
+
         /*
      Debug.Log(string.Format(
          "Got gaze data with {0} left eye origin at point ({1}, {2}, {3}) in the user coordinate system.",
