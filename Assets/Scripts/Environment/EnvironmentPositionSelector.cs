@@ -9,7 +9,8 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	public GameObject PositionSelector;
 	public GameObject PositionSelectorVisuals;
 	public GameObject CorrectPositionIndicator;
-
+	public GameObject ObjectRecallIndicator;
+	public GameObject FoilRecallIndicator;
 	public PositionSelectorLogTrack logTrack;
 
 
@@ -51,6 +52,12 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		Vector3 newStartPos = new Vector3 (envCenter.x, PositionSelector.transform.position.y, envCenter.z);
 
 		return newStartPos;
+
+	}
+
+	public void MoveToPosition(Vector3 destinationPosition)
+	{
+		ObjectRecallIndicator.transform.position = new Vector3(destinationPosition.x,PositionSelector.transform.position.y,destinationPosition.z);
 	}
 
 	void GetMovementInput(){
@@ -137,8 +144,29 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		EnableSelectionIndicator (shouldEnable);
 	}
 
+	public void EnableFoilVisibility(bool foilCanBeSeen)
+	{
+		FoilRecallIndicator.GetComponent<VisibilityToggler> ().TurnVisible (foilCanBeSeen);
+	}
+
+	public void EnableVisibility(bool shouldBeVisible)
+	{
+		EnableObjectRecallIndicator (shouldBeVisible);
+	}
+
+	public void StartTimer()
+	{
+		StartCoroutine(ObjectRecallIndicator.GetComponent<CircleTimerManager>().InitiateTimerCountdown(Config_CoinTask.recallTime));
+	}
+
+	void EnableObjectRecallIndicator(bool shouldBeVisible)
+	{
+		ObjectRecallIndicator.GetComponent<VisibilityToggler> ().TurnVisible (shouldBeVisible);
+	}
 	void EnableSelectionIndicator(bool shouldEnable){
 		PositionSelectorVisuals.GetComponent<VisibilityToggler> ().TurnVisible (shouldEnable);
 	}
+
+
 	
 }

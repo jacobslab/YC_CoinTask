@@ -12,6 +12,8 @@ public class InstructionsController : MonoBehaviour {
 
 	public bool isFinished = false;
 
+	public Image textPanel;
+
 	//TextMesh _textMesh;
 	public Text text; //TODO: rename this!!!
 	public Text oculusText;
@@ -128,6 +130,16 @@ public class InstructionsController : MonoBehaviour {
 		SetInstructionsTransparentOverlay();
 		SetInstructionsBlank();
 	}
+	public void SetTextPanelOff()
+	{
+		textPanel.color=new Color(1f,1f,1f,0f);
+	}
+
+	public void SetTextPanelOn()
+	{
+		textPanel.color=new Color(1f,1f,1f,0.5f);
+	}
+
 
 	void SetText(string newText){
 			text.text = newText;

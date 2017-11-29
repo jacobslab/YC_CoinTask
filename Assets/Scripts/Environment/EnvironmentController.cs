@@ -83,6 +83,7 @@ public class EnvironmentController : MonoBehaviour {
 		float randomZPos=Random.Range(sphereWalls.transform.position.z - sphereWalls.radius, sphereWalls.transform.position.z + sphereWalls.radius);
 		//Vector3 newPosition = new Vector3 (randomXPos, transform.position.y, randomZPos);
 		Vector3 randSphere=Random.insideUnitSphere;
+		UnityEngine.Debug.Log ("randsphere: " + randSphere.ToString ());
 		Vector3 newPosition = new Vector3 (sphereWalls.transform.position.x + (randSphere.x * sphereWalls.radius), 
 			sphereWalls.transform.position.y, sphereWalls.transform.position.z + (randSphere.z * sphereWalls.radius));
 //		UnityEngine.Debug.Log ("new position: " + newPosition);

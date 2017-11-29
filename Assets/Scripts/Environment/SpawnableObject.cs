@@ -6,9 +6,10 @@ using System.Text.RegularExpressions;
 [RequireComponent (typeof (ObjectLogTrack))]
 [RequireComponent (typeof (ScaleAnimator))]
 public class SpawnableObject : MonoBehaviour {
-
+	
 	VisibilityToggler myVisibilityToggler;
 	public bool isVisible { get { return myVisibilityToggler.GetVisibility (); } }
+	public string sphinxThreshold="";
 
 	ObjectLogTrack myLogTrack;
 
@@ -50,17 +51,25 @@ public class SpawnableObject : MonoBehaviour {
 		string name = gameObject.name;
 		name = Regex.Replace (name, "(Clone)", "");
 		name = Regex.Replace (name, "[()]", "");
+		if (name == "Trick Location")
+			return "trick";
+		else
+			return name;
+	}
 
-		return name;
-	}
-	
 	public string GetName(GameObject obj){
+
 		string name = obj.name;
-		name = Regex.Replace( name, "(Clone)", "" );
-		name = Regex.Replace( name, "[()]", "" );
-		
-		return name;
+		name = Regex.Replace (name, "(Clone)", "");
+		name = Regex.Replace (name, "[()]", "");
+
+		if (name == "Trick Location")
+			return "trick";
+		else
+			return name;
+
 	}
+
 
 	/*public string GetNameNoID(){
 		//separate out the object name from a numeric ID

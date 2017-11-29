@@ -42,6 +42,12 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	#endif
 	public Dropdown languageDropdown;
 
+	public enum RecallType
+	{
+		Location,
+		Object
+	}
+	public static RecallType myRecall=RecallType.Object;
 
 	//TOGGLES & SETTINGS
 	public static bool isOculus = false;

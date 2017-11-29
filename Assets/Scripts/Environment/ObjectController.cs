@@ -13,7 +13,11 @@ public class ObjectController : MonoBehaviour {
 	public GameObject DefaultObject; //the prefab used to instantiate the other default objects.
 	public GameObject ExplosiveObject;
 	public List<GameObject> CurrentTrialSpecialObjects;
+	public List<GameObject> RecallObjectList;
 
+	public List<GameObject> FoilObjects;
+	public int CurrentTrialFoilObjects=0;
+	public GameObject defaultFoilObject;
 
 	//experiment singleton
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
@@ -36,6 +40,15 @@ public class ObjectController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public void CreateFoilObjects()
+	{
+		for (int i = 0; i < 2; i++) {
+			GameObject temp = Instantiate (defaultFoilObject, Vector3.zero, Quaternion.identity) as GameObject;
+			temp.GetComponent<SpawnableObject> ().TurnVisible (false);
+			FoilObjects.Add (temp);
+		}
 	}
 
 	void CreateSpecialObjectList(List<GameObject> gameObjectListToFill){

@@ -75,7 +75,17 @@ public class TrialLogTrack : LogTrack {
 	}
 
 
+	public void LogWaitForISIBegan(float interTime)
+	{
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "ISI_STARTED" + separator + interTime);
+		Debug.Log ("ISI LOGGED: " + interTime);
+	}
 
+	public void LogWaitForISIEnded(float interTime)
+	{
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "ISI_ENDED" + separator + interTime);
+		Debug.Log ("ISI LOGGED: " + interTime);
+	}
 
 	public void LogAreYouSureResponse(bool response){
 		//TODO: CHANGE THE "DOUBLE DOWN" TO ARE YOU SURE OR SOMETHING.
@@ -159,16 +169,21 @@ public class TrialLogTrack : LogTrack {
 		}
 	}
 
+	public void LogMicTestEvent(bool isStarting){
+		if (ExperimentSettings_CoinTask.isLogging) {
+			if(isStarting){
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "MIC_TEST_STARTED");
+				Debug.Log ("Logged mic test started event.");
+			}
+			else{
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "MIC_TEST_ENDED");
+				Debug.Log ("Logged mic test ended event.");
+			}
+		}
+	}
 
 	//THE FOLLOWING ARE EVENTS
 
-	public void LogPauseEvent(bool isPaused){
-		if (ExperimentSettings_CoinTask.isLogging) {
-			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "TASK_PAUSED" + separator + isPaused); //logged for replay
-			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "TASK_PAUSED" + separator + isPaused); //logged for parsing events
-			Debug.Log ("Logged pause event. isPaused: " + isPaused);
-		}
-	}
 
 	public void LogVideoEvent(bool isStarting){
 		if (ExperimentSettings_CoinTask.isLogging) {
@@ -213,6 +228,21 @@ public class TrialLogTrack : LogTrack {
 				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "PLAYER_CHEST_ROTATION_ENDED");
 				Debug.Log ("Logged player chest rotation ended event.");
 			}
+		}
+	}
+
+	public void LogPauseEvent(bool isPaused){
+		if (ExperimentSettings_CoinTask.isLogging) {
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "TASK_PAUSED" + separator + isPaused); //logged for replay
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "TASK_PAUSED" + separator + isPaused); //logged for parsing events
+			Debug.Log ("Logged pause event. isPaused: " + isPaused);
+		}
+	}
+	public void LogSphinxEvent()
+	{
+		if (ExperimentSettings_CoinTask.isLogging) {
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "SPHINX_EVENT");
+			Debug.Log ("Logged object recall event.");
 		}
 	}
 	public void LogStartPosition(Vector3 startPos)
@@ -294,15 +324,33 @@ public class TrialLogTrack : LogTrack {
 		}
 	}
 
-	public void LogRecallChoiceStarted(bool isStarting){
+	public void LogRecallChoiceStarted(bool isStarting, int recallType){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			if(isStarting){
-				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "RECALL_CHOICE_STARTED");
-				Debug.Log ("Logged recall choice started event.");
+				switch(recallType)
+				{
+				case 1:
+					subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "OBJECT_RECALL_CHOICE_STARTED");
+					//					Debug.Log ("Logged recall choice started event.");
+					break;
+				case 2:
+					subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "LOCATION_RECALL_CHOICE_STARTED");
+					//		Debug.Log ("Logged recall choice started event.");
+					break;
+				}
 			}
 			else{
-				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "RECALL_CHOICE_ENDED");
-				Debug.Log ("Logged recall choice ended event.");
+				switch(recallType)
+				{
+				case 1:
+					subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "OBJECT_RECALL_CHOICE_ENDED");
+					Debug.Log ("Logged recall choice started event.");
+					break;
+				case 2:
+					subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "LOCATION_RECALL_CHOICE_ENDED");
+					Debug.Log ("Logged recall choice started event.");
+					break;
+				}
 			}
 		}
 	}

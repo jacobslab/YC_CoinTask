@@ -62,7 +62,19 @@ public class Config_CoinTask : MonoBehaviour {
 	//SPECIFIC COIN TASK VARIABLES:
 	public static float randomJitterMin = 0.0f;
 	public static float randomJitterMax = 0.2f;
-	
+
+	public static float randomPALJitterMin = 0.5f;
+	public static float randomPALJitterMax = 0.75f;
+
+	public static float isiTime = 1.0f;
+
+	public static int selectedMic=0;
+	public static float micLoudThreshold = 0.1f;
+
+	//recall
+	public static int recallTime=6;
+
+
 #if MRIVERSION
 	public static int numTestTrials = 8; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
 	
