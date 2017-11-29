@@ -7,7 +7,12 @@ public class EnvironmentController : MonoBehaviour {
 	public Transform WallsZPos;
 	public Transform WallsZNeg;
 
+	public Transform arenaCenter;
 	public SphereCollider sphereWalls;
+
+	public float xFactor=1f;
+	public float zFactor=1f;
+
 
 	public GameObject HomeBaseIndicatorA;
 	public GameObject HomeBaseIndicatorB;
@@ -39,35 +44,48 @@ public class EnvironmentController : MonoBehaviour {
 		return new Vector3(centerX, 0.0f, centerZ);
 	}
 
+
 	public bool CheckWithinWallsHoriz(Vector3 position, float wallBuffer){
-		Debug.Log ("pos x " + position.x);
-		if(position.x < WallsXPos.position.x - wallBuffer && position.x > WallsXNeg.position.x + wallBuffer){
-			//Debug.Log ("within horiz walls");
+		Debug.Log ("pos x " + position.x.ToString());
+		Debug.Log ("arena center pos: " + (arenaCenter.position.x + sphereWalls.radius - wallBuffer).ToString());
+		Debug.Log ("arena center neg " + (arenaCenter.position.x - sphereWalls.radius +wallBuffer).ToString());
+		if (position.x < arenaCenter.position.x + sphereWalls.radius - wallBuffer&& position.x > arenaCenter.position.x - sphereWalls.radius + wallBuffer) {
 			return true;
-		}
-		//Debug.Log ("NOT within horiz walls");
-		return false;
+		} else
+			return false;
+//		if(position.x < WallsXPos.position.x - wallBuffer && position.x > WallsXNeg.position.x + wallBuffer){
+//			//Debug.Log ("within horiz walls");
+//			return true;
+//		}
+//		//Debug.Log ("NOT within horiz walls");
+//		return false;
 	}
 
 	public bool CheckWithinWallsVert(Vector3 position, float wallBuffer){
-		if(position.z < WallsZPos.position.z - wallBuffer && position.z > WallsZNeg.position.z + wallBuffer){
-			//.Log ("within vert walls");
-			return true;	
-		}
-		//Debug.Log ("NOT within vert walls");
-		return false;
+		Debug.Log ("pos z: " + position.z.ToString ());
+		if (position.z < arenaCenter.position.z + sphereWalls.radius - wallBuffer && position.z > arenaCenter.position.z - sphereWalls.radius + wallBuffer) {
+			return true;
+		} else
+			return false;
+//		if(position.z < WallsZPos.position.z - wallBuffer && position.z > WallsZNeg.position.z + wallBuffer){
+//			//.Log ("within vert walls");
+//			return true;	
+//		}
+//		//Debug.Log ("NOT within vert walls");
+//		return false;
 	}
 
 	public Vector3 GetRandomPositionWithinWallsXZ(float wallBuffer){
 		
 		//float randomXPos = Random.Range(WallsXPos.position.x - wallBuffer, WallsXNeg.position.x + wallBuffer);
 		//float randomZPos = Random.Range(WallsZPos.position.z - wallBuffer, WallsZNeg.position.z + wallBuffer);
-
+		float randomXPos=Random.Range(sphereWalls.transform.position.x - sphereWalls.radius, sphereWalls.transform.position.x + sphereWalls.radius);
+		float randomZPos=Random.Range(sphereWalls.transform.position.z - sphereWalls.radius, sphereWalls.transform.position.z + sphereWalls.radius);
 		//Vector3 newPosition = new Vector3 (randomXPos, transform.position.y, randomZPos);
 		Vector3 randSphere=Random.insideUnitSphere;
 		Vector3 newPosition = new Vector3 (sphereWalls.transform.position.x + (randSphere.x * sphereWalls.radius), 
 			sphereWalls.transform.position.y, sphereWalls.transform.position.z + (randSphere.z * sphereWalls.radius));
-		
+//		UnityEngine.Debug.Log ("new position: " + newPosition);
 		return newPosition;
 	}
 

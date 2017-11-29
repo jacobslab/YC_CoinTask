@@ -29,6 +29,8 @@ public class ObjectController : MonoBehaviour {
 		gameObjectList_Spawnable = new List<GameObject> ();
 		CurrentTrialSpecialObjects = new List<GameObject> ();
 		CreateSpecialObjectList (gameObjectList_Spawnable);
+
+
 	}
 	
 	// Update is called once per frame
