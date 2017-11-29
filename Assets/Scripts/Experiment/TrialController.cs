@@ -657,9 +657,6 @@ public class TrialController : MonoBehaviour {
 		trialLogger.LogTransportationToHomeEvent (true);
 //		Vector3 avatarStartPos = new Vector3 (Random.Range (exp.environmentController.WallsXNeg.position.x+5f, exp.environmentController.WallsXPos.position.x-5f), currentTrial.avatarStartPos.y, Random.Range (exp.environmentController.WallsZNeg.position.z+5f, exp.environmentController.WallsZPos.position.z-5f));
 		Vector3 avatarStartPos = exp.environmentController.GetRandomPositionWithinWallsXZ (Config_CoinTask.objectToWallBuffer);
-		GameObject testobj = GameObject.CreatePrimitive (PrimitiveType.Cube);
-		testobj.transform.parent = transform.parent;
-		testobj.transform.position = avatarStartPos;
 		Debug.Log ("transported to : " + avatarStartPos.ToString ());
 		trialLogger.LogStartPosition (avatarStartPos);
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (avatarStartPos, currentTrial.avatarStartRot, false));

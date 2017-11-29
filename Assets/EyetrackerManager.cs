@@ -4,10 +4,13 @@ using System.Linq;
 using Tobii.Research;
 using Tobii.Research.CodeExamples;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class EyetrackerManager : MonoBehaviour {
     private IEyeTracker _eyeTracker;
     private EyetrackerLogTrack eyeLogTrack;
+    public CommandExecution commExec;
+    public Text leftPosText;
+    public Text rightPosText;
     private Queue<GazeDataEventArgs> _queue = new Queue<GazeDataEventArgs>();
     private bool canPumpData = false;
     void Awake()
@@ -32,8 +35,9 @@ public class EyetrackerManager : MonoBehaviour {
     }
     // Use this for initialization
     void Start () {
-		
-	}
+        leftPosText.text = Vector3.zero.ToString();
+        rightPosText.text = Vector3.zero.ToString();
+    }
 
     IEnumerator InitiateEyetracker()
     {
@@ -42,7 +46,7 @@ public class EyetrackerManager : MonoBehaviour {
         {
             UnityEngine.Debug.Log("eyetracker is not null; performing calibration");
             //perform calibration
-			yield return StartCoroutine(ScreenBasedCalibration_Calibrate.Execute(_eyeTracker));
+			CommandExecution.ExecuteCommand(_eyeTracker.SerialNumber,"usercalibration");
             canPumpData = true;
         }
         yield return null;
@@ -109,8 +113,12 @@ private void PumpGazeData()
 private void HandleGazeData(GazeDataEventArgs e)
 {
     // Do something with gaze data
-    eyeLogTrack.LogGazeData(new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z));
-    /*
+   // eyeLogTrack.LogGazeData(new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z));
+        Vector3 leftPos = new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z);
+        Vector3 rightPos = new Vector3(e.RightEye.GazeOrigin.PositionInUserCoordinates.X, e.RightEye.GazeOrigin.PositionInUserCoordinates.Y, e.RightEye.GazeOrigin.PositionInUserCoordinates.Z);
+        leftPosText.text = leftPos.ToString();
+        rightPosText.text = rightPos.ToString();
+        /*
      Debug.Log(string.Format(
          "Got gaze data with {0} left eye origin at point ({1}, {2}, {3}) in the user coordinate system.",
          e.LeftEye.GazeOrigin.Validity,
@@ -118,6 +126,6 @@ private void HandleGazeData(GazeDataEventArgs e)
         e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y,
          e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z));
          */
-}
+    }
 
 }
