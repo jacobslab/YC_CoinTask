@@ -38,10 +38,10 @@ public class EnvironmentController : MonoBehaviour {
 	}
 
 	public Vector3 GetEnvironmentCenter(){
-		float centerX = (WallsXPos.position.x + WallsXNeg.position.x + WallsZNeg.position.x + WallsZPos.position.x) / 4.0f;
-		float centerZ = (WallsXPos.position.z + WallsXNeg.position.z + WallsZNeg.position.z + WallsZPos.position.z) / 4.0f;
+//		float centerX = (WallsXPos.position.x + WallsXNeg.position.x + WallsZNeg.position.x + WallsZPos.position.x) / 4.0f;
+//		float centerZ = (WallsXPos.position.z + WallsXNeg.position.z + WallsZNeg.position.z + WallsZPos.position.z) / 4.0f;
 //		Debug.Log ("center is: " + centerX.ToString () + " ,0f, " + centerZ.ToString ());
-		return new Vector3(centerX, 0.0f, centerZ);
+		return arenaCenter.transform.position;
 	}
 
 
