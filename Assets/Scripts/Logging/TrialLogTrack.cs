@@ -87,6 +87,18 @@ public class TrialLogTrack : LogTrack {
 		Debug.Log ("ISI LOGGED: " + interTime);
 	}
 
+	public void LogCorrectAnswer()
+	{
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "SPHINX_RESPONSE" + separator + "CORRECT");
+		Debug.Log ("Correct Answer");
+	}
+
+	public void LogWrongAnswer()
+	{
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (),"SPHINX_RESPONSE" + separator + "CORRECT");
+		Debug.Log ("Wrong Answer");
+	}
+
 	public void LogAreYouSureResponse(bool response){
 		//TODO: CHANGE THE "DOUBLE DOWN" TO ARE YOU SURE OR SOMETHING.
 		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "DOUBLE_DOWN_RESPONSE" + separator + response);

@@ -61,9 +61,9 @@ public class SphinxTest : MonoBehaviour {
 		UnityEngine.Debug.Log("INSIDE SPHINX RESPONSE " + actualName + " for " + kws_threshold);
 		int threshInt = int.Parse (kws_threshold);
 		UnityEngine.Debug.Log ("thres int is: " + threshInt.ToString ());
-		string response = Marshal.PtrToStringAnsi(SphinxRun(trialNumber,recallNumber,threshInt));
-		UnityEngine.Debug.Log(response);
-
+	//	string response = Marshal.PtrToStringAnsi(SphinxRun(trialNumber,recallNumber,threshInt));
+	//	UnityEngine.Debug.Log(response);
+		string response = "found";
 //		string response="no";
 		if (response == "found") {
 			UnityEngine.Debug.Log("SPHINX FOUND");

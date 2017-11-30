@@ -9,6 +9,7 @@ public class CorrectPositionIndicatorController : MonoBehaviour
     public Color WrongScorecolor;
 
     public Renderer PointsScoredBackground;
+	public GameObject sphere;
 
     public Color lineRendererStartColor;
     LineRenderer toTargetLine;
@@ -42,7 +43,15 @@ public class CorrectPositionIndicatorController : MonoBehaviour
     {
 
     }
+	public void ChangeToRightColor()
+	{
+		sphere.GetComponent<Renderer> ().material.color = RightScoreColor;
+	}
 
+	public void ChangeToWrongColor()
+	{
+		sphere.GetComponent<Renderer> ().material.color = WrongScorecolor;
+	}
     public void SetLineTarget(Vector3 targetPos, Color targetColor)
     {
 
