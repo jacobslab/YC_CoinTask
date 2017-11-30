@@ -170,8 +170,10 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//Config_CoinTask.Init();
-		//inGameInstructionsController.DisplayText("");
+        //Config_CoinTask.Init();
+        //inGameInstructionsController.DisplayText("");
+
+        Application.targetFrameRate = 60;
 	}
 
 	// Update is called once per frame

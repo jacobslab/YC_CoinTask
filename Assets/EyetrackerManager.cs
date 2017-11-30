@@ -14,6 +14,8 @@ public class EyetrackerManager : MonoBehaviour {
 	public RawImage rightEye;
     public Text leftPosText;
     public Text rightPosText;
+    public Vector2 leftEditPos;
+    public Vector2 rightEditPos;
     private Queue<GazeDataEventArgs> _queue = new Queue<GazeDataEventArgs>();
     private bool canPumpData = false;
     void Awake()
@@ -41,11 +43,11 @@ public class EyetrackerManager : MonoBehaviour {
         leftPosText.text = Vector3.zero.ToString();
         rightPosText.text = Vector3.zero.ToString();
 		Vector2 left, right;
-		RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector3(-56f,-10f,-10f), myCanvas.worldCamera, out left);
-		RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector3(-42f,-10f,-8f), myCanvas.worldCamera, out right);
+	//	RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector3(-56f,-10f,-10f), myCanvas.worldCamera, out left);
+	//	RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector3(-42f,-10f,-8f), myCanvas.worldCamera, out right);
 
-		leftEye.transform.position = myCanvas.transform.TransformPoint(left);
-		rightEye.transform.position = myCanvas.transform.TransformPoint(right);
+		leftEye.transform.position = myCanvas.transform.TransformPoint(new Vector3(138f,-80f,680f));
+		rightEye.transform.position = myCanvas.transform.TransformPoint(new Vector3(108f, -60f, 680f));
 		UnityEngine.Debug.Log ("transforming");
     }
 
@@ -65,7 +67,9 @@ public class EyetrackerManager : MonoBehaviour {
  
 void Update()
 {
-        if(canPumpData)
+       
+
+        if (canPumpData)
             PumpGazeData();
 }
 
@@ -122,19 +126,30 @@ private void PumpGazeData()
 // This method will be called on the main Unity thread
 private void HandleGazeData(GazeDataEventArgs e)
 {
-		Vector2 left, right;
-    // Do something with gaze data
-   // eyeLogTrack.LogGazeData(new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z));
-        Vector3 leftPos = new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z);
-        Vector3 rightPos = new Vector3(e.RightEye.GazeOrigin.PositionInUserCoordinates.X, e.RightEye.GazeOrigin.PositionInUserCoordinates.Y, e.RightEye.GazeOrigin.PositionInUserCoordinates.Z);
-        leftPosText.text = leftPos.ToString();
-        rightPosText.text = rightPos.ToString();
-		RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, leftPos, myCanvas.worldCamera, out left);
-		RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, rightPos, myCanvas.worldCamera, out right);
+        // Do something with gaze data
+        // eyeLogTrack.LogGazeData(new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z));
 
-		leftEye.transform.position = myCanvas.transform.TransformPoint(left);
-		rightEye.transform.position = myCanvas.transform.TransformPoint(right);
 
+
+
+        ///GAZE ORIGIN / RECENTERING HEAD TRACKING
+        //   Vector3 leftPos = new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z);
+        //   Vector3 rightPos = new Vector3(e.RightEye.GazeOrigin.PositionInUserCoordinates.X, e.RightEye.GazeOrigin.PositionInUserCoordinates.Y, e.RightEye.GazeOrigin.PositionInUserCoordinates.Z);
+
+
+
+        //// GAZE POINT TRACKING 
+        Vector3 leftPos = new Vector3(e.LeftEye.GazePoint.PositionOnDisplayArea.X, e.LeftEye.GazePoint.PositionOnDisplayArea.Y);
+        Vector3 rightPos = new Vector3(e.RightEye.GazePoint.PositionOnDisplayArea.X, e.RightEye.GazePoint.PositionOnDisplayArea.Y);
+
+        Vector2 left, right;
+        leftPosText.text = leftEditPos.ToString();
+        rightPosText.text = rightEditPos.ToString();
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(leftPos.x * Screen.width, -leftPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out left);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(rightPos.x * Screen.width, -rightPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out right);
+
+        leftEye.transform.position = myCanvas.transform.TransformPoint(left);
+        rightEye.transform.position = myCanvas.transform.TransformPoint(right);
         /*
      Debug.Log(string.Format(
          "Got gaze data with {0} left eye origin at point ({1}, {2}, {3}) in the user coordinate system.",

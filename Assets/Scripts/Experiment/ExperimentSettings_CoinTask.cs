@@ -47,7 +47,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		Location,
 		Object
 	}
-	public static RecallType myRecall=RecallType.Object;
+	public static RecallType myRecall=RecallType.Location;
 
 	//TOGGLES & SETTINGS
 	public static bool isOculus = false;
