@@ -27,14 +27,15 @@ public class ObjectController : MonoBehaviour {
 	//List<GameObject> gameObjectList_Spawned; //a list to keep track of the objects currently in the scene
 
 
+	//to keep track of last default object so that helper arrows don't point to foil objects
+	private GameObject previousDefaultObj;
+
 
 	// Use this for initialization
 	void Start () {
 		gameObjectList_Spawnable = new List<GameObject> ();
 		CurrentTrialSpecialObjects = new List<GameObject> ();
 		CreateSpecialObjectList (gameObjectList_Spawnable);
-
-
 	}
 	
 	// Update is called once per frame
@@ -132,23 +133,38 @@ public class ObjectController : MonoBehaviour {
 	}
 
 	//special positions get passed in so that the default object can get a special tag for later use for spawning special objects
-	public void SpawnDefaultObjects(List<Vector2> defaultPositions, List<Vector2> specialPositions){
+	public void SpawnDefaultObjects(List<Vector2> defaultPositions, List<Vector2> specialPositions, ExperimentSettings_CoinTask.RecallType recallType){
+		Debug.Log ("IN SPAWN DEFAULT OBJECTS");
 		for(int i = 0; i < defaultPositions.Count; i++){
 			Vector2 currPos = defaultPositions[i];
-			SpawnDefaultObject( currPos, specialPositions, i );
+			SpawnDefaultObject( currPos, specialPositions, i, recallType);
 		}
 	}
 
 	//special positions get passed in so that the default object can get a special tag for later use for spawning special objects
-	public GameObject SpawnDefaultObject (Vector2 positionXZ, List<Vector2> specialPositions, int index) {
-		Vector3 objPos = new Vector3(positionXZ.x, DefaultObject.transform.position.y, positionXZ.y);
-		GameObject newObj = Instantiate(DefaultObject, objPos, DefaultObject.transform.rotation) as GameObject;
+	public GameObject SpawnDefaultObject (Vector2 positionXZ, List<Vector2> specialPositions, int index, ExperimentSettings_CoinTask.RecallType recallType) {
 		
-		SpawnableObject newSpawnableObj = newObj.GetComponent<SpawnableObject>();
-		newSpawnableObj.SetNameID(newObj.transform, index);
-		
-		if( specialPositions.Contains(positionXZ) ){
+		GameObject newObj;
+		Vector3 objPos;
+		if (specialPositions.Contains (positionXZ)) {
+			objPos = new Vector3 (positionXZ.x, DefaultObject.transform.position.y, positionXZ.y);
+			newObj = Instantiate (DefaultObject, objPos, DefaultObject.transform.rotation) as GameObject;
+			SpawnableObject newSpawnableObj = newObj.GetComponent<SpawnableObject> ();
+			newSpawnableObj.SetNameID (newObj.transform, index);
 			newObj.tag = "DefaultSpecialObject";
+			previousDefaultObj = newObj;
+		} else if (recallType == ExperimentSettings_CoinTask.RecallType.Object) {
+			Debug.Log ("current foil objects index: " + CurrentTrialFoilObjects);
+			newObj = FoilObjects [CurrentTrialFoilObjects++];
+			objPos = new Vector3 (positionXZ.x, DefaultObject.transform.position.y, positionXZ.y);
+			newObj.transform.position = objPos;
+			newObj.tag = "FoilObject";
+			newObj.GetComponent<SpawnableObject> ().TurnVisible (false);
+			exp.trialController.IncrementNumDefaultObjectsCollected ();
+			newObj = previousDefaultObj;
+		} else {
+			newObj = null;
+			exp.trialController.IncrementNumDefaultObjectsCollected ();
 		}
 
 		return newObj;
@@ -232,8 +248,8 @@ public class ObjectController : MonoBehaviour {
 			}
 
 			if(numTries == maxNumTries){
-				Debug.Log("Tried " + maxNumTries + " times to place default objects!");
-				Debug.Log("DISTANCE: " + currentBiggestSmallestDistance + " POSITION: " + smallestDistancePosition);
+//				Debug.Log("Tried " + maxNumTries + " times to place default objects!");
+//				Debug.Log("DISTANCE: " + currentBiggestSmallestDistance + " POSITION: " + smallestDistancePosition);
 				defaultPositions.Add(smallestDistancePosition);
 			}
 			else{
@@ -242,11 +258,65 @@ public class ObjectController : MonoBehaviour {
 
 		}
 
-		//insertion sort by distance
-		Vector2 distancePosXZ = new Vector2 (distancePos.x, distancePos.z);
-		defaultPositions = SortByNextClosest(defaultPositions, distancePosXZ);
+//		//insertion sort by distance
+//		Vector2 distancePosXZ = new Vector2 (distancePos.x, distancePos.z);
+//		defaultPositions = SortByNextClosest(defaultPositions, distancePosXZ);
 
 		return defaultPositions;
+	}
+
+	public List<Vector2> GenerateFoilPositions (int numFoils, List<Vector2> existingPositions, Vector3 distancePos){ //ORDERED BY DISTANCE TO PLAYER START POS
+		List<Vector2> foilPositions = new List<Vector2> ();
+		List<Vector2> defaultPositions = existingPositions;
+		for (int i = 0; i < numFoils; i++) {
+			bool objectsAreFarEnough = false;
+
+			int numTries = 0;
+			int maxNumTries = 1000; //ARBITRARY.
+
+			Vector3 randomEnvPosition = Vector3.zero;
+			Vector2 randomEnvPositionVec2 = Vector2.zero;
+
+			float smallestDistance = 0.0f; //will get filled in by CheckObjectsFarEnoughXZ function
+			float currentBiggestSmallestDistance = 0; //if we fail at positioning in the allotted number of tries, we want to position the treasure chest with the maximal distance to the closest neighbor chest.
+			Vector2 smallestDistancePosition = Vector2.zero;
+
+			while( !objectsAreFarEnough && numTries < maxNumTries){
+				// generate a random position
+				randomEnvPosition = exp.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.objectToWallBuffer );
+				randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
+
+				//increment numTries
+				numTries++;
+
+				//check if the generated position is far enough from all other positions
+				objectsAreFarEnough = CheckObjectsFarEnoughXZ( randomEnvPositionVec2, defaultPositions, out smallestDistance);
+
+				//if not, and the smallest distance is larger than the currents largest small distance...
+				if( !objectsAreFarEnough && smallestDistance > currentBiggestSmallestDistance ){
+					currentBiggestSmallestDistance = smallestDistance;
+					smallestDistancePosition = randomEnvPositionVec2;
+				}
+			}
+
+			if(numTries == maxNumTries){
+				Debug.Log("Tried " + maxNumTries + " times to place default objects!");
+				Debug.Log("DISTANCE: " + currentBiggestSmallestDistance + " POSITION: " + smallestDistancePosition);
+				defaultPositions.Add(smallestDistancePosition);
+				foilPositions.Add (smallestDistancePosition);
+			}
+			else{
+				defaultPositions.Add(randomEnvPositionVec2);
+				foilPositions.Add (randomEnvPositionVec2);
+			}
+
+		}
+
+//		//insertion sort by distance
+//		Vector2 distancePosXZ = new Vector2 (distancePos.x, distancePos.z);
+//		defaultPositions = SortByNextClosest(defaultPositions, distancePosXZ);
+
+		return foilPositions;
 	}
 
 	List<Vector2> SortByNextClosest(List<Vector2> positions, Vector2 distancePos){

@@ -27,6 +27,8 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		EnableSelection(false);
+		EnableVisibility (false);
+		EnableFoilVisibility (false);
 	}
 	
 	// Update is called once per frame
@@ -57,7 +59,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	public void MoveToPosition(Vector3 destinationPosition)
 	{
-		ObjectRecallIndicator.transform.position = new Vector3(destinationPosition.x,PositionSelector.transform.position.y,destinationPosition.z);
+		ObjectRecallIndicator.transform.position = new Vector3(destinationPosition.x,ObjectRecallIndicator.transform.position.y,destinationPosition.z);
 	}
 
 	void GetMovementInput(){
@@ -154,10 +156,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		EnableObjectRecallIndicator (shouldBeVisible);
 	}
 
-	public void StartTimer()
-	{
-		StartCoroutine(ObjectRecallIndicator.GetComponent<CircleTimerManager>().InitiateTimerCountdown(Config_CoinTask.recallTime));
-	}
 
 	void EnableObjectRecallIndicator(bool shouldBeVisible)
 	{

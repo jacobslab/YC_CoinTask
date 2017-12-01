@@ -16,6 +16,10 @@ public class Trial {
 	public List<Vector2> DefaultObjectLocationsXZ;
 	public List<Vector2> SpecialObjectLocationsXZ;
 
+	public ExperimentSettings_CoinTask.RecallType trialRecallType;
+	private static int fourNum = 0;
+	private static int fiveNum=0;
+	private static int totalTrials=0;
 	public List<string> ManualSpecialObjectNames { get { return manualSpecialObjectNames; } }
 	List<string> manualSpecialObjectNames;
 
@@ -24,7 +28,7 @@ public class Trial {
 		SpecialObjectLocationsXZ = new List<Vector2> ();
 	}
 
-	public Trial(int numSpecial, bool shouldStim){
+	public Trial(int numSpecial,int numFoils, bool shouldStim){
 
 		numSpecialObjects = numSpecial;
 
@@ -36,10 +40,12 @@ public class Trial {
 
 		int fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
 		if (fiftyFiftyChance == 0) {
+			trialRecallType = ExperimentSettings_CoinTask.RecallType.Location;
 			avatarStartPos = exp.player.controls.startPositionTransform1.position;//new Vector3 (exp.player.controls.startPositionTransform1.position.x, exp.player.transform.position.y, exp.player.controls.startPositionTransform1.z);
 			avatarStartRot = exp.player.controls.startPositionTransform1.rotation;//Quaternion.Euler (0, exp.player.controls.startPositionTransform1.rotation, 0);
 		}
 		else {
+			trialRecallType = ExperimentSettings_CoinTask.RecallType.Object;
 			avatarStartPos = exp.player.controls.startPositionTransform2.position;
 			avatarStartRot = exp.player.controls.startPositionTransform2.rotation;
 		}
@@ -58,10 +64,36 @@ public class Trial {
 
 
 		int numDefaultObjects = 0;
-		numDefaultObjects = Config_CoinTask.numDefaultObjects;
+		numDefaultObjects = numSpecial + numFoils;
+//		if (trialRecallType == ExperimentSettings_CoinTask.RecallType.Object)
+//			numDefaultObjects = numSpecial + numFoils;
+//		else
+//			numDefaultObjects = Config_CoinTask.numDefaultObjects;
+
+		totalTrials++;
+		/*
+		switch (numDefaultObjects) {
+		case 4:
+			fourNum++;
+			break;
+		case 5:
+			fiveNum++;
+			break;
+		}
+
+		Debug.Log ("Four: " + fourNum);
+		Debug.Log ("Five: " + fiveNum);
+		*/
+		Debug.Log ("total: " + totalTrials);
+
+		//Debug.Log ("number of special objects is: " + numSpecial);
+		//Debug.Log ("number of foil objects is: " + numFoils);
 
 		//init default and special locations
 		DefaultObjectLocationsXZ = exp.objectController.GenerateOrderedDefaultObjectPositions (numDefaultObjects, avatarStartPos);
+		//FoilObjectLocationsXZ = exp.objectController.GenerateFoilPositions (numFoils, DefaultObjectLocationsXZ, avatarStartPos);
+		//Debug.Log ("number of default positions is: " + DefaultObjectLocationsXZ.Count+"/"+numDefaultObjects);
+		//Debug.Log ("number of foil positions is: " + FoilObjectLocationsXZ.Count);
 		SpecialObjectLocationsXZ = exp.objectController.GenerateSpecialObjectPositions (DefaultObjectLocationsXZ, numSpecialObjects);
 	}
 
@@ -105,10 +137,12 @@ public class Trial {
 
 		//counter the avatar
 		if (avatarStartPos == exp.player.controls.startPositionTransform1.position) {
+			trialRecallType = ExperimentSettings_CoinTask.RecallType.Object;
 			counterTrial.avatarStartPos = exp.player.controls.startPositionTransform2.position;
 			counterTrial.avatarStartRot = exp.player.controls.startPositionTransform2.rotation;
 		} 
 		else {
+			trialRecallType = ExperimentSettings_CoinTask.RecallType.Location;
 			counterTrial.avatarStartPos = exp.player.controls.startPositionTransform1.position;
 			counterTrial.avatarStartRot = exp.player.controls.startPositionTransform1.rotation;
 		}
@@ -142,7 +176,24 @@ public class Trial {
 			Vector2 counteredPositionXZ = new Vector2(counteredPosition.x, counteredPosition.z);
 			counterTrial.SpecialObjectLocationsXZ.Add(counteredPositionXZ);
 		}
-		
+
+		//int numDefaultObjects = counterTrial.DefaultObjectLocationsXZ.Count;
+		totalTrials++;
+		/*
+		switch (numDefaultObjects) {
+		case 4:
+			fourNum++;
+			break;
+		case 5:
+			fiveNum++;
+			break;
+		}
+
+		Debug.Log ("Four: " + fourNum);
+		Debug.Log ("Five: " + fiveNum);
+		*/
+		//Debug.Log ("total: " + totalTrials);
+
 		return counterTrial;
 	}
 }

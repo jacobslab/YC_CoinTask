@@ -30,20 +30,20 @@ public class DefaultItem : MonoBehaviour {
 	}
 
 	void InitTreasureState(){
-		switch (exp.trialController.NumDefaultObjectsCollected) {
-		case 0:
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_1, true);
-			break;
-		case 1:
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_2, true);
-			break;
-		case 2:
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_3, true);
-			break;
-		case 3:
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_4, true);
-			break;
-		}
+//		switch (exp.trialController.NumDefaultObjectsCollected) {
+//		case 0:
+//			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, true,1);
+//			break;
+//		case 1:
+//			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, true,2);
+//			break;
+//		case 2:
+//			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, true,3);
+//			break;
+//		case 3:
+//			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, true,4);
+//			break;
+//		}
 	}
 
 	// Use this for initialization
@@ -232,19 +232,20 @@ public class DefaultItem : MonoBehaviour {
 		} else {
 			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_EMPTY, false);
 		}
-		switch (exp.trialController.NumDefaultObjectsCollected) {
-		case 1:
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_1, false);
-			break;
-		case 2:
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_2, false);
-			break;
-		case 3:
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_3, false);
-			break;
-		case 4:
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_4, false);
-			break;
-		}
+		UnityEngine.Debug.Log ("NUM DEFAULT: " + exp.trialController.NumDefaultObjectsCollected);
+//		switch (exp.trialController.NumDefaultObjectsCollected) {
+//		case 1:
+//			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, false,1);
+//			break;
+//		case 2:
+//			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, false,2);
+//			break;
+//		case 3:
+//			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, false,3);
+//			break;
+//		case 4:
+//			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, false,4);
+//			break;
+//		}
 	}
 }
