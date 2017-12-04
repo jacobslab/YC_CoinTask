@@ -8,7 +8,7 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 	public Color WrongScorecolor;
 
 	public Renderer PointsScoredBackground;
-
+	public GameObject sphere;
 	public Color lineRendererStartColor;
 	LineRenderer toTargetLine;
 	float lineHeight = 0.3f;
@@ -31,12 +31,21 @@ public class CorrectPositionIndicatorController : MonoBehaviour {
 	void Start(){
 
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 
+	public void ChangeToRightColor()
+	{
+		sphere.GetComponent<Renderer> ().material.color = RightScoreColor;
+	}
+
+	public void ChangeToWrongColor()
+	{
+		sphere.GetComponent<Renderer> ().material.color = WrongScorecolor;
+	}
 	public void SetLineTarget(Vector3 targetPos, Color targetColor){
 
 		if (toTargetLine == null) {
