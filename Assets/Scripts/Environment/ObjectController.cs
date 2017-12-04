@@ -164,6 +164,7 @@ public class ObjectController : MonoBehaviour {
 			newObj = previousDefaultObj;
 		} else {
 			newObj = null;
+
 			exp.trialController.IncrementNumDefaultObjectsCollected ();
 		}
 

@@ -795,8 +795,7 @@ public class TrialController : MonoBehaviour {
 
 		//show instructions for location selection 
 		trialLogger.LogRecallPhaseStarted (true);
-
-		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder (exp.objectController.CurrentTrialSpecialObjects.Count);
+		List<int> randomSpecialObjectOrder = new List<int>();
 		List<Vector3> chosenPositions = new List<Vector3> (); //chosen positions will be in the same order as the random special object order
 
 
@@ -808,6 +807,7 @@ public class TrialController : MonoBehaviour {
 			//List<Config_CoinTask.MemoryState> rememberResponses = new List<Config_CoinTask.MemoryState> (); //keep track of whether or not the player remembered each object
 			//List<bool> areYouSureResponses = new List<bool> (); //keep track of whether or not the player wanted to double down on each object
 
+			randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder (exp.objectController.CurrentTrialSpecialObjects.Count);
 			for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
 
 				//show instructions for location selection
@@ -955,6 +955,7 @@ public class TrialController : MonoBehaviour {
 
 		//THR-style
 		else if (currentTrial.trialRecallType == ExperimentSettings_CoinTask.RecallType.Object) {
+			randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder (numDefaultObjectsToCollect);
 			List<Vector3> correctPositions = new List<Vector3> ();
 			List<bool> isFoil = new List<bool> ();
 			List<int> recallAnswers = new List<int> ();
@@ -1340,20 +1341,23 @@ IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPosit
 
 			CorrectPositionIndicatorController correctIndicatorController = correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>();
 
+			ChosenIndicatorController chosenIndicatorController = chosenPositionIndicator.GetComponent<ChosenIndicatorController>();
 
 			int points = 0;
 			//increment total cues
 			totalRecallCues++;
 			if(currentRecallAnswer==1){
 				Debug.Log ("changing to green");
-				correctIndicatorController.ChangeToRightColor();
+				chosenIndicatorController.ChangeToRightColor();
+			//	correctIndicatorController.ChangeToRightColor();
 				trialLogger.LogCorrectAnswer ();
 				points = 100;
 			}
 			else if (currentRecallAnswer == 0){
 				Debug.Log ("changing to red");
 				points = 0;
-				correctIndicatorController.ChangeToWrongColor();
+				chosenIndicatorController.ChangeToWrongColor ();
+				//correctIndicatorController.ChangeToWrongColor();
 				trialLogger.LogWrongAnswer ();
 				//chosenPositionColor = correctIndicatorController.ChangeToWrongColor();
 			}

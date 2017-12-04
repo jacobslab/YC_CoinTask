@@ -59,7 +59,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	public void MoveToPosition(Vector3 destinationPosition)
 	{
-		ObjectRecallIndicator.transform.position = new Vector3(destinationPosition.x,ObjectRecallIndicator.transform.position.y,destinationPosition.z);
+		PositionSelectorVisuals.transform.position = new Vector3(destinationPosition.x,PositionSelectorVisuals.transform.position.y,destinationPosition.z);
 	}
 
 	void GetMovementInput(){
@@ -153,7 +153,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	public void EnableVisibility(bool shouldBeVisible)
 	{
-		EnableObjectRecallIndicator (shouldBeVisible);
+		EnableSelectionIndicator (shouldBeVisible);
 	}
 
 

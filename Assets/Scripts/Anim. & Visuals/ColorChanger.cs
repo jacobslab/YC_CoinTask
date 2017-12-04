@@ -59,6 +59,7 @@ public class ColorChanger : MonoBehaviour {
 	//instant color change
 	public void ChangeColor(Color newColor){
 		for (int i = 0; i < renderers.Length; i++) {
+			Debug.Log (renderers [i].name);
 			renderers[i].material.color = newColor;
 		}
 		if(isTextMesh){
