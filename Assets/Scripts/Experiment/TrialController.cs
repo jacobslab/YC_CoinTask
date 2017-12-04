@@ -30,6 +30,22 @@ public class TrialController : MonoBehaviour {
 	public CanvasGroup scoreInstructionsGroup;
 	public Trial currentTrial;
 
+	#if FREIBURG
+	string initialInstructions1= "Willkommen bei der Schatzsuche!" +
+		"\n\nDu gehst auf eine Schatzsuche." +
+		"\n\nVerwende den Joystick um Dich zu bewegen."+
+		"\n\nLauf in die Schatzkisten, um sie zu öffnen. Deine Aufgabe ist es zu erinnern, an welchem Ort sich der jeweilige Gegenstand befindet!" +
+		"\n\nDrücke (X) zum Fortfahren";
+	
+
+	string initialInstructions2 = "Nachdem Du zu den Schatzkisten navigiert bist, transportieren wir Dich automatisch zum Ende der Umgebung und zeigen Dir einen bestimmten Ort auf dem Strand." +
+		"\n\nDeine Aufgabe ist es nun, den Namen des Gegenstandes, den Du an diesem Ort gefunden hast, zu sagen." +
+		"\n\nWenn Du den Gegenstand nicht erinnern kannst, sag „VERGESSEN" +
+		"\n\nWenn wir Dir einen Ort zeigen, an dem keine Schatzkiste war, sag „FALSCH“ ins Mikrophon" +
+		"\n\nDu hast für Deine Antwort 6 Sekunden Zeit" +
+		"\n\nDrücke (X) zum Fortfahren";
+
+	#else
 	string initialInstructions1= "Welcome to Treasure Island!" +
 		"\n\nYou are going on a treasure hunt." +
 		"\n\nUse the joystick to control your movement." +
@@ -44,7 +60,7 @@ public class TrialController : MonoBehaviour {
 		"\n\n Press (X) to Continue.";
 
 
-
+	#endif
 	bool objectRecall=false;
 	int currentTrialBlockNumber;
 	int totalTrialNumber=0;
@@ -459,12 +475,12 @@ public class TrialController : MonoBehaviour {
 			}
 #else
 			Debug.Log("showing instructions");
-			exp.currInstructions.initialInstructions1=exp.currInstructions.initialInstructions1.Replace("\n","\n");
-			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			initialInstructions1=initialInstructions1.Replace("\n","\n");
+			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 1.0f;
-			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 0.0f;
-			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			//yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 #endif
 
 			#if MRIVERSION
@@ -1238,7 +1254,9 @@ IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPosit
 #else
 		//wait for selection button press
 		exp.uiController.instructionPanel.SetActive(true);
+		exp.currInstructions.SetTextPanelOn();
 		yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
+		exp.currInstructions.SetTextPanelOff();
 		exp.uiController.instructionPanel.SetActive(false);
 #endif
 
@@ -1391,7 +1409,10 @@ IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPosit
 		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxFeedbackTime));
 		#else
 		//wait for selection button press
+
+		exp.currInstructions.SetTextPanelOn();
 		yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
+		exp.currInstructions.SetTextPanelOff();
 		#endif
 
 		currTrialNum++;

@@ -30,9 +30,12 @@ public class EyetrackerManager : MonoBehaviour {
         if (_eyeTracker == null)
         {
             Debug.Log("No screen based eye tracker detected!");
+			myCanvas.gameObject.GetComponent<CanvasGroup> ().alpha = 0f;
         }
         else
         {
+
+			myCanvas.gameObject.GetComponent<CanvasGroup> ().alpha = 0f;
             Debug.Log("Selected eye tracker with serial number {0}" + _eyeTracker.SerialNumber);
         }
 

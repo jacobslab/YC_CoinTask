@@ -39,17 +39,38 @@ public class InstructionsController : MonoBehaviour {
 
 	public string pointsText = "Points";
 
-	//instructions
-	public string initialInstructions1 = "Welcome to Treasure Island!" + 
-		"\n\nYou are going on a treasure hunt." + 
-		"\n\nUse the joystick to control your movement." + 
-		"\n\nDrive into treasure chests to open them. Remember where each object is located!" +
-		"\n\nPress (X) to continue.";
 
-	public string initialInstructions2 = "When you are asked about remembering an object's location, you must answer [ YES ], [ MAYBE ], or [ NO ], and choose a location." +
-		"\n\nYou will win points for correct locations and you will lose points for incorrect locations." +
-		"\n\nPress (X) to continue.";
+	#if FREIBURG
+	string initialInstructions1= "Willkommen bei der Schatzsuche!" +
+		"\n\nDu gehst auf eine Schatzsuche." +
+		"\n\nVerwende den Joystick um Dich zu bewegen."+
+		"\n\nLauf in die Schatzkisten, um sie zu öffnen. Deine Aufgabe ist es zu erinnern, an welchem Ort sich der jeweilige Gegenstand befindet!" +
+		"\n\nDrücke (X) zum Fortfahren";
 
+
+	string initialInstructions2 = "Nachdem Du zu den Schatzkisten navigiert bist, transportieren wir Dich automatisch zum Ende der Umgebung und zeigen Dir einen bestimmten Ort auf dem Strand." +
+		"\n\nDeine Aufgabe ist es nun, den Namen des Gegenstandes, den Du an diesem Ort gefunden hast, zu sagen." +
+		"\n\nWenn Du den Gegenstand nicht erinnern kannst, sag „VERGESSEN" +
+		"\nWenn wir Dir einen Ort zeigen, an dem keine Schatzkiste war, sag „FALSCH“ ins Mikrophon" +
+		"\nDu hast für Deine Antwort 6 Sekunden Zeit" +
+		"\nDrücke (X) zum Fortfahren";
+
+	#else
+	string initialInstructions1= "Welcome to Treasure Island!" +
+	"\n\nYou are going on a treasure hunt." +
+	"\n\nUse the joystick to control your movement." +
+	"\nDrive into treasure chests to open them. Your job is to try to remember where each object is located!"+ 
+	"\n\nPress (X) to continue.";
+
+	string initialInstructions2 = "After traveling to the treasure chests, you will be moved to the edge of the environment and we will highlight a location on the ground." +
+	"\n\nYour job is now to try to say out loud the object that you saw at that location.\n" +
+	"\n\nIf you can’t remember, say, “PASS" +
+	"\nIf we show you a new location where there was no treasure chest, say “TRICK”\n" +
+	"\nYou will have 6 seconds to respond to each item."+
+	"\n\n Press (X) to Continue.";
+
+
+	#endif
 	public string initialInstructions3 = "TIPS FOR MAXIMIZING YOUR SCORE" + 
 		"\n\nGet a time bonus by driving to the chests quickly." +
 		"\n\nIf you are more than 75% sure, you should select [YES]." +
@@ -132,12 +153,15 @@ public class InstructionsController : MonoBehaviour {
 	}
 	public void SetTextPanelOff()
 	{
-		textPanel.color=new Color(1f,1f,1f,0f);
+		textPanel.gameObject.SetActive (false);
+		//textPanel.color=new Color(1f,1f,1f,0f);
 	}
 
 	public void SetTextPanelOn()
 	{
-		textPanel.color=new Color(1f,1f,1f,0.5f);
+
+		textPanel.gameObject.SetActive (true);
+	//	textPanel.color=new Color(1f,1f,1f,0.5f);
 	}
 
 
