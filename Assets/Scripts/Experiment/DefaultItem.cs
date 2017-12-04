@@ -33,16 +33,16 @@ public class DefaultItem : MonoBehaviour {
 	void InitTreasureState(){
 		switch (exp.trialController.NumDefaultObjectsCollected) {
 		case 0:
-			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, true,1);
+//			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, true,1);
 			break;
 		case 1:
-			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, true,2);
+		//	TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, true,2);
 			break;
 		case 2:
-			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, true,3);
+	//		TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, true,3);
 			break;
 		case 3:
-			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, true,4);
+	//		TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, true,4);
 			break;
 		}
 	}
@@ -185,9 +185,9 @@ public class DefaultItem : MonoBehaviour {
 	public IEnumerator Open(GameObject opener){
 
 		if (GetIsSpecial ()) {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_SPECIAL, true);
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_SPECIAL, true);
 		} else {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_EMPTY, true);
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_EMPTY, true);
 		}
 
 		float distOpenerToPivotA = (pivotA.position - opener.transform.position).magnitude;
@@ -246,24 +246,24 @@ public class DefaultItem : MonoBehaviour {
 
 	void EndTreasureState(){
 		if (GetIsSpecial ()) {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_SPECIAL, false);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_SPECIAL, false);
 		} else {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_EMPTY, false);
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_EMPTY, false);
 		}
 		UnityEngine.Debug.Log ("NUM DEFAULT: " + exp.trialController.NumDefaultObjectsCollected);
-		switch (exp.trialController.NumDefaultObjectsCollected) {
-		case 1:
-			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, false,1);
-			break;
-		case 2:
-			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, false,2);
-			break;
-		case 3:
-			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, false,3);
-			break;
-		case 4:
-			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, false,4);
-			break;
-		}
+//		switch (exp.trialController.NumDefaultObjectsCollected) {
+//		case 1:
+//			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, false,1);
+//			break;
+//		case 2:
+//			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, false,2);
+//			break;
+//		case 3:
+//			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, false,3);
+//			break;
+//		case 4:
+//			TCPServer.Instance.SetStateWithNum (TCP_Config.DefineStates.TREASURE, false,4);
+//			break;
+//		}
 	}
 }

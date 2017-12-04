@@ -42,7 +42,7 @@ public class CameraController : MonoBehaviour {
 			if(!OculusRig.activeSelf){
 				SetOculus(true);
 			}
-			VRSettings.renderScale = 1.5f;
+			UnityEngine.XR.XRSettings.eyeTextureResolutionScale = 1.5f;
 		}
 		else{
 			EnableCameras(AvatarStandardCameraRig, true);
