@@ -327,6 +327,13 @@ public class TrialController : MonoBehaviour {
 
 				newBlock.Add(threeItemTrials[randomThreeItemIndex]);
 				newBlock.Add(fourItemTrials[randomFourItemIndex]);
+				if (Random.value < 0.5f) {
+					threeItemTrials [randomThreeItemIndex].trialRecallType = ExperimentSettings_CoinTask.RecallType.Location;
+					fourItemTrials [randomFourItemIndex].trialRecallType = ExperimentSettings_CoinTask.RecallType.Object;
+				} else {
+					threeItemTrials [randomThreeItemIndex].trialRecallType = ExperimentSettings_CoinTask.RecallType.Object;
+					fourItemTrials [randomFourItemIndex].trialRecallType = ExperimentSettings_CoinTask.RecallType.Location;
+				}
 				//				newBlock.Add(fiveItemTrials[randomFiveItemIndex]);
 				//				newBlock.Add(sixItemTrials[randomSixItemIndex]);
 

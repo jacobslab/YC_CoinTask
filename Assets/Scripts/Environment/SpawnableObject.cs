@@ -16,6 +16,7 @@ public class SpawnableObject : MonoBehaviour {
 
 	//NAME LOCALIZATION
 	public string SpanishName;
+	public string GermanName;
 	
 	public string IDstring = ""; //will get set in replay. TODO: don't really want this to be "settable" from the outside world... try to rethink how to structure this.
 
@@ -85,6 +86,9 @@ public class SpawnableObject : MonoBehaviour {
 		//spanish case
 		case ExperimentSettings_CoinTask.LanguageSetting.Spanish:
 			return SpanishName;
+			break;
+		case ExperimentSettings_CoinTask.LanguageSetting.German:
+			return GermanName;
 			break;
 		}
 		return GetName ();
