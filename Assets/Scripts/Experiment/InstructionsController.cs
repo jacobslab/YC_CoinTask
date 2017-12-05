@@ -21,6 +21,8 @@ public class InstructionsController : MonoBehaviour {
 	public Image oculusBackground;
 	public Color backgroundColorDefault;
 
+	public Image selectBG;
+
 
 
 	//CHANGE THESE IN THE EDITOR DEPENDING ON LANGUAGE.
@@ -116,11 +118,21 @@ public class InstructionsController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		TurnOffInstructions ();
+		TurnTextPanelOff ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
+	}
+	public void TurnTextPanelOn()
+	{
+		selectBG.enabled = true;
+	}
+
+	public void TurnTextPanelOff()
+	{
+		selectBG.enabled = false;
 	}
 
 	public void SetInstructionsBlank(){

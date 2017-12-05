@@ -158,7 +158,7 @@ public class BoxSwapper : MonoBehaviour {
 		boxSelector.GetComponent<VisibilityToggler> ().TurnVisible (true);
 
 #if MRIVERSION
-		yield return StartCoroutine(exp.trialController.WaitForMRITimeout(Config_CoinTask.maxBoxAnswerTime));
+		yield return StartCoroutine(exp.trialController.WaitForMRITimeout(Config_CoinTask.maxBoxAnswerTime,true));
 		shouldSelect = false;
 #else
 		while(!actionButtonPressed){

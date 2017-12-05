@@ -531,33 +531,44 @@ public class TrialController : MonoBehaviour {
 	}
 
 	bool isMRITimeout = false;
-	public IEnumerator WaitForMRITimeout(float maxSeconds){
+	public IEnumerator WaitForMRITimeout(float maxSeconds,bool shouldCheckInput){
 		exp.uiController.MRITimerUI.alpha = 1.0f;
 		MRITimer.ResetTimerNoDelegate(maxSeconds);
 		MRITimer.StartTimer ();
 
 		Debug.Log("MRI TIMEOUT STARTED");
 
-		bool hasPressedButton = false;
+		if (shouldCheckInput) {
+			bool hasPressedButton = false;
 
-		float actionInput = Input.GetAxis(Config_CoinTask.ActionButtonName);
-		float currSeconds = MRITimer.GetSecondsFloat();
-		while(currSeconds > 0.0f && actionInput != 0.0f){ //if button is down, must lift up before we can continue
-			Debug.Log(actionInput);
-			currSeconds = MRITimer.GetSecondsFloat();
-			actionInput = Input.GetAxis(Config_CoinTask.ActionButtonName);
-			yield return 0;
-		}
-		while(!hasPressedButton && MRITimer.GetSecondsFloat() > 0.0f){
-			if(Input.GetAxis(Config_CoinTask.ActionButtonName) == 1.0f){
-				hasPressedButton = true;
+			float actionInput = Input.GetAxis(Config_CoinTask.ActionButtonName);
+			float currSeconds = MRITimer.GetSecondsFloat();
+			while(currSeconds > 0.0f && actionInput != 0.0f){ //if button is down, must lift up before we can continue
+				Debug.Log(actionInput);
+				currSeconds = MRITimer.GetSecondsFloat();
+				actionInput = Input.GetAxis(Config_CoinTask.ActionButtonName);
+				yield return 0;
 			}
-			yield return 0;
-		}
+			while(!hasPressedButton && MRITimer.GetSecondsFloat() > 0.0f){
+				if(Input.GetAxis(Config_CoinTask.ActionButtonName) == 1.0f){
+					hasPressedButton = true;
+				}
+				yield return 0;
+			}
 
-		if(MRITimer.GetSecondsFloat() <= 0.0f){
-			isMRITimeout = true;
-			trialLogger.LogMRITimeout();
+			if (MRITimer.GetSecondsFloat () <= 0.0f) {
+				isMRITimeout = true;
+				trialLogger.LogMRITimeout ();
+			}
+		} else {
+			while (MRITimer.GetSecondsFloat () > 0.0f) {
+				yield return 0;
+			}
+
+			if (MRITimer.GetSecondsFloat () <= 0.0f) {
+				isMRITimeout = true;
+				trialLogger.LogMRITimeout ();
+			}
 		}
 
 		MRITimer.StopTimer ();
@@ -785,20 +796,20 @@ public class TrialController : MonoBehaviour {
 			specialObjUICopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI");
 
 			trialLogger.LogInstructionEvent();
-			yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy, specialItemDisplayName) );
+//			yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy, specialItemDisplayName) );
 
 #if MRIVERSION
-			Config_CoinTask.MemoryState rememberResponse;
-			isMRITimeout = false;
-			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxAnswerTime));
-			if(isMRITimeout){
-				rememberResponse = Config_CoinTask.MemoryState.no;
-			}
-			else{
-				rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
-			}
-			rememberResponses.Add(rememberResponse);
-			trialLogger.LogRememberResponse(rememberResponse);
+//			Config_CoinTask.MemoryState rememberResponse;
+//			isMRITimeout = false;
+//			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxAnswerTime));
+//			if(isMRITimeout){
+//				rememberResponse = Config_CoinTask.MemoryState.no;
+//			}
+//			else{
+//				rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
+//			}
+//			rememberResponses.Add(rememberResponse);
+//			trialLogger.LogRememberResponse(rememberResponse);
 #else
 			yield return StartCoroutine (exp.WaitForActionButton());
 			Config_CoinTask.MemoryState rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
@@ -813,23 +824,23 @@ public class TrialController : MonoBehaviour {
 			exp.environmentController.myPositionSelector.Reset();
 			exp.environmentController.myPositionSelector.EnableSelection (true);
 
-			switch(randomOrderIndex){
-			case 0:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_1, false);
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, true);
-				break;
-			case 1:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_2, false);
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, true);
-				break;
-			case 2:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, false);
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, true);
-				break;
-			}
+//			switch(randomOrderIndex){
+//			case 0:
+//				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_1, false);
+//				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, true);
+//				break;
+//			case 1:
+//				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_2, false);
+//				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, true);
+//				break;
+//			case 2:
+//				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, false);
+//				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, true);
+//				break;
+//			}
 			trialLogger.LogRecallChoiceStarted(true);
-
-			exp.uiController.doYouRememberUI.Stop();
+//
+//			exp.uiController.doYouRememberUI.Stop();
 
 			//show single selection instruction and wait for selection button press
 			string selectObjectText = exp.currInstructions.selectTheLocationText;
@@ -845,17 +856,19 @@ public class TrialController : MonoBehaviour {
 				}
 			} 
 			else { //english
-				selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
+				selectObjectText = selectObjectText + " " + specialItemDisplayName;
 			}
 
-//#if MRIVERSION
-//			exp.currInstructions.SetInstructionsTransparentOverlay();
-//			exp.currInstructions.DisplayText(selectObjectText);
-//			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
-//			exp.currInstructions.SetInstructionsBlank();
-//#else
+#if MRIVERSION
+			exp.currInstructions.SetInstructionsTransparentOverlay();
+			exp.currInstructions.TurnTextPanelOn();
+			exp.currInstructions.DisplayText(selectObjectText);
+			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime,false));
+			exp.currInstructions.SetInstructionsBlank();
+			exp.currInstructions.TurnTextPanelOff();
+#else
 			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
-//#endif
+#endif
 			//log the chosen position and correct position
 			exp.environmentController.myPositionSelector.logTrack.LogPositionChosen( exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position, specialSpawnable );
 
@@ -894,7 +907,7 @@ public class TrialController : MonoBehaviour {
 
 		trialLogger.LogRecallPhaseStarted(false);
 		
-		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses));
+		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions));
 
 		//increment subject's trial count
 #if !UNITY_WEBPLAYER
@@ -903,7 +916,7 @@ public class TrialController : MonoBehaviour {
 	}
 
 	int currTrialNum = 0;
-	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<Config_CoinTask.MemoryState> rememberResponses){
+	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions){
 		trialLogger.LogFeedback(true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
 
@@ -960,7 +973,7 @@ public class TrialController : MonoBehaviour {
 			//calculate the memory points and display them
 			exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
 
-			int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position, rememberResponses[i]);//, areYouSureResponses[i] );
+			int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position);//, areYouSureResponses[i] );
 
 			//change chosen indicator color to reflect right or wrong
 			ChosenIndicatorController chosenIndicatorController = chosenPositionIndicator.GetComponent<ChosenIndicatorController>();
@@ -997,11 +1010,13 @@ public class TrialController : MonoBehaviour {
 		exp.environmentController.myPositionSelector.EnableSelection(false);
 		#if MRIVERSION
 		string selectObjectText = exp.currInstructions.selectTheLocationText;
-		selectObjectText = "Press up arrow key to continue!";
+		exp.currInstructions.TurnTextPanelOn();
+		selectObjectText = "Continuing to the next trial...";
 //		exp.currInstructions.SetTextPanelOn ();
 		exp.currInstructions.SetInstructionsTransparentOverlay();
 		exp.currInstructions.DisplayText(selectObjectText);
-		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxFeedbackTime));
+		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxFeedbackTime,false));
+		exp.currInstructions.TurnTextPanelOff();
 		exp.currInstructions.TurnOffInstructions ();
 		#else
 		//wait for selection button press

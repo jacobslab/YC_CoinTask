@@ -20,7 +20,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static Version BuildVersion = Version.TH1;
 #endif
 
-	public static string VersionNumber = "2.042";
+	public static string VersionNumber = "2.105";
 
 #if MRIVERSION
 	public static bool isSyncbox = false;
@@ -71,8 +71,8 @@ public class Config_CoinTask : MonoBehaviour {
 	public static int numTrialsPract = 3;
 	public static bool isPractice = false;
 	public static int[] numSpecialObjectsPract = {2,2,3};
-	public static int numTwoItemTrials = 20;
-	public static int numThreeItemTrials = 20;
+	public static int numTwoItemTrials = 8;
+	public static int numThreeItemTrials = 8;
 	public static int numTrialsPerBlock = 8;
 	
 	//FEEDBACK SETTINGS:
@@ -126,7 +126,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float maxAnswerTime = 5.0f;
 	public static float maxBoxAnswerTime = 5.0f;
 	public static float maxScoreScreenTime = 5.0f;
-	public static float maxLocationChooseTime = 10.0f;
+	public static float maxLocationChooseTime = 6.0f;
 
 	public static float MRIAutoDriveTimeMult = 2.0f;
 #else
