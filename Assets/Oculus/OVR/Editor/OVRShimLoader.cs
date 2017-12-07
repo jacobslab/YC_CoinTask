@@ -116,7 +116,7 @@ class OVRShimLoader
 			return;
 
 		// Rename the target to a .bin file for the auto-patcher to find later.
-		string autoPatcherPath = Application.dataPath + "/OVR/Editor/OculusUnityPatcher_" + arch.ToString() + ".exe";
+		string autoPatcherPath = Application.dataPath + "/Oculus/OVR/Editor/OculusUnityPatcher_" + arch.ToString() + ".exe";
 		string targetPath = pathToBuiltProject.Replace(".exe", "_DirectToRift.exe");
 
 		if (File.Exists(targetPath))
