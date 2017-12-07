@@ -61,7 +61,7 @@ public class EyetrackerManager : MonoBehaviour {
         {
             UnityEngine.Debug.Log("eyetracker is not null; performing calibration");
             //perform calibration
-			CommandExecution.ExecuteCommand(_eyeTracker.SerialNumber,"usercalibration");
+			CommandExecution.ExecuteTobiiEyetracker(_eyeTracker.SerialNumber,"usercalibration");
             canPumpData = true;
         }
         yield return null;

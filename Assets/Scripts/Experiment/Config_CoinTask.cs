@@ -74,7 +74,7 @@ public class Config_CoinTask : MonoBehaviour {
 	//recall
 	public static int recallTime=6;
 
-
+	public static string audioPath = "";
 #if MRIVERSION
 	public static int numTestTrials = 8; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
 	

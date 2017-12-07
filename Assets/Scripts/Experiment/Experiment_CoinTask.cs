@@ -159,6 +159,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 		
 		subjectLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "Log" + ".txt";
 		eegLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "EEGLog" + ".txt";
+		string audioPath=sessionDirectory+ "audio/";
+		sphinxTest.SetPath (audioPath);
+		Debug.Log("the audio path is this OK: " + audioPath);
 	}
 
 	//In order to increment the session, this file must be present. Otherwise, the session has not actually started.
