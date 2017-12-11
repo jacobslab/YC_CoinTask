@@ -6,7 +6,6 @@ public class EyetrackerLogTrack : LogTrack {
 
 	// Use this for initialization
 	void Start () {
-        LogGazeData(Vector3.zero);
 	}
 	
 	// Update is called once per frame
@@ -14,16 +13,12 @@ public class EyetrackerLogTrack : LogTrack {
 		
 	}
 
-    public void LogGazeData(Vector3 gazePos)
+	public void LogGazeData(Vector3 gazePos, string eye)
     {
         if(ExperimentSettings_CoinTask.isLogging)
         {
-            using (StreamWriter outputFile = new StreamWriter(Application.dataPath + @"\eyeTrackerInfo.txt"))
-            {
-                string gazeString = "EYETRACKER LEFT: " + gazePos.x.ToString() + "," + gazePos.y.ToString() + "," + gazePos.z.ToString();
-                outputFile.WriteLine(gazeString);
-            }
-            //subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "EYETRACKER LEFT" + separator + gazePos.x + separator + gazePos.y + gazePos.z);
+			
+			subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "EYETRACKER " + eye + separator + gazePos.x + separator + gazePos.y + gazePos.z);
         }
 
     }

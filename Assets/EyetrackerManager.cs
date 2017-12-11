@@ -129,19 +129,11 @@ private void PumpGazeData()
 // This method will be called on the main Unity thread
 private void HandleGazeData(GazeDataEventArgs e)
 {
-        // Do something with gaze data
-        // eyeLogTrack.LogGazeData(new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z));
-
-
-
-
         ///GAZE ORIGIN / RECENTERING HEAD TRACKING
         //   Vector3 leftPos = new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z);
         //   Vector3 rightPos = new Vector3(e.RightEye.GazeOrigin.PositionInUserCoordinates.X, e.RightEye.GazeOrigin.PositionInUserCoordinates.Y, e.RightEye.GazeOrigin.PositionInUserCoordinates.Z);
 
-
-
-        //// GAZE POINT TRACKING 
+		//// GAZE POINT TRACKING 
         Vector3 leftPos = new Vector3(e.LeftEye.GazePoint.PositionOnDisplayArea.X, e.LeftEye.GazePoint.PositionOnDisplayArea.Y);
         Vector3 rightPos = new Vector3(e.RightEye.GazePoint.PositionOnDisplayArea.X, e.RightEye.GazePoint.PositionOnDisplayArea.Y);
 
@@ -153,14 +145,10 @@ private void HandleGazeData(GazeDataEventArgs e)
 
         leftEye.transform.position = myCanvas.transform.TransformPoint(left);
         rightEye.transform.position = myCanvas.transform.TransformPoint(right);
-        /*
-     Debug.Log(string.Format(
-         "Got gaze data with {0} left eye origin at point ({1}, {2}, {3}) in the user coordinate system.",
-         e.LeftEye.GazeOrigin.Validity,
-         e.LeftEye.GazeOrigin.PositionInUserCoordinates.X,
-        e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y,
-         e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z));
-         */
+
+		eyeLogTrack.LogGazeData (leftEye.transform.position, "LEFT");
+		eyeLogTrack.LogGazeData (rightEye.transform.position, "RIGHT");
+      
     }
 
 }

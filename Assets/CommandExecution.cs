@@ -8,14 +8,12 @@ using System.IO;
 public class CommandExecution : MonoBehaviour {
 	//  public Text trialText;
 	private int testInt = 0;
-	private string hmmPath= @"model/en-us/en-us";
-	private string lmPath= @"model/en-us/en-us.lm.bin";
-	private string dictPath = @"model/en-us/cmudict-en-us.dict";
+	private string hmmPath= @"model/de/cmusphinx-de-voxforge-5.2";
+	private string dictPath = @"model/de/cmusphinx-voxforge-de-1.dic";
 	private string sphinxLogPath;
 	private string keyphrase;
 	private string appDataPath = "";
 	private string resultFormat = "";
-	public static string sphinxPath = @"C:\Users\JacobsLab\Desktop\Pocketsphinx\pocketsphinx\";
 	//SINGLETON
 	private static CommandExecution _instance;
 
@@ -33,27 +31,17 @@ public class CommandExecution : MonoBehaviour {
 			return;
 		}
 		_instance = this;
-		//ExecuteCommand(13,0,10);
 		appDataPath = Application.dataPath + "/";
 		UnityEngine.Debug.Log("app data path is: " + appDataPath);
 	}
 
 	// Use this for initialization
 	void Start () {
-		//  trialText.text = testInt.ToString();
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKeyDown(KeyCode.A))
-		{
-			// ExecuteCommand(13,0,10);
-		}
-		//        if(Input.GetKeyDown(KeyCode.D))
-		//        {
-		//            testInt++;
-		//            trialText.text = testInt.ToString();
-		//        }
+
 
 	}
 
@@ -123,28 +111,6 @@ public class CommandExecution : MonoBehaviour {
 		proc.Close();
 		UnityEngine.Debug.Log("process executed");
 
-
-		/*
-        var processInfo = new ProcessStartInfo("powershell.exe", "echo hi");
-        
-                //var processInfo = new ProcessStartInfo("powershell.exe", sphinxPath+@"bin\Release\Win32\pocketshinx_continuous.exe -inmic yes -hmm " + sphinxPath + @"model\en-us\en-us -lm "+sphinxPath+ @"\model\en-us\en-us.lm.bin -dict "+sphinxPath + @"model\en-us\cmudict-en-us.dict");
-                //`#elif (UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX)
-                //	var processInfo = new ProcessStartInfo("/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal", @"shutdown -s now");
-                //#endif
-                string filepath=System.IO.Directory.GetCurrentDirectory();
-		UnityEngine.Debug.Log (filepath);
-		//var processInfo = new ProcessStartInfo ("open","InputVolume.app");
-		//processInfo.FileName = "/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal";
-		//processInfo.Arguments="-c \" " + "shutdown -s now" + " \"";
-        processInfo.CreateNoWindow = true;
-		processInfo.WorkingDirectory = filepath + "/";
-		//processInfo.RedirectStandardOutput = False;
-     //   processInfo.UseShellExecute = true;
-        var process = Process.Start(processInfo);
-        
-        process.WaitForExit();
-        process.Close();
-        */
 	}
     public static void ExecuteTobiiEyetracker(string device_sn,string mode)
     {
@@ -161,19 +127,6 @@ public class CommandExecution : MonoBehaviour {
         proc.StartInfo.UseShellExecute = false;
         proc.StartInfo.FileName = @"powershell.exe";
         proc.StartInfo.Arguments = @"C:\Users\exp\Downloads\Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe --device_sn="+device_sn+" --mode="+mode;
-        //`#elif (UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX)
-        //	var processInfo = new ProcessStartInfo("/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal", @"shutdown -s now");
-        //#endif
-        //		string filepath=System.IO.Directory.GetCurrentDirectory();
-        //		UnityEngine.Debug.Log (filepath);
-        //		var processInfo = new ProcessStartInfo ("open",dataPath+"/InputVolume.app");
-        //processInfo.FileName = "/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal";
-        //processInfo.Arguments="-c \" " + "shutdown -s now" + " \"";
-        //processInfo.CreateNoWindow = true;
-        //processInfo.WorkingDirectory = filepath + "/";
-        //processInfo.RedirectStandardOutput = False;
-        // processInfo.UseShellExecute = false;
-        //
         proc.Start();
         //
                 proc.WaitForExit();

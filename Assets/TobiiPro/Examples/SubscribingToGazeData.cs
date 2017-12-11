@@ -92,7 +92,7 @@ namespace Tobii.Research.Unity.CodeExamples
         private void HandleGazeData(GazeDataEventArgs e)
         {
             // Do something with gaze data
-            eyeLogTrack.LogGazeData(new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y,e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z));
+//            eyeLogTrack.LogGazeData(new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y,e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z));
             /*
              Debug.Log(string.Format(
                  "Got gaze data with {0} left eye origin at point ({1}, {2}, {3}) in the user coordinate system.",
