@@ -5,24 +5,8 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 
 public class SphinxTest : MonoBehaviour {
-    
-	[DllImport ("SphinxPlugin")]
-	private static extern IntPtr SphinxRun(int trialNumber, int recallNumber,int kws_threshold);
 
-	[DllImport ("SphinxPlugin")]
-	private static extern int PrintANumber();
-
-	[DllImport ("SphinxPlugin")]
-	private static extern int AddTwoIntegers(int i1,int i2);
-
-	[DllImport ("SphinxPlugin")]
-	private static extern float AddTwoFloats(float f1,float f2); 
-
-	[DllImport ("SphinxPlugin")]
-	private static extern int SetAudioPath(string someStr);
-
-	[DllImport ("SphinxPlugin")]
-	private static extern IntPtr GetAudioPath();
+   
 
 	public CommandExecution commExec;
     
@@ -54,7 +38,7 @@ public class SphinxTest : MonoBehaviour {
 	public void SetPath(string audioPath)
 	{
 		UnityEngine.Debug.Log ("set sphinx audio path to " + audioPath);
-		SetAudioPath(audioPath);
+	//	SetAudioPath(audioPath);
 	}
 
 	public int CheckAudioResponse(int trialNumber, int recallNumber,string actualName,string kws_threshold)
