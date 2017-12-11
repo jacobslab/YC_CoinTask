@@ -57,6 +57,11 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	}
 
+	public void MoveObjectIndicatorToPosition(Vector3 destinationPosition)
+	{
+		ObjectRecallIndicator.transform.position = new Vector3(destinationPosition.x,PositionSelectorVisuals.transform.position.y,destinationPosition.z);
+	}
+
 	public void MoveToPosition(Vector3 destinationPosition)
 	{
 		PositionSelectorVisuals.transform.position = new Vector3(destinationPosition.x,PositionSelectorVisuals.transform.position.y,destinationPosition.z);

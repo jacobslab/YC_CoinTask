@@ -1032,7 +1032,7 @@ public class TrialController : MonoBehaviour {
 				Debug.Log ("starting object recall");
 				exp.environmentController.myPositionSelector.EnableVisibility (true);
 				Debug.Log ("this object is: " + specialObj.name);
-				exp.environmentController.myPositionSelector.MoveToPosition (specialObj.transform.position);
+				exp.environmentController.myPositionSelector.MoveObjectIndicatorToPosition (specialObj.transform.position);
 				string currentRecallObject = specialItemDisplayName.ToLower ();
 				chosenPositions.Add (specialObj.transform.position);
 				//yield return new WaitForSeconds (2f);

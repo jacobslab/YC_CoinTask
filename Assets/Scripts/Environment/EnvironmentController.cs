@@ -18,7 +18,6 @@ public class EnvironmentController : MonoBehaviour {
 	public GameObject HomeBaseIndicatorB;
 
 	public Vector3 center{ get { return GetEnvironmentCenter(); } }
-
 	public EnvironmentPositionSelector myPositionSelector;
 
 
@@ -47,8 +46,8 @@ public class EnvironmentController : MonoBehaviour {
 
 	public bool CheckWithinWallsHoriz(Vector3 position, float wallBuffer){
 		Debug.Log ("pos x " + position.x.ToString());
-		Debug.Log ("arena center pos: " + (arenaCenter.position.x + sphereWalls.radius - wallBuffer).ToString());
-		Debug.Log ("arena center neg " + (arenaCenter.position.x - sphereWalls.radius +wallBuffer).ToString());
+		Debug.Log ("arena center pos x: " + (arenaCenter.position.x + sphereWalls.radius - wallBuffer).ToString());
+		Debug.Log ("arena center neg x: " + (arenaCenter.position.x - sphereWalls.radius +wallBuffer).ToString());
 		if (position.x < arenaCenter.position.x + sphereWalls.radius - wallBuffer&& position.x > arenaCenter.position.x - sphereWalls.radius + wallBuffer) {
 			return true;
 		} else
@@ -63,6 +62,9 @@ public class EnvironmentController : MonoBehaviour {
 
 	public bool CheckWithinWallsVert(Vector3 position, float wallBuffer){
 		Debug.Log ("pos z: " + position.z.ToString ());
+		Debug.Log ("arena center pos z: " + (arenaCenter.position.z + sphereWalls.radius - wallBuffer).ToString());
+		Debug.Log ("arena center neg z: " + (arenaCenter.position.z - sphereWalls.radius +wallBuffer).ToString());
+
 		if (position.z < arenaCenter.position.z + sphereWalls.radius - wallBuffer && position.z > arenaCenter.position.z - sphereWalls.radius + wallBuffer) {
 			return true;
 		} else
