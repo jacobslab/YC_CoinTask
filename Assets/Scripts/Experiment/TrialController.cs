@@ -98,6 +98,7 @@ public class TrialController : MonoBehaviour {
 
 			//generate blocks from trials
 			int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
+			Debug.Log ("number of trial BLOCKS: " + numTrialBlocks.ToString ());
 			GenerateTrialBlocks (ListOfTwoItemTrials, ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
 		}
 	}
