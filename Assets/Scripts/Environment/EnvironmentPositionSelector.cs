@@ -10,6 +10,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	public GameObject PositionSelectorVisuals;
 	public GameObject CorrectPositionIndicator;
 	public GameObject ObjectRecallIndicator;
+	public GameObject ObjectSelectorVisuals;
 	public GameObject FoilRecallIndicator;
 	public PositionSelectorLogTrack logTrack;
 
@@ -59,7 +60,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	public void MoveObjectIndicatorToPosition(Vector3 destinationPosition)
 	{
-		ObjectRecallIndicator.transform.position = new Vector3(destinationPosition.x,PositionSelectorVisuals.transform.position.y,destinationPosition.z);
+		ObjectSelectorVisuals.transform.position = new Vector3(destinationPosition.x,PositionSelectorVisuals.transform.position.y,destinationPosition.z);
 	}
 
 	public void MoveToPosition(Vector3 destinationPosition)
@@ -162,9 +163,9 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	}
 
 
-	void EnableObjectRecallIndicator(bool shouldBeVisible)
+	public void EnableObjectSelectorVisuals(bool shouldBeVisible)
 	{
-		ObjectRecallIndicator.GetComponent<VisibilityToggler> ().TurnVisible (shouldBeVisible);
+		ObjectSelectorVisuals.GetComponent<VisibilityToggler> ().TurnVisible (shouldBeVisible);
 	}
 	void EnableSelectionIndicator(bool shouldEnable){
 		PositionSelectorVisuals.GetComponent<VisibilityToggler> ().TurnVisible (shouldEnable);

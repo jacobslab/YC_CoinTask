@@ -1030,7 +1030,7 @@ public class TrialController : MonoBehaviour {
 				objectRecall = false;
 //			recallTypes.Add (1);
 				Debug.Log ("starting object recall");
-				exp.environmentController.myPositionSelector.EnableVisibility (true);
+				exp.environmentController.myPositionSelector.EnableObjectSelectorVisuals (true);
 				Debug.Log ("this object is: " + specialObj.name);
 				exp.environmentController.myPositionSelector.MoveObjectIndicatorToPosition (specialObj.transform.position);
 				string currentRecallObject = specialItemDisplayName.ToLower ();
@@ -1120,7 +1120,7 @@ public class TrialController : MonoBehaviour {
 
 
 				//disable position selection
-				exp.environmentController.myPositionSelector.EnableVisibility (false);
+				exp.environmentController.myPositionSelector.EnableObjectSelectorVisuals (false);
 				trialLogger.LogRecallChoiceStarted (false, 1);
 
 				//check audio response

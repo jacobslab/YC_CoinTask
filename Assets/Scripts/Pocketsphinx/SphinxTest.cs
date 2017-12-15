@@ -49,6 +49,7 @@ public class SphinxTest : MonoBehaviour {
 		UnityEngine.Debug.Log ("thres int is: " + threshInt.ToString ());
 		#if UNITY_STANDALONE_WIN
 		string response = commExec.ExecuteSphinx (trialNumber, recallNumber, actualName, threshInt);
+//		string response="found";
 		#else
 		string response="yes";
 		#endif
