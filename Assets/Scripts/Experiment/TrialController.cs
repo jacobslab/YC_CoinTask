@@ -1066,7 +1066,7 @@ public class TrialController : MonoBehaviour {
 
 				//show single selection instruction and wait for selection button press
 				string selectObjectText = exp.currInstructions.selectTheLocationText;
-				selectObjectText = "Name wo Sie dieses Objekt gefunden";
+				selectObjectText = "Sag den Namen des Gegenstands, den Du an diesem Ort erinnerst";
 				//selectObjectText = "Name the object remembered in this location";
 				exp.currInstructions.SetTextPanelOn ();
 
