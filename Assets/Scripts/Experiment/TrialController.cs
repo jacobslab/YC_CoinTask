@@ -519,7 +519,7 @@ public class TrialController : MonoBehaviour {
 #if MRIVERSION
 	IEnumerator WaitForMRIConnectionKey(){
 		exp.uiController.WaitingForMRIUI.alpha = 1.0f;
-		while (Input.GetAxis("MRI Start Button") <= 0.0f) {
+		while (Input.GetAxis("MRI Trigger") <= 0.0f) {
 			yield return 0;
 		}
 		exp.uiController.WaitingForMRIUI.alpha = 0.0f;
