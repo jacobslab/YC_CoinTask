@@ -41,7 +41,7 @@ public class TrialController : MonoBehaviour {
 	string initialInstructions2 = "Nachdem Du zu den Schatzkisten navigiert bist, transportieren wir Dich automatisch zum Ende der Umgebung und zeigen Dir einen bestimmten Ort auf dem Strand." +
 		"\n\nDeine Aufgabe ist es nun, den Namen des Gegenstandes, den Du an diesem Ort gefunden hast, zu sagen." +
 		"\n\nWenn Du den Gegenstand nicht erinnern kannst, sag „VERGESSEN" +
-		"\n\nWenn wir Dir einen Ort zeigen, an dem keine Schatzkiste war, sag „FALSCH“ ins Mikrophon" +
+		"\n\nWenn wir Dir einen Ort zeigen, an dem keine Schatzkiste war, sag „TRICK“ ins Mikrophon" +
 		"\n\nDu hast für Deine Antwort 6 Sekunden Zeit" +
 		"\n\nDrücke (X) zum Fortfahren";
 
