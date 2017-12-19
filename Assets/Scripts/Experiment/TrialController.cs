@@ -31,19 +31,19 @@ public class TrialController : MonoBehaviour {
 	public Trial currentTrial;
 
 	#if FREIBURG
-	string initialInstructions1= "Willkommen bei der Schatzsuche!" +
-		"\n\nDu gehst auf eine Schatzsuche." +
-		"\n\nVerwende den Joystick um Dich zu bewegen."+
-		"\n\nLauf in die Schatzkisten, um sie zu öffnen. Deine Aufgabe ist es zu erinnern, an welchem Ort sich der jeweilige Gegenstand befindet!" +
-		"\n\nDrücke (X) zum Fortfahren";
+	string initialInstructions1= "Willkommen bei der Schatzsuche! " +
+		"\n\n Benutzen Sie den Joystick zum navigieren. " +
+		"\n\nSchatzkisten öffnen sich bei Kontakt. " +
+		"\n\nVersuchen Sie sich  für jeden Gegenstand zu merken wo Sie ihn gefunden haben. " +
+		"\n\nDrücken Sie (X) zum Fortfahren.";
 	
 
-	string initialInstructions2 = "Nachdem Du zu den Schatzkisten navigiert bist, transportieren wir Dich automatisch zum Ende der Umgebung und zeigen Dir einen bestimmten Ort auf dem Strand." +
-		"\n\nDeine Aufgabe ist es nun, den Namen des Gegenstandes, den Du an diesem Ort gefunden hast, zu sagen." +
-		"\n\nWenn Du den Gegenstand nicht erinnern kannst, sag „VERGESSEN" +
-		"\n\nWenn wir Dir einen Ort zeigen, an dem keine Schatzkiste war, sag „TRICK“ ins Mikrophon" +
-		"\n\nDu hast für Deine Antwort 6 Sekunden Zeit" +
-		"\n\nDrücke (X) zum Fortfahren";
+	string initialInstructions2 = "Nachdem Sie zu den Schatzkisten navigiert sind, werden Sie automatisch zum Ende der Umgebung transportiert." +
+		"\n\n Wir werden einen Ort markieren und ihre Aufgabe ist es, den Namen des Gegenstandes, den Sie an diesem Ort gefunden haben, zu sagen. " +
+		"\n\nWenn Sie sich an den Gegenstand nicht erinnern können, sagen Sie bitte 'VERGESSEN'" +
+		"\n\nWenn wir einen Ort markieren, an dem keine Schatzkiste war, sagen Sie bitte 'NICHTS' ins Mikrophon.  " +
+		"\n\nSie haben 6 Sekunden Zeit zum Antworten. " +
+		"\n\nDrücken Sie (X) zum Fortfahren";
 
 	#else
 	string initialInstructions1= "Welcome to Treasure Island!" +
@@ -1066,7 +1066,7 @@ public class TrialController : MonoBehaviour {
 
 				//show single selection instruction and wait for selection button press
 				string selectObjectText = exp.currInstructions.selectTheLocationText;
-				selectObjectText = "Sag den Namen des Gegenstands, den Du an diesem Ort erinnerst";
+				selectObjectText = "Welcher Gegenstand war an diesem Ort?";
 				//selectObjectText = "Name the object remembered in this location";
 				exp.currInstructions.SetTextPanelOn ();
 

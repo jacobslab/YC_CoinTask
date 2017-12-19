@@ -37,11 +37,7 @@ public class TimerBar : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		//spanish hurry up
-		if (ExperimentSettings_CoinTask.myLanguage==ExperimentSettings_CoinTask.LanguageSetting.Spanish)
-			HurryUpText.gameObject.GetComponent<Text> ().text= "¡Apúrese!";
-		else if (ExperimentSettings_CoinTask.myLanguage==ExperimentSettings_CoinTask.LanguageSetting.German)
-			HurryUpText.gameObject.GetComponent<Text> ().text= "Beeile Dich!";
+			HurryUpText.gameObject.GetComponent<Text> ().text= Experiment_CoinTask.Instance.currInstructions.hurryUpText;
 		myTimer.myResetDelegate += Reset;
 
 		barPositions = new Vector3[2];
