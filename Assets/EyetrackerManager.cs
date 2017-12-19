@@ -18,6 +18,8 @@ public class EyetrackerManager : MonoBehaviour {
     public Vector2 rightEditPos;
     private Queue<GazeDataEventArgs> _queue = new Queue<GazeDataEventArgs>();
     private bool canPumpData = false;
+
+	public bool shouldCheckHead = false;
     void Awake()
     {
         var trackers = EyeTrackingOperations.FindAllEyeTrackers();
@@ -129,25 +131,39 @@ private void PumpGazeData()
 // This method will be called on the main Unity thread
 private void HandleGazeData(GazeDataEventArgs e)
 {
-        ///GAZE ORIGIN / RECENTERING HEAD TRACKING
-        //   Vector3 leftPos = new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z);
-        //   Vector3 rightPos = new Vector3(e.RightEye.GazeOrigin.PositionInUserCoordinates.X, e.RightEye.GazeOrigin.PositionInUserCoordinates.Y, e.RightEye.GazeOrigin.PositionInUserCoordinates.Z);
+		if (shouldCheckHead) {
+//GAZE ORIGIN / RECENTERING HEAD TRACKING
+			   Vector3 leftOrigin = new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z);
+			   Vector3 rightOrigin = new Vector3(e.RightEye.GazeOrigin.PositionInUserCoordinates.X, e.RightEye.GazeOrigin.PositionInUserCoordinates.Y, e.RightEye.GazeOrigin.PositionInUserCoordinates.Z);
 
+		}
+       
 		//// GAZE POINT TRACKING 
-        Vector3 leftPos = new Vector3(e.LeftEye.GazePoint.PositionOnDisplayArea.X, e.LeftEye.GazePoint.PositionOnDisplayArea.Y);
-        Vector3 rightPos = new Vector3(e.RightEye.GazePoint.PositionOnDisplayArea.X, e.RightEye.GazePoint.PositionOnDisplayArea.Y);
 
-        Vector2 left, right;
-        leftPosText.text = leftEditPos.ToString();
-        rightPosText.text = rightEditPos.ToString();
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(leftPos.x * Screen.width, -leftPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out left);
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(rightPos.x * Screen.width, -rightPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out right);
+		if (e.LeftEye.GazePoint.Validity == Validity.Valid) {
+			Vector3 leftPos = new Vector3 (e.LeftEye.GazePoint.PositionOnDisplayArea.X, e.LeftEye.GazePoint.PositionOnDisplayArea.Y);
+			eyeLogTrack.LogDisplayData (leftPos, "LEFT");
+			Vector2 left;
+			leftPosText.text = leftEditPos.ToString();
+			RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(leftPos.x * Screen.width, -leftPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out left);
+			leftEye.transform.position = myCanvas.transform.TransformPoint(left);
+			eyeLogTrack.LogGazeData (leftEye.transform.position, "LEFT");
+		}
 
-        leftEye.transform.position = myCanvas.transform.TransformPoint(left);
-        rightEye.transform.position = myCanvas.transform.TransformPoint(right);
+		if (e.RightEye.GazePoint.Validity == Validity.Valid) {
+			Vector3 rightPos = new Vector3 (e.RightEye.GazePoint.PositionOnDisplayArea.X, e.RightEye.GazePoint.PositionOnDisplayArea.Y);
+			eyeLogTrack.LogDisplayData (rightPos, "RIGHT");
+			Vector2 right;
+			rightPosText.text = rightEditPos.ToString();
+			RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(rightPos.x * Screen.width, -rightPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out right);
+			rightEye.transform.position = myCanvas.transform.TransformPoint (right);
+			eyeLogTrack.LogGazeData (rightEye.transform.position, "RIGHT");
+		}
 
-		eyeLogTrack.LogGazeData (leftEye.transform.position, "LEFT");
-		eyeLogTrack.LogGazeData (rightEye.transform.position, "RIGHT");
+		eyeLogTrack.LogPupilData (e.LeftEye.Pupil.PupilDiameter, e.LeftEye.Pupil.Validity, "LEFT");
+		eyeLogTrack.LogPupilData (e.RightEye.Pupil.PupilDiameter, "RIGHT");
+
+        
       
     }
 

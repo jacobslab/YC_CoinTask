@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class RingChecker : MonoBehaviour {
 
-	public Transform sphereWalls;
-	float sphereRadius=48.4f;
+	public SphereCollider sphereCollider;
 	public LayerMask mask;
 	// Use this for initialization
 	void Start () {
@@ -20,7 +19,7 @@ public class RingChecker : MonoBehaviour {
 
 	public bool CheckInsideSphere()
 	{
-		if (Physics.CheckSphere (sphereWalls.transform.position,sphereRadius, mask.value)) {
+		if (Physics.CheckSphere (sphereCollider.transform.position,sphereCollider.radius, mask.value)) {
 			return true;
 		} else {
 			return false;
