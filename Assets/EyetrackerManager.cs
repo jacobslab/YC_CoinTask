@@ -17,12 +17,12 @@ public class EyetrackerManager : MonoBehaviour {
     private Queue<GazeDataEventArgs> _queue = new Queue<GazeDataEventArgs>();
     private bool canPumpData = false;
 
+
 	float invalidOriginTimer=0f;
+    float validOriginTimer = 0f;
 	private bool shouldReconnect=false;
 	public CanvasGroup reconnectionGroup;
 
-	bool leftInvalid=false;
-	bool rightInvalid=false;
 	public static bool shouldCheckHead = false;
     void Awake()
     {
@@ -36,12 +36,12 @@ public class EyetrackerManager : MonoBehaviour {
         if (_eyeTracker == null)
         {
             Debug.Log("No screen based eye tracker detected!");
-			myCanvas.gameObject.GetComponent<CanvasGroup> ().alpha = 0f;
+			//myCanvas.gameObject.GetComponent<CanvasGroup> ().alpha = 0f;
         }
         else
         {
 
-			myCanvas.gameObject.GetComponent<CanvasGroup> ().alpha = 0f;
+			//myCanvas.gameObject.GetComponent<CanvasGroup> ().alpha = 0f;
             Debug.Log("Selected eye tracker with serial number {0}" + _eyeTracker.SerialNumber);
         }
 
@@ -80,17 +80,8 @@ void Update()
         if (canPumpData)
             PumpGazeData();
 
-		if (Input.GetKeyDown (KeyCode.Q))
-			leftInvalid = true;
-		if(Input.GetKeyDown(KeyCode.P))
-			leftInvalid=false;
-		if (Input.GetKeyDown (KeyCode.R))
-			rightInvalid = true;
-		if (Input.GetKeyDown (KeyCode.T))
-			rightInvalid = false;
-			
 }
-
+  
 	public IEnumerator StartReconnection()
 	{
 		Debug.Log ("starting reconnection");
@@ -160,8 +151,7 @@ private void HandleGazeData(GazeDataEventArgs e)
 		//GAZE ORIGIN / RECENTERING HEAD TRACKING
 
 		//if either left or right origin is invalid, increase timer
-		if (!shouldReconnect && (leftInvalid || rightInvalid)){
-			//(e.LeftEye.GazeOrigin.Validity == Validity.Invalid || e.RightEye.GazeOrigin.Validity == Validity.Invalid)) {
+		if (!shouldReconnect && (e.LeftEye.GazeOrigin.Validity == Validity.Invalid || e.RightEye.GazeOrigin.Validity == Validity.Invalid)) {
 			if (invalidOriginTimer < Config_CoinTask.minInvalidOriginTime) {
 				invalidOriginTimer += Time.deltaTime;
 				Debug.Log ("invalid origin timer: " + invalidOriginTimer.ToString ());
@@ -170,21 +160,31 @@ private void HandleGazeData(GazeDataEventArgs e)
 
 		} else {
 			//if both origins 
-			Debug.Log ("resetting");
-			invalidOriginTimer = 0f;
-			shouldCheckHead = false;
+			//Debug.Log ("resetting");
+			//invalidOriginTimer = 0f;
+			//shouldCheckHead = false;
 				
 		}
        
 		if (shouldReconnect) {
 			Debug.Log ("waiting for reconnect to be complete");
-			if (e.LeftEye.GazeOrigin.Validity == Validity.Valid && e.RightEye.GazeOrigin.Validity == Validity.Valid) {
-				shouldCheckHead = false;
-				invalidOriginTimer = 0f;
-				reconnectionGroup.alpha = 0f;
-				shouldReconnect = false;
-				Debug.Log ("finishing reconnection");
-			}
+            if (validOriginTimer < 5f)
+            {
+                if (e.LeftEye.GazeOrigin.Validity == Validity.Valid && e.RightEye.GazeOrigin.Validity == Validity.Valid)
+                {
+                    validOriginTimer += Time.deltaTime;
+                    Debug.Log("valid origin timer: " + validOriginTimer.ToString());
+                }
+            }
+            else
+            {
+                shouldCheckHead = false;
+                invalidOriginTimer = 0f;
+                reconnectionGroup.alpha = 0f;
+                validOriginTimer = 0f;
+                shouldReconnect = false;
+                Debug.Log("finishing reconnection");
+            }
 		}
 		//// GAZE POINT TRACKING 
 

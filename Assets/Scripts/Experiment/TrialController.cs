@@ -1153,10 +1153,11 @@ public class TrialController : MonoBehaviour {
 			Debug.Log ("initiating reconnection");
 			yield return StartCoroutine (InitiateEyetrackerReconnection ());
 		}
+        totalTrialNumber++;
 
-		//increment subject's trial count
+        //increment subject's trial count
 #if !UNITY_WEBPLAYER
-		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
+        ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
 #endif
 	}
 
