@@ -1148,6 +1148,12 @@ public class TrialController : MonoBehaviour {
 
 		}
 
+		//perform reconnection check
+		if (EyetrackerManager.shouldCheckHead) {
+			Debug.Log ("initiating reconnection");
+			yield return StartCoroutine (InitiateEyetrackerReconnection ());
+		}
+
 		//increment subject's trial count
 #if !UNITY_WEBPLAYER
 		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
@@ -1449,6 +1455,8 @@ IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPosit
 		yield return 0;
 	}
 
+	
+
 	void SetConnectingLines( GameObject correctPositionIndicator, Vector3 chosenPosition, Color chosenIndicatorColor){//, EnvironmentPositionSelector.SelectionRadiusType chosenRadiusSize ){
 		correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>().SetLineTarget(chosenPosition, chosenIndicatorColor);
 	}
@@ -1465,6 +1473,12 @@ IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPosit
 		if (exp.uiController.doYouRememberUI.isPlaying) {
 			trialLogger.LogAnswerPositionMoved( memoryState, true );
 		} 
+	}
+
+	IEnumerator InitiateEyetrackerReconnection()
+	{
+		yield return StartCoroutine(exp.eyeManager.StartReconnection());
+		yield return null;
 	}
 
 	public IEnumerator WaitForPlayerToLookAt(GameObject treasureChest)

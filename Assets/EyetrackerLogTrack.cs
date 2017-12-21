@@ -18,7 +18,7 @@ public class EyetrackerLogTrack : LogTrack {
 		if(ExperimentSettings_CoinTask.isLogging)
 		{
 
-			subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "EYETRACKER_PUPIL_DIAMETER " + eye + separator + gazePos.x + separator + gazePos.y);
+			subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "EYETRACKER_PUPIL_DIAMETER " + eye + separator + pupilDiameter.ToString());
 		}
 	}
 

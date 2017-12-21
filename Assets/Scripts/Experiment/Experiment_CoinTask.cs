@@ -15,6 +15,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	public InstructionsController englishInstructions;
 	public InstructionsController spanishInstructions;
 	public InstructionsController germanInstructions;
+
 	[HideInInspector] public InstructionsController currInstructions;
 	//public InstructionsController inGameInstructionsController;
 	public CameraController cameraController;
@@ -37,6 +38,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//instruction video player
 	public VideoPlay instrVideoPlayer;
 
+
+	//eyetracker manager
+	public EyetrackerManager eyeManager;
 
 	//pocketsphinx
 	public SphinxTest sphinxTest;

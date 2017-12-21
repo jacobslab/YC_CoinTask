@@ -12,14 +12,18 @@ public class EyetrackerManager : MonoBehaviour {
 	public Canvas myCanvas;
 	public RawImage leftEye;
 	public RawImage rightEye;
-    public Text leftPosText;
-    public Text rightPosText;
     public Vector2 leftEditPos;
     public Vector2 rightEditPos;
     private Queue<GazeDataEventArgs> _queue = new Queue<GazeDataEventArgs>();
     private bool canPumpData = false;
 
-	public bool shouldCheckHead = false;
+	float invalidOriginTimer=0f;
+	private bool shouldReconnect=false;
+	public CanvasGroup reconnectionGroup;
+
+	bool leftInvalid=false;
+	bool rightInvalid=false;
+	public static bool shouldCheckHead = false;
     void Awake()
     {
         var trackers = EyeTrackingOperations.FindAllEyeTrackers();
@@ -45,8 +49,7 @@ public class EyetrackerManager : MonoBehaviour {
     }
     // Use this for initialization
     void Start () {
-        leftPosText.text = Vector3.zero.ToString();
-        rightPosText.text = Vector3.zero.ToString();
+		reconnectionGroup.alpha = 0f;
 		Vector2 left, right;
 	//	RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector3(-56f,-10f,-10f), myCanvas.worldCamera, out left);
 	//	RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector3(-42f,-10f,-8f), myCanvas.worldCamera, out right);
@@ -76,7 +79,29 @@ void Update()
 
         if (canPumpData)
             PumpGazeData();
+
+		if (Input.GetKeyDown (KeyCode.Q))
+			leftInvalid = true;
+		if(Input.GetKeyDown(KeyCode.P))
+			leftInvalid=false;
+		if (Input.GetKeyDown (KeyCode.R))
+			rightInvalid = true;
+		if (Input.GetKeyDown (KeyCode.T))
+			rightInvalid = false;
+			
 }
+
+	public IEnumerator StartReconnection()
+	{
+		Debug.Log ("starting reconnection");
+		shouldReconnect = true;
+		reconnectionGroup.alpha = 1f;
+		//wait until reconnection is complete
+		while (shouldReconnect) {
+			yield return 0;
+		}
+		yield return null;
+	}
 
 void OnEnable()
 {
@@ -131,20 +156,42 @@ private void PumpGazeData()
 // This method will be called on the main Unity thread
 private void HandleGazeData(GazeDataEventArgs e)
 {
-		if (shouldCheckHead) {
-//GAZE ORIGIN / RECENTERING HEAD TRACKING
-			   Vector3 leftOrigin = new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z);
-			   Vector3 rightOrigin = new Vector3(e.RightEye.GazeOrigin.PositionInUserCoordinates.X, e.RightEye.GazeOrigin.PositionInUserCoordinates.Y, e.RightEye.GazeOrigin.PositionInUserCoordinates.Z);
 
+		//GAZE ORIGIN / RECENTERING HEAD TRACKING
+
+		//if either left or right origin is invalid, increase timer
+		if (!shouldReconnect && (leftInvalid || rightInvalid)){
+			//(e.LeftEye.GazeOrigin.Validity == Validity.Invalid || e.RightEye.GazeOrigin.Validity == Validity.Invalid)) {
+			if (invalidOriginTimer < Config_CoinTask.minInvalidOriginTime) {
+				invalidOriginTimer += Time.deltaTime;
+				Debug.Log ("invalid origin timer: " + invalidOriginTimer.ToString ());
+			} else
+				shouldCheckHead = true; //if the timer is above min threshold, set reconnection check for next trial
+
+		} else {
+			//if both origins 
+			Debug.Log ("resetting");
+			invalidOriginTimer = 0f;
+			shouldCheckHead = false;
+				
 		}
        
+		if (shouldReconnect) {
+			Debug.Log ("waiting for reconnect to be complete");
+			if (e.LeftEye.GazeOrigin.Validity == Validity.Valid && e.RightEye.GazeOrigin.Validity == Validity.Valid) {
+				shouldCheckHead = false;
+				invalidOriginTimer = 0f;
+				reconnectionGroup.alpha = 0f;
+				shouldReconnect = false;
+				Debug.Log ("finishing reconnection");
+			}
+		}
 		//// GAZE POINT TRACKING 
 
 		if (e.LeftEye.GazePoint.Validity == Validity.Valid) {
 			Vector3 leftPos = new Vector3 (e.LeftEye.GazePoint.PositionOnDisplayArea.X, e.LeftEye.GazePoint.PositionOnDisplayArea.Y);
 			eyeLogTrack.LogDisplayData (leftPos, "LEFT");
 			Vector2 left;
-			leftPosText.text = leftEditPos.ToString();
 			RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(leftPos.x * Screen.width, -leftPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out left);
 			leftEye.transform.position = myCanvas.transform.TransformPoint(left);
 			eyeLogTrack.LogGazeData (leftEye.transform.position, "LEFT");
@@ -154,14 +201,14 @@ private void HandleGazeData(GazeDataEventArgs e)
 			Vector3 rightPos = new Vector3 (e.RightEye.GazePoint.PositionOnDisplayArea.X, e.RightEye.GazePoint.PositionOnDisplayArea.Y);
 			eyeLogTrack.LogDisplayData (rightPos, "RIGHT");
 			Vector2 right;
-			rightPosText.text = rightEditPos.ToString();
 			RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(rightPos.x * Screen.width, -rightPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out right);
 			rightEye.transform.position = myCanvas.transform.TransformPoint (right);
 			eyeLogTrack.LogGazeData (rightEye.transform.position, "RIGHT");
 		}
-
-		eyeLogTrack.LogPupilData (e.LeftEye.Pupil.PupilDiameter, e.LeftEye.Pupil.Validity, "LEFT");
-		eyeLogTrack.LogPupilData (e.RightEye.Pupil.PupilDiameter, "RIGHT");
+		if(e.LeftEye.Pupil.Validity == Validity.Valid)
+			eyeLogTrack.LogPupilData (e.LeftEye.Pupil.PupilDiameter, "LEFT");
+		if(e.RightEye.Pupil.Validity == Validity.Valid)
+			eyeLogTrack.LogPupilData (e.RightEye.Pupil.PupilDiameter, "RIGHT");
 
         
       
