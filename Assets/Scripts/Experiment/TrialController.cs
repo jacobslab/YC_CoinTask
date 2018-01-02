@@ -969,6 +969,10 @@ public class TrialController : MonoBehaviour {
 				}
 
 			}
+
+			//temporal retrieval
+//			yield return StartCoroutine(RunTemporalRetrieval());
+			RunTemporalRetrieval();
 			trialLogger.LogRecallPhaseStarted(false);
 
 			yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions));
@@ -1142,6 +1146,10 @@ public class TrialController : MonoBehaviour {
 				Debug.Log ("moving to the position");
 			} 
 
+	
+			//temporal retrieval
+//			yield return StartCoroutine(RunTemporalRetrieval());
+			RunTemporalRetrieval();
 			trialLogger.LogRecallPhaseStarted(false);
 
 			yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions,isFoil,recallAnswers));
@@ -1163,6 +1171,57 @@ public class TrialController : MonoBehaviour {
 
 	int currTrialNum = 0;
 		
+
+
+	void RunTemporalRetrieval()
+	{
+		//temporal retrieval
+		Debug.Log("number of objects this list: " + exp.objectController.CurrentTrialSpecialObjects.Count.ToString());
+		//only use the TH1 shuffling as it doesn't contain any foil objects
+			List<GameObject> temporalList = new List<GameObject> ();
+			for (int j = 0; j < exp.objectController.CurrentTrialSpecialObjects.Count; j++) {
+				temporalList.Add (exp.objectController.CurrentTrialSpecialObjects [j]);
+			}
+			List<GameObject> tupleList = new List<GameObject> ();
+			//create a tuple list that's unique
+			tupleList = CreateTuples(temporalList);
+			
+		int tupleCount = tupleList.Count / 2;
+		Debug.Log ("there are " + tupleCount.ToString () + " tuples");
+		List<int> randomTemporalOrder = UsefulFunctions.GetRandomIndexOrder (tupleCount);
+
+		for (int i = 0; i < tupleCount; i++) {
+			int indexA = 2 * randomTemporalOrder [i];
+			Debug.Log ("index A: " + indexA.ToString ());
+			GameObject optionA = tupleList [indexA];
+			int indexB = (2 * randomTemporalOrder [i])+1;
+			Debug.Log ("index B: " + indexB.ToString ());
+			GameObject optionB = tupleList [indexB];
+			Debug.Log ("option A : " + optionA.name + " and Option B: " + optionB.name);
+			if (indexA > indexB)
+				Debug.Log (optionA.name + " is more recent");
+			else
+				Debug.Log (optionB.name + " is more recent");
+		}
+
+//		yield return null;
+	}
+
+	List<GameObject> CreateTuples(List<GameObject> objList)
+	{
+		List<GameObject> tupleList = new List<GameObject> ();
+		for (int i = 0; i < objList.Count; i++) {
+			for(int j=i+1;j<objList.Count;j++)
+			{
+			tupleList.Add (objList [i]);
+			tupleList.Add (objList [j]);
+			}
+		}
+		for (int k = 0; k < tupleList.Count; k++) {
+			Debug.Log (k.ToString() + ": " + tupleList [k].name);
+		}
+		return tupleList;
+	}
 IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions){
 		trialLogger.LogFeedback(true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
