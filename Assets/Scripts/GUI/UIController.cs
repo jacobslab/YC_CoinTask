@@ -8,6 +8,8 @@ public class UIController : MonoBehaviour {
 
 	public PirateController pirateController;
 	public QuestionUI doYouRememberUI;
+
+	public QuestionUI temporalRetrievalUI;
 	//public QuestionUI areYouSureUI;
 	public BlockCompleteUI blockCompletedUI;
 	public ScoreRecapUI scoreRecapUI;
@@ -47,6 +49,7 @@ public class UIController : MonoBehaviour {
 
 	public TextMesh doYouRememberText;
 	public TextMesh recallPressToSelectText;
+
 
 	public TextMesh trialCompleteTitle;
 	public TextMesh timeBonusTitle;

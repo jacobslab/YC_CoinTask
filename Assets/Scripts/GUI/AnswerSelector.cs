@@ -61,7 +61,8 @@ public class AnswerSelector : MonoBehaviour {
 				StartCoroutine(selectorVisuals.GetComponent<TextMeshColorCycler>().CycleColors());
 			}
 		}
-		SetExplanationColors ();
+		if(transform.parent.parent.name.Contains("Do You Remember"))
+			SetExplanationColors ();
 	}
 		
 
@@ -114,6 +115,11 @@ public class AnswerSelector : MonoBehaviour {
 		}
 	}
 
+	public int GetAnswerPosition()
+	{
+		return currPositionIndex;
+	}
+
 	void Move(int indicesToMove){
 		int oldPositionIndex = currPositionIndex;
 
@@ -133,8 +139,8 @@ public class AnswerSelector : MonoBehaviour {
 		//play audio if the selector moved
 		if (isMoved) {
 			AudioController.PlayAudio(selectionSwitchAudio);
-
-			SetExplanationColors();
+			if(transform.parent.parent.name.Contains("Do You Remember"))
+				SetExplanationColors();
 		}
 
 		//TODO: make nice smooth movement with a coroutine.

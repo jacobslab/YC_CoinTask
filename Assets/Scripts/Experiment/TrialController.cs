@@ -971,8 +971,8 @@ public class TrialController : MonoBehaviour {
 			}
 
 			//temporal retrieval
-//			yield return StartCoroutine(RunTemporalRetrieval());
-			RunTemporalRetrieval();
+			yield return StartCoroutine(RunTemporalRetrieval());
+//			RunTemporalRetrieval();
 			trialLogger.LogRecallPhaseStarted(false);
 
 			yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions));
@@ -1148,8 +1148,8 @@ public class TrialController : MonoBehaviour {
 
 	
 			//temporal retrieval
-//			yield return StartCoroutine(RunTemporalRetrieval());
-			RunTemporalRetrieval();
+			yield return StartCoroutine(RunTemporalRetrieval());
+//			RunTemporalRetrieval();
 			trialLogger.LogRecallPhaseStarted(false);
 
 			yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions,isFoil,recallAnswers));
@@ -1173,7 +1173,7 @@ public class TrialController : MonoBehaviour {
 		
 
 
-	void RunTemporalRetrieval()
+	IEnumerator RunTemporalRetrieval()
 	{
 		//temporal retrieval
 		Debug.Log("number of objects this list: " + exp.objectController.CurrentTrialSpecialObjects.Count.ToString());
@@ -1198,13 +1198,59 @@ public class TrialController : MonoBehaviour {
 			Debug.Log ("index B: " + indexB.ToString ());
 			GameObject optionB = tupleList [indexB];
 			Debug.Log ("option A : " + optionA.name + " and Option B: " + optionB.name);
-			if (indexA > indexB)
+			GameObject optionACopy = Instantiate (optionA, Vector3.zero, optionA.transform.rotation) as GameObject;
+			string optionAName = optionA.GetComponent<SpawnableObject> ().GermanName;
+			optionACopy.name = optionAName+ " UICopy";
+			optionACopy.transform.parent = exp.cameraController.UICamera.transform; //make this copy follow camera/head movement. mainly for VR.
+			//set layer of object & children to PlayerUI
+			optionACopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI");
+
+			GameObject optionBCopy = Instantiate (optionB, Vector3.zero, optionB.transform.rotation) as GameObject;
+			string optionBName = optionB.GetComponent<SpawnableObject> ().GermanName;
+			optionBCopy.name = optionBName + " UICopy";
+			optionBCopy.transform.parent = exp.cameraController.UICamera.transform; //make this copy follow camera/head movement. mainly for VR.
+			//set layer of object & children to PlayerUI
+			optionBCopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI");
+
+			Debug.Log ("starting the questionUI coroutine now");
+
+			//do a coin toss to decide whether to flip locations of the options
+			int halfChance = Random.Range (0, 2);
+			if (halfChance == 0) {
+				yield return StartCoroutine (exp.uiController.temporalRetrievalUI.Play (optionACopy, optionBCopy, optionAName, optionBName));
+			} else {
+				yield return StartCoroutine (exp.uiController.temporalRetrievalUI.Play (optionBCopy, optionACopy, optionBName, optionAName));
+			}
+			yield return StartCoroutine(exp.WaitForActionButton ());
+
+			int correctAnswerIndex = -1;
+
+			if (indexA > indexB) {
 				Debug.Log (optionA.name + " is more recent");
+				correctAnswerIndex = 0;
+			}
 			else
+			{
 				Debug.Log (optionB.name + " is more recent");
+				correctAnswerIndex=1;
+			}
+
+			//flip the correct answer because we flipped when we asked the question
+			if (halfChance == 1)
+				correctAnswerIndex = 1 - correctAnswerIndex;
+
+			int selectedAnswerIndex = exp.uiController.temporalRetrievalUI.myAnswerSelector.GetAnswerPosition ();
+			Debug.Log ("selected: " + selectedAnswerIndex.ToString () + " and correct: " + correctAnswerIndex.ToString ());
+			if (selectedAnswerIndex != correctAnswerIndex) {
+				Debug.Log ("mark as incorrect answer");
+			} else {
+				Debug.Log ("correct answer");
+			}
+			//temporarily stop and destroy the spawned objects
+			exp.uiController.temporalRetrievalUI.Stop();
 		}
 
-//		yield return null;
+		yield return null;
 	}
 
 	List<GameObject> CreateTuples(List<GameObject> objList)
