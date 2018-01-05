@@ -10,6 +10,7 @@ public class UIController : MonoBehaviour {
 	public QuestionUI doYouRememberUI;
 
 	public QuestionUI temporalRetrievalUI;
+	public AnswerUI temporalAnswerUI;
 	//public QuestionUI areYouSureUI;
 	public BlockCompleteUI blockCompletedUI;
 	public ScoreRecapUI scoreRecapUI;

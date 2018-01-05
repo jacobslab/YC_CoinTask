@@ -1241,11 +1241,15 @@ public class TrialController : MonoBehaviour {
 
 			int selectedAnswerIndex = exp.uiController.temporalRetrievalUI.myAnswerSelector.GetAnswerPosition ();
 			Debug.Log ("selected: " + selectedAnswerIndex.ToString () + " and correct: " + correctAnswerIndex.ToString ());
+			exp.uiController.temporalRetrievalUI.choiceList.Add (selectedAnswerIndex);
 			if (selectedAnswerIndex != correctAnswerIndex) {
 				Debug.Log ("mark as incorrect answer");
+				exp.uiController.temporalRetrievalUI.scoreList.Add (-1);
 			} else {
 				Debug.Log ("correct answer");
+				exp.uiController.temporalRetrievalUI.scoreList.Add (1);
 			}
+			exp.uiController.temporalRetrievalUI.answerList.Add (correctAnswerIndex);
 			//temporarily stop and destroy the spawned objects
 			exp.uiController.temporalRetrievalUI.Stop();
 		}
@@ -1376,6 +1380,11 @@ IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPosit
 
 
 		trialLogger.LogInstructionEvent();
+
+
+		//temporal feedback
+		yield return StartCoroutine(exp.uiController.temporalRetrievalUI.ShowAnswer());
+
 		trialLogger.LogScoreScreenStarted(true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
 		exp.uiController.scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
@@ -1529,6 +1538,9 @@ IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPosit
 
 		currTrialNum++;
 
+
+		//temporal feedback
+		yield return StartCoroutine(exp.uiController.temporalRetrievalUI.ShowAnswer());
 
 		trialLogger.LogInstructionEvent();
 		trialLogger.LogScoreScreenStarted(true);

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class QuestionUI : MonoBehaviour {
 
@@ -25,6 +26,13 @@ public class QuestionUI : MonoBehaviour {
 	GameObject selectableObjectA=null;
 	GameObject selectableObjectB=null;
 
+	List<GameObject> temporalObjects;
+	public List<int> answerList;
+	public List<int> scoreList;
+	public List<int> choiceList;
+
+	public AnswerUI answerUI;
+
 	float objectScaleMult = 5.0f; //what the appropriate object scale is when in this UI
 	int origObjNameSize;
 
@@ -32,6 +40,10 @@ public class QuestionUI : MonoBehaviour {
 	void Start () {
 		Enable (false);
 		origObjNameSize = ObjectNameTextMesh.fontSize;
+		answerList = new List<int> ();
+		scoreList = new List<int> ();
+		choiceList = new List<int> ();
+		ResetTemporalObjects ();
 	}
 
 	//no object
@@ -44,6 +56,7 @@ public class QuestionUI : MonoBehaviour {
 
 		Answers.gameObject.SetActive (true);
 		myAnswerSelector.SetShouldCheckForInput (true);
+
 
 		yield return 0;
 	}
@@ -154,18 +167,79 @@ public class QuestionUI : MonoBehaviour {
 		ObjectNameTextMesh.fontSize = origObjNameSize;
 	}
 
+	void ResetTemporalObjects()
+	{
+		temporalObjects = new List<GameObject> ();
+	}
+
 	public void Stop(){
 		isPlaying = false;
 
 		if (selectedObject != null) {
 			Destroy(selectedObject);
 		}
-		if (selectableObjectA != null)
-			Destroy (selectableObjectA);
-		if (selectableObjectB != null)
-			Destroy (selectableObjectB);
+		//turn them off as we'll need to reactivate them for feedback
+		if (selectableObjectA != null) {
+			selectableObjectA.SetActive (false);
+			temporalObjects.Add (selectableObjectA);
+		}
+		if (selectableObjectB != null) {
+			selectableObjectB.SetActive (false);
+			temporalObjects.Add (selectableObjectB);
+		}
 		
 		Enable (false);
+	}
+
+	public IEnumerator ShowAnswer()
+	{
+
+		answerUI.Enable (true);
+		//we will retrieve the stored lists in groups of two in the same order we had questioned them in
+		for (int i = 0; i < temporalObjects.Count / 2; i++) {
+			answerUI.objAText.text = temporalObjects [i*2].GetComponent<SpawnableObject>().GermanName;
+			//answerUI.objATransform = temporalObjects [i].transform;
+			temporalObjects [i*2].SetActive (true);
+
+			answerUI.objBText.text = temporalObjects [(i*2)+1].GetComponent<SpawnableObject>().GermanName;
+			//answerUI.objBTransform = temporalObjects [i].transform;
+			temporalObjects [(i*2)+1].SetActive (true);
+
+			if (answerList [i] == 0) {
+				answerUI.correctHighlighter.transform.position = answerUI.objATransform.position;
+				if (scoreList [i] == 1) {
+					Debug.Log ("mark and score as CORRECT ANSWER");
+					answerUI.yourAnswerHighlighter.transform.position = answerUI.objATransform.position;
+					answerUI.SetCorrectColor ();
+				} else { 
+					Debug.Log ("mark and score as INCORRECT ANSWER");
+					answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
+					answerUI.SetWrongColor ();
+				}
+			} else {
+				answerUI.correctHighlighter.transform.position = answerUI.objBTransform.position;
+				if (scoreList [i] == 1) {
+					Debug.Log ("mark and score as CORRECT ANSWER");
+					answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
+					answerUI.SetCorrectColor ();
+				} else { 
+					Debug.Log ("mark and score as INCORRECT ANSWER");
+					answerUI.yourAnswerHighlighter.transform.position = answerUI.objATransform.position;
+					answerUI.SetWrongColor ();
+				}
+			}
+
+
+			
+			yield return new WaitForSeconds (3f);
+			Destroy(temporalObjects [i*2]);
+			Destroy (temporalObjects [(i*2) + 1]);
+				
+		}
+		answerUI.Enable (false);
+		answerList.Clear ();
+		temporalObjects.Clear ();
+		yield return null;
 	}
 
 	void Enable(bool shouldEnable){
