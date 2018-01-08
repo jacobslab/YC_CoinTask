@@ -17,6 +17,7 @@ public class EyetrackerManager : MonoBehaviour {
     private Queue<GazeDataEventArgs> _queue = new Queue<GazeDataEventArgs>();
     private bool canPumpData = false;
 
+	public bl_ProgressBar reconnectionProgress;
 
 	float invalidOriginTimer=0f;
     float validOriginTimer = 0f;
@@ -58,6 +59,8 @@ public class EyetrackerManager : MonoBehaviour {
 		leftEye.transform.position = myCanvas.transform.TransformPoint(new Vector3(138f,-80f,680f));
 		rightEye.transform.position = myCanvas.transform.TransformPoint(new Vector3(108f, -60f, 680f));
 		UnityEngine.Debug.Log ("transforming");
+		reconnectionProgress.Value = validOriginTimer;
+		reconnectionProgress.MaxValue = Config_CoinTask.maxValidOriginTime;
     }
 
     IEnumerator InitiateEyetracker()
@@ -80,6 +83,7 @@ void Update()
 
         if (canPumpData)
             PumpGazeData();
+
 
 }
   
@@ -169,8 +173,9 @@ private void HandleGazeData(GazeDataEventArgs e)
        
 		if (shouldReconnect) {
 			Debug.Log ("waiting for reconnect to be complete");
-            if (validOriginTimer < 5f)
+			if (validOriginTimer < Config_CoinTask.maxValidOriginTime)
             {
+				reconnectionProgress.Value = validOriginTimer;
                 if (e.LeftEye.GazeOrigin.Validity == Validity.Valid && e.RightEye.GazeOrigin.Validity == Validity.Valid)
                 {
                     validOriginTimer += Time.deltaTime;
@@ -181,6 +186,7 @@ private void HandleGazeData(GazeDataEventArgs e)
             {
                 shouldCheckHead = false;
                 invalidOriginTimer = 0f;
+				reconnectionProgress.Value = 0f;
                 reconnectionGroup.alpha = 0f;
                 validOriginTimer = 0f;
                 shouldReconnect = false;

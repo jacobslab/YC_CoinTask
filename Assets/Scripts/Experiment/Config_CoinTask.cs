@@ -97,7 +97,8 @@ public class Config_CoinTask : MonoBehaviour {
 
 
 	//eyetracker settings
-	public static float minInvalidOriginTime = 10f;
+	public static float minInvalidOriginTime = 10f; //for eyetracker connection to be classified as "not connected"
+	public static float maxValidOriginTime = 5f; //for reconnection
 
 	//practice settings
 	public static int numTrialsPract = 1;
