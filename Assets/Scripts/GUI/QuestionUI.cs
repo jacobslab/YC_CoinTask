@@ -30,6 +30,7 @@ public class QuestionUI : MonoBehaviour {
 	public List<int> answerList;
 	public List<int> scoreList;
 	public List<int> choiceList;
+	public List<int> flippedList;
 
 	public AnswerUI answerUI;
 
@@ -43,6 +44,7 @@ public class QuestionUI : MonoBehaviour {
 		answerList = new List<int> ();
 		scoreList = new List<int> ();
 		choiceList = new List<int> ();
+		flippedList = new List<int> ();
 		ResetTemporalObjects ();
 	}
 
@@ -204,28 +206,56 @@ public class QuestionUI : MonoBehaviour {
 			answerUI.objBText.text = temporalObjects [(i*2)+1].GetComponent<SpawnableObject>().GermanName;
 			//answerUI.objBTransform = temporalObjects [i].transform;
 			temporalObjects [(i*2)+1].SetActive (true);
-
+			if (flippedList [i] == 0)
+				Debug.Log ("was FLIPPED");
+			else
+				Debug.Log ("NOT flipped");
 			if (answerList [i] == 0) {
-				answerUI.correctHighlighter.transform.position = answerUI.objATransform.position;
+				if (flippedList [i] == 1)
+					answerUI.correctHighlighter.transform.position = answerUI.objBTransform.position;
+				else
+					answerUI.correctHighlighter.transform.position = answerUI.objATransform.position;
+				
 				if (scoreList [i] == 1) {
 					Debug.Log ("mark and score as CORRECT ANSWER");
-					answerUI.yourAnswerHighlighter.transform.position = answerUI.objATransform.position;
 					answerUI.SetCorrectColor ();
+					if(flippedList[i]==1)
+						answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
+					else
+						answerUI.yourAnswerHighlighter.transform.position = answerUI.objATransform.position;
+
+
 				} else { 
 					Debug.Log ("mark and score as INCORRECT ANSWER");
-					answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
 					answerUI.SetWrongColor ();
+
+					if(flippedList[i]==1)
+						answerUI.yourAnswerHighlighter.transform.position = answerUI.objATransform.position;
+					else
+						answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
+					
 				}
 			} else {
-				answerUI.correctHighlighter.transform.position = answerUI.objBTransform.position;
+				if(flippedList[i]==1)
+					answerUI.correctHighlighter.transform.position = answerUI.objATransform.position;
+				else
+					answerUI.correctHighlighter.transform.position = answerUI.objBTransform.position;
+				
 				if (scoreList [i] == 1) {
 					Debug.Log ("mark and score as CORRECT ANSWER");
-					answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
 					answerUI.SetCorrectColor ();
+					if(flippedList[i]==1)
+						answerUI.yourAnswerHighlighter.transform.position = answerUI.objATransform.position;
+					else
+						answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
+
 				} else { 
 					Debug.Log ("mark and score as INCORRECT ANSWER");
-					answerUI.yourAnswerHighlighter.transform.position = answerUI.objATransform.position;
 					answerUI.SetWrongColor ();
+					if(flippedList[i]==1)
+						answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
+					else
+						answerUI.yourAnswerHighlighter.transform.position = answerUI.objATransform.position;
 				}
 			}
 

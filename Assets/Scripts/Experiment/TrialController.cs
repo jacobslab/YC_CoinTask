@@ -1238,8 +1238,11 @@ public class TrialController : MonoBehaviour {
 			}
 
 			//flip the correct answer because we flipped when we asked the question
-			if (halfChance == 1)
+			if (halfChance == 1) {
 				correctAnswerIndex = 1 - correctAnswerIndex;
+				exp.uiController.temporalRetrievalUI.flippedList.Add (1);
+			} else
+				exp.uiController.temporalRetrievalUI.flippedList.Add (0);
 
 			int selectedAnswerIndex = exp.uiController.temporalRetrievalUI.myAnswerSelector.GetAnswerPosition ();
 			Debug.Log ("selected: " + selectedAnswerIndex.ToString () + " and correct: " + correctAnswerIndex.ToString ());
