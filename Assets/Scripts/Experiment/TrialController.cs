@@ -724,8 +724,10 @@ public class TrialController : MonoBehaviour {
 		trialLogger.LogTransportationToHomeEvent (true);
 //		Vector3 avatarStartPos = new Vector3 (Random.Range (exp.environmentController.WallsXNeg.position.x+5f, exp.environmentController.WallsXPos.position.x-5f), currentTrial.avatarStartPos.y, Random.Range (exp.environmentController.WallsZNeg.position.z+5f, exp.environmentController.WallsZPos.position.z-5f));
 		Vector3 avatarStartPos = exp.environmentController.GetRandomPositionWithinWallsXZ (Config_CoinTask.objectToWallBuffer);
+		avatarStartPos = new Vector3 (avatarStartPos.x, exp.player.controls.startPositionTransform1.position.y, avatarStartPos.z);
 		Debug.Log ("transported to : " + avatarStartPos.ToString ());
 		trialLogger.LogStartPosition (avatarStartPos);
+
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (avatarStartPos, currentTrial.avatarStartRot, false));
 		trialLogger.LogTransportationToHomeEvent (false);
 		Debug.Log ("done transporting");
@@ -916,12 +918,12 @@ public class TrialController : MonoBehaviour {
 					string[] splitName = specialItemDisplayName.Split (' ');
 					if (splitName [0] == "el") {
 						string displayNameNoEl = specialItemDisplayName.Remove (0, 3);
-						selectObjectText = selectObjectText + "l" + " " + displayNameNoEl + " (X)."; //add the 'l' to "de" to make "del"
+						selectObjectText = selectObjectText + "l" + " " + displayNameNoEl + "? (X)."; //add the 'l' to "de" to make "del"
 					} else {
-						selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
+						selectObjectText = selectObjectText + " " + specialItemDisplayName + "? (X).";
 					}
 				} else { //english
-					selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
+					selectObjectText = selectObjectText + " " + specialItemDisplayName + "? (X).";
 				}
 
 #if MRIVERSION

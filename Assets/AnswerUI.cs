@@ -12,6 +12,9 @@ public class AnswerUI : MonoBehaviour {
 
 	public Color correctColor;
 	public Color wrongColor;
+
+	float yTransformCorrect = 0.7f;
+	float yTransformWrong = 1.055f;
 	// Use this for initialization
 	void Start () {
 		Enable (false);
@@ -24,12 +27,14 @@ public class AnswerUI : MonoBehaviour {
 
 	public void SetCorrectColor()
 	{
-		yourAnswerHighlighter.GetComponent<SpriteRenderer> ().color = correctColor;
+		yourAnswerHighlighter.transform.GetChild(1).GetComponent<SpriteRenderer> ().color = correctColor;
+		yourAnswerHighlighter.transform.GetChild (0).transform.localPosition = new Vector3 (yourAnswerHighlighter.transform.GetChild (0).transform.localPosition.x, yTransformCorrect, yourAnswerHighlighter.transform.GetChild (0).transform.localPosition.z);
 	}
 
 	public void SetWrongColor()
 	{
-		yourAnswerHighlighter.GetComponent<SpriteRenderer> ().color = wrongColor;
+		yourAnswerHighlighter.transform.GetChild(1).GetComponent<SpriteRenderer> ().color = wrongColor;
+		yourAnswerHighlighter.transform.GetChild (0).transform.localPosition = new Vector3 (yourAnswerHighlighter.transform.GetChild (0).transform.localPosition.x, yTransformWrong, yourAnswerHighlighter.transform.GetChild (0).transform.localPosition.z);
 	}
 
 	public void Enable(bool shouldEnable){
