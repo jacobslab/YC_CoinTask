@@ -29,7 +29,6 @@ public class QuestionUI : MonoBehaviour {
 	List<GameObject> temporalObjects;
 	public List<int> answerList;
 	public List<int> scoreList;
-	public List<int> choiceList;
 	public List<int> flippedList;
 
 	public AnswerUI answerUI;
@@ -43,7 +42,6 @@ public class QuestionUI : MonoBehaviour {
 		origObjNameSize = ObjectNameTextMesh.fontSize;
 		answerList = new List<int> ();
 		scoreList = new List<int> ();
-		choiceList = new List<int> ();
 		flippedList = new List<int> ();
 		ResetTemporalObjects ();
 	}
@@ -207,54 +205,37 @@ public class QuestionUI : MonoBehaviour {
 			//answerUI.objBTransform = temporalObjects [i].transform;
 			temporalObjects [(i*2)+1].SetActive (true);
 			if (flippedList [i] == 0)
-				Debug.Log ("was FLIPPED");
+				Debug.Log ("NOT FLIPPED");
 			else
-				Debug.Log ("NOT flipped");
+				Debug.Log ("flipped");
 			if (answerList [i] == 0) {
-				if (flippedList [i] == 1)
-					answerUI.correctHighlighter.transform.position = answerUI.objBTransform.position;
-				else
-					answerUI.correctHighlighter.transform.position = answerUI.objATransform.position;
+				answerUI.correctHighlighter.transform.position = answerUI.objATransform.position;
 				
 				if (scoreList [i] == 1) {
 					Debug.Log ("mark and score as CORRECT ANSWER");
 					answerUI.SetCorrectColor ();
-					if(flippedList[i]==1)
-						answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
-					else
-						answerUI.yourAnswerHighlighter.transform.position = answerUI.objATransform.position;
-
-
+					Debug.Log ("marked your CORRECT answer as A");
+					answerUI.yourAnswerHighlighter.transform.position = answerUI.objATransform.position;
 				} else { 
 					Debug.Log ("mark and score as INCORRECT ANSWER");
 					answerUI.SetWrongColor ();
 
-					if(flippedList[i]==1)
-						answerUI.yourAnswerHighlighter.transform.position = answerUI.objATransform.position;
-					else
-						answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
-					
+					Debug.Log ("marked your WRONG answer as B");
+					answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
 				}
-			} else {
-				if(flippedList[i]==1)
-					answerUI.correctHighlighter.transform.position = answerUI.objATransform.position;
-				else
+			}
+				else {
 					answerUI.correctHighlighter.transform.position = answerUI.objBTransform.position;
 				
 				if (scoreList [i] == 1) {
 					Debug.Log ("mark and score as CORRECT ANSWER");
 					answerUI.SetCorrectColor ();
-					if(flippedList[i]==1)
-						answerUI.yourAnswerHighlighter.transform.position = answerUI.objATransform.position;
-					else
-						answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
-
+					Debug.Log ("marked your CORRECT answer as B");
+					answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
 				} else { 
 					Debug.Log ("mark and score as INCORRECT ANSWER");
 					answerUI.SetWrongColor ();
-					if(flippedList[i]==1)
-						answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
-					else
+						Debug.Log ("marked your WRONG answer as A NOT FLIPPED");
 						answerUI.yourAnswerHighlighter.transform.position = answerUI.objATransform.position;
 				}
 			}
@@ -269,6 +250,8 @@ public class QuestionUI : MonoBehaviour {
 		answerUI.Enable (false);
 		answerList.Clear ();
 		temporalObjects.Clear ();
+		scoreList.Clear ();
+		flippedList.Clear ();
 		yield return null;
 	}
 

@@ -55,7 +55,7 @@ public class ScoreController : MonoBehaviour {
 	static int memoryScoreYesRight = 200;
 	public static int MemoryScoreYesRight { get { return memoryScoreYesRight; } }
 
-	static int memoryScoreYesWrong = -350;
+	static int memoryScoreYesWrong = 0;
 	public static int MemoryScoreYesWrong { get { return memoryScoreYesWrong; } }
 
 	static int specialObjectPoints = 0;

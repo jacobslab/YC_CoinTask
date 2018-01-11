@@ -1240,13 +1240,15 @@ public class TrialController : MonoBehaviour {
 			//flip the correct answer because we flipped when we asked the question
 			if (halfChance == 1) {
 				correctAnswerIndex = 1 - correctAnswerIndex;
+				Debug.Log ("got flipped");
 				exp.uiController.temporalRetrievalUI.flippedList.Add (1);
-			} else
+			} else {
+				Debug.Log ("not flipped");
 				exp.uiController.temporalRetrievalUI.flippedList.Add (0);
+			}
 
 			int selectedAnswerIndex = exp.uiController.temporalRetrievalUI.myAnswerSelector.GetAnswerPosition ();
 			Debug.Log ("selected: " + selectedAnswerIndex.ToString () + " and correct: " + correctAnswerIndex.ToString ());
-			exp.uiController.temporalRetrievalUI.choiceList.Add (selectedAnswerIndex);
 			if (selectedAnswerIndex != correctAnswerIndex) {
 				Debug.Log ("mark as incorrect answer");
 				exp.uiController.temporalRetrievalUI.scoreList.Add (-1);
@@ -1255,6 +1257,7 @@ public class TrialController : MonoBehaviour {
 				exp.uiController.temporalRetrievalUI.scoreList.Add (1);
 			}
 			exp.uiController.temporalRetrievalUI.answerList.Add (correctAnswerIndex);
+			Debug.Log ("stored as correct answer: " + correctAnswerIndex.ToString ());
 			//temporarily stop and destroy the spawned objects
 			exp.uiController.temporalRetrievalUI.Stop();
 		}

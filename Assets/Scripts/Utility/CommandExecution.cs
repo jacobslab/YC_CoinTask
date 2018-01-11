@@ -126,7 +126,11 @@ public class CommandExecution : MonoBehaviour {
         proc.StartInfo.RedirectStandardOutput = false;
         proc.StartInfo.UseShellExecute = false;
         proc.StartInfo.FileName = @"powershell.exe";
+		#if UNITY_EDITOR_WIN
+		proc.StartInfo.Arguments = @"C:\Users\jacobslab\Downloads\Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe --device_sn="+device_sn+" --mode="+mode;
+		#else
         proc.StartInfo.Arguments = @"C:\Users\exp\Downloads\Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe --device_sn="+device_sn+" --mode="+mode;
+		#endif
         proc.Start();
         //
                 proc.WaitForExit();
