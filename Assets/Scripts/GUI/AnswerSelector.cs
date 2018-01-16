@@ -45,6 +45,16 @@ public class AnswerSelector : MonoBehaviour {
 		}
 	}
 
+	public void SetupAnswerSelector(string optionAName,string optionBName)
+	{
+		int maxLength = (optionAName.Length > optionBName.Length) ? optionAName.Length : optionBName.Length;
+		string spaceToBeAdded = "";
+		for (int i = 0; i < maxLength + 3; i++) {
+			spaceToBeAdded += " ";
+		}
+		selectorVisuals.GetComponent<TextMesh> ().text = "[" + spaceToBeAdded + "]";
+	}
+
 	void ResetSelectorPosition(){
 		int resetIndex = 0; //first index
 		if (resetToRandomPosition) {

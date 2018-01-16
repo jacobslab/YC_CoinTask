@@ -3,6 +3,9 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine.Windows.Speech;
+using System.Collections.Generic;
+using System.Linq;
 
 public class TrialController : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
@@ -25,8 +28,13 @@ public class TrialController : MonoBehaviour {
 	int numDefaultObjectsCollected = 0;
 	public int NumDefaultObjectsCollected { get { return numDefaultObjectsCollected; } }
 
+
+	KeywordRecognizer keywordRecognizer;
+	Dictionary<string, System.Action> keywords = new Dictionary<string, System.Action>();
+
 	int timeBonus = 0;
 	int memoryScore = 0;
+	public int temporalScore = 0;
 	public CanvasGroup scoreInstructionsGroup;
 	public Trial currentTrial;
 
@@ -723,12 +731,11 @@ public class TrialController : MonoBehaviour {
 		//move player to home location & rotation
 		trialLogger.LogTransportationToHomeEvent (true);
 //		Vector3 avatarStartPos = new Vector3 (Random.Range (exp.environmentController.WallsXNeg.position.x+5f, exp.environmentController.WallsXPos.position.x-5f), currentTrial.avatarStartPos.y, Random.Range (exp.environmentController.WallsZNeg.position.z+5f, exp.environmentController.WallsZPos.position.z-5f));
-		Vector3 avatarStartPos = exp.environmentController.GetRandomPositionWithinWallsXZ (Config_CoinTask.objectToWallBuffer);
-		avatarStartPos = new Vector3 (avatarStartPos.x, exp.player.controls.startPositionTransform1.position.y, avatarStartPos.z);
-		Debug.Log ("transported to : " + avatarStartPos.ToString ());
-		trialLogger.LogStartPosition (avatarStartPos);
 
-		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (avatarStartPos, currentTrial.avatarStartRot, false));
+		Debug.Log ("transported to : " + currentTrial.avatarStartPos.ToString ());
+		trialLogger.LogStartPosition (currentTrial.avatarStartPos);
+
+		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));
 		trialLogger.LogTransportationToHomeEvent (false);
 		Debug.Log ("done transporting");
 		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
@@ -1104,6 +1111,20 @@ public class TrialController : MonoBehaviour {
 				//play on record beep
 				exp.audioController.audioRecorder.beepHigh.Play ();
 
+				//initialize it to zero; it will remain this if the keyword isn't detected
+				recallAnswers [randomOrderIndex] = 0;
+				//Create keywords for keyword recognizer
+				keywords.Add(currentRecallObject, () =>
+					{
+						// action to be performed when this keyword is spoken
+						Debug.Log("found " + currentRecallObject);
+						recallAnswers [randomOrderIndex] = 1;
+					});
+				keywordRecognizer = new KeywordRecognizer(keywords.Keys.ToArray());
+				keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
+
+				keywordRecognizer.Start ();
+
 
 				//start recording
 				yield return StartCoroutine (exp.audioController.audioRecorder.Record (exp.sessionDirectory + "audio", fileName, recallTime));
@@ -1132,7 +1153,7 @@ public class TrialController : MonoBehaviour {
 				//check audio response
 				UnityEngine.Debug.Log ("CHECKING SPHINX RESPONSE: " + totalTrialNumber + " and  " + currentRecallNumber);
 				int sphinxNum = totalTrialNumber;
-				recallAnswers [randomOrderIndex] = exp.sphinxTest.CheckAudioResponse (sphinxNum, currentRecallNumber, currentRecallObject, kws_threshold);
+				//recallAnswers [randomOrderIndex] = exp.sphinxTest.CheckAudioResponse (sphinxNum, currentRecallNumber, currentRecallObject, kws_threshold);
 
 				trialLogger.LogSphinxEvent ();
 
@@ -1173,7 +1194,15 @@ public class TrialController : MonoBehaviour {
 
 	int currTrialNum = 0;
 		
-
+	private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
+	{
+		System.Action keywordAction;
+		// if the keyword recognized is in our dictionary, call that Action.
+		if (keywords.TryGetValue(args.text, out keywordAction))
+		{
+			keywordAction.Invoke();
+		}
+	}
 
 	IEnumerator RunTemporalRetrieval()
 	{
@@ -1285,7 +1314,7 @@ IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPosit
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
 
 		memoryScore = 0;
-
+		temporalScore = 0;
 		List<GameObject> CorrectPositionIndicators = new List<GameObject> ();
 		List<GameObject> ChosenPositionIndicators = new List<GameObject> ();
 		List<GameObject> specialObjectListRecallOrder = new List<GameObject>();
@@ -1395,7 +1424,7 @@ IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPosit
 
 		trialLogger.LogScoreScreenStarted(true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
-		exp.uiController.scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
+		exp.uiController.scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore + temporalScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, temporalScore, trialTimer.GetSecondsFloat());
 
 #if MRIVERSION
 		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxScoreScreenTime));
@@ -1428,6 +1457,7 @@ IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPosit
 		int totalRecallCues = 0;
 		int consecutiveScore = 0;
 		memoryScore = 0;
+		temporalScore = 0;
 
 		List<GameObject> CorrectPositionIndicators = new List<GameObject> ();
 		List<GameObject> ChosenPositionIndicators = new List<GameObject> ();
@@ -1553,7 +1583,7 @@ IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPosit
 		trialLogger.LogInstructionEvent();
 		trialLogger.LogScoreScreenStarted(true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
-		exp.uiController.scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
+		exp.uiController.scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore + temporalScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, temporalScore, trialTimer.GetSecondsFloat());
 
 		#if MRIVERSION
 		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxScoreScreenTime));

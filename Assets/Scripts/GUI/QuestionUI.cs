@@ -98,6 +98,8 @@ public class QuestionUI : MonoBehaviour {
 
 		PlayObjectJuice ();
 
+		myAnswerSelector.SetupAnswerSelector (optionAName, optionBName);
+
 		selectableObjectA = optionA;
 		selectableObjectA.transform.position = ObjectAPositionTransform.position;
 		SpawnableObject selectedObjectSpawnableA = selectableObjectA.GetComponent<SpawnableObject> ();
@@ -212,6 +214,7 @@ public class QuestionUI : MonoBehaviour {
 				answerUI.correctHighlighter.transform.position = answerUI.objATransform.position;
 				
 				if (scoreList [i] == 1) {
+					exp.trialController.temporalScore += 200;
 					Debug.Log ("mark and score as CORRECT ANSWER");
 					answerUI.SetCorrectColor ();
 					Debug.Log ("marked your CORRECT answer as A");
@@ -228,6 +231,7 @@ public class QuestionUI : MonoBehaviour {
 					answerUI.correctHighlighter.transform.position = answerUI.objBTransform.position;
 				
 				if (scoreList [i] == 1) {
+					exp.trialController.temporalScore += 200;
 					Debug.Log ("mark and score as CORRECT ANSWER");
 					answerUI.SetCorrectColor ();
 					Debug.Log ("marked your CORRECT answer as B");

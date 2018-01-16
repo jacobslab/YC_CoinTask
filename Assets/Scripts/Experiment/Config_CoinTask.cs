@@ -126,7 +126,9 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public static float selectionDiameter = 26.0f;
 
+	public static float radiusBuffer = 5f; //buffer to make the initial start position happen away from walls
 	public static float objectToWallBuffer = 13.0f; //half of the selection diameter.
+	public static float objectToPlayerBuffer = 13f;
 	public static float objectToObjectBuffer { get { return CalculateObjectToObjectBuffer(); } } //calculated base on min time to drive between objects!
 	public static float specialObjectBufferMult = 0.0f; //the distance the object controller will try to keep between special objects. should be a multiple of objectToObjectBuffer
 

@@ -13,8 +13,8 @@ public class AnswerUI : MonoBehaviour {
 	public Color correctColor;
 	public Color wrongColor;
 
-	float yTransformCorrect = 0.7f;
-	float yTransformWrong = 1.055f;
+	float yTransformCorrect = 0.61f;
+	float yTransformWrong = 0.95f;
 	// Use this for initialization
 	void Start () {
 		Enable (false);

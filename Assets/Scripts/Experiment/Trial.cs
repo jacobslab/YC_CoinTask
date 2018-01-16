@@ -39,6 +39,9 @@ public class Trial {
 		//Debug.Log("NUM SPECIAL: " + numSpecialObjects);
 
 
+		//setting up random start position
+		avatarStartPos = exp.environmentController.GetRandomStartPosition (Config_CoinTask.radiusBuffer);
+		avatarStartPos = new Vector3 (avatarStartPos.x, exp.player.controls.startPositionTransform1.position.y, avatarStartPos.z);
 
 		int fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
 		if (fiftyFiftyChance == 0) {

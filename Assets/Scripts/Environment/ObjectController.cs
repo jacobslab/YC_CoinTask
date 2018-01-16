@@ -239,7 +239,7 @@ public class ObjectController : MonoBehaviour {
 				numTries++;
 			
 				//check if the generated position is far enough from all other positions
-				objectsAreFarEnough = CheckObjectsFarEnoughXZ( randomEnvPositionVec2, defaultPositions, out smallestDistance);
+				objectsAreFarEnough = CheckObjectsFarEnoughXZ( randomEnvPositionVec2, defaultPositions,distancePos, out smallestDistance);
 			
 				//if not, and the smallest distance is larger than the currents largest small distance...
 				if( !objectsAreFarEnough && smallestDistance > currentBiggestSmallestDistance ){
@@ -249,8 +249,8 @@ public class ObjectController : MonoBehaviour {
 			}
 
 			if(numTries == maxNumTries){
-//				Debug.Log("Tried " + maxNumTries + " times to place default objects!");
-//				Debug.Log("DISTANCE: " + currentBiggestSmallestDistance + " POSITION: " + smallestDistancePosition);
+				Debug.Log("Tried " + maxNumTries + " times to place default objects!");
+				Debug.Log("DISTANCE: " + currentBiggestSmallestDistance + " POSITION: " + smallestDistancePosition);
 				defaultPositions.Add(smallestDistancePosition);
 			}
 			else{
@@ -291,7 +291,7 @@ public class ObjectController : MonoBehaviour {
 				numTries++;
 
 				//check if the generated position is far enough from all other positions
-				objectsAreFarEnough = CheckObjectsFarEnoughXZ( randomEnvPositionVec2, defaultPositions, out smallestDistance);
+				objectsAreFarEnough = CheckObjectsFarEnoughXZ( randomEnvPositionVec2, defaultPositions,distancePos, out smallestDistance);
 
 				//if not, and the smallest distance is larger than the currents largest small distance...
 				if( !objectsAreFarEnough && smallestDistance > currentBiggestSmallestDistance ){
@@ -356,12 +356,13 @@ public class ObjectController : MonoBehaviour {
 	}
 
 	//also fills the out float smallestDistance for informing how close the object is to overlap.
-	public bool CheckObjectsFarEnoughXZ(Vector2 newObjectPos, List<Vector2> otherObjectPositions, out float smallestDistance){
+	public bool CheckObjectsFarEnoughXZ(Vector2 newObjectPos, List<Vector2> otherObjectPositions, Vector2 distancePos, out float smallestDistance){
 		bool isFarEnough = true;
 		smallestDistance = 0;
 		for(int i = 0; i < otherObjectPositions.Count; i++){
 			Vector2 previousDefaultObjectLocation = otherObjectPositions[i];
 			float positionDistance = (newObjectPos - previousDefaultObjectLocation).magnitude;
+			float objectToPlayerDistance = Vector2.Distance (distancePos, newObjectPos);
 			if (i == 0){
 				//set smallest distance for the first time
 				smallestDistance = positionDistance;
@@ -370,6 +371,9 @@ public class ObjectController : MonoBehaviour {
 				if(smallestDistance > positionDistance) {
 					smallestDistance = positionDistance;
 				}
+				isFarEnough = false;
+			}
+			if (objectToPlayerDistance < Config_CoinTask.objectToPlayerBuffer) {
 				isFarEnough = false;
 			}
 		}

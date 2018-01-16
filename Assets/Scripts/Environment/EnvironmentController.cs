@@ -81,17 +81,31 @@ public class EnvironmentController : MonoBehaviour {
 		
 		//float randomXPos = Random.Range(WallsXPos.position.x - wallBuffer, WallsXNeg.position.x + wallBuffer);
 		//float randomZPos = Random.Range(WallsZPos.position.z - wallBuffer, WallsZNeg.position.z + wallBuffer);
-		float randomXPos=Random.Range(sphereWalls.transform.position.x - sphereWalls.radius, sphereWalls.transform.position.x + sphereWalls.radius);
-		float randomZPos=Random.Range(sphereWalls.transform.position.z - sphereWalls.radius, sphereWalls.transform.position.z + sphereWalls.radius);
+//		float randomXPos=Random.Range(sphereWalls.transform.position.x - sphereWalls.radius - wallBuffer, sphereWalls.transform.position.x + sphereWalls.radius + wallBuffer);
+//		float randomZPos=Random.Range(sphereWalls.transform.position.z - sphereWalls.radius - wallBuffer, sphereWalls.transform.position.z + sphereWalls.radius + wallBuffer);
 		//Vector3 newPosition = new Vector3 (randomXPos, transform.position.y, randomZPos);
 		Vector3 randSphere=Random.insideUnitSphere;
-//		UnityEngine.Debug.Log ("randsphere: " + randSphere.ToString ());
+		UnityEngine.Debug.Log ("randsphere: " + randSphere.ToString ());
 		Vector3 newPosition = new Vector3 (sphereWalls.transform.position.x + (randSphere.x * sphereWalls.radius), 
 			sphereWalls.transform.position.y, sphereWalls.transform.position.z + (randSphere.z * sphereWalls.radius));
 //		UnityEngine.Debug.Log ("new position: " + newPosition);
 		return newPosition;
 	}
 
+	public Vector3 GetRandomStartPosition(float radiusBuffer){
+
+		//float randomXPos = Random.Range(WallsXPos.position.x - wallBuffer, WallsXNeg.position.x + wallBuffer);
+		//float randomZPos = Random.Range(WallsZPos.position.z - wallBuffer, WallsZNeg.position.z + wallBuffer);
+		//		float randomXPos=Random.Range(sphereWalls.transform.position.x - sphereWalls.radius - wallBuffer, sphereWalls.transform.position.x + sphereWalls.radius + wallBuffer);
+		//		float randomZPos=Random.Range(sphereWalls.transform.position.z - sphereWalls.radius - wallBuffer, sphereWalls.transform.position.z + sphereWalls.radius + wallBuffer);
+		//Vector3 newPosition = new Vector3 (randomXPos, transform.position.y, randomZPos);
+		Vector3 randSphere=Random.insideUnitSphere;
+		UnityEngine.Debug.Log ("randsphere: " + randSphere.ToString ());
+		Vector3 newPosition = new Vector3 (sphereWalls.transform.position.x + (randSphere.x * (sphereWalls.radius-radiusBuffer)), 
+			sphereWalls.transform.position.y, sphereWalls.transform.position.z + (randSphere.z * (sphereWalls.radius-radiusBuffer)));
+		//		UnityEngine.Debug.Log ("new position: " + newPosition);
+		return newPosition;
+	}
 	//NOT WORKING AS INTENDED.
 	public float GetDistanceFromEdge(GameObject positionObject, float wallBuffer, Vector3 direction){
 		float distanceToWall = 0;
