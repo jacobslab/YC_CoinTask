@@ -110,6 +110,32 @@ public class TrialLogTrack : LogTrack {
 		Debug.Log ("REMEMBER LOGGED: " + response);
 	}
 
+	public void LogTemporalRetrievalStarted()
+	{
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (),"Trial Event" + separator +  "TEMPORAL_RETRIEVAL_STARTED");
+	}
+	public void LogTemporalRetrievalEnded()
+	{
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (),"Trial Event" + separator +  "TEMPORAL_RETRIEVAL_ENDED");
+	}
+
+	public void LogTemporalFeedbackStarted()
+	{
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (),"Trial Event" + separator +  "TEMPORAL_FEEDBACK_STARTED");
+	}
+	public void LogTemporalFeedbackEnded()
+	{
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (),"Trial Event" + separator +  "TEMPORAL_FEEDBACK_ENDED");
+	}
+
+	public void LogTrialType(ExperimentSettings_CoinTask.RecallType recallType)
+	{
+		if (recallType == ExperimentSettings_CoinTask.RecallType.Object)
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "TRIAL TYPE" + separator + "OBJECT");
+		else
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "TRIAL TYPE" + separator + "LOCATION");
+	}
+
 	#if MRIVERSION
 
 	public void LogMRITimeout(){
@@ -264,10 +290,10 @@ public class TrialLogTrack : LogTrack {
 				Debug.Log ("Logged start position");
 			}
 	}
-	public void LogTransportationToHomeEvent(bool isStarting){
+	public void LogTransportationToHomeEvent(bool isStarting,Vector3 startPos){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			if(isStarting){
-				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "HOMEBASE_TRANSPORT_STARTED");
+				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "HOMEBASE_TRANSPORT_STARTED" + separator + startPos.x.ToString() + separator + startPos.y.ToString() + separator + startPos.z.ToString());
 				Debug.Log ("Logged home transport event.");
 			}
 			else{

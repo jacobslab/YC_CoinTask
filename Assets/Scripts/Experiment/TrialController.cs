@@ -714,8 +714,12 @@ public class TrialController : MonoBehaviour {
 
 		currentTrial = trial;
 		Debug.Log ("RECALL TYPE: " + currentTrial.trialRecallType.ToString ());
-		if(currentTrial.trialRecallType == ExperimentSettings_CoinTask.RecallType.Object)
+		if (currentTrial.trialRecallType == ExperimentSettings_CoinTask.RecallType.Object) {
 			exp.objectController.CreateFoilObjects ();
+			trialLogger.LogTrialType (ExperimentSettings_CoinTask.RecallType.Object);
+		} else {
+			trialLogger.LogTrialType (ExperimentSettings_CoinTask.RecallType.Location);
+		}
 		
 
 		if (isPracticeTrial) {
@@ -729,14 +733,14 @@ public class TrialController : MonoBehaviour {
 		}
 
 		//move player to home location & rotation
-		trialLogger.LogTransportationToHomeEvent (true);
+		trialLogger.LogTransportationToHomeEvent (true,currentTrial.avatarStartPos);
 //		Vector3 avatarStartPos = new Vector3 (Random.Range (exp.environmentController.WallsXNeg.position.x+5f, exp.environmentController.WallsXPos.position.x-5f), currentTrial.avatarStartPos.y, Random.Range (exp.environmentController.WallsZNeg.position.z+5f, exp.environmentController.WallsZPos.position.z-5f));
 
 		Debug.Log ("transported to : " + currentTrial.avatarStartPos.ToString ());
 		trialLogger.LogStartPosition (currentTrial.avatarStartPos);
 
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));
-		trialLogger.LogTransportationToHomeEvent (false);
+		trialLogger.LogTransportationToHomeEvent (false,currentTrial.avatarStartPos);
 		Debug.Log ("done transporting");
 		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
 			//Spawn the first default object
@@ -980,7 +984,9 @@ public class TrialController : MonoBehaviour {
 			}
 
 			//temporal retrieval
-			yield return StartCoroutine(RunTemporalRetrieval());
+			trialLogger.LogTemporalRetrievalStarted();
+			yield return StartCoroutine (RunTemporalRetrieval ());
+			trialLogger.LogTemporalRetrievalEnded();
 //			RunTemporalRetrieval();
 			trialLogger.LogRecallPhaseStarted(false);
 
@@ -1173,7 +1179,9 @@ public class TrialController : MonoBehaviour {
 
 	
 			//temporal retrieval
-			yield return StartCoroutine(RunTemporalRetrieval());
+			trialLogger.LogTemporalRetrievalStarted();
+			yield return StartCoroutine (RunTemporalRetrieval ());
+			trialLogger.LogTemporalRetrievalEnded();
 //			RunTemporalRetrieval();
 			trialLogger.LogRecallPhaseStarted(false);
 
@@ -1422,7 +1430,9 @@ IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPosit
 
 
 		//temporal feedback
+		trialLogger.LogTemporalFeedbackStarted();
 		yield return StartCoroutine(exp.uiController.temporalRetrievalUI.ShowAnswer());
+		trialLogger.LogTemporalFeedbackEnded();
 
 		trialLogger.LogScoreScreenStarted(true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
@@ -1580,7 +1590,9 @@ IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPosit
 
 
 		//temporal feedback
+		trialLogger.LogTemporalFeedbackStarted();
 		yield return StartCoroutine(exp.uiController.temporalRetrievalUI.ShowAnswer());
+		trialLogger.LogTemporalFeedbackEnded();
 
 		trialLogger.LogInstructionEvent();
 		trialLogger.LogScoreScreenStarted(true);
