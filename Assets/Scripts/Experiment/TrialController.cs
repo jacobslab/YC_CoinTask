@@ -1124,10 +1124,10 @@ public class TrialController : MonoBehaviour {
 				keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
 
 				keywordRecognizer.Start ();
+                UnityEngine.Debug.Log("STARTED KEYWORD REC");
 
-
-				//start recording
-				yield return StartCoroutine (exp.audioController.audioRecorder.Record (exp.sessionDirectory + "audio", fileName, recallTime));
+                //start recording
+                yield return StartCoroutine (exp.audioController.audioRecorder.Record (exp.sessionDirectory + "audio", fileName, recallTime));
 
 				//play off beep
 				exp.audioController.audioRecorder.beepLow.Play ();
@@ -1165,6 +1165,8 @@ public class TrialController : MonoBehaviour {
 					yield return StartCoroutine (exp.WaitForISI (Config_CoinTask.isiTime));
 					Debug.Log ("waited for jitter and ISI time");
 				}
+
+                keywords.Clear();
 
 				Debug.Log ("moving to the position");
 			} 
