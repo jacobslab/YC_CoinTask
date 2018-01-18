@@ -55,6 +55,7 @@ public class UIController : MonoBehaviour {
 	public TextMesh trialCompleteTitle;
 	public TextMesh timeBonusTitle;
 	public TextMesh boxSwapBonusTitle;
+	public TextMesh recentObjectBonusTitle;
 	public TextMesh trialScoreTitle;
 	public TextMesh scoreScreenPressToContinue;
 
@@ -128,6 +129,7 @@ public class UIController : MonoBehaviour {
 		trialCompleteTitle.text = exp.currInstructions.trialCompleteText;
 		timeBonusTitle.text = exp.currInstructions.timeBonusText + ":";
 		boxSwapBonusTitle.text = exp.currInstructions.boxSwapBonusText + ":";
+		recentObjectBonusTitle.text = exp.currInstructions.recentObjectBonusText + ":";
 		trialScoreTitle.text = exp.currInstructions.trialScoreText + ":";
 		scoreScreenPressToContinue.text = exp.currInstructions.pressToContinue;
 

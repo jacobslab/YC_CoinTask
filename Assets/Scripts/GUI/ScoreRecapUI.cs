@@ -72,7 +72,7 @@ public class ScoreRecapUI : MonoBehaviour {
 
 			TrialNumText.text = exp.currInstructions.trial + " " + (numTrialsComplete) + "/" + maxNumTrials + " " + exp.currInstructions.completed;
 
-			TotalTrialScoreText.text = FormatScore(trialScore + timeBonus + ScoreController.LastBoxSwapScore);
+			TotalTrialScoreText.text = FormatScore(trialScore + timeBonus + temporalScore + ScoreController.LastBoxSwapScore);
 
 		}
 

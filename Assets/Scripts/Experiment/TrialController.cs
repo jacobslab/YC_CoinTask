@@ -1119,6 +1119,8 @@ public class TrialController : MonoBehaviour {
 
 				//initialize it to zero; it will remain this if the keyword isn't detected
 				recallAnswers [randomOrderIndex] = 0;
+
+				#if !UNITY_EDITOR_OSX
 				//Create keywords for keyword recognizer
 				keywords.Add(currentRecallObject, () =>
 					{
@@ -1131,7 +1133,7 @@ public class TrialController : MonoBehaviour {
 
 				keywordRecognizer.Start ();
                 UnityEngine.Debug.Log("STARTED KEYWORD REC");
-
+				#endif
                 //start recording
                 yield return StartCoroutine (exp.audioController.audioRecorder.Record (exp.sessionDirectory + "audio", fileName, recallTime));
 
@@ -1171,9 +1173,9 @@ public class TrialController : MonoBehaviour {
 					yield return StartCoroutine (exp.WaitForISI (Config_CoinTask.isiTime));
 					Debug.Log ("waited for jitter and ISI time");
 				}
-
+				#if !UNITY_EDITOR_OSX
                 keywords.Clear();
-
+				#endif
 				Debug.Log ("moving to the position");
 			} 
 
@@ -1547,7 +1549,7 @@ IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPosit
 				chosenIndicatorController.ChangeToRightColor();
 			//	correctIndicatorController.ChangeToRightColor();
 				trialLogger.LogCorrectAnswer ();
-				points = 100;
+				points = 200;
 			}
 			else if (currentRecallAnswer == 0){
 				Debug.Log ("changing to red");

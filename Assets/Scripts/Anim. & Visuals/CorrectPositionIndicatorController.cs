@@ -45,12 +45,14 @@ public class CorrectPositionIndicatorController : MonoBehaviour
     }
 	public void ChangeToRightColor()
 	{
-		sphere.GetComponent<Renderer> ().material.color = RightScoreColor;
+		PointsScoredBackground.material.color = RightScoreColor;
+		//sphere.GetComponent<Renderer> ().material.color = RightScoreColor;
 	}
 
 	public void ChangeToWrongColor()
 	{
-		sphere.GetComponent<Renderer> ().material.color = WrongScorecolor;
+		PointsScoredBackground.material.color = WrongScorecolor;
+		//sphere.GetComponent<Renderer> ().material.color = WrongScorecolor;
 	}
     public void SetLineTarget(Vector3 targetPos, Color targetColor)
     {

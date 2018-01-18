@@ -32,7 +32,7 @@ public class FacePosition : MonoBehaviour {
 		Quaternion origRot = transform.rotation;
 		transform.LookAt (transformToFace);
 		float yRot = transform.rotation.eulerAngles.y;
-
+		Debug.Log ("facing");
 		transform.rotation = Quaternion.Euler (origRot.eulerAngles.x, yRot, origRot.eulerAngles.z);
 
 		if (ShouldFlip180) {

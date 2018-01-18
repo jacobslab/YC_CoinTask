@@ -12,7 +12,8 @@ public class AnswerUI : MonoBehaviour {
 
 	public Color correctColor;
 	public Color wrongColor;
-
+	public Sprite correctTick;
+	public Sprite wrongTick;
 	float yTransformCorrect = 0.61f;
 	float yTransformWrong = 0.95f;
 	// Use this for initialization

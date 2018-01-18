@@ -109,6 +109,7 @@ public class InstructionsController : MonoBehaviour {
 	public string trialCompleteText = "Trial Complete!";
 	public string timeBonusText = "time bonus";
 	public string boxSwapBonusText = "box swap bonus";
+	public string recentObjectBonusText = "recent object bonus";
 	public string trialScoreText = "Trial Score";
 
 	//trial 1/40 completed

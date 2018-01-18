@@ -375,7 +375,8 @@ public class ObjectController : MonoBehaviour {
 			}
 			if (objectToPlayerDistance < Config_CoinTask.objectToPlayerBuffer) {
 				isFarEnough = false;
-			}
+			} else
+				Debug.Log ("chosen distance is: " + objectToPlayerDistance.ToString ());
 		}
 		
 		return isFarEnough;
