@@ -77,7 +77,7 @@ public class EnvironmentController : MonoBehaviour {
 //		return false;
 	}
 
-	public Vector3 GetRandomPositionWithinWallsXZ(float wallBuffer){
+	public Vector3 GetRandomPositionWithinWallsXZ(float radiusBuffer){
 		
 		//float randomXPos = Random.Range(WallsXPos.position.x - wallBuffer, WallsXNeg.position.x + wallBuffer);
 		//float randomZPos = Random.Range(WallsZPos.position.z - wallBuffer, WallsZNeg.position.z + wallBuffer);
@@ -85,9 +85,9 @@ public class EnvironmentController : MonoBehaviour {
 //		float randomZPos=Random.Range(sphereWalls.transform.position.z - sphereWalls.radius - wallBuffer, sphereWalls.transform.position.z + sphereWalls.radius + wallBuffer);
 		//Vector3 newPosition = new Vector3 (randomXPos, transform.position.y, randomZPos);
 		Vector3 randSphere=Random.insideUnitSphere;
-		UnityEngine.Debug.Log ("randsphere: " + randSphere.ToString ());
-		Vector3 newPosition = new Vector3 (sphereWalls.transform.position.x + (randSphere.x * sphereWalls.radius), 
-			sphereWalls.transform.position.y, sphereWalls.transform.position.z + (randSphere.z * sphereWalls.radius));
+//		UnityEngine.Debug.Log ("randsphere: " + randSphere.ToString ());
+		Vector3 newPosition = new Vector3 (sphereWalls.transform.position.x + (randSphere.x * (sphereWalls.radius - radiusBuffer)), 
+			sphereWalls.transform.position.y, sphereWalls.transform.position.z + (randSphere.z * (sphereWalls.radius-radiusBuffer)));
 //		UnityEngine.Debug.Log ("new position: " + newPosition);
 		return newPosition;
 	}
@@ -100,7 +100,7 @@ public class EnvironmentController : MonoBehaviour {
 		//		float randomZPos=Random.Range(sphereWalls.transform.position.z - sphereWalls.radius - wallBuffer, sphereWalls.transform.position.z + sphereWalls.radius + wallBuffer);
 		//Vector3 newPosition = new Vector3 (randomXPos, transform.position.y, randomZPos);
 		Vector3 randSphere=Random.insideUnitSphere;
-		UnityEngine.Debug.Log ("randsphere: " + randSphere.ToString ());
+//		UnityEngine.Debug.Log ("randsphere: " + randSphere.ToString ());
 		Vector3 newPosition = new Vector3 (sphereWalls.transform.position.x + (randSphere.x * (sphereWalls.radius-radiusBuffer)), 
 			sphereWalls.transform.position.y, sphereWalls.transform.position.z + (randSphere.z * (sphereWalls.radius-radiusBuffer)));
 		//		UnityEngine.Debug.Log ("new position: " + newPosition);

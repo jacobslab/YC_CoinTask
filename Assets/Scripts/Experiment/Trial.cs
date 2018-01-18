@@ -43,17 +43,17 @@ public class Trial {
 		avatarStartPos = exp.environmentController.GetRandomStartPosition (Config_CoinTask.radiusBuffer);
 		avatarStartPos = new Vector3 (avatarStartPos.x, exp.player.controls.startPositionTransform1.position.y, avatarStartPos.z);
 
+
+		//we're still using the same old two random rotation for starting perspectives
 		int fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
 		if (fiftyFiftyChance == 0) {
 //			trialRecallType = ExperimentSettings_CoinTask.RecallType.Location;
 //			totalTH++;
-			avatarStartPos = exp.player.controls.startPositionTransform1.position;//new Vector3 (exp.player.controls.startPositionTransform1.position.x, exp.player.transform.position.y, exp.player.controls.startPositionTransform1.z);
 			avatarStartRot = exp.player.controls.startPositionTransform1.rotation;//Quaternion.Euler (0, exp.player.controls.startPositionTransform1.rotation, 0);
 		}
 		else {
 //			trialRecallType = ExperimentSettings_CoinTask.RecallType.Object;
 		//	totalTHR++;
-			avatarStartPos = exp.player.controls.startPositionTransform2.position;
 			avatarStartRot = exp.player.controls.startPositionTransform2.rotation;
 		}
 
@@ -143,19 +143,16 @@ public class Trial {
 		counterTrial.numSpecialObjects = numSpecialObjects;
 
 		//counter the avatar
-		if (avatarStartPos == exp.player.controls.startPositionTransform1.position) {
-//			trialRecallType = ExperimentSettings_CoinTask.RecallType.Object;
-//			totalTHR++;
-			counterTrial.avatarStartPos = exp.player.controls.startPositionTransform2.position;
-			counterTrial.avatarStartRot = exp.player.controls.startPositionTransform2.rotation;
-		} 
-		else {
-//			trialRecallType = ExperimentSettings_CoinTask.RecallType.Location;
-//			totalTH++;
-			counterTrial.avatarStartPos = exp.player.controls.startPositionTransform1.position;
-			counterTrial.avatarStartRot = exp.player.controls.startPositionTransform1.rotation;
-		}
 
+		Vector3 newAvatarStartPos = GetReflectedPositionXZ (avatarStartPos);
+		counterTrial.avatarStartPos = newAvatarStartPos;
+
+		//we're still using the same old two random rotation for starting perspectives
+		if (avatarStartRot == exp.player.controls.startPositionTransform1.rotation)
+			counterTrial.avatarStartRot = exp.player.controls.startPositionTransform2.rotation;
+		else
+			counterTrial.avatarStartRot = exp.player.controls.startPositionTransform1.rotation;
+		
 		//flip the tower positions
 		if (avatarTowerPos == exp.player.controls.towerPositionTransform1.position) {
 			counterTrial.avatarTowerPos = exp.player.controls.towerPositionTransform2.position;
@@ -201,7 +198,7 @@ public class Trial {
 		Debug.Log ("Four: " + fourNum);
 		Debug.Log ("Five: " + fiveNum);
 		*/
-		//Debug.Log ("total: " + totalTrials);
+		Debug.Log ("total: " + totalTrials);
 //		Debug.Log("th1: " + totalTH.ToString() + "thr: " +totalTHR.ToString());
 
 		return counterTrial;

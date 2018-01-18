@@ -141,6 +141,7 @@ public class TrialController : MonoBehaviour {
 
 			//generate blocks from trials
 			int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
+			Debug.Log ("NUMBER OF BLOCKS: " + numTrialBlocks.ToString ());
 			GenerateTrialBlocks (ListOfTwoItemTrials, ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
 		}
 	}
@@ -314,7 +315,7 @@ public class TrialController : MonoBehaviour {
 	List<Trial> GenerateTrialsWithCounterTrials(int numTrialsToGenerate, int numSpecial, bool shouldStim, bool shouldStimCounter){
 		List<Trial> trialList = new List<Trial>();
 		int halfChance = Random.Range (0, 2);
-		for(int i = 0; i < numTrialsToGenerate / 3; i++){ //we're adding trial and a counter trial
+		for(int i = 0; i < numTrialsToGenerate / 2; i++){ //we're adding trial and a counter trial
 
 			//			Trial trial;
 			//			if (halfChance == 0) {
@@ -325,11 +326,11 @@ public class TrialController : MonoBehaviour {
 			//				halfChance = 0;
 			//			}
 			Trial trial = new Trial(numSpecial,1, shouldStim);
-			Trial counterTrial = trial.GetCounterSelf(shouldStimCounter);
+
 			Trial anotherTrial = new Trial(numSpecial,1, shouldStim);
+//			Trial counterTrial = trial.GetCounterSelf(shouldStimCounter);
 			trialList.Add(trial);
-			trialList.Add(counterTrial);
-			trialList.Add (anotherTrial);
+			trialList.Add(anotherTrial);
 		}
 		//		Trial oneFoilTrial=new Trial(numSpecial,1,shouldStim);
 		//		Trial twoFoilTrial = new Trial (numSpecial, 2, shouldStimCounter);
@@ -337,13 +338,14 @@ public class TrialController : MonoBehaviour {
 		//		trialList.Add (oneFoilTrial);
 		//		trialList.Add (twoFoilTrial);
 
+		Debug.Log ("trials in this list: " + trialList.Count.ToString ());
 		return trialList;
 	}
 
 	void GenerateTrialBlocks(List<Trial> threeItemTrials, List<Trial> fourItemTrials,int numBlocks, int numTrialsPerBlock){
 		for(int i = 0; i < numBlocks; i++){
 			List<Trial> newBlock = new List<Trial>();
-			for(int j = 0; j < 3; j++){ //half two item, half one item
+			for(int j = 0; j < 4; j++){ //half two item, half one item
 				int randomThreeItemIndex = Random.Range (0, threeItemTrials.Count);
 				int randomFourItemIndex = Random.Range (0, fourItemTrials.Count);
 				//				int randomFiveItemIndex = Random.Range (0, fiveItemTrials.Count);
@@ -366,6 +368,7 @@ public class TrialController : MonoBehaviour {
 				//				fiveItemTrials.RemoveAt(randomFiveItemIndex);
 				//				sixItemTrials.RemoveAt(randomSixItemIndex);
 			}
+			Debug.Log ("trials in this BLOCK: " + newBlock.Count.ToString ());
 			ListOfTrialBlocks.Add(newBlock);
 		}
 	}
@@ -742,12 +745,7 @@ public class TrialController : MonoBehaviour {
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));
 		trialLogger.LogTransportationToHomeEvent (false,currentTrial.avatarStartPos);
 		Debug.Log ("done transporting");
-		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
-			//Spawn the first default object
-			CreateNextDefaultObject (0);
-		} else {
-			exp.objectController.SpawnDefaultObjects (currentTrial.DefaultObjectLocationsXZ, currentTrial.SpecialObjectLocationsXZ,currentTrial.trialRecallType);
-		}
+
 
 
 		//disable selection
@@ -781,6 +779,13 @@ public class TrialController : MonoBehaviour {
 
 		//unlock avatar controls
 		exp.player.controls.ShouldLockControls = false;
+
+		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
+			//Spawn the first default object
+			CreateNextDefaultObject (0);
+		} else {
+			exp.objectController.SpawnDefaultObjects (currentTrial.DefaultObjectLocationsXZ, currentTrial.SpecialObjectLocationsXZ,currentTrial.trialRecallType);
+		}
 
 		//wait for player to collect all default objects
 		int numDefaultObjectsToCollect = currentTrial.DefaultObjectLocationsXZ.Count;

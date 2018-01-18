@@ -232,17 +232,22 @@ public class ObjectController : MonoBehaviour {
 
 			while( !objectsAreFarEnough && numTries < maxNumTries){
 				// generate a random position
-				randomEnvPosition = exp.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.objectToWallBuffer );
+				randomEnvPosition = exp.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.radiusBuffer );
 				randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
 
 				//increment numTries
 				numTries++;
 			
 				//check if the generated position is far enough from all other positions
-				objectsAreFarEnough = CheckObjectsFarEnoughXZ( randomEnvPositionVec2, defaultPositions,distancePos, out smallestDistance);
-			
+				objectsAreFarEnough = CheckObjectsFarEnoughXZ( randomEnvPositionVec2, defaultPositions,new Vector2(distancePos.x,distancePos.z), out smallestDistance);
+
+				if (Vector2.Distance (randomEnvPositionVec2, new Vector2 (distancePos.x, distancePos.z)) < Config_CoinTask.objectToPlayerBuffer)
+					objectsAreFarEnough = false;
+				else
+					Debug.Log ("chosen distance was: " + Vector2.Distance (randomEnvPositionVec2, new Vector2 (distancePos.x, distancePos.z)));
+				
 				//if not, and the smallest distance is larger than the currents largest small distance...
-				if( !objectsAreFarEnough && smallestDistance > currentBiggestSmallestDistance ){
+				if( !objectsAreFarEnough && smallestDistance > currentBiggestSmallestDistance){
 					currentBiggestSmallestDistance = smallestDistance;
 					smallestDistancePosition = randomEnvPositionVec2;
 				}
@@ -284,7 +289,7 @@ public class ObjectController : MonoBehaviour {
 
 			while( !objectsAreFarEnough && numTries < maxNumTries){
 				// generate a random position
-				randomEnvPosition = exp.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.objectToWallBuffer );
+				randomEnvPosition = exp.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.radiusBuffer );
 				randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
 
 				//increment numTries
@@ -367,16 +372,13 @@ public class ObjectController : MonoBehaviour {
 				//set smallest distance for the first time
 				smallestDistance = positionDistance;
 			}
+//			Debug.Log ("obj to obj buffer is: " + Config_CoinTask.objectToObjectBuffer.ToString ());
 			if( positionDistance < Config_CoinTask.objectToObjectBuffer ){
 				if(smallestDistance > positionDistance) {
 					smallestDistance = positionDistance;
 				}
 				isFarEnough = false;
 			}
-			if (objectToPlayerDistance < Config_CoinTask.objectToPlayerBuffer) {
-				isFarEnough = false;
-			} else
-				Debug.Log ("chosen distance is: " + objectToPlayerDistance.ToString ());
 		}
 		
 		return isFarEnough;

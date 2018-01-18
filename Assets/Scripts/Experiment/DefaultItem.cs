@@ -55,6 +55,7 @@ public class DefaultItem : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		Debug.Log ("distance is: " + Vector2.Distance (new Vector2 (transform.position.x, transform.position.z), new Vector2 (Experiment_CoinTask.Instance.player.transform.position.x, Experiment_CoinTask.Instance.player.transform.position.z)));
 		
 	}
 
