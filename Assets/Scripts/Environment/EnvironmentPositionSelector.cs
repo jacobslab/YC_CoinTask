@@ -109,37 +109,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 			PositionSelector.transform.position = exp.environmentController.sphereWalls.ClosestPoint (PositionSelector.transform.position);
 		}
 
-//		bool wouldBeInWallsVert = exp.environmentController.CheckWithinWallsVert (PositionSelector.transform.position + (vertAmountVec), Config_CoinTask.objectToWallBuffer);
-//		bool wouldBeInWallsHoriz = exp.environmentController.CheckWithinWallsHoriz (PositionSelector.transform.position + (horizAmountVec), Config_CoinTask.objectToWallBuffer); 
-//
-//
-//		if (wouldBeInWallsVert) {
-//			PositionSelector.transform.position += vertAmountVec;
-//		} else {
-//			//move to edge
-//			if( amountVertical < -epsilon ){
-//
-//				float vertDist = exp.environmentController.GetDistanceFromEdge( PositionSelector, Config_CoinTask.objectToWallBuffer, -PositionSelector.transform.forward);
-//				PositionSelector.transform.position -= PositionSelector.transform.forward*vertDist;
-//			}
-//			else if(amountVertical > epsilon ){
-//				float vertDist = exp.environmentController.GetDistanceFromEdge( PositionSelector, Config_CoinTask.objectToWallBuffer, PositionSelector.transform.forward);
-//				PositionSelector.transform.position -= PositionSelector.transform.forward*vertDist;
-//			}
-//		}
-//		if (wouldBeInWallsHoriz) {
-//			PositionSelector.transform.position += horizAmountVec;
-//		} else {
-//			//move to edge
-//			if( amountHorizontal < -epsilon ){
-//				float horizDist = exp.environmentController.GetDistanceFromEdge( PositionSelector, Config_CoinTask.objectToWallBuffer, -PositionSelector.transform.right);
-//				PositionSelector.transform.position -= PositionSelector.transform.right*horizDist;
-//			}
-//			else if( amountHorizontal > epsilon ){
-//				float horizDist = exp.environmentController.GetDistanceFromEdge( PositionSelector, Config_CoinTask.objectToWallBuffer, PositionSelector.transform.right);
-//				PositionSelector.transform.position -= PositionSelector.transform.right*horizDist;
-//			}
-//		}
 	}
 
 

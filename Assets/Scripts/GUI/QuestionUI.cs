@@ -199,11 +199,11 @@ public class QuestionUI : MonoBehaviour {
 		answerUI.Enable (true);
 		//we will retrieve the stored lists in groups of two in the same order we had questioned them in
 		for (int i = 0; i < temporalObjects.Count / 2; i++) {
-			answerUI.objAText.text = temporalObjects [i*2].GetComponent<SpawnableObject>().GermanName;
+			answerUI.objAText.text = temporalObjects [i*2].GetComponent<SpawnableObject>().ShortenedGermanName;
 			//answerUI.objATransform = temporalObjects [i].transform;
 			temporalObjects [i*2].SetActive (true);
 
-			answerUI.objBText.text = temporalObjects [(i*2)+1].GetComponent<SpawnableObject>().GermanName;
+			answerUI.objBText.text = temporalObjects [(i*2)+1].GetComponent<SpawnableObject>().ShortenedGermanName;
 			//answerUI.objBTransform = temporalObjects [i].transform;
 			temporalObjects [(i*2)+1].SetActive (true);
 			if (flippedList [i] == 0)

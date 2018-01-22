@@ -18,6 +18,7 @@ public class SpawnableObject : MonoBehaviour {
 	//NAME LOCALIZATION
 	public string SpanishName;
 	public string GermanName;
+	public string ShortenedGermanName { get { return GetShortenedGermanName (GermanName); }}
 	
 	public string IDstring = ""; //will get set in replay. TODO: don't really want this to be "settable" from the outside world... try to rethink how to structure this.
 
@@ -37,6 +38,22 @@ public class SpawnableObject : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public string GetShortenedGermanName(string germanName)
+	{
+		germanName = Regex.Replace (germanName, "(Clone)", "");
+		germanName = Regex.Replace (germanName, "[()]", "");
+
+		germanName = Regex.Replace (germanName, "die", "");
+		germanName = Regex.Replace (germanName, "der", "");
+		germanName = Regex.Replace (germanName, "das", "");
+
+		if (germanName == "Trick Location")
+			return "trick";
+		else
+			return germanName;
+
 	}
 
 	//function to turn off (or on) the object without setting it inactive -- because we want to keep logging on
@@ -89,7 +106,7 @@ public class SpawnableObject : MonoBehaviour {
 			return SpanishName;
 			break;
 		case ExperimentSettings_CoinTask.LanguageSetting.German:
-			return GermanName;
+			return ShortenedGermanName;
 			break;
 		}
 		return GetName ();

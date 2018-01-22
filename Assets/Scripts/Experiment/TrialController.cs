@@ -855,7 +855,10 @@ public class TrialController : MonoBehaviour {
 				int randomOrderIndex = randomSpecialObjectOrder [i];
 				GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
 				SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject> ();
-				string specialItemDisplayName = specialSpawnable.GetDisplayName ();
+
+				//changed for german version, we will get the name with appropriate articles to display during the question
+				string specialItemDisplayName = specialSpawnable.GermanName;
+				//string specialItemDisplayName = specialSpawnable.GetDisplayName ();
 
 //			//set TCP state true
 //			switch(randomOrderIndex){
@@ -1247,14 +1250,14 @@ public class TrialController : MonoBehaviour {
 			GameObject optionB = tupleList [indexB];
 			Debug.Log ("option A : " + optionA.name + " and Option B: " + optionB.name);
 			GameObject optionACopy = Instantiate (optionA, Vector3.zero, optionA.transform.rotation) as GameObject;
-			string optionAName = optionA.GetComponent<SpawnableObject> ().GermanName;
+			string optionAName = optionA.GetComponent<SpawnableObject> ().ShortenedGermanName;
 			optionACopy.name = optionAName+ " UICopy";
 			optionACopy.transform.parent = exp.cameraController.UICamera.transform; //make this copy follow camera/head movement. mainly for VR.
 			//set layer of object & children to PlayerUI
 			optionACopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI");
 
 			GameObject optionBCopy = Instantiate (optionB, Vector3.zero, optionB.transform.rotation) as GameObject;
-			string optionBName = optionB.GetComponent<SpawnableObject> ().GermanName;
+			string optionBName = optionB.GetComponent<SpawnableObject> ().ShortenedGermanName;
 			optionBCopy.name = optionBName + " UICopy";
 			optionBCopy.transform.parent = exp.cameraController.UICamera.transform; //make this copy follow camera/head movement. mainly for VR.
 			//set layer of object & children to PlayerUI
