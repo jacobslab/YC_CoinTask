@@ -45,9 +45,9 @@ public class SpawnableObject : MonoBehaviour {
 		germanName = Regex.Replace (germanName, "(Clone)", "");
 		germanName = Regex.Replace (germanName, "[()]", "");
 
-		germanName = Regex.Replace (germanName, "die", "");
-		germanName = Regex.Replace (germanName, "der", "");
-		germanName = Regex.Replace (germanName, "das", "");
+		germanName = Regex.Replace (germanName, "die ", "");
+		germanName = Regex.Replace (germanName, "der ", "");
+		germanName = Regex.Replace (germanName, "das ", "");
 
 		if (germanName == "Trick Location")
 			return "trick";

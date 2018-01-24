@@ -19,8 +19,15 @@ public class ScoreLogTrack : LogTrack {
 			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_ADDED_TREASURE" + separator + scoreAdded);
 		}
 	}
-
-	public void LogTimeBonusAdded(int scoreAdded){
+    public void LogSequenceBonusAdded(int scoreAdded)
+    {
+        if (ExperimentSettings_CoinTask.isLogging)
+        {
+            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "SCORE_ADDED_SEQUENCE" + separator + scoreAdded);
+        }
+    }
+    
+    public void LogTimeBonusAdded(int scoreAdded){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "SCORE_ADDED_TIME" + separator + scoreAdded);
 		}

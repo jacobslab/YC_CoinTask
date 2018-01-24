@@ -215,6 +215,7 @@ public class QuestionUI : MonoBehaviour {
 				
 				if (scoreList [i] == 1) {
 					exp.trialController.temporalScore += 200;
+                    exp.scoreController.CalculateSequenceBonus(200);
 					Debug.Log ("mark and score as CORRECT ANSWER");
 					answerUI.SetCorrectColor ();
 					Debug.Log ("marked your CORRECT answer as A");
@@ -232,7 +233,8 @@ public class QuestionUI : MonoBehaviour {
 				
 				if (scoreList [i] == 1) {
 					exp.trialController.temporalScore += 200;
-					Debug.Log ("mark and score as CORRECT ANSWER");
+                    exp.scoreController.CalculateSequenceBonus(200);
+                    Debug.Log ("mark and score as CORRECT ANSWER");
 					answerUI.SetCorrectColor ();
 					Debug.Log ("marked your CORRECT answer as B");
 					answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
