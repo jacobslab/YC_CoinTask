@@ -24,6 +24,9 @@ public class EyetrackerManager : MonoBehaviour {
 	private bool shouldReconnect=false;
 	public CanvasGroup reconnectionGroup;
 
+	private bool viewLeft=false;
+	private bool viewRight=false;
+
 	public static bool shouldCheckHead = false;
     void Awake()
     {
@@ -84,6 +87,18 @@ void Update()
         if (canPumpData)
             PumpGazeData();
 
+		if(Input.GetKeyDown(KeyCode.L))
+		{
+			viewLeft = true;
+		}
+		if (Input.GetKeyUp (KeyCode.L)) {
+			viewLeft = false;
+		}
+		if (Input.GetKeyDown (KeyCode.R)) {
+			viewRight = true;
+		}
+		if (Input.GetKeyUp (KeyCode.R))
+			viewRight = false;
 
 }
   
@@ -195,7 +210,7 @@ private void HandleGazeData(GazeDataEventArgs e)
 		}
 		//// GAZE POINT TRACKING 
 
-		if (e.LeftEye.GazePoint.Validity == Validity.Valid) {
+		if (e.LeftEye.GazePoint.Validity == Validity.Valid || viewLeft) {
 			Vector3 leftPos = new Vector3 (e.LeftEye.GazePoint.PositionOnDisplayArea.X, e.LeftEye.GazePoint.PositionOnDisplayArea.Y);
 			eyeLogTrack.LogDisplayData (leftPos, "LEFT");
 			Vector2 left;
@@ -204,7 +219,7 @@ private void HandleGazeData(GazeDataEventArgs e)
 			eyeLogTrack.LogGazeData (leftEye.transform.position, "LEFT");
 		}
 
-		if (e.RightEye.GazePoint.Validity == Validity.Valid) {
+		if (e.RightEye.GazePoint.Validity == Validity.Valid || viewRight) {
 			Vector3 rightPos = new Vector3 (e.RightEye.GazePoint.PositionOnDisplayArea.X, e.RightEye.GazePoint.PositionOnDisplayArea.Y);
 			eyeLogTrack.LogDisplayData (rightPos, "RIGHT");
 			Vector2 right;

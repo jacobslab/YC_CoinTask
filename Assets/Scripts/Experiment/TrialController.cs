@@ -41,7 +41,10 @@ public class TrialController : MonoBehaviour
 	public CanvasGroup scoreInstructionsGroup;
 	public Trial currentTrial;
 
+	public CanvasGroup initialInstPanel;
+
 	#if FREIBURG
+
 	string initialInstructions1= "Willkommen bei der Schatzsuche! " +
 		"\n\n Benutzen Sie den Joystick zum navigieren. " +
 		"\n\nSchatzkisten öffnen sich bei Kontakt. " +
@@ -484,6 +487,9 @@ public class TrialController : MonoBehaviour
 
 			//show instructions for exploring, wait for the action button
 			trialLogger.LogInstructionEvent ();
+			initialInstPanel.alpha = 1f;
+			yield return StartCoroutine (exp.WaitForActionButton ());
+			initialInstPanel.alpha = 0f;
 			yield return StartCoroutine (exp.uiController.pirateController.PlayWelcomingPirate ());
 
 #if MRIVERSION

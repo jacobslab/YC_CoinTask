@@ -11,7 +11,7 @@ public class VideoPlay : MonoBehaviour {
 
 	private VideoPlayer vid;
 	public CanvasGroup group;
-	
+	public AudioSource wavesAudio;
 	void Awake(){
 		group.alpha = 0.0f;
 	}
@@ -38,13 +38,16 @@ public class VideoPlay : MonoBehaviour {
 	void Update () {
 		if (vid.clip!= null) {
 			if (vid.isPlaying) {
+				wavesAudio.volume = 0f;
 				if (Input.GetAxis (Config_CoinTask.ActionButtonName) > 0.2f) { //skip movie!
-					Debug.Log("skip movie");
+					Debug.Log ("skip movie");
 					Stop ();
 				}
 				if (TrialController.isPaused) {
 					Pause ();
 				}
+			} else {
+				wavesAudio.volume = 0.13f;
 			}
 			if (!TrialController.isPaused) {
 				if (isMoviePaused) {
