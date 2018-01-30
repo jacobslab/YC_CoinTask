@@ -488,7 +488,9 @@ public class TrialController : MonoBehaviour
 			//show instructions for exploring, wait for the action button
 			trialLogger.LogInstructionEvent ();
 			initialInstPanel.alpha = 1f;
+            Debug.Log("waiting for action button");
 			yield return StartCoroutine (exp.WaitForActionButton ());
+            Debug.Log("action button pressed");
 			initialInstPanel.alpha = 0f;
 			yield return StartCoroutine (exp.uiController.pirateController.PlayWelcomingPirate ());
 

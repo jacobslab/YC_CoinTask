@@ -244,7 +244,7 @@ public class ObjectController : MonoBehaviour {
 				if (Vector2.Distance (randomEnvPositionVec2, new Vector2 (distancePos.x, distancePos.z)) < Config_CoinTask.objectToPlayerBuffer)
 					objectsAreFarEnough = false;
 				else
-					Debug.Log ("chosen distance was: " + Vector2.Distance (randomEnvPositionVec2, new Vector2 (distancePos.x, distancePos.z)));
+					//Debug.Log ("chosen distance was: " + Vector2.Distance (randomEnvPositionVec2, new Vector2 (distancePos.x, distancePos.z)));
 				
 				//if not, and the smallest distance is larger than the currents largest small distance...
 				if( !objectsAreFarEnough && smallestDistance > currentBiggestSmallestDistance){
