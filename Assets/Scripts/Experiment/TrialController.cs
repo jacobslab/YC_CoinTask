@@ -512,11 +512,11 @@ public class TrialController : MonoBehaviour
 			}
 #else
 			Debug.Log ("showing instructions");
-			initialInstructions1 = initialInstructions1.Replace ("\n", "\n");
-			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
-			scoreInstructionsGroup.alpha = 1.0f;
-			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
-			scoreInstructionsGroup.alpha = 0.0f;
+//			initialInstructions1 = initialInstructions1.Replace ("\n", "\n");
+//			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+//			scoreInstructionsGroup.alpha = 1.0f;
+//			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+//			scoreInstructionsGroup.alpha = 0.0f;
 			//yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 #endif
 
@@ -1159,7 +1159,7 @@ public class TrialController : MonoBehaviour
 
 				//initialize it to zero; it will remain this if the keyword isn't detected
 				recallAnswers [randomOrderIndex] = 0;
-
+				#if !UNITY_EDITOR_OSX
 				//Create keywords for keyword recognizer
 				keywords.Add (currentRecallObject, () => {
 					// action to be performed when this keyword is spoken
@@ -1171,7 +1171,7 @@ public class TrialController : MonoBehaviour
 
 				keywordRecognizer.Start ();
 				UnityEngine.Debug.Log ("STARTED KEYWORD REC for" + currentRecallObject);
-			
+				#endif
 				//start recording
 				yield return StartCoroutine (exp.audioController.audioRecorder.Record (exp.sessionDirectory + "audio", fileName, recallTime));
 

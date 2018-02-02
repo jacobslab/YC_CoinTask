@@ -48,11 +48,8 @@ public class AnswerSelector : MonoBehaviour {
 	public void SetupAnswerSelector(string optionAName,string optionBName)
 	{
 		int maxLength = (optionAName.Length > optionBName.Length) ? optionAName.Length : optionBName.Length;
-		string spaceToBeAdded = "";
-		for (int i = 0; i < maxLength + 3; i++) {
-			spaceToBeAdded += " ";
-		}
-		selectorVisuals.GetComponent<TextMesh> ().text = "[" + spaceToBeAdded + "]";
+		selectorVisuals.transform.localScale = new Vector3 (0.2777f * maxLength, selectorVisuals.transform.localScale.y, selectorVisuals.transform.localScale.z);
+	//	selectorVisuals.GetComponent<TextMesh> ().text = "[" + spaceToBeAdded + "]";
 	}
 
 	void ResetSelectorPosition(){
@@ -62,13 +59,13 @@ public class AnswerSelector : MonoBehaviour {
 		}
 
 		if (positionTransforms.Length >= 0) {
-			selectorVisuals.transform.position = positionTransforms[resetIndex].position;
+			selectorVisuals.transform.position = new Vector3(positionTransforms[resetIndex].position.x,selectorVisuals.transform.position.y,positionTransforms[resetIndex].position.z);
 			currPositionIndex = resetIndex;
 			exp.trialController.LogAnswerSelectorPositionChanged (GetMemoryState());
 
 			if(Config_CoinTask.isJuice){
-				StopCoroutine(selectorVisuals.GetComponent<TextMeshColorCycler>().CycleColors());
-				StartCoroutine(selectorVisuals.GetComponent<TextMeshColorCycler>().CycleColors());
+				StopCoroutine(selectorVisuals.GetComponent<SpriteColorCycler>().CycleColors());
+				StartCoroutine(selectorVisuals.GetComponent<SpriteColorCycler>().CycleColors());
 			}
 		}
 		if(transform.parent.parent.name.Contains("Do You Remember"))
@@ -154,7 +151,7 @@ public class AnswerSelector : MonoBehaviour {
 		}
 
 		//TODO: make nice smooth movement with a coroutine.
-		selectorVisuals.transform.position = positionTransforms [currPositionIndex].position;
+		selectorVisuals.transform.position = new Vector3(positionTransforms [currPositionIndex].position.x,selectorVisuals.transform.position.y,positionTransforms [currPositionIndex].position.z);
 
 		if (currPositionIndex != oldPositionIndex) {
 			exp.trialController.LogAnswerSelectorPositionChanged (GetMemoryState());
