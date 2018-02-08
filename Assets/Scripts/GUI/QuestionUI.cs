@@ -193,7 +193,7 @@ public class QuestionUI : MonoBehaviour {
 		Enable (false);
 	}
 
-	public IEnumerator ShowAnswer()
+	 public IEnumerator ShowAnswer()
 	{
 
 		answerUI.Enable (true);
@@ -215,6 +215,7 @@ public class QuestionUI : MonoBehaviour {
 				
 				if (scoreList [i] == 1) {
 					exp.trialController.temporalScore += 200;
+
                     exp.scoreController.CalculateSequenceBonus(200);
 					Debug.Log ("mark and score as CORRECT ANSWER");
 					answerUI.SetCorrectColor ();

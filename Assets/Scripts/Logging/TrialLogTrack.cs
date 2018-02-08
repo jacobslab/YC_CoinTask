@@ -95,7 +95,7 @@ public class TrialLogTrack : LogTrack {
 
 	public void LogWrongAnswer()
 	{
-		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (),"SPHINX_RESPONSE" + separator + "CORRECT");
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (),"SPHINX_RESPONSE" + separator + "INCORRECT");
 		Debug.Log ("Wrong Answer");
 	}
 
@@ -119,6 +119,23 @@ public class TrialLogTrack : LogTrack {
 		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (),"Trial Event" + separator +  "TEMPORAL_RETRIEVAL_ENDED");
 	}
 
+	public void LogTemporalRetrievalOptions(string optionAName, string optionBName)
+	{
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (),"TEMPORAL_RETRIEVAL" + separator +  "OPTION_A" + separator + optionAName + separator + "OPTION_B" + separator + optionBName);
+	}
+	public void LogTemporalRetrievalSelection(int selectedIndex)
+	{
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "TEMPORAL_RETRIEVAL" + separator + selectedIndex.ToString ());
+	}
+
+	public void LogTemporalRetrievalResult(bool correct)
+	{
+		if (correct) {
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "TEMPORAL_RETRIEVAL" + separator + "CORRECT_RESPONSE");
+		} else {
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "TEMPORAL_RETRIEVAL" + separator + "INCORRECT_RESPONSE");
+		}
+	}
 	public void LogTemporalFeedbackStarted()
 	{
 		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (),"Trial Event" + separator +  "TEMPORAL_FEEDBACK_STARTED");

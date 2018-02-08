@@ -1298,8 +1298,10 @@ public class TrialController : MonoBehaviour
 			int halfChance = Random.Range (0, 2);
 			if (halfChance == 0) {
 				yield return StartCoroutine (exp.uiController.temporalRetrievalUI.Play (optionACopy, optionBCopy, optionAName, optionBName));
+				trialLogger.LogTemporalRetrievalOptions (optionAName, optionBName);
 			} else {
 				yield return StartCoroutine (exp.uiController.temporalRetrievalUI.Play (optionBCopy, optionACopy, optionBName, optionAName));
+				trialLogger.LogTemporalRetrievalOptions (optionBName, optionAName);
 			}
 			yield return StartCoroutine (exp.WaitForActionButton ());
 
@@ -1322,14 +1324,16 @@ public class TrialController : MonoBehaviour
 				Debug.Log ("not flipped");
 				exp.uiController.temporalRetrievalUI.flippedList.Add (0);
 			}
-
 			int selectedAnswerIndex = exp.uiController.temporalRetrievalUI.myAnswerSelector.GetAnswerPosition ();
 			Debug.Log ("selected: " + selectedAnswerIndex.ToString () + " and correct: " + correctAnswerIndex.ToString ());
+			trialLogger.LogTemporalRetrievalSelection (selectedAnswerIndex);
 			if (selectedAnswerIndex != correctAnswerIndex) {
 				Debug.Log ("mark as incorrect answer");
+				trialLogger.LogTemporalRetrievalResult (false);
 				exp.uiController.temporalRetrievalUI.scoreList.Add (-1);
 			} else {
 				Debug.Log ("correct answer");
+				trialLogger.LogTemporalRetrievalResult (true);
 				exp.uiController.temporalRetrievalUI.scoreList.Add (1);
 			}
 			exp.uiController.temporalRetrievalUI.answerList.Add (correctAnswerIndex);
