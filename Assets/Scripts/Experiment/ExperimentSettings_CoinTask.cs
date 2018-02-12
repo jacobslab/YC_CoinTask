@@ -44,6 +44,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public static bool isOculus = false;
 	public static bool isReplay = false;
 	public static bool isLogging = true; //if not in replay mode, should log things! or can be toggled off in main menu.
+	public static bool shouldMirror=true;
 
 	public Toggle oculusToggle; //only exists in main menu -- make sure to null check
 	public Toggle loggingToggle; //only exists in main menu -- make sure to null check
@@ -65,6 +66,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public Text defaultLoggingPathDisplay;
 	public InputField loggingPathInputField;
 	public Text manualTrialFilePathDisplay;
+	public Toggle mirrorToggle;
 
 	//IF YOU WANT MANUAL TRIAL FILE
 	public static string manualTrialFilePath; //if you want to define trials & objects manually
@@ -204,6 +206,8 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		return true;
 	}
 
+
+
 	public void ChangeLoggingPath(){
 		if (Directory.Exists (loggingPathInputField.text)) {
 			defaultLoggingPath = loggingPathInputField.text;
@@ -242,6 +246,10 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public void SetReplayFalse(){
 		isReplay = false;
 		//shouldLog = true;
+	}
+	public void SetMirroredSettings()
+	{
+		shouldMirror = mirrorToggle.isOn;
 	}
 
 	public void SetLogging(){

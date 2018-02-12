@@ -17,10 +17,10 @@ public class ScoreController : MonoBehaviour {
 
 	
 	//Time bonus time variables!
-	static int timeBonusTimeMin = 22;
+	static int timeBonusTimeMin = 33;
 	public static int TimeBonusTimeMin { get { return timeBonusTimeMin; } }
 	
-	static int timeBonusTimeMed = 44;
+	static int timeBonusTimeMed = 66;
 	public static int TimeBonusTimeMed { get { return timeBonusTimeMed; } }
 	
 	//static int timeBonusTimeMax = 52;

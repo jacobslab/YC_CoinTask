@@ -14,7 +14,7 @@ public class MirrorFlipCamera : MonoBehaviour {
 	void Awake(){
 		myCamera = GetComponent<Camera> ();
 #if MRIVERSION
-			shouldFlip = true;
+		shouldFlip = ExperimentSettings_CoinTask.shouldMirror;
 #endif
 	}
 
@@ -37,7 +37,7 @@ public class MirrorFlipCamera : MonoBehaviour {
 			}
 
 		} else {
-			Debug.Log("No camera!");
+//			Debug.Log("No camera!");
 		}
 	}
 	
