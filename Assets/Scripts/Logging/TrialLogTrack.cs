@@ -99,6 +99,22 @@ public class TrialLogTrack : LogTrack {
 		Debug.Log ("Wrong Answer");
 	}
 
+	public void LogCortanaResponse(int response)
+	{
+		if (response == 1) {
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "CORTANA_RESPONSE" + separator + "CORRECT");
+		} else {
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (),"CORTANA_RESPONSE" + separator + "INCORRECT");
+		}
+	}
+	public void LogTemporalFeedbackResponse(int response)
+	{
+		if (response == 1) {
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "TEMPORAL_FEEDBACK" + separator + "CORRECT");
+		} else {
+			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (),"TEMPORAL_FEEDBACK" + separator + "INCORRECT");
+		}
+	}
 	public void LogAreYouSureResponse(bool response){
 		//TODO: CHANGE THE "DOUBLE DOWN" TO ARE YOU SURE OR SOMETHING.
 		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "DOUBLE_DOWN_RESPONSE" + separator + response);

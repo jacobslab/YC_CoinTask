@@ -21,7 +21,7 @@ public class TrialController : MonoBehaviour
 	public SimpleTimer trialTimer;
 	public SimpleTimer MRITimer;
 
-	TrialLogTrack trialLogger;
+	public TrialLogTrack trialLogger;
 
 	bool isPracticeTrial = false;
 	int numRealTrials = 0;
@@ -41,6 +41,7 @@ public class TrialController : MonoBehaviour
 	public CanvasGroup scoreInstructionsGroup;
 	public Trial currentTrial;
 
+	bool foundKeyword=false;
 	public CanvasGroup initialInstPanel;
 
 	#if FREIBURG
@@ -1164,6 +1165,8 @@ public class TrialController : MonoBehaviour
 				keywords.Add (currentRecallObject, () => {
 					// action to be performed when this keyword is spoken
 					Debug.Log ("found " + currentRecallObject);
+					foundKeyword=true;
+					trialLogger.LogCortanaResponse(1);
 					recallAnswers [randomOrderIndex] = 1;
 				});
 				keywordRecognizer = new KeywordRecognizer (keywords.Keys.ToArray ());
@@ -1212,6 +1215,9 @@ public class TrialController : MonoBehaviour
 					Debug.Log ("waited for jitter and ISI time");
 				}
 				#if !UNITY_EDITOR_OSX
+				if(!foundKeyword)
+				trialLogger.LogCortanaResponse(0);
+				foundKeyword=false;
 				keywords.Clear ();
 				#endif
 				Debug.Log ("moving to the position");

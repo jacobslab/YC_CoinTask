@@ -219,12 +219,14 @@ public class QuestionUI : MonoBehaviour {
                     exp.scoreController.CalculateSequenceBonus(200);
 					Debug.Log ("mark and score as CORRECT ANSWER");
 					answerUI.SetCorrectColor ();
+					exp.trialController.trialLogger.LogTemporalFeedbackResponse (1);
 					Debug.Log ("marked your CORRECT answer as A");
 					answerUI.yourAnswerHighlighter.transform.position = answerUI.objATransform.position;
 				} else { 
 					Debug.Log ("mark and score as INCORRECT ANSWER");
 					answerUI.SetWrongColor ();
 
+					exp.trialController.trialLogger.LogTemporalFeedbackResponse (0);
 					Debug.Log ("marked your WRONG answer as B");
 					answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
 				}
@@ -236,12 +238,14 @@ public class QuestionUI : MonoBehaviour {
 					exp.trialController.temporalScore += 200;
                     exp.scoreController.CalculateSequenceBonus(200);
                     Debug.Log ("mark and score as CORRECT ANSWER");
+					exp.trialController.trialLogger.LogTemporalFeedbackResponse (1);
 					answerUI.SetCorrectColor ();
 					Debug.Log ("marked your CORRECT answer as B");
 					answerUI.yourAnswerHighlighter.transform.position = answerUI.objBTransform.position;
 				} else { 
 					Debug.Log ("mark and score as INCORRECT ANSWER");
 					answerUI.SetWrongColor ();
+					exp.trialController.trialLogger.LogTemporalFeedbackResponse (0);
 						Debug.Log ("marked your WRONG answer as A NOT FLIPPED");
 						answerUI.yourAnswerHighlighter.transform.position = answerUI.objATransform.position;
 				}
