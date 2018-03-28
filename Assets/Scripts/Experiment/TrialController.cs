@@ -3,7 +3,7 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.IO;
-
+using UnityEngine.UI;
 public class TrialController : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
@@ -32,7 +32,8 @@ public class TrialController : MonoBehaviour {
 	public Trial currentTrial;
 
 	[HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
-	
+
+    public Text ConnectionText;
 	List<List<Trial>> ListOfTrialBlocks;
 	List<Trial> practiceTrials;
 
