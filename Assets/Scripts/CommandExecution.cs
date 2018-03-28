@@ -56,13 +56,14 @@ public class CommandExecution : MonoBehaviour {
 		proc.StartInfo.CreateNoWindow = true;
 		proc.StartInfo.RedirectStandardOutput = false;
 		proc.StartInfo.UseShellExecute = false;
-		proc.StartInfo.FileName = @"powershell.exe";
+		proc.StartInfo.FileName = @"terminal";
 		#if UNITY_EDITOR_WIN
 		proc.StartInfo.Arguments = Application.dataPath+@"Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe --device_sn="+device_sn+" --mode="+mode;
 		UnityEngine.Debug.Log("datapath is: " + Application.dataPath + @"Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe");
 		#else
 //		proc.StartInfo.Arguments = Application.dataPath+@"Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe --device_sn="+device_sn+" --mode="+mode;
-		UnityEngine.Debug.Log("datapath is: " + Application.dataPath + @"Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe");
+		UnityEngine.Debug.Log("not my poblem");
+//		UnityEngine.Debug.Log("datapath is: " + Application.dataPath + @"Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe");
 		#endif
 		proc.Start();
 		//

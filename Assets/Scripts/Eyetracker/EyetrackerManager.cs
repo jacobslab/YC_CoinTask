@@ -13,6 +13,10 @@ public class EyetrackerManager : MonoBehaviour {
 	private static extern int connect_eyetracker();
 	[DllImport ("tobii_eyetracker")]
 	private static extern IntPtr return_serial_number();
+
+	[DllImport ("tobii_eyetracker")]
+	private static extern void release_all_eyetrackers();
+
 	[DllImport ("tobii_eyetracker")]
 	private static extern int check_for_gaze_data();
 	[DllImport ("tobii_eyetracker")]
@@ -107,10 +111,17 @@ public class EyetrackerManager : MonoBehaviour {
             //perform calibration
 			CommandExecution.ExecuteTobiiEyetracker(eyeTracker_sn,"usercalibration");
             canPumpData = true;
+			StartCoroutine ("InitiatePumpingData");
         }
         yield return null;
     }
-
+	IEnumerator InitiatePumpingData()
+	{
+		while (canPumpData) {
+			PumpGazeData ();
+			yield return 0;
+		}
+	}
  
 void Update()
 {
@@ -196,9 +207,9 @@ private void PumpGazeData()
 // This method will be called on the main Unity thread
 private void HandleGazeData()
 {
+		UnityEngine.Debug.Log("handling gaze data");
 
 		//GAZE ORIGIN / RECENTERING HEAD TRACKING
-
 		int left_validity = get_left_gaze_origin_validity ();
 		int right_validity = get_right_gaze_origin_validity ();
 		//if either left or right origin is invalid, increase timer
@@ -243,6 +254,7 @@ private void HandleGazeData()
 
 		if (left_validity==1 || viewLeft) {
 			Vector3 leftPos = new Vector3 (get_left_gaze_point_display_x(), get_left_gaze_point_display_y());
+			UnityEngine.Debug.Log ("left pos : " + leftPos.ToString ());
 			eyeLogTrack.LogDisplayData (leftPos, "LEFT");
 			Vector2 left;
 			RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(leftPos.x * Screen.width, -leftPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out left);
@@ -252,19 +264,32 @@ private void HandleGazeData()
 
 		if (right_validity==1 || viewRight) {
 			Vector3 rightPos = new Vector3 (get_right_gaze_point_display_x(), get_right_gaze_point_display_y());
+			UnityEngine.Debug.Log ("right pos : " + rightPos.ToString ());
 			eyeLogTrack.LogDisplayData (rightPos, "RIGHT");
 			Vector2 right;
 			RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(rightPos.x * Screen.width, -rightPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out right);
 			rightEye.transform.position = myCanvas.transform.TransformPoint (right);
 			eyeLogTrack.LogGazeData (rightEye.transform.position, "RIGHT");
 		}
-		if(left_validity==1)
-			eyeLogTrack.LogPupilData (get_left_pupil_diameter(), "LEFT");
-		if(right_validity==1)
-			eyeLogTrack.LogPupilData (get_right_pupil_diameter(), "RIGHT");
+		if (left_validity == 1) {
+			eyeLogTrack.LogPupilData (get_left_pupil_diameter (), "LEFT");
+			UnityEngine.Debug.Log ("left pupil : " + get_left_pupil_diameter().ToString());
+		}
+		if (right_validity == 1) {
+			eyeLogTrack.LogPupilData (get_right_pupil_diameter (), "RIGHT");
+
+			UnityEngine.Debug.Log ("right pupil : " + get_right_pupil_diameter ().ToString ());
+		}
 
         
       
     }
+
+	void OnApplicationQuit()
+	{
+		UnityEngine.Debug.Log ("about to release all eyetrackers");
+		release_all_eyetrackers ();
+		UnityEngine.Debug.Log ("released all eyetrackers");
+	}
 
 }
