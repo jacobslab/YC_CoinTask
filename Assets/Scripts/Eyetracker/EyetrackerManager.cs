@@ -14,12 +14,23 @@ public class EyetrackerManager : MonoBehaviour {
 	[DllImport ("tobii_eyetracker")]
 	private static extern IntPtr return_serial_number();
 	[DllImport ("tobii_eyetracker")]
+	private static extern int check_for_gaze_data();
+	[DllImport ("tobii_eyetracker")]
 	private static extern int get_left_gaze_origin_validity();
 	[DllImport ("tobii_eyetracker")]
 	private static extern int get_right_gaze_origin_validity();
 	[DllImport ("tobii_eyetracker")]
 	private static extern float get_left_gaze_point_display_x();
-
+	[DllImport ("tobii_eyetracker")]
+	private static extern float get_left_gaze_point_display_y();
+	[DllImport ("tobii_eyetracker")]
+	private static extern float get_right_gaze_point_display_x();
+	[DllImport ("tobii_eyetracker")]
+	private static extern float get_right_gaze_point_display_y();
+	[DllImport ("tobii_eyetracker")]
+	private static extern float get_left_pupil_diameter();
+	[DllImport ("tobii_eyetracker")]
+	private static extern float get_right_pupil_diameter();
 
 
 	//private IEyeTracker _eyeTracker;
@@ -42,7 +53,7 @@ public class EyetrackerManager : MonoBehaviour {
 
 	private bool viewLeft=false;
 	private bool viewRight=false;
-	bool eyeTrackerConnectResult=false;
+	int eyeTrackerConnectResult=-1;
 	public static bool shouldCheckHead = false;
 	string eyeTracker_sn="";
     void Awake()
@@ -54,7 +65,9 @@ public class EyetrackerManager : MonoBehaviour {
 //            Debug.Log(string.Format("{0}, {1}, {2}, {3}, {4}", eyeTracker.Address, eyeTracker.DeviceName, eyeTracker.Model, eyeTracker.SerialNumber, eyeTracker.FirmwareVersion));
 //        }
 //        _eyeTracker = trackers.FirstOrDefault(s => (s.DeviceCapabilities & Capabilities.HasGazeData) != 0);
-		if (!eyeTrackerConnectResult)
+		eyeTrackerConnectResult=connect_eyetracker();
+		UnityEngine.Debug.Log ("eyetracker connect result: " + eyeTrackerConnectResult.ToString ());
+		if (eyeTrackerConnectResult!=1)
         {
 			UnityEngine.Debug.Log("No screen based eye tracker detected!");
 			reconnectionGroup.alpha = 0f;
@@ -64,7 +77,9 @@ public class EyetrackerManager : MonoBehaviour {
         {
 
 			//myCanvas.gameObject.GetComponent<CanvasGroup> ().alpha = 0f;
-//            Debug.Log("Selected eye tracker with serial number {0}" + _eyeTracker.SerialNumber);
+			IntPtr sn = return_serial_number();
+			eyeTracker_sn = Marshal.PtrToStringAnsi (sn);
+			UnityEngine.Debug.Log("Selected eye tracker with serial number {0}" + eyeTracker_sn);
         }
 
         StartCoroutine(InitiateEyetracker());
@@ -86,7 +101,7 @@ public class EyetrackerManager : MonoBehaviour {
     IEnumerator InitiateEyetracker()
     {
         //check to see if there is any eyetracker
-        if (!eyeTrackerConnectResult)
+        if (eyeTrackerConnectResult==1)
         {
             UnityEngine.Debug.Log("eyetracker is not null; performing calibration");
             //perform calibration
@@ -171,86 +186,85 @@ void Update()
 //    }
 //}
 
-//private void PumpGazeData()
-//{
-//    var next = GetNextGazeData();
-//    while (next != null)
-//    {
-//        HandleGazeData(next);
-//        next = GetNextGazeData();
-//    }
-//}
+private void PumpGazeData()
+{
+		int status = check_for_gaze_data ();
+		if (status == 1)
+			HandleGazeData ();
+}
 
 // This method will be called on the main Unity thread
-//private void HandleGazeData(GazeDataEventArgs e)
-//{
-//
-//		//GAZE ORIGIN / RECENTERING HEAD TRACKING
-//
-//		//if either left or right origin is invalid, increase timer
-//		if (!shouldReconnect && (e.LeftEye.GazeOrigin.Validity == Validity.Invalid || e.RightEye.GazeOrigin.Validity == Validity.Invalid)) {
-//			if (invalidOriginTimer < Config_CoinTask.minInvalidOriginTime) {
-//				invalidOriginTimer += Time.deltaTime;
-//				Debug.Log ("invalid origin timer: " + invalidOriginTimer.ToString ());
-//			} else
-//				shouldCheckHead = true; //if the timer is above min threshold, set reconnection check for next trial
-//
-//		} else {
-//			//if both origins 
-//			//Debug.Log ("resetting");
-//			//invalidOriginTimer = 0f;
-//			//shouldCheckHead = false;
-//				
-//		}
-//       
-//		if (shouldReconnect) {
-//			Debug.Log ("waiting for reconnect to be complete");
-//			if (validOriginTimer < Config_CoinTask.maxValidOriginTime)
-//            {
-//				reconnectionProgress.Value = validOriginTimer;
-//                if (e.LeftEye.GazeOrigin.Validity == Validity.Valid && e.RightEye.GazeOrigin.Validity == Validity.Valid)
-//                {
-//                    validOriginTimer += Time.deltaTime;
-//                    Debug.Log("valid origin timer: " + validOriginTimer.ToString());
-//                }
-//            }
-//            else
-//            {
-//                shouldCheckHead = false;
-//                invalidOriginTimer = 0f;
-//				reconnectionProgress.Value = 0f;
-//                reconnectionGroup.alpha = 0f;
-//                validOriginTimer = 0f;
-//                shouldReconnect = false;
-//                Debug.Log("finishing reconnection");
-//            }
-//		}
-//		//// GAZE POINT TRACKING 
-//
-//		if (e.LeftEye.GazePoint.Validity == Validity.Valid || viewLeft) {
-//			Vector3 leftPos = new Vector3 (e.LeftEye.GazePoint.PositionOnDisplayArea.X, e.LeftEye.GazePoint.PositionOnDisplayArea.Y);
-//			eyeLogTrack.LogDisplayData (leftPos, "LEFT");
-//			Vector2 left;
-//			RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(leftPos.x * Screen.width, -leftPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out left);
-//			leftEye.transform.position = myCanvas.transform.TransformPoint(left);
-//			eyeLogTrack.LogGazeData (leftEye.transform.position, "LEFT");
-//		}
-//
-//		if (e.RightEye.GazePoint.Validity == Validity.Valid || viewRight) {
-//			Vector3 rightPos = new Vector3 (e.RightEye.GazePoint.PositionOnDisplayArea.X, e.RightEye.GazePoint.PositionOnDisplayArea.Y);
-//			eyeLogTrack.LogDisplayData (rightPos, "RIGHT");
-//			Vector2 right;
-//			RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(rightPos.x * Screen.width, -rightPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out right);
-//			rightEye.transform.position = myCanvas.transform.TransformPoint (right);
-//			eyeLogTrack.LogGazeData (rightEye.transform.position, "RIGHT");
-//		}
-//		if(e.LeftEye.Pupil.Validity == Validity.Valid)
-//			eyeLogTrack.LogPupilData (e.LeftEye.Pupil.PupilDiameter, "LEFT");
-//		if(e.RightEye.Pupil.Validity == Validity.Valid)
-//			eyeLogTrack.LogPupilData (e.RightEye.Pupil.PupilDiameter, "RIGHT");
-//
-//        
-//      
-//    }
+private void HandleGazeData()
+{
+
+		//GAZE ORIGIN / RECENTERING HEAD TRACKING
+
+		int left_validity = get_left_gaze_origin_validity ();
+		int right_validity = get_right_gaze_origin_validity ();
+		//if either left or right origin is invalid, increase timer
+		if (!shouldReconnect && (left_validity == 1 ||right_validity == 1)) {
+			if (invalidOriginTimer < Config_CoinTask.minInvalidOriginTime) {
+				invalidOriginTimer += Time.deltaTime;
+				UnityEngine.Debug.Log ("invalid origin timer: " + invalidOriginTimer.ToString ());
+			} else
+				shouldCheckHead = true; //if the timer is above min threshold, set reconnection check for next trial
+
+		} else {
+			//if both origins 
+			//Debug.Log ("resetting");
+			//invalidOriginTimer = 0f;
+			//shouldCheckHead = false;
+				
+		}
+       
+		if (shouldReconnect) {
+			UnityEngine.Debug.Log ("waiting for reconnect to be complete");
+			if (validOriginTimer < Config_CoinTask.maxValidOriginTime)
+            {
+				reconnectionProgress.Value = validOriginTimer;
+				if (left_validity ==1 && right_validity==1)
+                {
+                    validOriginTimer += Time.deltaTime;
+					UnityEngine.Debug.Log("valid origin timer: " + validOriginTimer.ToString());
+                }
+            }
+            else
+            {
+                shouldCheckHead = false;
+                invalidOriginTimer = 0f;
+				reconnectionProgress.Value = 0f;
+                reconnectionGroup.alpha = 0f;
+                validOriginTimer = 0f;
+                shouldReconnect = false;
+				UnityEngine.Debug.Log("finishing reconnection");
+            }
+		}
+		//// GAZE POINT TRACKING 
+
+		if (left_validity==1 || viewLeft) {
+			Vector3 leftPos = new Vector3 (get_left_gaze_point_display_x(), get_left_gaze_point_display_y());
+			eyeLogTrack.LogDisplayData (leftPos, "LEFT");
+			Vector2 left;
+			RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(leftPos.x * Screen.width, -leftPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out left);
+			leftEye.transform.position = myCanvas.transform.TransformPoint(left);
+			eyeLogTrack.LogGazeData (leftEye.transform.position, "LEFT");
+		}
+
+		if (right_validity==1 || viewRight) {
+			Vector3 rightPos = new Vector3 (get_right_gaze_point_display_x(), get_right_gaze_point_display_y());
+			eyeLogTrack.LogDisplayData (rightPos, "RIGHT");
+			Vector2 right;
+			RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(rightPos.x * Screen.width, -rightPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out right);
+			rightEye.transform.position = myCanvas.transform.TransformPoint (right);
+			eyeLogTrack.LogGazeData (rightEye.transform.position, "RIGHT");
+		}
+		if(left_validity==1)
+			eyeLogTrack.LogPupilData (get_left_pupil_diameter(), "LEFT");
+		if(right_validity==1)
+			eyeLogTrack.LogPupilData (get_right_pupil_diameter(), "RIGHT");
+
+        
+      
+    }
 
 }
