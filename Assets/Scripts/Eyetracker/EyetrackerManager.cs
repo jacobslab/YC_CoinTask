@@ -6,10 +6,13 @@ using System;
 using UnityEngine.UI;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+using Tobii.Research;
+#endif
 public class EyetrackerManager : MonoBehaviour {
 
-
-	[DllImport ("tobii_eyetracker")]
+#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+    [DllImport ("tobii_eyetracker")]
 	private static extern int connect_eyetracker();
 	[DllImport ("tobii_eyetracker")]
 	private static extern IntPtr return_serial_number();
@@ -35,9 +38,12 @@ public class EyetrackerManager : MonoBehaviour {
 	private static extern float get_left_pupil_diameter();
 	[DllImport ("tobii_eyetracker")]
 	private static extern float get_right_pupil_diameter();
+#else
+    private IEyeTracker _eyeTracker;
+    private Queue<GazeDataEventArgs> _queue = new Queue<GazeDataEventArgs>();
+#endif
 
-
-	//private IEyeTracker _eyeTracker;
+    //
     private EyetrackerLogTrack eyeLogTrack;
     public CommandExecution commExec;
 	public Canvas myCanvas;
@@ -45,7 +51,7 @@ public class EyetrackerManager : MonoBehaviour {
 	public RawImage rightEye;
     public Vector2 leftEditPos;
     public Vector2 rightEditPos;
-//    private Queue<GazeDataEventArgs> _queue = new Queue<GazeDataEventArgs>();
+//    
     private bool canPumpData = false;
 
 	public bl_ProgressBar reconnectionProgress;
@@ -64,12 +70,15 @@ public class EyetrackerManager : MonoBehaviour {
     {
 //        var trackers = EyeTrackingOperations.FindAllEyeTrackers();
         eyeLogTrack = GetComponent<EyetrackerLogTrack>();
-//        foreach (IEyeTracker eyeTracker in trackers)
-//        {
-//            Debug.Log(string.Format("{0}, {1}, {2}, {3}, {4}", eyeTracker.Address, eyeTracker.DeviceName, eyeTracker.Model, eyeTracker.SerialNumber, eyeTracker.FirmwareVersion));
-//        }
-//        _eyeTracker = trackers.FirstOrDefault(s => (s.DeviceCapabilities & Capabilities.HasGazeData) != 0);
-		eyeTrackerConnectResult=connect_eyetracker();
+        //        foreach (IEyeTracker eyeTracker in trackers)
+        //        {
+        //            Debug.Log(string.Format("{0}, {1}, {2}, {3}, {4}", eyeTracker.Address, eyeTracker.DeviceName, eyeTracker.Model, eyeTracker.SerialNumber, eyeTracker.FirmwareVersion));
+        //        }
+        //        _eyeTracker = trackers.FirstOrDefault(s => (s.DeviceCapabilities & Capabilities.HasGazeData) != 0);
+
+#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+        eyeTrackerConnectResult=connect_eyetracker();
+#endif
 		UnityEngine.Debug.Log ("eyetracker connect result: " + eyeTrackerConnectResult.ToString ());
 		if (eyeTrackerConnectResult!=1)
         {
