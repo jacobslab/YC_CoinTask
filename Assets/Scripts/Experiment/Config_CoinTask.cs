@@ -105,6 +105,11 @@ public class Config_CoinTask : MonoBehaviour {
 	}
 
 
+	//eyetracker
+	public static float minInvalidOriginTime = 10f; //for eyetracker connection to be classified as "not connected"
+	public static float maxValidOriginTime = 5f; //for reconnection
+
+
 	//OBJECTS
 	public static int numDefaultObjects = 4;
 
