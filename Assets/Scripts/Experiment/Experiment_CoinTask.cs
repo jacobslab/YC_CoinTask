@@ -88,17 +88,11 @@ public class Experiment_CoinTask : MonoBehaviour {
 		cameraController.SetInGame(); //don't use oculus for replay mode
 
 		InitInstructionsController ();
-
-		if (ExperimentSettings_CoinTask.isLogging) {
-#if !UNITY_WEBPLAYER
+		ExperimentSettings_CoinTask.isLogging = false;
 			InitLogging();
-#else
-			ExperimentSettings_CoinTask.isLogging = false;
-#endif
-		}
-		else if(ExperimentSettings_CoinTask.isReplay) {
-			currInstructions.TurnOffInstructions();
-		}
+//		else if(ExperimentSettings_CoinTask.isReplay) {
+//			currInstructions.TurnOffInstructions();
+//		}
 
 	}
 
@@ -148,6 +142,8 @@ public class Experiment_CoinTask : MonoBehaviour {
 		
 		subjectLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "Log" + ".txt";
 		eegLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "EEGLog" + ".txt";
+
+		ExperimentSettings_CoinTask.isLogging = true;
 	}
 
 	//In order to increment the session, this file must be present. Otherwise, the session has not actually started.

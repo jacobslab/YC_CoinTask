@@ -261,7 +261,7 @@ private void HandleGazeData()
 		if (!shouldReconnect && (left_validity == 1 ||right_validity == 1)) {
 			if (invalidOriginTimer < Config_CoinTask.minInvalidOriginTime) {
 				invalidOriginTimer += Time.deltaTime;
-				UnityEngine.Debug.Log ("invalid origin timer: " + invalidOriginTimer.ToString ());
+//				UnityEngine.Debug.Log ("invalid origin timer: " + invalidOriginTimer.ToString ());
 			} else
 				shouldCheckHead = true; //if the timer is above min threshold, set reconnection check for next trial
 
@@ -281,7 +281,7 @@ private void HandleGazeData()
 				if (left_validity ==1 && right_validity==1)
                 {
                     validOriginTimer += Time.deltaTime;
-					UnityEngine.Debug.Log("valid origin timer: " + validOriginTimer.ToString());
+//					UnityEngine.Debug.Log("valid origin timer: " + validOriginTimer.ToString());
                 }
             }
             else
@@ -299,7 +299,7 @@ private void HandleGazeData()
 
 		if (left_validity==1 || viewLeft) {
 			Vector3 leftPos = new Vector3 (get_left_gaze_point_display_x(), get_left_gaze_point_display_y());
-			UnityEngine.Debug.Log ("left pos : " + leftPos.ToString ());
+//			UnityEngine.Debug.Log ("left pos : " + leftPos.ToString ());
 			eyeLogTrack.LogDisplayData (leftPos, "LEFT");
 			Vector2 left;
 			RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(leftPos.x * Screen.width, -leftPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out left);
@@ -309,7 +309,7 @@ private void HandleGazeData()
 
 		if (right_validity==1 || viewRight) {
 			Vector3 rightPos = new Vector3 (get_right_gaze_point_display_x(), get_right_gaze_point_display_y());
-			UnityEngine.Debug.Log ("right pos : " + rightPos.ToString ());
+//			UnityEngine.Debug.Log ("right pos : " + rightPos.ToString ());
 			eyeLogTrack.LogDisplayData (rightPos, "RIGHT");
 			Vector2 right;
 			RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(rightPos.x * Screen.width, -rightPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out right);
@@ -318,12 +318,12 @@ private void HandleGazeData()
 		}
 		if (left_validity == 1) {
 			eyeLogTrack.LogPupilData (get_left_pupil_diameter (), "LEFT");
-			UnityEngine.Debug.Log ("left pupil : " + get_left_pupil_diameter().ToString());
+//			UnityEngine.Debug.Log ("left pupil : " + get_left_pupil_diameter().ToString());
 		}
 		if (right_validity == 1) {
 			eyeLogTrack.LogPupilData (get_right_pupil_diameter (), "RIGHT");
 
-			UnityEngine.Debug.Log ("right pupil : " + get_right_pupil_diameter ().ToString ());
+//			UnityEngine.Debug.Log ("right pupil : " + get_right_pupil_diameter ().ToString ());
 		}
 
         
