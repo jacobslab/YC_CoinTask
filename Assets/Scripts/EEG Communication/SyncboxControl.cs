@@ -9,17 +9,8 @@ public class SyncboxControl : MonoBehaviour
 {
     Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
-#if GERMAN
-	[DllImport ("FreiburgSyncboxPlugin")]
-	private static extern IntPtr OpenUSB();
-	[DllImport ("FreiburgSyncboxPlugin")]
-	private static extern IntPtr CloseUSB();
-	[DllImport ("FreiburgSyncboxPlugin")]
-	private static extern IntPtr TurnLEDOn();
-	[DllImport ("FreiburgSyncboxPlugin")]
-	private static extern IntPtr TurnLEDOff();
 
-#else
+#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
     [DllImport("ASimplePlugin")]
     private static extern IntPtr OpenUSB();
     [DllImport("ASimplePlugin")]
@@ -85,7 +76,7 @@ public class SyncboxControl : MonoBehaviour
 
 
 
-
+	#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
     IEnumerator TurnOnOff()
     {
         LJUD.eDO(u3.ljhandle, 0, 1);
@@ -93,6 +84,7 @@ public class SyncboxControl : MonoBehaviour
         LJUD.eDO(u3.ljhandle, 0, 0);
         yield return null;
     }
+	#endif
     public void ShowErrorMessage(LabJackUDException e)
     {
         UnityEngine.Debug.Log("ERROR: " + e.ToString());
@@ -107,10 +99,13 @@ public class SyncboxControl : MonoBehaviour
         string connectionError = "";
         while (!isUSBOpen)
         {
-            /*
+			#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 			string usbOpenFeedback = Marshal.PtrToStringAuto (OpenUSB());
 			UnityEngine.Debug.Log(usbOpenFeedback);
-            */
+			if(usbOpenFeedback != "didn't open USB..."){
+				isUSBOpen = true;
+			}
+            #else
             try
             {
 
@@ -135,6 +130,7 @@ public class SyncboxControl : MonoBehaviour
             {
                 exp.trialController.ConnectionText.text = "Please connect Syncbox and Restart";
             }
+			#endif
 
             yield return 0;
         }
@@ -205,16 +201,22 @@ public class SyncboxControl : MonoBehaviour
     void ToggleLEDOn()
     {
 
-
+		#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+		TurnLEDOn();
+		#else
         LJUD.eDO(u3.ljhandle, 0, 1);
+		#endif
         LogSYNCOn(GameClock.SystemTime_Milliseconds);
     }
 
     void ToggleLEDOff()
     {
 
-
+		#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+		TurnLEDOff();
+		#else
         LJUD.eDO(u3.ljhandle, 0, 0);
+		#endif
         LogSYNCOff(GameClock.SystemTime_Milliseconds);
 
     }
@@ -275,8 +277,11 @@ public class SyncboxControl : MonoBehaviour
 
     void OnApplicationQuit()
     {
-        //UnityEngine.Debug.Log(Marshal.PtrToStringAuto (CloseUSB()));
+		#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+        UnityEngine.Debug.Log(Marshal.PtrToStringAuto (CloseUSB()));
+		#else
         LJUD.Close();
+		#endif
     }
 
 }
