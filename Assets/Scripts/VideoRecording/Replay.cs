@@ -50,12 +50,24 @@ public class Replay : MonoBehaviour {
 	long lastTimeRecorded = 0;
 	long timeDifference = 0;
 
+	public Canvas myCanvas;
+	public RawImage leftEye;
+	public RawImage rightEye;
 
+
+	public LayerMask layerMask;
+	Ray ray;
 
 
 	// Use this for initialization
 	void Start () {
 		objsInSceneDict = new Dictionary<String, GameObject> ();
+		GameObject etManager = GameObject.Find ("EyetrackerManager");
+		if (etManager != null) {
+			myCanvas = etManager.GetComponent<EyetrackerManager> ().myCanvas;
+			leftEye = etManager.GetComponent<EyetrackerManager> ().leftEye;
+			rightEye = etManager.GetComponent<EyetrackerManager> ().rightEye;
+		}
 	}
 	
 	// Update is called once per frame
@@ -70,6 +82,8 @@ public class Replay : MonoBehaviour {
 				shouldStartProcessingLog = false;
 			}
 		}
+
+		Debug.DrawRay (ray.origin, ray.direction, Color.red);
 	}
 
 	public void SetIsRecording(){
@@ -181,6 +195,14 @@ public class Replay : MonoBehaviour {
 		Debug.Log ("MS per frame!: " + millisecondsPerFrame + "FPS: " + FPS);
 
 
+		GameObject etManager = GameObject.Find ("EyetrackerManager");
+		if (etManager != null) {
+			Debug.Log ("found et manager");
+			myCanvas = etManager.GetComponent<EyetrackerManager> ().myCanvas;
+			leftEye = etManager.GetComponent<EyetrackerManager> ().leftEye;
+			rightEye = etManager.GetComponent<EyetrackerManager> ().rightEye;
+		}
+
 		fileReader = new StreamReader (logFilePath);
 	
 		currentLogFileLine = fileReader.ReadLine (); //the first line in the file should be the date.
@@ -269,8 +291,27 @@ public class Replay : MonoBehaviour {
 					//2 -- name of object
 					else if (i == 2){
 						string objName = splitLine[i];
-						
-						if(objName != "Mouse" && objName != "Keyboard" && objName != "Trial Info" && objName!="Experiment Info"){
+						if (objName == "EYETRACKER_DISPLAY_POINT LEFT") {
+							Vector2 pos =new Vector2(float.Parse(splitLine[i+1]),(1f-float.Parse(splitLine [i + 2])));
+							Vector2 left;
+							RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(pos.x * Screen.width, -pos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out left);
+							leftEye.transform.position = myCanvas.transform.TransformPoint(left);
+							ray = Camera.main.ViewportPointToRay (new Vector3 (pos.x, pos.y, Camera.main.nearClipPlane));
+							RaycastHit hit;
+							Debug.DrawRay (ray.origin, ray.direction * 1000f, Color.red);
+							if(Physics.Raycast(ray,out hit,1000f,layerMask.value))
+							{
+								Debug.Log ("HIT : " + hit.collider.gameObject.name);
+							}
+//							Debug.Log ("GAZE POINT LEFT: "+  pos.ToString());
+						}
+						if (objName == "EYETRACKER_DISPLAY_POINT RIGHT") {
+							Vector2 pos = new Vector2 (float.Parse (splitLine [i + 1]), (1f-float.Parse (splitLine [i + 2])));
+							Vector2 right;
+							RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(pos.x * Screen.width, -pos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out right);
+							leftEye.transform.position = myCanvas.transform.TransformPoint(right);
+						}
+						else if(objName != "Mouse" && objName != "Keyboard" && objName != "Trial Info" && objName!="Experiment Info"){
 
 							GameObject objInScene;
 								
@@ -674,7 +715,7 @@ public class Replay : MonoBehaviour {
 
 							}
 							else{
-								Debug.Log("REPLAY: No obj in scene named " + objName + " at timestamp: " + currentTimeStamp);
+//								Debug.Log("REPLAY: No obj in scene named " + objName + " at timestamp: " + currentTimeStamp);
 							}
 							
 						}
