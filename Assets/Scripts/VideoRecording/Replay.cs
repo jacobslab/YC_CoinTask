@@ -54,6 +54,7 @@ public class Replay : MonoBehaviour {
 	public RawImage leftEye;
 	public RawImage rightEye;
 
+	public EyetrackerLogTrack eyeLogTrack;
 
 	public LayerMask layerMask;
 	Ray ray;
@@ -67,6 +68,7 @@ public class Replay : MonoBehaviour {
 			myCanvas = etManager.GetComponent<EyetrackerManager> ().myCanvas;
 			leftEye = etManager.GetComponent<EyetrackerManager> ().leftEye;
 			rightEye = etManager.GetComponent<EyetrackerManager> ().rightEye;
+			eyeLogTrack = etManager.GetComponent<EyetrackerLogTrack> ();
 		}
 	}
 	
@@ -201,6 +203,7 @@ public class Replay : MonoBehaviour {
 			myCanvas = etManager.GetComponent<EyetrackerManager> ().myCanvas;
 			leftEye = etManager.GetComponent<EyetrackerManager> ().leftEye;
 			rightEye = etManager.GetComponent<EyetrackerManager> ().rightEye;
+			eyeLogTrack = etManager.GetComponent<EyetrackerLogTrack> ();
 		}
 
 		fileReader = new StreamReader (logFilePath);
@@ -292,24 +295,40 @@ public class Replay : MonoBehaviour {
 					else if (i == 2){
 						string objName = splitLine[i];
 						if (objName == "EYETRACKER_DISPLAY_POINT LEFT") {
-							Vector2 pos =new Vector2(float.Parse(splitLine[i+1]),(1f-float.Parse(splitLine [i + 2])));
+							Vector2 pos = new Vector2 (float.Parse (splitLine [i + 1]), (1f - float.Parse (splitLine [i + 2])));
+							eyeLogTrack.LogDisplayData (pos, "LEFT");
+
 							Vector2 left;
-							RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(pos.x * Screen.width, -pos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out left);
-							leftEye.transform.position = myCanvas.transform.TransformPoint(left);
+							RectTransformUtility.ScreenPointToLocalPointInRectangle (myCanvas.transform as RectTransform, new Vector2 (pos.x * Screen.width, -pos.y * Screen.height) + new Vector2 (0f, Screen.height), myCanvas.worldCamera, out left);
+							leftEye.transform.position = myCanvas.transform.TransformPoint (left);
 							ray = Camera.main.ViewportPointToRay (new Vector3 (pos.x, pos.y, Camera.main.nearClipPlane));
 							RaycastHit hit;
-							Debug.DrawRay (ray.origin, ray.direction * 1000f, Color.red);
-							if(Physics.Raycast(ray,out hit,1000f,layerMask.value))
-							{
+							if (Physics.Raycast (ray, out hit, 1000f, layerMask.value)) {
+								eyeLogTrack.LogGazeObject (hit.collider.gameObject.name);
+								eyeLogTrack.LogVirtualPointData (hit.point, "LEFT");
 								Debug.Log ("HIT : " + hit.collider.gameObject.name);
 							}
 //							Debug.Log ("GAZE POINT LEFT: "+  pos.ToString());
-						}
-						if (objName == "EYETRACKER_DISPLAY_POINT RIGHT") {
-							Vector2 pos = new Vector2 (float.Parse (splitLine [i + 1]), (1f-float.Parse (splitLine [i + 2])));
+						} else if (objName == "EYETRACKER_DISPLAY_POINT RIGHT") {
+							Vector2 pos = new Vector2 (float.Parse (splitLine [i + 1]), (1f - float.Parse (splitLine [i + 2])));
+							eyeLogTrack.LogDisplayData (pos, "RIGHT");
+								
 							Vector2 right;
-							RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(pos.x * Screen.width, -pos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out right);
-							leftEye.transform.position = myCanvas.transform.TransformPoint(right);
+							RectTransformUtility.ScreenPointToLocalPointInRectangle (myCanvas.transform as RectTransform, new Vector2 (pos.x * Screen.width, -pos.y * Screen.height) + new Vector2 (0f, Screen.height), myCanvas.worldCamera, out right);
+							rightEye.transform.position = myCanvas.transform.TransformPoint (right);
+							ray = Camera.main.ViewportPointToRay (new Vector3 (pos.x, pos.y, Camera.main.nearClipPlane));
+							RaycastHit hit;
+							if (Physics.Raycast (ray, out hit, 1000f, layerMask.value)) {
+								eyeLogTrack.LogGazeObject (hit.collider.gameObject.name);
+								eyeLogTrack.LogVirtualPointData (hit.point, "RIGHT");
+//								Debug.Log ("HIT : " + hit.collider.gameObject.name);
+							}
+						} else if (objName == "EYETRACKER_PUPIL_DIAMETER LEFT") {
+							float diameter = float.Parse(splitLine [i + 1]);
+							eyeLogTrack.LogPupilData (diameter, "LEFT");
+						} else if (objName == "EYETRACKER_PUPIL_DIAMETER RIGHT") {
+							float diameter = float.Parse(splitLine [i + 1]);
+							eyeLogTrack.LogPupilData (diameter, "RIGHT");
 						}
 						else if(objName != "Mouse" && objName != "Keyboard" && objName != "Trial Info" && objName!="Experiment Info"){
 

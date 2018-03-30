@@ -211,7 +211,7 @@ private void HandleGazeData(GazeDataEventArgs e)
 		//// GAZE POINT TRACKING 
 
 		if (e.LeftEye.GazePoint.Validity == Validity.Valid || viewLeft) {
-			Vector3 leftPos = new Vector3 (e.LeftEye.GazePoint.PositionOnDisplayArea.X, e.LeftEye.GazePoint.PositionOnDisplayArea.Y);
+			Vector2 leftPos = new Vector2 (e.LeftEye.GazePoint.PositionOnDisplayArea.X, e.LeftEye.GazePoint.PositionOnDisplayArea.Y);
 			eyeLogTrack.LogDisplayData (leftPos, "LEFT");
 			Vector2 left;
 			RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(leftPos.x * Screen.width, -leftPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out left);
@@ -220,7 +220,7 @@ private void HandleGazeData(GazeDataEventArgs e)
 		}
 
 		if (e.RightEye.GazePoint.Validity == Validity.Valid || viewRight) {
-			Vector3 rightPos = new Vector3 (e.RightEye.GazePoint.PositionOnDisplayArea.X, e.RightEye.GazePoint.PositionOnDisplayArea.Y);
+			Vector2 rightPos = new Vector2 (e.RightEye.GazePoint.PositionOnDisplayArea.X, e.RightEye.GazePoint.PositionOnDisplayArea.Y);
 			eyeLogTrack.LogDisplayData (rightPos, "RIGHT");
 			Vector2 right;
 			RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(rightPos.x * Screen.width, -rightPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out right);

@@ -242,8 +242,8 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 	public void SetReplayTrue(){
 		isReplay = true;
-		isLogging = false;
-		loggingToggle.isOn = false;
+//		isLogging = false;
+//		loggingToggle.isOn = false;
 	}
 
 	//TODO: use this.

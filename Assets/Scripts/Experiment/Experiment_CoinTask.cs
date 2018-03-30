@@ -163,6 +163,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 		
 		subjectLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "Log" + ".txt";
 		eegLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "EEGLog" + ".txt";
+		Debug.Log ("SUBJECT LOG: " + subjectLog.fileName);
 		string audioPath=sessionDirectory+ "audio/";
 		sphinxTest.SetPath (audioPath);
 		Debug.Log("the audio path is this OK: " + audioPath);
