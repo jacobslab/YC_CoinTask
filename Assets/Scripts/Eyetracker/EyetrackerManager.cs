@@ -28,8 +28,11 @@ public class EyetrackerManager : MonoBehaviour {
 	private bool viewRight=false;
 	public LayerMask layerMask;
 	public static bool shouldCheckHead = false;
+
+    public string filepath = "";
     void Awake()
     {
+        filepath = Application.dataPath;
         var trackers = EyeTrackingOperations.FindAllEyeTrackers();
         eyeLogTrack = GetComponent<EyetrackerLogTrack>();
         foreach (IEyeTracker eyeTracker in trackers)
@@ -73,9 +76,13 @@ public class EyetrackerManager : MonoBehaviour {
         {
             UnityEngine.Debug.Log("eyetracker is not null; performing calibration");
             //perform calibration
-			CommandExecution.ExecuteTobiiEyetracker(_eyeTracker.SerialNumber,"usercalibration");
+			CommandExecution.ExecuteTobiiEyetracker(_eyeTracker.SerialNumber,"usercalibration",filepath);
             canPumpData = true;
         }
+        /*
+        else
+            CommandExecution.ExecuteTobiiEyetracker("", "usercalibration",filepath);
+            */
         yield return null;
     }
 
