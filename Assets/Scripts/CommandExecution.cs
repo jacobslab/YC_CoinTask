@@ -68,8 +68,8 @@ public class CommandExecution : MonoBehaviour {
 		proc.StartInfo.Arguments ="/C " +filepath+ @"/Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe --device_sn=" + device_sn+" --mode="+mode;
 		UnityEngine.Debug.Log("datapath is: " +filepath + @"/Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe");
 #elif UNITY_STANDALONE_WIN
-//		proc.StartInfo.Arguments = filepath+@"/Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe --device_sn="+device_sn+" --mode="+mode;
-//		UnityEngine.Debug.Log("datapath is: " + filepath + @"/Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe");
+		proc.StartInfo.Arguments ="/C "+ filepath+@"/Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe --device_sn="+device_sn+" --mode="+mode;
+		UnityEngine.Debug.Log("datapath is: " + filepath + @"/Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe");
 #endif
         proc.Start();
 		//
