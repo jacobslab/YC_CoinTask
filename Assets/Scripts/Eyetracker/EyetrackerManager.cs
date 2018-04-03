@@ -76,8 +76,8 @@ public class EyetrackerManager : MonoBehaviour {
         eyeLogTrack = GetComponent<EyetrackerLogTrack>();
 
 #if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-//        eyeTrackerConnectResult=connect_eyetracker();
-		eyeTrackerConnectResult=1;
+        eyeTrackerConnectResult=connect_eyetracker();
+	//	eyeTrackerConnectResult=1;
 #else
 
                 var trackers = EyeTrackingOperations.FindAllEyeTrackers();
