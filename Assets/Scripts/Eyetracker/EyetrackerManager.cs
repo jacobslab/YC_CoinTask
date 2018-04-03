@@ -11,6 +11,8 @@ using Tobii.Research;
 #endif
 public class EyetrackerManager : MonoBehaviour {
 
+
+	public LayerMask layerMask;
 #if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
     [DllImport ("tobii_eyetracker")]
 	private static extern int connect_eyetracker();
@@ -44,6 +46,7 @@ public class EyetrackerManager : MonoBehaviour {
 #else
     private IEyeTracker _eyeTracker;
     private Queue<GazeDataEventArgs> _queue = new Queue<GazeDataEventArgs>();
+
 #endif
 
     //
@@ -73,7 +76,8 @@ public class EyetrackerManager : MonoBehaviour {
         eyeLogTrack = GetComponent<EyetrackerLogTrack>();
 
 #if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        eyeTrackerConnectResult=connect_eyetracker();
+//        eyeTrackerConnectResult=connect_eyetracker();
+		eyeTrackerConnectResult=1;
 #else
 
                 var trackers = EyeTrackingOperations.FindAllEyeTrackers();
@@ -298,23 +302,35 @@ private void HandleGazeData()
 		//// GAZE POINT TRACKING 
 
 		if (left_validity==1 || viewLeft) {
-			Vector3 leftPos = new Vector3 (get_left_gaze_point_display_x(), get_left_gaze_point_display_y());
+			Vector3 leftPos = new Vector3 (get_left_gaze_point_display_x(), (1f-get_left_gaze_point_display_y()));
 //			UnityEngine.Debug.Log ("left pos : " + leftPos.ToString ());
 			eyeLogTrack.LogDisplayData (leftPos, "LEFT");
 			Vector2 left;
-			RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(leftPos.x * Screen.width, -leftPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out left);
-			leftEye.transform.position = myCanvas.transform.TransformPoint(left);
-			eyeLogTrack.LogGazeData (leftEye.transform.position, "LEFT");
+			Ray ray;
+			RectTransformUtility.ScreenPointToLocalPointInRectangle (myCanvas.transform as RectTransform, new Vector2 (leftPos.x * Screen.width, -leftPos.y * Screen.height) + new Vector2 (0f, Screen.height), myCanvas.worldCamera, out left);
+			leftEye.transform.position = myCanvas.transform.TransformPoint (left);
+			ray = Camera.main.ViewportPointToRay (new Vector3 (leftPos.x, leftPos.y, Camera.main.nearClipPlane));
+			RaycastHit hit;
+			if (Physics.Raycast (ray, out hit, 1000f, layerMask.value)) {
+				eyeLogTrack.LogGazeObject (hit.collider.gameObject.name);
+				eyeLogTrack.LogVirtualPointData (hit.point, "LEFT");
+			}
 		}
 
 		if (right_validity==1 || viewRight) {
-			Vector3 rightPos = new Vector3 (get_right_gaze_point_display_x(), get_right_gaze_point_display_y());
+			Vector3 rightPos = new Vector3 (get_right_gaze_point_display_x(), (1f-get_right_gaze_point_display_y()));
 //			UnityEngine.Debug.Log ("right pos : " + rightPos.ToString ());
 			eyeLogTrack.LogDisplayData (rightPos, "RIGHT");
+			Ray ray; 
 			Vector2 right;
-			RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(rightPos.x * Screen.width, -rightPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out right);
+			RectTransformUtility.ScreenPointToLocalPointInRectangle (myCanvas.transform as RectTransform, new Vector2 (rightPos.x * Screen.width, -rightPos.y * Screen.height) + new Vector2 (0f, Screen.height), myCanvas.worldCamera, out right);
 			rightEye.transform.position = myCanvas.transform.TransformPoint (right);
-			eyeLogTrack.LogGazeData (rightEye.transform.position, "RIGHT");
+			ray = Camera.main.ViewportPointToRay (new Vector3 (rightPos.x, rightPos.y, Camera.main.nearClipPlane));
+			RaycastHit hit;
+			if (Physics.Raycast (ray, out hit, 1000f, layerMask.value)) {
+				eyeLogTrack.LogGazeObject (hit.collider.gameObject.name);
+				eyeLogTrack.LogVirtualPointData (hit.point, "RIGHT");
+			}
 		}
 		if (left_validity == 1) {
 			eyeLogTrack.LogPupilData (get_left_pupil_diameter (), "LEFT");
@@ -382,22 +398,34 @@ private void HandleGazeData()
 
         if (e.LeftEye.GazePoint.Validity == Validity.Valid || viewLeft)
         {
-            Vector3 leftPos = new Vector3(e.LeftEye.GazePoint.PositionOnDisplayArea.X, e.LeftEye.GazePoint.PositionOnDisplayArea.Y);
+			Vector3 leftPos = new Vector3(e.LeftEye.GazePoint.PositionOnDisplayArea.X, (1f- e.LeftEye.GazePoint.PositionOnDisplayArea.Y));
             eyeLogTrack.LogDisplayData(leftPos, "LEFT");
-            Vector2 left;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(leftPos.x * Screen.width, -leftPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out left);
-            leftEye.transform.position = myCanvas.transform.TransformPoint(left);
-            eyeLogTrack.LogGazeData(leftEye.transform.position, "LEFT");
+			Ray ray;
+			Vector2 left;
+			RectTransformUtility.ScreenPointToLocalPointInRectangle (myCanvas.transform as RectTransform, new Vector2 (leftPos.x * Screen.width, -leftPos.y * Screen.height) + new Vector2 (0f, Screen.height), myCanvas.worldCamera, out left);
+			leftEye.transform.position = myCanvas.transform.TransformPoint (left);
+			ray = Camera.main.ViewportPointToRay (new Vector3 (leftPos.x, leftPos.y, Camera.main.nearClipPlane));
+			RaycastHit hit;
+			if (Physics.Raycast (ray, out hit, 1000f, layerMask.value)) {
+				eyeLogTrack.LogGazeObject (hit.collider.gameObject.name);
+				eyeLogTrack.LogVirtualPointData (hit.point, "LEFT");
+			}
         }
 
         if (e.RightEye.GazePoint.Validity == Validity.Valid || viewRight)
         {
-            Vector3 rightPos = new Vector3(e.RightEye.GazePoint.PositionOnDisplayArea.X, e.RightEye.GazePoint.PositionOnDisplayArea.Y);
+			Vector3 rightPos = new Vector3(e.RightEye.GazePoint.PositionOnDisplayArea.X, (1f- e.RightEye.GazePoint.PositionOnDisplayArea.Y));
             eyeLogTrack.LogDisplayData(rightPos, "RIGHT");
-            Vector2 right;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector2(rightPos.x * Screen.width, -rightPos.y * Screen.height) + new Vector2(0f, Screen.height), myCanvas.worldCamera, out right);
-            rightEye.transform.position = myCanvas.transform.TransformPoint(right);
-            eyeLogTrack.LogGazeData(rightEye.transform.position, "RIGHT");
+			Ray ray; 
+			Vector2 right;
+			RectTransformUtility.ScreenPointToLocalPointInRectangle (myCanvas.transform as RectTransform, new Vector2 (rightPos.x * Screen.width, -rightPos.y * Screen.height) + new Vector2 (0f, Screen.height), myCanvas.worldCamera, out right);
+			rightEye.transform.position = myCanvas.transform.TransformPoint (right);
+			ray = Camera.main.ViewportPointToRay (new Vector3 (rightPos.x, rightPos.y, Camera.main.nearClipPlane));
+			RaycastHit hit;
+			if (Physics.Raycast (ray, out hit, 1000f, layerMask.value)) {
+				eyeLogTrack.LogGazeObject (hit.collider.gameObject.name);
+				eyeLogTrack.LogVirtualPointData (hit.point, "RIGHT");
+			}
         }
         if (e.LeftEye.Pupil.Validity == Validity.Valid)
             eyeLogTrack.LogPupilData(e.LeftEye.Pupil.PupilDiameter, "LEFT");

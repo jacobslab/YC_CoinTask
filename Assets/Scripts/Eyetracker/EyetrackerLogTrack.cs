@@ -39,4 +39,21 @@ public class EyetrackerLogTrack : LogTrack {
         }
 
     }
+	public void LogVirtualPointData(Vector3 virtualGazePos, string eye)
+	{
+		if(ExperimentSettings_CoinTask.isLogging)
+		{
+
+			subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "EYETRACKER_VIRTUAL_POINT " + eye + separator + virtualGazePos.x + separator + virtualGazePos.y + separator + virtualGazePos.z);
+		}
+	}
+
+	public void LogGazeObject(string gazeObjName)
+	{
+		if(ExperimentSettings_CoinTask.isLogging)
+		{
+
+			subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "EYETRACKER_GAZE_OBJECT " + separator + gazeObjName);
+		}
+	}
 }

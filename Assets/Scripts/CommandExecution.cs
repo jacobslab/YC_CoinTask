@@ -57,12 +57,12 @@ public class CommandExecution : MonoBehaviour {
 		proc.StartInfo.RedirectStandardOutput = false;
 		proc.StartInfo.UseShellExecute = false;
 		#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-		proc.StartInfo.FileName = @"powershell.exe";
+		proc.StartInfo.FileName = @"cmd.exe";
 		#else
 		proc.StartInfo.FileName=@"/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal";
 		string filepath=System.IO.Directory.GetCurrentDirectory();
 		UnityEngine.Debug.Log (filepath);
-		proc.StartInfo.Arguments=Application.dataPath+@"/TobiiProEyeTrackerManager.app --device_sn=" + device_sn + " --mode="+mode;
+		proc.StartInfo.Arguments="open " + filepath+@"/TobiiProEyeTrackerManager.app/Contents/MacOS/TobiiProEyeTrackerManager --device_sn=" + device_sn + " --mode="+mode + " > output.txt";
 		#endif
 		#if UNITY_EDITOR_WIN
 		proc.StartInfo.Arguments = Application.dataPath+ @"Tobii.Pro.Eye.Tracker.Manager.Windows-AMD64-1.5.2.exe --device_sn=" + device_sn+" --mode="+mode;
