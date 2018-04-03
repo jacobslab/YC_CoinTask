@@ -42,14 +42,14 @@ public class CommandExecution : MonoBehaviour {
 
 
 	}
-	public static void ExecuteTobiiEyetracker(string device_sn,string mode)
+	public static void ExecuteTobiiEyetracker(string device_sn,string mode,string filepath)
 	{
-		var thread = new Thread(delegate () { CommandTobii(device_sn,mode); });
+		var thread = new Thread(delegate () { CommandTobii(device_sn,mode,filepath); });
 		thread.Start();
 		UnityEngine.Debug.Log("Starting thread");
 	}
 
-	static void CommandTobii(string device_sn, string mode)
+	static void CommandTobii(string device_sn, string mode,string filepath)
 	{
 		UnityEngine.Debug.Log("executing command");
 		var proc = new Process();
@@ -57,7 +57,7 @@ public class CommandExecution : MonoBehaviour {
 		proc.StartInfo.RedirectStandardOutput = false;
 		proc.StartInfo.UseShellExecute = false;
 		#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-		proc.StartInfo.FileName = @"cmd.exe";
+		proc.StartInfo.FileName = "cmd.exe";
 		#else
 		proc.StartInfo.FileName=@"/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal";
 		string filepath=System.IO.Directory.GetCurrentDirectory();
@@ -65,11 +65,11 @@ public class CommandExecution : MonoBehaviour {
 		proc.StartInfo.Arguments="open " + filepath+@"/TobiiProEyeTrackerManager.app/Contents/MacOS/TobiiProEyeTrackerManager --device_sn=" + device_sn + " --mode="+mode + " > output.txt";
 		#endif
 		#if UNITY_EDITOR_WIN
-		proc.StartInfo.Arguments = Application.dataPath+ @"Tobii.Pro.Eye.Tracker.Manager.Windows-AMD64-1.5.2.exe --device_sn=" + device_sn+" --mode="+mode;
-		UnityEngine.Debug.Log("datapath is: " + Application.dataPath + @"Tobii.Pro.Eye.Tracker.Manager.Windows-AMD64-1.5.2.exe");
+		proc.StartInfo.Arguments ="/C " +filepath+ @"/Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe --device_sn=" + device_sn+" --mode="+mode;
+		UnityEngine.Debug.Log("datapath is: " +filepath + @"/Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe");
 #elif UNITY_STANDALONE_WIN
-//		proc.StartInfo.Arguments = Application.dataPath+@"Tobii.Pro.Eye.Tracker.Manager.Windows-AMD64-1.5.2.exe --device_sn="+device_sn+" --mode="+mode;
-//		UnityEngine.Debug.Log("datapath is: " + Application.dataPath + @"Tobii.Pro.Eye.Tracker.Manager.Windows-AMD64-1.5.2.exe");
+//		proc.StartInfo.Arguments = filepath+@"/Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe --device_sn="+device_sn+" --mode="+mode;
+//		UnityEngine.Debug.Log("datapath is: " + filepath + @"/Tobii.Pro.Eye.Tracker.Manager.Windows-1.4.0.exe");
 #endif
         proc.Start();
 		//

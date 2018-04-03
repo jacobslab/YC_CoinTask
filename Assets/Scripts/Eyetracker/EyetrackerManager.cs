@@ -11,7 +11,7 @@ using Tobii.Research;
 #endif
 public class EyetrackerManager : MonoBehaviour {
 
-
+    public string filepath = "";
 	public LayerMask layerMask;
 #if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
     [DllImport ("tobii_eyetracker")]
@@ -73,6 +73,7 @@ public class EyetrackerManager : MonoBehaviour {
 	
     void Awake()
     {
+        filepath = Application.dataPath;
         eyeLogTrack = GetComponent<EyetrackerLogTrack>();
 
 #if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
@@ -147,9 +148,13 @@ public class EyetrackerManager : MonoBehaviour {
         {
             UnityEngine.Debug.Log("eyetracker is not null; performing calibration");
             //perform calibration
-            CommandExecution.ExecuteTobiiEyetracker(_eyeTracker.SerialNumber, "usercalibration");
+            CommandExecution.ExecuteTobiiEyetracker(_eyeTracker.SerialNumber, "usercalibration",filepath);
             canPumpData = true;
         }
+        else
+            CommandExecution.ExecuteTobiiEyetracker("", "usercalibration", filepath);
+            
+
 #endif
         yield return null;
     }
