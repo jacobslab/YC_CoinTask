@@ -139,10 +139,12 @@ public class EyetrackerManager : MonoBehaviour {
         {
             UnityEngine.Debug.Log("eyetracker is not null; performing calibration");
             //perform calibration
-			CommandExecution.ExecuteTobiiEyetracker(eyeTracker_sn,"usercalibration");
+			CommandExecution.ExecuteTobiiEyetracker(eyeTracker_sn,"usercalibration",filepath);
             canPumpData = true;
 			StartCoroutine ("InitiatePumpingData");
         }
+		else
+			CommandExecution.ExecuteTobiiEyetracker("","usercalibration",filepath);
 #else
         if (_eyeTracker != null)
         {

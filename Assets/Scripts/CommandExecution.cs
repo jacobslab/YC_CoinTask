@@ -60,9 +60,9 @@ public class CommandExecution : MonoBehaviour {
 		proc.StartInfo.FileName = "cmd.exe";
 		#else
 		proc.StartInfo.FileName=@"/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal";
-		string filepath=System.IO.Directory.GetCurrentDirectory();
+//		string filepath=System.IO.Directory.GetCurrentDirectory();
 		UnityEngine.Debug.Log (filepath);
-		proc.StartInfo.Arguments="open " + filepath+@"/TobiiProEyeTrackerManager.app/Contents/MacOS/TobiiProEyeTrackerManager --device_sn=" + device_sn + " --mode="+mode + " > output.txt";
+		proc.StartInfo.Arguments=filepath+@"/TobiiProEyeTrackerManager.app/Contents/MacOS/TobiiProEyeTrackerManager --device-sn=" + device_sn + " --mode="+mode;
 		#endif
 		#if UNITY_EDITOR_WIN
 		proc.StartInfo.Arguments ="/C " +filepath+ @"/Tobii.Pro.Eye.Tracker.Manager.Windows-AMD64-1.5.2.exe --device-sn=" + device_sn+" --mode="+mode;
