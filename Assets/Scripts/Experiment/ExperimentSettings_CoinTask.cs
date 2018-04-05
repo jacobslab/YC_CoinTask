@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using System.IO;
+using System;
+using System.Reflection;
 
 public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main menu AND experiment
 
@@ -168,7 +170,8 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public Text BuildType;
 	void InitMainMenuLabels(){
 		if (Application.loadedLevel == 0) {
-			ExpNameVersion.text = Config_CoinTask.BuildVersion.ToString () + "/" + Config_CoinTask.VersionNumber;
+           string buildDate = new FileInfo(Assembly.GetExecutingAssembly().Location).LastWriteTime.ToString();
+            ExpNameVersion.text = Config_CoinTask.BuildVersion.ToString () + "(" +buildDate + ")";
 			if (Config_CoinTask.isSyncbox) {
 				BuildType.text = "Sync Box";
 			} else if (Config_CoinTask.isSystem2) {

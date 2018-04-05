@@ -4,6 +4,7 @@ using System.Linq;
 using Tobii.Research;
 using Tobii.Research.CodeExamples;
 using UnityEngine;
+using System;
 using UnityEngine.UI;
 public class EyetrackerManager : MonoBehaviour {
     private IEyeTracker _eyeTracker;
@@ -32,7 +33,9 @@ public class EyetrackerManager : MonoBehaviour {
     public string filepath = "";
     void Awake()
     {
-        filepath = Application.dataPath;
+        //filepath = Application.dataPath;
+        filepath = @"C:\Users\" + Environment.UserName + @"\AppData\Local\TobiiProEyeTrackerManager\app-1.5.2";
+        Debug.Log("APP DATA path is: " + filepath);
         var trackers = EyeTrackingOperations.FindAllEyeTrackers();
         eyeLogTrack = GetComponent<EyetrackerLogTrack>();
         foreach (IEyeTracker eyeTracker in trackers)
@@ -76,17 +79,17 @@ public class EyetrackerManager : MonoBehaviour {
         {
             UnityEngine.Debug.Log("eyetracker is not null; performing calibration");
             //perform calibration
-			CommandExecution.ExecuteTobiiEyetracker(_eyeTracker.SerialNumber,"usercalibration",filepath);
+            CommandExecution.ExecuteTobiiEyetracker(_eyeTracker.SerialNumber,"trackstatus",filepath);
             canPumpData = true;
         }
         /*
         else
-            CommandExecution.ExecuteTobiiEyetracker("", "usercalibration",filepath);
+            CommandExecution.ExecuteTobiiEyetracker("", "trackstatus",filepath);
             */
         yield return null;
     }
 
- 
+
 void Update()
 {
        
