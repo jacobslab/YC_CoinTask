@@ -306,7 +306,7 @@ public class Replay : MonoBehaviour {
 							if (Physics.Raycast (ray, out hit, 1000f, layerMask.value)) {
 								eyeLogTrack.LogGazeObject (hit.collider.gameObject.name);
 								eyeLogTrack.LogVirtualPointData (hit.point, "LEFT");
-								Debug.Log ("HIT : " + hit.collider.gameObject.name);
+//								Debug.Log ("HIT : " + hit.collider.gameObject.name);
 							}
 //							Debug.Log ("GAZE POINT LEFT: "+  pos.ToString());
 						} else if (objName == "EYETRACKER_DISPLAY_POINT RIGHT") {
