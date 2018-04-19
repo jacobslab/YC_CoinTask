@@ -33,7 +33,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	public BoxSwapGameController boxGameController;
 
 	//instruction video player
-	public VideoPlayer instrVideoPlayer;
+	public VideoPlay instrVideoPlayer;
 
 	//score controller
 	public ScoreController scoreController;
