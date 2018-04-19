@@ -81,7 +81,7 @@ public class VideoPlay : MonoBehaviour
                     {
                         timer += Time.deltaTime;
                         movie.playbackSpeed = 1f;
-                        Debug.Log("playback speed set to one");
+                       // Debug.Log("playback speed set to one");
                         if (Input.GetKeyDown(KeyCode.X))
                         {
                             buttonPressed = true;
