@@ -124,11 +124,11 @@ public class SyncboxControl : MonoBehaviour
             UnityEngine.Debug.Log("connectionerror " + connectionError);
             if (connectionError == "")
             {
-                isUSBOpen = true;
+				isUSBOpen = true;
             }
             else
-            {
-                exp.trialController.ConnectionText.text = "Please connect Syncbox and Restart";
+			{
+				exp.trialController.ConnectionText.text = "Please connect Syncbox and Restart";
             }
 			#endif
 

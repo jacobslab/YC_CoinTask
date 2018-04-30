@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.IO;
-
+using UnityEngine.UI;
 public class Experiment_CoinTask : MonoBehaviour {
 
 	//clock!
@@ -28,6 +28,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 	//session controller
 	public TrialController trialController;
+
 
 	//DISTRACTOR GAME
 	public BoxSwapGameController boxGameController;
