@@ -224,7 +224,7 @@ namespace Tobii.Research.Unity
             }
 
             _calibrationInProgress = false;
-			//EyetrackerManager.isCalibrating = false;
+			EyetrackerManager.isCalibrating = false;
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace Tobii.Research.Unity
         {
             if (Input.GetKeyDown(_startKey))
             {
-				//EyetrackerManager.isCalibrating = true;
+				EyetrackerManager.isCalibrating = true;
                 var calibrationStartResult = StartCalibration(
                     resultCallback: (calibrationResult) =>
                         Debug.Log("Calibration was " + (calibrationResult ? "successful" : "unsuccessful"))

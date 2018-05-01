@@ -61,7 +61,10 @@ public class EyetrackerManager : MonoBehaviour {
 //    
     private bool canPumpData = false;
 
+	//calibratione elements
+	public CanvasGroup calibrationGroup;
 	public Calibration calibration;
+	public static bool isCalibrating=false;
 
 	public bl_ProgressBar reconnectionProgress;
 
@@ -101,6 +104,8 @@ public class EyetrackerManager : MonoBehaviour {
         {
 			UnityEngine.Debug.Log("No screen based eye tracker detected!");
 			reconnectionGroup.alpha = 0f;
+			calibrationGroup.alpha = 0f;
+			calibration.gameObject.SetActive (false);
 			//myCanvas.gameObject.GetComponent<CanvasGroup> ().alpha = 0f;
         }
         else
@@ -154,8 +159,7 @@ public class EyetrackerManager : MonoBehaviour {
         {
             UnityEngine.Debug.Log("eyetracker is not null;calibration disabled temporarily");
 			//perform calibration
-			calibration.gameObject.SetActive(true);
-//			yield return StartCoroutine("WaitForCalibration");
+			yield return StartCoroutine("WaitForCalibration");
             //CommandExecution.ExecuteTobiiEyetracker(_eyeTracker.SerialNumber, "usercalibration",filepath);
             canPumpData = true;
         }
@@ -166,6 +170,21 @@ public class EyetrackerManager : MonoBehaviour {
 #endif
         yield return null;
     }
+
+
+	IEnumerator WaitForCalibration()
+	{
+		calibrationGroup.alpha = 1f;
+		calibration.gameObject.SetActive(true);
+		Experiment_CoinTask.Instance.trialController.TogglePause ();
+		while (isCalibrating) {
+			yield return 0;
+		}
+		calibrationGroup.alpha = 0f;
+		calibration.gameObject.SetActive (false);
+		Experiment_CoinTask.Instance.trialController.TogglePause ();
+		yield return null;
+	}
 	IEnumerator InitiatePumpingData()
 	{
 		while (canPumpData) {
