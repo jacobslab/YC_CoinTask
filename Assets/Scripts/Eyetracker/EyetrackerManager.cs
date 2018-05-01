@@ -5,6 +5,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 using System.Runtime.InteropServices;
+using Tobii.Research.Unity;
 using System.Diagnostics;
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
 using Tobii.Research;
@@ -59,6 +60,8 @@ public class EyetrackerManager : MonoBehaviour {
     public Vector2 rightEditPos;
 //    
     private bool canPumpData = false;
+
+	public Calibration calibration;
 
 	public bl_ProgressBar reconnectionProgress;
 
@@ -131,6 +134,7 @@ public class EyetrackerManager : MonoBehaviour {
 		reconnectionProgress.MaxValue = Config_CoinTask.maxValidOriginTime;
     }
 
+
     IEnumerator InitiateEyetracker()
     {
         //check to see if there is any eyetracker
@@ -150,6 +154,8 @@ public class EyetrackerManager : MonoBehaviour {
         {
             UnityEngine.Debug.Log("eyetracker is not null;calibration disabled temporarily");
 			//perform calibration
+			calibration.gameObject.SetActive(true);
+//			yield return StartCoroutine("WaitForCalibration");
             //CommandExecution.ExecuteTobiiEyetracker(_eyeTracker.SerialNumber, "usercalibration",filepath);
             canPumpData = true;
         }

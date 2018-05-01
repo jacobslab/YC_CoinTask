@@ -17,6 +17,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//public InstructionsController inGameInstructionsController;
 	public CameraController cameraController;
 
+
+	public EyetrackerManager eyeManager;
+
 	//logging
 	private string subjectLogfile; //gets set based on the current subject in Awake()
 	public Logger_Threading subjectLog;
@@ -25,6 +28,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	string sessionDirectory;
 	public static string sessionStartedFileName = "sessionStarted.txt";
 	public static int sessionID;
+
 
 	//session controller
 	public TrialController trialController;

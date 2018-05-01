@@ -10,6 +10,7 @@ public class TrialController : MonoBehaviour {
 	//hardware connection
 	bool isConnectingToHardware = false;
 
+
 	//paused?!
 	public static bool isPaused = false;
 
@@ -1028,9 +1029,18 @@ public class TrialController : MonoBehaviour {
 		DestroyGameObjectList (exp.objectController.CurrentTrialSpecialObjects);
 
 		trialLogger.LogFeedback(false);
+		if (EyetrackerManager.shouldCheckHead) {
+			Debug.Log ("initiating reconnection");
+			yield return StartCoroutine (InitiateEyetrackerReconnection ());
+		}
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, false);
 
 		yield return 0;
+	}
+	IEnumerator InitiateEyetrackerReconnection ()
+	{
+		yield return StartCoroutine (exp.eyeManager.StartReconnection ());
+		yield return null;
 	}
 
 	void SetConnectingLines( GameObject correctPositionIndicator, Vector3 chosenPosition, Color chosenIndicatorColor){//, EnvironmentPositionSelector.SelectionRadiusType chosenRadiusSize ){
