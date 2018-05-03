@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using LabJack.LabJackUD;
 using LabJack;
+using UnityEngine.UI;
 public class SyncboxControl : MonoBehaviour
 {
     Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
@@ -36,6 +37,8 @@ public class SyncboxControl : MonoBehaviour
     double dblDriverVersion;
     LJUD.IO ioType = 0;
     LJUD.CHANNEL channel = 0;
+
+	public RawImage syncStatusBox;
 
     //SINGLETON
     private static SyncboxControl _instance;
@@ -142,6 +145,11 @@ public class SyncboxControl : MonoBehaviour
     void Update()
     {
         GetInput();
+		if (Input.GetKeyDown (KeyCode.Alpha1))
+			ToggleLEDOn ();
+		if (Input.GetKeyDown (KeyCode.Alpha2))
+			ToggleLEDOff ();
+		
     }
 
     void GetInput()
@@ -201,6 +209,7 @@ public class SyncboxControl : MonoBehaviour
     void ToggleLEDOn()
     {
 
+		syncStatusBox.color = Color.white;
 		#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 		TurnLEDOn();
 		#else
@@ -211,7 +220,7 @@ public class SyncboxControl : MonoBehaviour
 
     void ToggleLEDOff()
     {
-
+		syncStatusBox.color = Color.black;
 		#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 		TurnLEDOff();
 		#else
