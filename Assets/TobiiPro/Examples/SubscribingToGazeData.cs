@@ -11,13 +11,11 @@ namespace Tobii.Research.Unity.CodeExamples
     class SubscribingToGazeData : MonoBehaviour
     {
         private IEyeTracker _eyeTracker;
-        private EyetrackerLogTrack eyeLogTrack;
         private Queue<GazeDataEventArgs> _queue = new Queue<GazeDataEventArgs>();
 
         void Awake()
         {
             var trackers = EyeTrackingOperations.FindAllEyeTrackers();
-            eyeLogTrack = GetComponent<EyetrackerLogTrack>();
             foreach (IEyeTracker eyeTracker in trackers)
             {
                 Debug.Log(string.Format("{0}, {1}, {2}, {3}, {4}", eyeTracker.Address, eyeTracker.DeviceName, eyeTracker.Model, eyeTracker.SerialNumber, eyeTracker.FirmwareVersion));
@@ -92,15 +90,12 @@ namespace Tobii.Research.Unity.CodeExamples
         private void HandleGazeData(GazeDataEventArgs e)
         {
             // Do something with gaze data
-//            eyeLogTrack.LogGazeData(new Vector3(e.LeftEye.GazeOrigin.PositionInUserCoordinates.X, e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y,e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z));
-            /*
-             Debug.Log(string.Format(
-                 "Got gaze data with {0} left eye origin at point ({1}, {2}, {3}) in the user coordinate system.",
-                 e.LeftEye.GazeOrigin.Validity,
-                 e.LeftEye.GazeOrigin.PositionInUserCoordinates.X,
-                e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y,
-                 e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z));
-                 */
+            // Debug.Log(string.Format(
+            //     "Got gaze data with {0} left eye origin at point ({1}, {2}, {3}) in the user coordinate system.",
+            //     e.LeftEye.GazeOrigin.Validity,
+            //     e.LeftEye.GazeOrigin.PositionInUserCoordinates.X,
+            //     e.LeftEye.GazeOrigin.PositionInUserCoordinates.Y,
+            //     e.LeftEye.GazeOrigin.PositionInUserCoordinates.Z));
         }
     }
 }

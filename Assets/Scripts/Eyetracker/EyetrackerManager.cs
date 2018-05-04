@@ -6,6 +6,7 @@ using Tobii.Research.CodeExamples;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using Tobii.Research.Unity;
 public class EyetrackerManager : MonoBehaviour {
     private IEyeTracker _eyeTracker;
     private EyetrackerLogTrack eyeLogTrack;
@@ -24,11 +25,16 @@ public class EyetrackerManager : MonoBehaviour {
     float validOriginTimer = 0f;
 	private bool shouldReconnect=false;
 	public CanvasGroup reconnectionGroup;
+	public CanvasGroup calibrationGroup;
 
 	private bool viewLeft=false;
 	private bool viewRight=false;
 	public LayerMask layerMask;
 	public static bool shouldCheckHead = false;
+
+	public static bool isCalibrating=false;
+
+	public Calibration calibration;
 
     public string filepath = "";
     void Awake()
@@ -56,10 +62,12 @@ public class EyetrackerManager : MonoBehaviour {
             Debug.Log("Selected eye tracker with serial number {0}" + _eyeTracker.SerialNumber);
         }
 
+		calibration.gameObject.SetActive(false);
         StartCoroutine(InitiateEyetracker());
     }
     // Use this for initialization
     void Start () {
+		calibrationGroup.alpha = 0f;
 		reconnectionGroup.alpha = 0f;
 		Vector2 left, right;
 	//	RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector3(-56f,-10f,-10f), myCanvas.worldCamera, out left);
@@ -79,7 +87,8 @@ public class EyetrackerManager : MonoBehaviour {
         {
             UnityEngine.Debug.Log("eyetracker is not null; performing calibration");
             //perform calibration
-            CommandExecution.ExecuteTobiiEyetracker(_eyeTracker.SerialNumber,"trackstatus",filepath);
+			yield return StartCoroutine("WaitForCalibration");
+//            CommandExecution.ExecuteTobiiEyetracker(_eyeTracker.SerialNumber,"trackstatus",filepath);
             canPumpData = true;
         }
         /*
@@ -88,7 +97,19 @@ public class EyetrackerManager : MonoBehaviour {
             */
         yield return null;
     }
-
+	IEnumerator WaitForCalibration()
+	{
+		calibrationGroup.alpha = 1f;
+		calibration.gameObject.SetActive(true);
+		Experiment_CoinTask.Instance.trialController.TogglePause ();
+		while (isCalibrating) {
+			yield return 0;
+		}
+		calibrationGroup.alpha = 0f;
+		calibration.gameObject.SetActive (false);
+		Experiment_CoinTask.Instance.trialController.TogglePause ();
+		yield return null;
+	}
 
 void Update()
 {
