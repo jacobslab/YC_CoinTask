@@ -107,6 +107,8 @@ public class TrialController : MonoBehaviour
 		#endif
 
 		trialLogger = GetComponent<TrialLogTrack> ();
+
+        Experiment_CoinTask.expReady = true;
 	}
 
 	void InitPracticeTrials ()
@@ -440,6 +442,7 @@ public class TrialController : MonoBehaviour
 
 	public void TogglePause ()
 	{
+        Debug.Log("PAUSING");
 		isPaused = !isPaused;
 		trialLogger.LogPauseEvent (isPaused);
 

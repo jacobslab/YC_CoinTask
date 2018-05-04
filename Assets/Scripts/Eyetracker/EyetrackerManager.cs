@@ -32,6 +32,7 @@ public class EyetrackerManager : MonoBehaviour {
 	public LayerMask layerMask;
 	public static bool shouldCheckHead = false;
 
+    public static bool waitForCalibration = false;
 	public static bool isCalibrating=false;
 
 	public Calibration calibration;
@@ -40,16 +41,21 @@ public class EyetrackerManager : MonoBehaviour {
     void Awake()
     {
         //filepath = Application.dataPath;
-        filepath = @"C:\Users\" + Environment.UserName + @"\AppData\Local\TobiiProEyeTrackerManager\app-1.5.2";
+        filepath = @"C:\Users\" + Environment.UserName + @"\AppData\Local\TobiiProEyeTrackerManager\app-1.6.0";
         Debug.Log("APP DATA path is: " + filepath);
         var trackers = EyeTrackingOperations.FindAllEyeTrackers();
         eyeLogTrack = GetComponent<EyetrackerLogTrack>();
+       
+      
         foreach (IEyeTracker eyeTracker in trackers)
         {
+            
+
             Debug.Log(string.Format("{0}, {1}, {2}, {3}, {4}", eyeTracker.Address, eyeTracker.DeviceName, eyeTracker.Model, eyeTracker.SerialNumber, eyeTracker.FirmwareVersion));
         }
         _eyeTracker = trackers.FirstOrDefault(s => (s.DeviceCapabilities & Capabilities.HasGazeData) != 0);
-        if (_eyeTracker == null)
+        
+        if (EyeTracker.Instance == null)
         {
             Debug.Log("No screen based eye tracker detected!");
 			reconnectionGroup.alpha = 0f;
@@ -62,13 +68,13 @@ public class EyetrackerManager : MonoBehaviour {
             Debug.Log("Selected eye tracker with serial number {0}" + _eyeTracker.SerialNumber);
         }
 
-		calibration.gameObject.SetActive(false);
+        calibrationGroup.alpha = 0f;
+        reconnectionGroup.alpha = 0f;
+        calibration.gameObject.SetActive(false);
         StartCoroutine(InitiateEyetracker());
     }
     // Use this for initialization
     void Start () {
-		calibrationGroup.alpha = 0f;
-		reconnectionGroup.alpha = 0f;
 		Vector2 left, right;
 	//	RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector3(-56f,-10f,-10f), myCanvas.worldCamera, out left);
 	//	RectTransformUtility.ScreenPointToLocalPointInRectangle(myCanvas.transform as RectTransform, new Vector3(-42f,-10f,-8f), myCanvas.worldCamera, out right);
@@ -83,7 +89,7 @@ public class EyetrackerManager : MonoBehaviour {
     IEnumerator InitiateEyetracker()
     {
         //check to see if there is any eyetracker
-        if (_eyeTracker != null)
+        if (EyeTracker.Instance != null)
         {
             UnityEngine.Debug.Log("eyetracker is not null; performing calibration");
             //perform calibration
@@ -91,23 +97,56 @@ public class EyetrackerManager : MonoBehaviour {
 //            CommandExecution.ExecuteTobiiEyetracker(_eyeTracker.SerialNumber,"trackstatus",filepath);
             canPumpData = true;
         }
+       // else
+        //    yield return StartCoroutine("WaitForCalibration");
         /*
         else
             CommandExecution.ExecuteTobiiEyetracker("", "trackstatus",filepath);
             */
         yield return null;
     }
-	IEnumerator WaitForCalibration()
-	{
-		calibrationGroup.alpha = 1f;
-		calibration.gameObject.SetActive(true);
-		Experiment_CoinTask.Instance.trialController.TogglePause ();
+    IEnumerator WaitForCalibration()
+    {
+        calibrationGroup.alpha = 1f;
+        calibration.gameObject.SetActive(true);
+        while (!Experiment_CoinTask.expReady)
+        {
+            Debug.Log("waiting for exp to be ready");
+            yield return 0;
+        }
+        Debug.Log("exp is ready");
+       // Experiment_CoinTask.Instance.trialController.TogglePause();
+        waitForCalibration = true;
+        while (waitForCalibration)
+        {
+            yield return 0;
+        }
+
+        calibrationGroup.alpha = 0f;
+        calibrationGroup.transform.parent.gameObject.SetActive(false);
 		while (isCalibrating) {
 			yield return 0;
 		}
-		calibrationGroup.alpha = 0f;
-		calibration.gameObject.SetActive (false);
-		Experiment_CoinTask.Instance.trialController.TogglePause ();
+
+        // Retrieve the calibration data from the eye tracker.
+        Debug.Log("displaying calib data");
+        CalibrationData calibrationData = _eyeTracker.RetrieveCalibrationData();
+        for(int i=0;i<calibrationData.Data.Length;i++)
+        {
+            Debug.Log(calibrationData.Data[i].ToString());
+        }
+        bool acceptCalibration = false;
+        Debug.Log("waiting for calib results to be accepted");
+        while(!acceptCalibration)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+                acceptCalibration = true;
+            yield return 0;
+        }
+
+        calibrationGroup.transform.parent.gameObject.SetActive(true);
+        calibration.gameObject.SetActive (false);
+		//Experiment_CoinTask.Instance.trialController.TogglePause ();
 		yield return null;
 	}
 

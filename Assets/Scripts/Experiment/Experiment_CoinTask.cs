@@ -62,6 +62,8 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//avatar
 	public Player player;
 
+    public static bool expReady = false;
+
 	//public bool isOculus = false;
 
 	//state enum
@@ -111,6 +113,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 		else if(ExperimentSettings_CoinTask.isReplay) {
 			currInstructions.TurnOffInstructions();
 		}
+
 
 	}
 

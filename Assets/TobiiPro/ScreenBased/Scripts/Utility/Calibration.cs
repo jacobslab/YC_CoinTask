@@ -145,11 +145,15 @@ namespace Tobii.Research.Unity
             }
 
             // Create and start the calibration thread.
+            Debug.Log("about to start the calib thread");
             _calibrationThread = new CalibrationThread(EyeTracker.Instance.EyeTrackerInterface, screenBased: true);
 
             // Only continue if the calibration thread is running.
+
             for (int i = 0; i < 10; i++)
             {
+
+                Debug.Log("calib thread running");
                 if (_calibrationThread.Running)
                 {
                     break;
@@ -169,6 +173,7 @@ namespace Tobii.Research.Unity
 
             ShowCalibrationPanel = true;
 
+            Debug.Log("entering calib mode");
             var enterResult = _calibrationThread.EnterCalibrationMode();
 
             // Wait for the call to finish
@@ -177,6 +182,8 @@ namespace Tobii.Research.Unity
             // Iterate through the calibration points.
             foreach (var pointPosition in _points)
             {
+
+                Debug.Log("iterating through calib points");
                 // Set the local position and start the point animation
                 _calibrationPoint.rectTransform.anchoredPosition = new Vector2(Screen.width * pointPosition.x, Screen.height * (1 - pointPosition.y));
                 _pointScript.StartAnim();
@@ -186,7 +193,7 @@ namespace Tobii.Research.Unity
 
                 // As of this writing, adding a point takes about 175 ms. A failing add can take up to 3000 ms.
                 var collectResult = _calibrationThread.CollectData(new CalibrationThread.Point(pointPosition));
-
+                
                 // Wait for the call to finish
                 yield return StartCoroutine(WaitForResult(collectResult));
 
@@ -195,6 +202,7 @@ namespace Tobii.Research.Unity
                 {
                     Debug.Log("There was an error gathering data for this calibration point: " + pointPosition);
                 }
+
             }
 
             // Compute and apply the result of the calibration. A succesful compute currently takes about 300 ms. A failure may bail out in a few ms.
@@ -247,6 +255,8 @@ namespace Tobii.Research.Unity
             if (Input.GetKeyDown(_startKey))
             {
 				EyetrackerManager.isCalibrating = true;
+
+                EyetrackerManager.waitForCalibration = false;
                 var calibrationStartResult = StartCalibration(
                     resultCallback: (calibrationResult) =>
                         Debug.Log("Calibration was " + (calibrationResult ? "successful" : "unsuccessful"))
