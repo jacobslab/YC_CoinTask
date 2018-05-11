@@ -55,6 +55,10 @@ namespace Tobii.Research.Unity
 
         private CalibrationPoint _pointScript;
 
+		public CalibrationPointCollection calibPointCollection;
+
+		public CanvasGroup calibResultPanel;
+
         // Handle blocking calls to calibration in a separate thread.
         private CalibrationThread _calibrationThread;
         private bool _calibrationInProgress;
@@ -85,6 +89,7 @@ namespace Tobii.Research.Unity
         private void Start()
         {
             _pointScript = _calibrationPoint.GetComponent<CalibrationPoint>();
+			calibResultPanel.alpha = 0f;
             ShowCalibrationPanel = false;
         }
 
@@ -211,11 +216,19 @@ namespace Tobii.Research.Unity
             // Wait for the call to finish
             yield return StartCoroutine(WaitForResult(computeResult));
 
+			//doing after compute and apply
+			var calibResult = _calibrationThread.GetResult ();
+
+			yield return StartCoroutine (WaitForResult (calibResult));
+
+			calibPointCollection = calibResult.Result.CalibrationPoints;
+
             // Leave calibration mode.
             var leaveResult = _calibrationThread.LeaveCalibrationMode();
 
             // Wait for the call to finish
             yield return StartCoroutine(WaitForResult(leaveResult));
+
 
             // Stop the thread.
             _calibrationThread.StopThread();
@@ -224,7 +237,7 @@ namespace Tobii.Research.Unity
             // Finish up or restart if failure.
             LatestCalibrationSuccessful = computeResult.Status == CalibrationStatus.Success;
 
-            ShowCalibrationPanel = false;
+//            ShowCalibrationPanel = false;
 
             if (resultCallback != null)
             {
@@ -264,6 +277,30 @@ namespace Tobii.Research.Unity
 
                 Debug.Log("Calibration " + (calibrationStartResult ? "" : "not ") + "started");
             }
+			if (!EyetrackerManager.isCalibrating && calibPointCollection!=null) {
+				calibResultPanel.alpha = 1f;
+				Debug.Log ("total calib points : " + calibPointCollection.Count.ToString ());
+				for (int i = 0; i < calibPointCollection.Count; i++) {
+					Debug.Log ("calib samples in point " + i.ToString() + " is: " + calibPointCollection [i].CalibrationSamples.Count.ToString ());
+					for (int j = 0; j < 3; j++) {
+						CalibrationSample calibSample = calibPointCollection [i].CalibrationSamples [j];
+							Debug.Log ("showing calib sample");
+							//left
+//							calibResultPanel.transform.GetChild (5).gameObject.GetComponent<CanvasGroup>().alpha=1f;
+							calibResultPanel.transform.GetChild (5).transform.GetChild (j).gameObject.SetActive(true);
+							calibResultPanel.transform.GetChild (5).transform.GetChild (j).GetComponent<RectTransform> ().anchoredPosition = new Vector2 (Screen.width * calibSample.LeftEye.PositionOnDisplayArea.X, Screen.height * (1f -calibSample.LeftEye.PositionOnDisplayArea.Y));
+							calibResultPanel.transform.GetChild (5).transform.GetChild (j).GetComponent<Image> ().color = (calibSample.LeftEye.Validity == CalibrationEyeValidity.ValidAndUsed) ? Color.green : Color.red;
+							//right
+							calibResultPanel.transform.GetChild (5).transform.GetChild (j+1).gameObject.SetActive(true);
+							calibResultPanel.transform.GetChild (5).transform.GetChild (j+1).GetComponent<RectTransform> ().anchoredPosition = new Vector2 (Screen.width * calibSample.RightEye.PositionOnDisplayArea.X, Screen.height * (1f- calibSample.RightEye.PositionOnDisplayArea.Y));
+							calibResultPanel.transform.GetChild (5).transform.GetChild (j+1).GetComponent<Image> ().color = (calibSample.RightEye.Validity == CalibrationEyeValidity.ValidAndUsed) ? Color.green : Color.red;
+							j++;
+//						Debug.Log ("calib sample LEFT EYE: " + calibPointCollection [i].CalibrationSamples [j].LeftEye.PositionOnDisplayArea.ToString () + " with validity " + calibPointCollection [i].CalibrationSamples [j].LeftEye.Validity.ToString ());
+//						Debug.Log ("calib sample RIGHT EYE: " + calibPointCollection [i].CalibrationSamples [j].RightEye.PositionOnDisplayArea.ToString () + " with validity " + calibPointCollection [i].CalibrationSamples [j].RightEye.Validity.ToString ());
+					}
+				}
+				ShowCalibrationPanel = false;
+			}
         }
     }
 }

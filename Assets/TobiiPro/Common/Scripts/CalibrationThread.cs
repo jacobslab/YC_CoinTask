@@ -126,6 +126,7 @@ namespace Tobii.Research.Unity
             private static Point _currentPoint;
             private CommandType _command;
             private CalibrationStatus _status;
+			private CalibrationResult _result;
             private int _elapsedMilliseconds;
             private bool _ready;
 
@@ -135,6 +136,7 @@ namespace Tobii.Research.Unity
                 Enter,
                 Collect,
                 Compute,
+				Result,
                 Leave,
             }
 
@@ -213,6 +215,15 @@ namespace Tobii.Research.Unity
                 }
             }
 
+			public CalibrationResult Result
+			{
+				get {
+					lock (Lock) {
+						return _result;
+					}
+				}
+			}
+
             public MethodResult(CommandType command)
             {
                 lock (Lock)
@@ -264,6 +275,16 @@ namespace Tobii.Research.Unity
                     _currentResult = null;
                 }
             }
+			public void Finished(CalibrationResult result, int elapsed)
+			{
+				lock (Lock)
+				{
+					_ready = true;
+					_result = result;
+					_elapsedMilliseconds = elapsed;
+					_currentResult = null;
+				}
+			}
 
             public override string ToString()
             {
@@ -300,6 +321,10 @@ namespace Tobii.Research.Unity
         {
             return Command(MethodResult.CommandType.Compute, new Point(0, 0));
         }
+		public MethodResult GetResult()
+		{
+			return Command(MethodResult.CommandType.Result, new Point(0, 0));
+		}
 
         public MethodResult LeaveCalibrationMode()
         {
@@ -414,6 +439,12 @@ namespace Tobii.Research.Unity
                             stopWatch.Stop();
                             currentResult.Finished(status, (int)stopWatch.ElapsedMilliseconds);
                             break;
+
+					case MethodResult.CommandType.Result:
+						CalibrationResult result = screenBasedCalibration.ComputeAndApply ();
+						stopWatch.Stop ();
+						currentResult.Finished(result, (int)stopWatch.ElapsedMilliseconds);
+						break;
 
                         case MethodResult.CommandType.Leave:
                             if (screenBasedCalibration != null)

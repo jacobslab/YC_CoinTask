@@ -129,12 +129,12 @@ public class EyetrackerManager : MonoBehaviour {
 		}
 
         // Retrieve the calibration data from the eye tracker.
-        Debug.Log("displaying calib data");
-        CalibrationData calibrationData = _eyeTracker.RetrieveCalibrationData();
-        for(int i=0;i<calibrationData.Data.Length;i++)
-        {
-            Debug.Log(calibrationData.Data[i].ToString());
-        }
+//        Debug.Log("displaying calib data");
+//        CalibrationData calibrationData = _eyeTracker.RetrieveCalibrationData();
+//        for(int i=0;i<calibrationData.Data.Length;i++)
+//        {
+//            Debug.Log(calibrationData.Data[i].ToString());
+//        }
         bool acceptCalibration = false;
         Debug.Log("waiting for calib results to be accepted");
         while(!acceptCalibration)
@@ -146,6 +146,8 @@ public class EyetrackerManager : MonoBehaviour {
 
         calibrationGroup.transform.parent.gameObject.SetActive(true);
         calibration.gameObject.SetActive (false);
+		calibration.calibResultPanel.alpha = 0f;
+//		calibration.calibResultPanel.transform.GetChild (5).gameObject.GetComponent<CanvasGroup>().alpha=0f;
 		//Experiment_CoinTask.Instance.trialController.TogglePause ();
 		yield return null;
 	}
@@ -238,6 +240,14 @@ private void PumpGazeData()
 private void HandleGazeData(GazeDataEventArgs e)
 {
 
+//		long deviceTimestamp = e.SystemTimeStamp;
+		long gazeDeviceTimestamp = e.DeviceTimeStamp;
+		long gazeSystemTimestamp = e.SystemTimeStamp;
+		long etTimestamp = EyeTrackingOperations.GetSystemTimeStamp();
+		long difference = etTimestamp - gazeSystemTimestamp;
+//		UnityEngine.Debug.Log ("system timestamp: " + gazeDeviceTimestamp.ToString ());
+		eyeLogTrack.LogTimestamp(gazeDeviceTimestamp,gazeSystemTimestamp,etTimestamp);
+		eyeLogTrack.LogLatency (difference);
 		//GAZE ORIGIN / RECENTERING HEAD TRACKING
 
 		//if either left or right origin is invalid, increase timer
@@ -282,22 +292,23 @@ private void HandleGazeData(GazeDataEventArgs e)
 
 		if (e.LeftEye.GazePoint.Validity == Validity.Valid || viewLeft) {
 			Vector2 leftPos = new Vector2 (e.LeftEye.GazePoint.PositionOnDisplayArea.X, (1f- e.LeftEye.GazePoint.PositionOnDisplayArea.Y));
-			eyeLogTrack.LogDisplayData (leftPos, "LEFT");
+			eyeLogTrack.LogDisplayData (leftPos, "LEFT", gazeDeviceTimestamp);
 			Ray ray;
 			Vector2 left;
 			RectTransformUtility.ScreenPointToLocalPointInRectangle (myCanvas.transform as RectTransform, new Vector2 (leftPos.x * Screen.width, -leftPos.y * Screen.height) + new Vector2 (0f, Screen.height), myCanvas.worldCamera, out left);
 			leftEye.transform.position = myCanvas.transform.TransformPoint (left);
 			ray = Camera.main.ViewportPointToRay (new Vector3 (leftPos.x, leftPos.y, Camera.main.nearClipPlane));
 			RaycastHit hit;
+
 			if (Physics.Raycast (ray, out hit, 1000f, layerMask.value)) {
-				eyeLogTrack.LogGazeObject (hit.collider.gameObject.name);
-				eyeLogTrack.LogVirtualPointData (hit.point, "LEFT");
+				eyeLogTrack.LogGazeObject (hit.collider.gameObject.name, gazeDeviceTimestamp);
+				eyeLogTrack.LogVirtualPointData (hit.point, "LEFT", gazeDeviceTimestamp);
 			}
 		}
 
 		if (e.RightEye.GazePoint.Validity == Validity.Valid || viewRight) {
 			Vector2 rightPos = new Vector2 (e.RightEye.GazePoint.PositionOnDisplayArea.X, (1f-e.RightEye.GazePoint.PositionOnDisplayArea.Y));
-			eyeLogTrack.LogDisplayData (rightPos, "RIGHT");
+			eyeLogTrack.LogDisplayData (rightPos, "RIGHT", gazeDeviceTimestamp);
 			Vector2 right;
 			Ray ray; 
 
@@ -306,14 +317,14 @@ private void HandleGazeData(GazeDataEventArgs e)
 			ray = Camera.main.ViewportPointToRay (new Vector3 (rightPos.x, rightPos.y, Camera.main.nearClipPlane));
 			RaycastHit hit;
 			if (Physics.Raycast (ray, out hit, 1000f, layerMask.value)) {
-				eyeLogTrack.LogGazeObject (hit.collider.gameObject.name);
-				eyeLogTrack.LogVirtualPointData (hit.point, "RIGHT");
+				eyeLogTrack.LogGazeObject (hit.collider.gameObject.name, gazeDeviceTimestamp);
+				eyeLogTrack.LogVirtualPointData (hit.point, "RIGHT", gazeDeviceTimestamp);
 			}
 		}
 		if(e.LeftEye.Pupil.Validity == Validity.Valid)
-			eyeLogTrack.LogPupilData (e.LeftEye.Pupil.PupilDiameter, "LEFT");
+			eyeLogTrack.LogPupilData (e.LeftEye.Pupil.PupilDiameter, "LEFT", gazeDeviceTimestamp);
 		if(e.RightEye.Pupil.Validity == Validity.Valid)
-			eyeLogTrack.LogPupilData (e.RightEye.Pupil.PupilDiameter, "RIGHT");
+			eyeLogTrack.LogPupilData (e.RightEye.Pupil.PupilDiameter, "RIGHT", gazeDeviceTimestamp);
 
         
       
