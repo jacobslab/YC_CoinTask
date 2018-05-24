@@ -8,6 +8,7 @@ public class TrialLogTrack : LogTrack {
 
 	void Update(){
 		if (ExperimentSettings_CoinTask.isLogging && !firstLog) {
+			LogResolution ();
 			LogVersion();
 			LogLanguage ();
 			LogEnvironmentDimensions ();
@@ -20,6 +21,12 @@ public class TrialLogTrack : LogTrack {
 		if (ExperimentSettings_CoinTask.isLogging) {
 			LogTrial (trialNumber, numTreasureChests, numSpecialObjects, isSequential, isStim);
 		}
+	}
+
+	void LogResolution()
+	{
+		Debug.Log ("LOGGED VERSION");
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Experiment Info" + separator + "RESOLUTION" + separator + Screen.width.ToString() + separator + Screen.height.ToString());
 	}
 
 	void LogVersion(){

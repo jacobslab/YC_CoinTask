@@ -57,6 +57,10 @@ namespace Tobii.Research.Unity
 
 		public CalibrationPointCollection calibPointCollection;
 
+		public GameObject validationPointGroup;
+		public CanvasGroup calibrationFailedPanel;
+
+		public CanvasGroup validationInstructionPanel;
 		public CanvasGroup calibResultPanel;
 
         // Handle blocking calls to calibration in a separate thread.
@@ -90,6 +94,8 @@ namespace Tobii.Research.Unity
         {
             _pointScript = _calibrationPoint.GetComponent<CalibrationPoint>();
 			calibResultPanel.alpha = 0f;
+			calibrationFailedPanel.alpha = 0f;
+			validationInstructionPanel.alpha = 0f;
             ShowCalibrationPanel = false;
         }
 
@@ -138,6 +144,7 @@ namespace Tobii.Research.Unity
         /// <returns>An enumerator</returns>
         private IEnumerator PerformCalibration(Vector2[] points, System.Action<bool> resultCallback)
         {
+			calibrationFailedPanel.alpha = 0f;
             if (points != null)
             {
                 _points = points;
@@ -241,13 +248,88 @@ namespace Tobii.Research.Unity
 
             if (resultCallback != null)
             {
+				Debug.Log ("calibration success? " + LatestCalibrationSuccessful.ToString ());
                 resultCallback(LatestCalibrationSuccessful);
             }
 
             _calibrationInProgress = false;
-
-			EyetrackerManager.isCalibrating = false;
+			if (LatestCalibrationSuccessful) {
+				StartCoroutine (PerformValidation ());
+			} else {
+				calibrationFailedPanel.alpha = 1f;
+				bool waitForRestart = true;
+				while (waitForRestart) {
+					if (Input.GetKeyDown (KeyCode.C)) {
+						InitiateCalibration ();
+						waitForRestart = false;
+						calibrationFailedPanel.alpha = 0f;
+					}
+					yield return 0;
+				}
+			}
         }
+
+		IEnumerator PerformValidation()
+		{
+			calibResultPanel.alpha = 1f;
+			validationInstructionPanel.alpha = 1f;
+			Debug.Log ("total calib points : " + calibPointCollection.Count.ToString ());
+			for (int i = 0; i < calibPointCollection.Count; i++) {
+				Debug.Log ("calib samples in point " + i.ToString() + " is: " + calibPointCollection [i].CalibrationSamples.Count.ToString ());
+				for (int j = 0; j < calibPointCollection [i].CalibrationSamples.Count; j++) {
+					CalibrationSample calibSample = calibPointCollection [i].CalibrationSamples [j];
+					Debug.Log ("showing calib sample");
+					//left
+					//							calibResultPanel.transform.GetChild (5).gameObject.GetComponent<CanvasGroup>().alpha=1f;
+					int start = (i * 5) + j;
+					int end = (i * 5) + j + 1;
+					Debug.Log("child count is: " +validationPointGroup.transform.childCount.ToString());
+					if (end < validationPointGroup.transform.childCount) {
+
+						validationPointGroup.transform.GetChild (start).gameObject.SetActive (true);
+						Debug.Log ("calibsample left: " + calibSample.LeftEye.PositionOnDisplayArea.X.ToString() + " , " + calibSample.LeftEye.PositionOnDisplayArea.Y.ToString ());
+						validationPointGroup.transform.GetChild (start).GetComponent<RectTransform> ().anchoredPosition = new Vector2 (Screen.width * calibSample.LeftEye.PositionOnDisplayArea.X, Screen.height * (1f - calibSample.LeftEye.PositionOnDisplayArea.Y));
+						validationPointGroup.transform.GetChild (start).GetComponent<Image> ().color = (calibSample.LeftEye.Validity == CalibrationEyeValidity.ValidAndUsed) ? Color.green : Color.white;
+						//right
+						validationPointGroup.transform.GetChild (end).gameObject.SetActive (true);
+
+						Debug.Log ("calibsample right: " + calibSample.RightEye.PositionOnDisplayArea.X.ToString() + " , " + calibSample.RightEye.PositionOnDisplayArea.Y.ToString ());
+						validationPointGroup.transform.GetChild (end).GetComponent<RectTransform> ().anchoredPosition = new Vector2 (Screen.width * calibSample.RightEye.PositionOnDisplayArea.X, Screen.height * (1f - calibSample.RightEye.PositionOnDisplayArea.Y));
+						validationPointGroup.transform.GetChild (end).GetComponent<Image> ().color = (calibSample.RightEye.Validity == CalibrationEyeValidity.ValidAndUsed) ? Color.green : Color.white;
+
+						Debug.Log ("updated points from " + start.ToString() + " to " + end.ToString());
+					}
+					j++;
+					//						Debug.Log ("calib sample LEFT EYE: " + calibPointCollection [i].CalibrationSamples [j].LeftEye.PositionOnDisplayArea.ToString () + " with validity " + calibPointCollection [i].CalibrationSamples [j].LeftEye.Validity.ToString ());
+					//						Debug.Log ("calib sample RIGHT EYE: " + calibPointCollection [i].CalibrationSamples [j].RightEye.PositionOnDisplayArea.ToString () + " with validity " + calibPointCollection [i].CalibrationSamples [j].RightEye.Validity.ToString ());
+				}
+			}
+			bool waitForResponse = true;
+			int response = -1;
+			while (waitForResponse) {
+				if(Input.GetKeyDown(KeyCode.C))
+				{
+					response = 0; //redo calibration
+					waitForResponse=false;
+				}
+				if (Input.GetKeyDown (KeyCode.X)) {
+					response = 1; //accept validated points and move on
+					waitForResponse = false;
+				}
+				yield return 0;
+			}
+
+			validationInstructionPanel.alpha = 0f;
+			calibResultPanel.alpha = 0f;
+
+			if (response == 0) {
+				InitiateCalibration ();
+			} else {
+				EyetrackerManager.isCalibrating = false;
+				ShowCalibrationPanel = false;
+			}
+			yield return null;
+		}
 
         /// <summary>
         /// This function is called when the behaviour becomes disabled() or inactive.
@@ -263,6 +345,15 @@ namespace Tobii.Research.Unity
             }
         }
 
+		void InitiateCalibration()
+		{
+			var calibrationStartResult = StartCalibration(
+				resultCallback: (calibrationResult) =>
+				Debug.Log("Calibration was " + (calibrationResult ? "successful" : "unsuccessful"))
+			);
+			Debug.Log("Calibration " + (calibrationStartResult ? "" : "not ") + "started");
+		}
+
         private void Update()
         {
             if (Input.GetKeyDown(_startKey))
@@ -270,37 +361,9 @@ namespace Tobii.Research.Unity
 				EyetrackerManager.isCalibrating = true;
 
                 EyetrackerManager.waitForCalibration = false;
-                var calibrationStartResult = StartCalibration(
-                    resultCallback: (calibrationResult) =>
-                        Debug.Log("Calibration was " + (calibrationResult ? "successful" : "unsuccessful"))
-                    );
-
-                Debug.Log("Calibration " + (calibrationStartResult ? "" : "not ") + "started");
+				InitiateCalibration ();
             }
-			if (!EyetrackerManager.isCalibrating && calibPointCollection!=null) {
-				calibResultPanel.alpha = 1f;
-				Debug.Log ("total calib points : " + calibPointCollection.Count.ToString ());
-				for (int i = 0; i < calibPointCollection.Count; i++) {
-					Debug.Log ("calib samples in point " + i.ToString() + " is: " + calibPointCollection [i].CalibrationSamples.Count.ToString ());
-					for (int j = 0; j < 3; j++) {
-						CalibrationSample calibSample = calibPointCollection [i].CalibrationSamples [j];
-							Debug.Log ("showing calib sample");
-							//left
-//							calibResultPanel.transform.GetChild (5).gameObject.GetComponent<CanvasGroup>().alpha=1f;
-							calibResultPanel.transform.GetChild (5).transform.GetChild (j).gameObject.SetActive(true);
-							calibResultPanel.transform.GetChild (5).transform.GetChild (j).GetComponent<RectTransform> ().anchoredPosition = new Vector2 (Screen.width * calibSample.LeftEye.PositionOnDisplayArea.X, Screen.height * (1f -calibSample.LeftEye.PositionOnDisplayArea.Y));
-							calibResultPanel.transform.GetChild (5).transform.GetChild (j).GetComponent<Image> ().color = (calibSample.LeftEye.Validity == CalibrationEyeValidity.ValidAndUsed) ? Color.green : Color.red;
-							//right
-							calibResultPanel.transform.GetChild (5).transform.GetChild (j+1).gameObject.SetActive(true);
-							calibResultPanel.transform.GetChild (5).transform.GetChild (j+1).GetComponent<RectTransform> ().anchoredPosition = new Vector2 (Screen.width * calibSample.RightEye.PositionOnDisplayArea.X, Screen.height * (1f- calibSample.RightEye.PositionOnDisplayArea.Y));
-							calibResultPanel.transform.GetChild (5).transform.GetChild (j+1).GetComponent<Image> ().color = (calibSample.RightEye.Validity == CalibrationEyeValidity.ValidAndUsed) ? Color.green : Color.red;
-							j++;
-//						Debug.Log ("calib sample LEFT EYE: " + calibPointCollection [i].CalibrationSamples [j].LeftEye.PositionOnDisplayArea.ToString () + " with validity " + calibPointCollection [i].CalibrationSamples [j].LeftEye.Validity.ToString ());
-//						Debug.Log ("calib sample RIGHT EYE: " + calibPointCollection [i].CalibrationSamples [j].RightEye.PositionOnDisplayArea.ToString () + " with validity " + calibPointCollection [i].CalibrationSamples [j].RightEye.Validity.ToString ());
-					}
-				}
-				ShowCalibrationPanel = false;
-			}
+
         }
     }
 }
