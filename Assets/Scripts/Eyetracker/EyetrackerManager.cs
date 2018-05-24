@@ -55,7 +55,7 @@ public class EyetrackerManager : MonoBehaviour {
         }
         _eyeTracker = trackers.FirstOrDefault(s => (s.DeviceCapabilities & Capabilities.HasGazeData) != 0);
         
-        if (EyeTracker.Instance == null)
+        if (_eyeTracker==null)
         {
             Debug.Log("No screen based eye tracker detected!");
 			reconnectionGroup.alpha = 0f;
@@ -89,7 +89,7 @@ public class EyetrackerManager : MonoBehaviour {
     IEnumerator InitiateEyetracker()
     {
         //check to see if there is any eyetracker
-        if (EyeTracker.Instance != null)
+        if (_eyeTracker!= null)
         {
             UnityEngine.Debug.Log("eyetracker is not null; performing calibration");
             //perform calibration
@@ -107,6 +107,7 @@ public class EyetrackerManager : MonoBehaviour {
     }
     IEnumerator WaitForCalibration()
     {
+        Debug.Log("waiting for calibration");
         calibrationGroup.alpha = 1f;
         calibration.gameObject.SetActive(true);
         while (!Experiment_CoinTask.expReady)
