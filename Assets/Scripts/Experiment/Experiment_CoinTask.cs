@@ -56,6 +56,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//environment controller
 	public EnvironmentController environmentController;
 
+	//math operations
+	public MathOperations mathOperations;
+
 	//UI controller
 	public UIController uiController;
 

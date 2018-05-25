@@ -136,14 +136,7 @@ public class EyetrackerManager : MonoBehaviour {
 //        {
 //            Debug.Log(calibrationData.Data[i].ToString());
 //        }
-        bool acceptCalibration = false;
-        Debug.Log("waiting for calib results to be accepted");
-        while(!acceptCalibration)
-        {
-            if (Input.GetKeyDown(KeyCode.Return))
-                acceptCalibration = true;
-            yield return 0;
-        }
+       
 
         calibrationGroup.transform.parent.gameObject.SetActive(true);
         calibration.gameObject.SetActive (false);
@@ -255,7 +248,7 @@ private void HandleGazeData(GazeDataEventArgs e)
 		if (!shouldReconnect && (e.LeftEye.GazeOrigin.Validity == Validity.Invalid || e.RightEye.GazeOrigin.Validity == Validity.Invalid)) {
 			if (invalidOriginTimer < Config_CoinTask.minInvalidOriginTime) {
 				invalidOriginTimer += Time.deltaTime;
-				Debug.Log ("invalid origin timer: " + invalidOriginTimer.ToString ());
+//				Debug.Log ("invalid origin timer: " + invalidOriginTimer.ToString ());
 			} else
 				shouldCheckHead = true; //if the timer is above min threshold, set reconnection check for next trial
 
@@ -275,7 +268,7 @@ private void HandleGazeData(GazeDataEventArgs e)
                 if (e.LeftEye.GazeOrigin.Validity == Validity.Valid && e.RightEye.GazeOrigin.Validity == Validity.Valid)
                 {
                     validOriginTimer += Time.deltaTime;
-                    Debug.Log("valid origin timer: " + validOriginTimer.ToString());
+//                    Debug.Log("valid origin timer: " + validOriginTimer.ToString());
                 }
             }
             else

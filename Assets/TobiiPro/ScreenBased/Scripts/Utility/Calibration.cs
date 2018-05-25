@@ -5,7 +5,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-
+using System.Collections.Generic;
 namespace Tobii.Research.Unity
 {
     public class Calibration : MonoBehaviour
@@ -47,6 +47,8 @@ namespace Tobii.Research.Unity
         [SerializeField]
         private Image _calibrationPoint;
 
+		public Text varianceText;
+
         [SerializeField]
         private Canvas _canvas;
 
@@ -66,6 +68,10 @@ namespace Tobii.Research.Unity
         // Handle blocking calls to calibration in a separate thread.
         private CalibrationThread _calibrationThread;
         private bool _calibrationInProgress;
+
+		public int maxSamples = 30;
+
+
 
         private bool ShowCalibrationPanel
         {
@@ -273,37 +279,79 @@ namespace Tobii.Research.Unity
 		{
 			calibResultPanel.alpha = 1f;
 			validationInstructionPanel.alpha = 1f;
+
+			float totalVarianceLeftX = 0f;
+			float totalVarianceLeftY = 0f;
+			float totalVarianceRightX = 0f;
+			float totalVarianceRightY = 0f;
+
+			float totalMeanLeftX = 0f;
+			float totalMeanLeftY = 0f;
+			float totalMeanRightX = 0f;
+			float totalMeanRightY = 0f;
+
 			Debug.Log ("total calib points : " + calibPointCollection.Count.ToString ());
 			for (int i = 0; i < calibPointCollection.Count; i++) {
+				List<float> leftSamplesX = new List<float> ();
+				List<float> leftSamplesY = new List<float> ();
+				List<float> rightSamplesX = new List<float> ();
+				List<float> rightSamplesY = new List<float> ();
 				Debug.Log ("calib samples in point " + i.ToString() + " is: " + calibPointCollection [i].CalibrationSamples.Count.ToString ());
 				for (int j = 0; j < calibPointCollection [i].CalibrationSamples.Count; j++) {
+					Debug.Log ("calib point " + i.ToString() + " sample: " + j.ToString());
 					CalibrationSample calibSample = calibPointCollection [i].CalibrationSamples [j];
-					Debug.Log ("showing calib sample");
 					//left
 					//							calibResultPanel.transform.GetChild (5).gameObject.GetComponent<CanvasGroup>().alpha=1f;
 					int start = (i * 5) + j;
 					int end = (i * 5) + j + 1;
 					Debug.Log("child count is: " +validationPointGroup.transform.childCount.ToString());
-					if (end < validationPointGroup.transform.childCount) {
+					if (end < 28) {
 
 						validationPointGroup.transform.GetChild (start).gameObject.SetActive (true);
+
+						//left
 						Debug.Log ("calibsample left: " + calibSample.LeftEye.PositionOnDisplayArea.X.ToString() + " , " + calibSample.LeftEye.PositionOnDisplayArea.Y.ToString ());
 						validationPointGroup.transform.GetChild (start).GetComponent<RectTransform> ().anchoredPosition = new Vector2 (Screen.width * calibSample.LeftEye.PositionOnDisplayArea.X, Screen.height * (1f - calibSample.LeftEye.PositionOnDisplayArea.Y));
 						validationPointGroup.transform.GetChild (start).GetComponent<Image> ().color = (calibSample.LeftEye.Validity == CalibrationEyeValidity.ValidAndUsed) ? Color.green : Color.white;
+						leftSamplesX.Add (Mathf.Abs(calibSample.LeftEye.PositionOnDisplayArea.X-calibPointCollection[i].PositionOnDisplayArea.X));
+						leftSamplesY.Add (Mathf.Abs(calibSample.LeftEye.PositionOnDisplayArea.Y-calibPointCollection[i].PositionOnDisplayArea.Y));
+
 						//right
 						validationPointGroup.transform.GetChild (end).gameObject.SetActive (true);
-
 						Debug.Log ("calibsample right: " + calibSample.RightEye.PositionOnDisplayArea.X.ToString() + " , " + calibSample.RightEye.PositionOnDisplayArea.Y.ToString ());
 						validationPointGroup.transform.GetChild (end).GetComponent<RectTransform> ().anchoredPosition = new Vector2 (Screen.width * calibSample.RightEye.PositionOnDisplayArea.X, Screen.height * (1f - calibSample.RightEye.PositionOnDisplayArea.Y));
 						validationPointGroup.transform.GetChild (end).GetComponent<Image> ().color = (calibSample.RightEye.Validity == CalibrationEyeValidity.ValidAndUsed) ? Color.green : Color.white;
+						rightSamplesX.Add (Mathf.Abs(calibSample.RightEye.PositionOnDisplayArea.X-calibPointCollection[i].PositionOnDisplayArea.X));
+						rightSamplesY.Add (Mathf.Abs(calibSample.RightEye.PositionOnDisplayArea.Y-calibPointCollection[i].PositionOnDisplayArea.Y));
 
 						Debug.Log ("updated points from " + start.ToString() + " to " + end.ToString());
+
 					}
-					j++;
 					//						Debug.Log ("calib sample LEFT EYE: " + calibPointCollection [i].CalibrationSamples [j].LeftEye.PositionOnDisplayArea.ToString () + " with validity " + calibPointCollection [i].CalibrationSamples [j].LeftEye.Validity.ToString ());
 					//						Debug.Log ("calib sample RIGHT EYE: " + calibPointCollection [i].CalibrationSamples [j].RightEye.PositionOnDisplayArea.ToString () + " with validity " + calibPointCollection [i].CalibrationSamples [j].RightEye.Validity.ToString ());
 				}
+				Debug.Log ("about to calculate mean and variance");
+				totalMeanLeftX += Experiment_CoinTask.Instance.mathOperations.Mean (leftSamplesX,0,leftSamplesX.Count);
+//				totalVarianceLeftX += Experiment_CoinTask.Instance.mathOperations.Variance (leftSamplesX, meanLeftX, 0, leftSamplesX.Count);
+
+				totalMeanLeftY += Experiment_CoinTask.Instance.mathOperations.Mean (leftSamplesY,0,leftSamplesY.Count);
+//				totalVarianceLeftY += Experiment_CoinTask.Instance.mathOperations.Variance (leftSamplesY, meanLeftY, 0, leftSamplesY.Count);
+
+				totalMeanRightX += Experiment_CoinTask.Instance.mathOperations.Mean (rightSamplesX,0,rightSamplesX.Count);
+//				totalVarianceRightX += Experiment_CoinTask.Instance.mathOperations.Variance (rightSamplesX, meanRightX, 0, rightSamplesX.Count);
+
+				totalMeanRightY += Experiment_CoinTask.Instance.mathOperations.Mean (rightSamplesY,0,rightSamplesY.Count);
+//				totalVarianceRightY += Experiment_CoinTask.Instance.mathOperations.Variance (rightSamplesY, meanRightY, 0, rightSamplesY.Count);
+
 			}
+
+			float avgVarLeftX = totalMeanLeftX / calibPointCollection.Count;
+			float avgVarLeftY = totalMeanLeftY / calibPointCollection.Count;
+			float avgVarRightX = totalMeanRightX / calibPointCollection.Count;
+			float avgVarRightY = totalMeanRightY / calibPointCollection.Count;
+
+			varianceText.text = "Avg Mean Left: (" + avgVarLeftX.ToString ("F2") + ", " + avgVarLeftY.ToString ("F2") + ") \n Avg Mean Right: (" + avgVarRightX.ToString ("F2") + " , " + avgVarRightY.ToString ("F2") + ")";
+
 			bool waitForResponse = true;
 			int response = -1;
 			while (waitForResponse) {
@@ -312,7 +360,7 @@ namespace Tobii.Research.Unity
 					response = 0; //redo calibration
 					waitForResponse=false;
 				}
-				if (Input.GetKeyDown (KeyCode.X)) {
+				if (Input.GetKeyDown (KeyCode.A)) {
 					response = 1; //accept validated points and move on
 					waitForResponse = false;
 				}
