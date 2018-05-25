@@ -52,7 +52,7 @@ public class SyncboxControl : MonoBehaviour {
 	void Start () {
 
 		if(Config_CoinTask.isSyncbox){
-            LogSyncInfo("LOGSTART");
+           // LogSyncInfo("LOGSTART");
             UnityEngine.Debug.Log(AddTwoIntegers(4, 5));
 			StartCoroutine(ConnectSyncbox());
 		}
@@ -66,7 +66,7 @@ public class SyncboxControl : MonoBehaviour {
             
 			//UnityEngine.Debug.Log("USB Open response: " + usbOpenFeedback.ToString());
 			if(usbOpenFeedback != 0){
-                LogSyncInfo("USB Connected");
+               // LogSyncInfo("USB Connected");
 				isUSBOpen = true;
 			}
 
@@ -105,12 +105,12 @@ public class SyncboxControl : MonoBehaviour {
 	{
 		while (ShouldSyncPulse) {
 			int syncStatus = CheckUSB ();
-            LogSyncInfo("sync status is: " + syncStatus.ToString());
-            UnityEngine.Debug.Log ("sync status is: " + syncStatus.ToString ());
+            //LogSyncInfo("sync status is: " + syncStatus.ToString());
+          //  UnityEngine.Debug.Log ("sync status is: " + syncStatus.ToString ());
 			#if FREIBURG
 			if (syncStatus == 0) {
-                LogSyncInfo("Syncbox connected");
-                UnityEngine.Debug.Log ("Syncbox connected");
+               // LogSyncInfo("Syncbox connected");
+               // UnityEngine.Debug.Log ("Syncbox connected");
 			} 
 			#else
 			if (syncStatus == 1) {
@@ -119,8 +119,8 @@ public class SyncboxControl : MonoBehaviour {
 			#endif
 			else {
 				isUSBOpen = false;
-                LogSyncInfo("disconnected; initiating reconnection procedure");
-                UnityEngine.Debug.Log ("disconnected; initiating reconnection procedure");
+               // LogSyncInfo("disconnected; initiating reconnection procedure");
+                //UnityEngine.Debug.Log ("disconnected; initiating reconnection procedure");
 				StartCoroutine (ReconnectSyncbox ());
 			}
 			yield return new WaitForSeconds (2f); //check every 2 seconds
@@ -142,8 +142,8 @@ public class SyncboxControl : MonoBehaviour {
 
 		exp.trialController.TogglePause (); //pause the game
 		//		yield return new WaitForSeconds(1f);
-        LogSyncInfo("attempting to reconnect");
-        UnityEngine.Debug.Log ("attempting to reconnect");
+      //  LogSyncInfo("attempting to reconnect");
+      //  UnityEngine.Debug.Log ("attempting to reconnect");
 		yield return StartCoroutine(ConnectSyncbox());
 		exp.trialController.TogglePause (); //unpause the game
 		yield return null;
@@ -182,7 +182,7 @@ public class SyncboxControl : MonoBehaviour {
 
 		while (ShouldSyncPulse) {
 			executionStopwatch.Reset();
-			UnityEngine.Debug.Log ("pulse running");
+		//	UnityEngine.Debug.Log ("pulse running");
 
 			float jitter = UnityEngine.Random.Range(jitterMin, jitterMax);//syncPulseInterval - syncPulseDuration);
 			yield return StartCoroutine(WaitForShortTime(jitter));

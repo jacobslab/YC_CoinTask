@@ -350,7 +350,7 @@ namespace Tobii.Research.Unity
 			float avgVarRightX = totalMeanRightX / calibPointCollection.Count;
 			float avgVarRightY = totalMeanRightY / calibPointCollection.Count;
 
-			varianceText.text = "Avg Mean Left: (" + avgVarLeftX.ToString ("F2") + ", " + avgVarLeftY.ToString ("F2") + ") \n Avg Mean Right: (" + avgVarRightX.ToString ("F2") + " , " + avgVarRightY.ToString ("F2") + ")";
+			varianceText.text = "Avg Mean Left: (" + avgVarLeftX.ToString ("F2") + "," + avgVarLeftY.ToString ("F2") + ") \nAvg Mean Right: (" + avgVarRightX.ToString ("F2") + "," + avgVarRightY.ToString ("F2") + ")";
 
 			bool waitForResponse = true;
 			int response = -1;

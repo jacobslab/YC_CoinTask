@@ -34,7 +34,7 @@ public class EyetrackerManager : MonoBehaviour {
 
     public static bool waitForCalibration = false;
 	public static bool isCalibrating=false;
-
+    public static bool finishedCalibration = false;
 	public Calibration calibration;
 
     public string filepath = "";
@@ -57,6 +57,7 @@ public class EyetrackerManager : MonoBehaviour {
         
         if (_eyeTracker==null)
         {
+            finishedCalibration = true;
             Debug.Log("No screen based eye tracker detected!");
 			reconnectionGroup.alpha = 0f;
 			//myCanvas.gameObject.GetComponent<CanvasGroup> ().alpha = 0f;
@@ -130,14 +131,14 @@ public class EyetrackerManager : MonoBehaviour {
 		}
 
         // Retrieve the calibration data from the eye tracker.
-//        Debug.Log("displaying calib data");
-//        CalibrationData calibrationData = _eyeTracker.RetrieveCalibrationData();
-//        for(int i=0;i<calibrationData.Data.Length;i++)
-//        {
-//            Debug.Log(calibrationData.Data[i].ToString());
-//        }
-       
+        //        Debug.Log("displaying calib data");
+        //        CalibrationData calibrationData = _eyeTracker.RetrieveCalibrationData();
+        //        for(int i=0;i<calibrationData.Data.Length;i++)
+        //        {
+        //            Debug.Log(calibrationData.Data[i].ToString());
+        //        }
 
+        finishedCalibration = true;
         calibrationGroup.transform.parent.gameObject.SetActive(true);
         calibration.gameObject.SetActive (false);
 		calibration.calibResultPanel.alpha = 0f;

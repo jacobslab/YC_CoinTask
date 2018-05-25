@@ -96,6 +96,7 @@ public class VideoPlay : MonoBehaviour {
 		bool isValidInput = false;
 		while (!isValidInput) {
 			if (Input.GetKeyUp (KeyCode.Y)) {
+                Debug.Log("pressed Y");
 				isValidInput = true;
 				shouldPlay = true;
 			}
