@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.IO;
 using UnityEngine.UI;
+using System.Collections.Generic;
 public class Experiment_CoinTask : MonoBehaviour {
 
 	//clock!
@@ -29,10 +30,11 @@ public class Experiment_CoinTask : MonoBehaviour {
 	public static string sessionStartedFileName = "sessionStarted.txt";
 	public static int sessionID;
 
-
+	public MathOperations mathOperations;
 	//session controller
 	public TrialController trialController;
 
+	public static bool expReady=false;
 
 	//DISTRACTOR GAME
 	public BoxSwapGameController boxGameController;
