@@ -38,7 +38,7 @@ public class SyncboxControl : MonoBehaviour
     LJUD.IO ioType = 0;
     LJUD.CHANNEL channel = 0;
 
-	public RawImage syncStatusBox;
+	//public RawImage syncStatusBox;
 
     //SINGLETON
     private static SyncboxControl _instance;
@@ -209,7 +209,7 @@ public class SyncboxControl : MonoBehaviour
     void ToggleLEDOn()
     {
 
-		syncStatusBox.color = Color.white;
+		//syncStatusBox.color = Color.white;
 		#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 		TurnLEDOn();
 		#else
@@ -220,7 +220,7 @@ public class SyncboxControl : MonoBehaviour
 
     void ToggleLEDOff()
     {
-		syncStatusBox.color = Color.black;
+		//syncStatusBox.color = Color.black;
 		#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 		TurnLEDOff();
 		#else

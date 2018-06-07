@@ -32,6 +32,24 @@ public class TrialController : MonoBehaviour {
 
 	public Trial currentTrial;
 
+	//instructions
+	private string initialInstructions1 = "Welcome to Treasure Island!" + 
+		"\n\nYou are going on a treasure hunt." + 
+		"\n\nUse the joystick to control your movement." + 
+		"\n\nDrive into treasure chests to open them. Remember where each object is located!" +
+		"\n\nPress (X) to continue.";
+
+	private string initialInstructions2 = "When you are asked about remembering an object's location, you must answer [ YES ], [ MAYBE ], or [ NO ], and choose a location." +
+		"\n\nYou will win points for correct locations and you will lose points for incorrect locations." +
+		"\n\nPress (X) to continue.";
+
+	private string initialInstructions3 = "TIPS FOR MAXIMIZING YOUR SCORE" + 
+		"\n\nGet a time bonus by driving to the chests quickly." +
+		"\n\nIf you are more than 75% sure, you should select [YES]." +
+		"\n\nIf you are at least 50% sure, you should select [MAYBE]." +
+		"\n\nOtherwise, you should select [NO]." +
+		"\n\nPress (X) to begin!";
+
 	[HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
 
     public Text ConnectionText;
@@ -410,11 +428,11 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine( WaitForMRIFixationRest());
 			}
 #else
-			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 1.0f;
-			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 0.0f;
-			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 #endif
 
 			#if MRIVERSION
