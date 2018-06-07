@@ -22,6 +22,8 @@ public class VideoPlay : MonoBehaviour
     {
         movie = GetComponent<VideoPlayer>();
         movie.enabled = false;
+        movieAudio = GetComponent<AudioSource>();
+        movieAudio.enabled = false;
         //		RawImage rim = GetComponent<RawImage>();
         //		if(rim != null){
         //			if(rim.texture != null){
@@ -34,25 +36,25 @@ public class VideoPlay : MonoBehaviour
     bool isMoviePaused = false;
     void Update()
     {
-        //		if (movie != null) {
-        //			if (movie.isPlaying) {
-        //				if (Input.GetAxis (Config_CoinTask.ActionButtonName) > 0.2f) { //skip movie!
-        //					Debug.Log("skip movie");
-        //					Stop ();
-        //				}
-        //				if (TrialController.isPaused) {
-        //					Pause ();
-        //				}
-        //			}
-        //			if (!TrialController.isPaused) {
-        //				if (isMoviePaused) {
-        //					UnPause ();
-        //				}
-        //			}
-        //		} 
-        //else {
-        //Debug.Log("No movie attached! Can't update.");
-        //}
+        		if (movie != null) {
+        			if (movie.isPlaying) {
+        				if (Input.GetAxis (Config_CoinTask.ActionButtonName) > 0.2f) { //skip movie!
+        					Debug.Log("skip movie");
+        					Stop ();
+        				}
+        				if (TrialController.isPaused) {
+        					Pause ();
+        				}
+        			}
+        			if (!TrialController.isPaused) {
+        				if (isMoviePaused) {
+        					UnPause ();
+        				}
+       			}
+        		} 
+        else {
+        Debug.Log("No movie attached! Can't update.");
+       }
     }
 
     bool shouldPlay = false;
@@ -66,7 +68,9 @@ public class VideoPlay : MonoBehaviour
 
             if (shouldPlay)
             {
+                Debug.Log("playing now");
                 movie.enabled = true;
+                movieAudio.enabled = true;
                 group.alpha = 1.0f;
 
                 //				movie.Stop ();
@@ -169,6 +173,12 @@ public class VideoPlay : MonoBehaviour
         else
         {
             Debug.Log("No movie attached! Can't stop.");
+        }
+
+        if(movieAudio!=null)
+        {
+            movieAudio.Stop();
+            movieAudio.enabled = false;
         }
     }
 
