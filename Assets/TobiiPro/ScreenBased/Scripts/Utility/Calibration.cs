@@ -31,6 +31,7 @@ namespace Tobii.Research.Unity
         [Tooltip("This key will start a calibration.")]
         private KeyCode _startKey = KeyCode.None;
 
+
         /// <summary>
         /// Calibration points.
         /// Example:
@@ -203,7 +204,9 @@ namespace Tobii.Research.Unity
 
                 Debug.Log("iterating through calib points");
                 // Set the local position and start the point animation
-                _calibrationPoint.rectTransform.anchoredPosition = new Vector2(Screen.width * pointPosition.x, Screen.height * (1 - pointPosition.y));
+				Vector2 point = new Vector2(1920f * pointPosition.x, 1080f * (1 - pointPosition.y));
+				Debug.Log (point.ToString ());
+					_calibrationPoint.rectTransform.anchoredPosition = point;
                 _pointScript.StartAnim();
 
                 // Wait for animation.
@@ -247,6 +250,7 @@ namespace Tobii.Research.Unity
             _calibrationThread.StopThread();
             _calibrationThread = null;
 
+
             // Finish up or restart if failure.
             LatestCalibrationSuccessful = computeResult.Status == CalibrationStatus.Success;
 
@@ -265,10 +269,17 @@ namespace Tobii.Research.Unity
 				calibrationFailedPanel.alpha = 1f;
 				bool waitForRestart = true;
 				while (waitForRestart) {
-					if (Input.GetKeyDown (KeyCode.C)) {
+					if (Input.GetButtonDown ("Action Button")) {
 						InitiateCalibration ();
 						waitForRestart = false;
 						calibrationFailedPanel.alpha = 0f;
+					}  if (Input.GetButtonDown ("Skip Button")) {
+						Debug.Log ("pressed skip button");
+
+						waitForRestart = false;
+						calibrationFailedPanel.alpha = 0f;
+						EyetrackerManager.isCalibrating = false;
+						EyetrackerManager.waitForCalibration = false;
 					}
 					yield return 0;
 				}
@@ -355,12 +366,12 @@ namespace Tobii.Research.Unity
 			bool waitForResponse = true;
 			int response = -1;
 			while (waitForResponse) {
-				if(Input.GetKeyDown(KeyCode.C))
+				if(Input.GetButtonDown("Action Button"))
 				{
 					response = 0; //redo calibration
 					waitForResponse=false;
 				}
-				if (Input.GetKeyDown (KeyCode.A)) {
+				if (Input.GetButtonDown ("Accept Button")) {
 					response = 1; //accept validated points and move on
 					waitForResponse = false;
 				}
@@ -404,7 +415,7 @@ namespace Tobii.Research.Unity
 
         private void Update()
         {
-            if (Input.GetKeyDown(_startKey))
+			if (Input.GetButtonDown("Action Button"))
             {
 				EyetrackerManager.isCalibrating = true;
 

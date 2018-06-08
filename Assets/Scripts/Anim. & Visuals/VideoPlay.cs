@@ -86,7 +86,7 @@ public class VideoPlay : MonoBehaviour
                         timer += Time.deltaTime;
                         movie.playbackSpeed = 1f;
                        // Debug.Log("playback speed set to one");
-                        if (Input.GetKeyDown(KeyCode.X))
+						if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Action Button"))
                         {
                             buttonPressed = true;
                         }
@@ -113,17 +113,17 @@ public class VideoPlay : MonoBehaviour
     IEnumerator AskIfShouldPlay()
     {
         exp.currInstructions.SetInstructionsColorful();
-        exp.currInstructions.DisplayText("Play instruction video? (y/n)");
+		exp.currInstructions.DisplayText("Play instruction video? (X) to Play (A) to Skip");
         Debug.Log("show instructions");
         bool isValidInput = false;
         while (!isValidInput)
         {
-            if (Input.GetKeyUp(KeyCode.Y))
+            if (Input.GetButtonDown("Action Button"))
             {
                 isValidInput = true;
                 shouldPlay = true;
             }
-            else if (Input.GetKeyUp(KeyCode.N))
+            else if (Input.GetButtonDown("Accept Button"))
             {
                 isValidInput = true;
                 shouldPlay = false;

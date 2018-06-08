@@ -123,7 +123,7 @@ public class EyetrackerManager : MonoBehaviour {
 		{
 			yield return 0;
 		}
-
+		Debug.Log ("finished waiting for calibration");
 		calibrationGroup.alpha = 0f;
 		calibrationGroup.transform.parent.gameObject.SetActive(false);
 		while (isCalibrating) {

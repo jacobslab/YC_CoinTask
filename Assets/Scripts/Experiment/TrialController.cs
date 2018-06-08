@@ -72,6 +72,7 @@ public class TrialController : MonoBehaviour {
 		#endif
 
 		trialLogger = GetComponent<TrialLogTrack> ();
+		Experiment_CoinTask.expReady = true;
 	}
 
 	void InitPracticeTrials(){
@@ -393,13 +394,19 @@ public class TrialController : MonoBehaviour {
 				exp.uiController.exitPanel.alpha = 0.0f;
 				exp.uiController.ConnectionUI.alpha = 0.0f;
 			}
-				
+
+
+			while(!EyetrackerManager.finishedCalibration)
+			{	
+				yield return 0;
+			}
 #if (!(MRIVERSION))
 	#if (!UNITY_WEBPLAYER)
 	//		if(!ExperimentSettings_CoinTask.Instance.isWebBuild){
 				trialLogger.LogVideoEvent(true);
 				yield return StartCoroutine(exp.instrVideoPlayer.Play());
 				trialLogger.LogVideoEvent(false);
+			
 	//		}
 	#endif
 #endif
