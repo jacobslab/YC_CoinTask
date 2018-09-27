@@ -8,7 +8,10 @@ using System.IO;
 using MonoLibUsb;
 public class SyncboxControl : MonoBehaviour
 {
-    Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }    
+    Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
+    public bool isUSBOpen = false;
+
+
 
     //SINGLETON
     private static SyncboxControl _instance;
@@ -37,11 +40,7 @@ public class SyncboxControl : MonoBehaviour
 	public float PulseOnSeconds;
 	public float PulseOffSeconds;
 
-	public bool isUSBOpen = false;
-
-
-
-
+	
 
 	void Awake(){
 
@@ -264,8 +263,6 @@ public class SyncboxControl : MonoBehaviour
 		UnityEngine.Debug.Log(CloseUSB().ToString());
 	}
 #else
-
-
     private const short FREIBURG_SYNCBOX_VENDOR_ID = 0x0403;
     private const short FREIBURG_SYNCBOX_PRODUCT_ID = 0x6001;
     private const int FREIBURG_SYNCBOX_TIMEOUT_MS = 500;
@@ -275,9 +272,6 @@ public class SyncboxControl : MonoBehaviour
 
     private const float TIME_BETWEEN_PULSES_MIN = 0.8f;
     private const float TIME_BETWEEN_PULSES_MAX = 1.2f;
-
-
-    public bool isUSBOpen = false;
 
     private MonoLibUsb.MonoUsbSessionHandle sessionHandle = new MonoUsbSessionHandle();
     private MonoLibUsb.Profile.MonoUsbProfileList profileList = null;
@@ -304,7 +298,7 @@ public class SyncboxControl : MonoBehaviour
         int profileListRefreshResult;
         profileListRefreshResult = profileList.Refresh(sessionHandle);
         if (profileListRefreshResult < 0) throw new ExternalException("Failed to retrieve device list.");
-        UnityEngine.Debug.Log(profileListRefreshResult.ToString() + " device(s) found.");
+            UnityEngine.Debug.Log(profileListRefreshResult.ToString() + " device(s) found.");
 
         // Iterate through the profile list.
         // If we find the device, write 00000000 to its endpoint 2.
@@ -317,13 +311,13 @@ public class SyncboxControl : MonoBehaviour
         }
 
         if (freiburgSyncboxProfile == null)
-            throw new ExternalException("None of the connected USB devices were identified as a Freiburg syncbox.");
+            UnityEngine.Debug.Log("None of the connected USB devices were identified as a Freiburg syncbox.");
 
         freiburgSyncboxDeviceHandle = new MonoUsbDeviceHandle(freiburgSyncboxProfile.ProfileHandle);
         freiburgSyncboxDeviceHandle = freiburgSyncboxProfile.OpenDeviceHandle();
 
         if (freiburgSyncboxDeviceHandle == null)
-            throw new ExternalException("The ftd USB device was found but couldn't be opened");
+            UnityEngine.Debug.Log("The ftd USB device was found but couldn't be opened");
 
         StartCoroutine(FreiburgPulse());
     }
@@ -347,7 +341,7 @@ public class SyncboxControl : MonoBehaviour
             int actual_length;
             int bulkTransferResult = MonoUsbApi.BulkTransfer(freiburgSyncboxDeviceHandle, FREIBURG_SYNCBOX_ENDPOINT, byte.MinValue, FREIBURG_SYNCBOX_PIN_COUNT / 8, out actual_length, FREIBURG_SYNCBOX_TIMEOUT_MS);
             if (bulkTransferResult == 0)
-            LogPulse(GameClock.SystemTime_Milliseconds,FREIBURG_SYNCBOX_TIMEOUT_MS);
+            LogPulse(GameClock.SystemTime_Microseconds,FREIBURG_SYNCBOX_TIMEOUT_MS);
             UnityEngine.Debug.Log("Sync pulse. " + actual_length.ToString() + " byte(s) written.");
 
             MonoUsbApi.ReleaseInterface(freiburgSyncboxDeviceHandle, FREIBURG_SYNCBOX_INTERFACE_NUMBER);
@@ -361,13 +355,12 @@ public class SyncboxControl : MonoBehaviour
         BeginFreiburgSyncSession();
     }
 
-    private void LogPulse(long time,int duration)
+    private void LogPulse(long time, int duration)
     {
         if (ExperimentSettings_CoinTask.isLogging)
         {
-        exp.eegLog.Log(time, exp.eegLog.GetFrameCount(), "SYNC PULSE STARTED" + Logger_Threading.LogTextSeparator + duration.ToString());
+            exp.eegLog.Log(time, exp.eegLog.GetFrameCount(), "SYNC PULSE STARTED" + Logger_Threading.LogTextSeparator + duration);
         }
     }
 #endif
-
 }

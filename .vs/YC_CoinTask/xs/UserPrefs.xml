@@ -2,11 +2,12 @@
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/EEG Communication/SyncboxControl.cs">
     <Files>
-      <File FileName="Assets/Scripts/Experiment/InputMic.cs" Line="58" Column="33" />
+      <File FileName="Assets/Scripts/Experiment/InputMic.cs" Line="28" Column="74" />
       <File FileName="Assets/Scripts/Logging/ParticleLogTrack.cs" Line="99" Column="35" />
       <File FileName="Assets/Scripts/VideoRecording/Replay.cs" Line="686" Column="35" />
-      <File FileName="Assets/Scripts/EEG Communication/SyncboxControl.cs" Line="317" Column="10" />
+      <File FileName="Assets/Scripts/EEG Communication/SyncboxControl.cs" Line="262" Column="1" />
       <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="623" Column="1" />
+      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="19" Column="6" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
