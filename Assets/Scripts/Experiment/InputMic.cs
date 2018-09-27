@@ -25,7 +25,7 @@ public class InputMic : MonoBehaviour
 	private bool samsonFound=false;
 	public CanvasGroup samsonWarningGroup;
 	private string samsonDeviceName="";
-	AudioClip _clipRecord = new AudioClip();
+    AudioClip _clipRecord;
 	private int samsonIndex=0;
 	void Awake()
 	{
@@ -54,12 +54,13 @@ public class InputMic : MonoBehaviour
 	}
 	IEnumerator RotateWords()
 	{
+        int sampleRate = 44100;
 		spokenWord.text = wordList[0];
 		float timer = 0f;
 		while (cannotHear)
 		{
 
-			_clipRecord = new AudioClip ();
+            _clipRecord = AudioClip.Create ("mic",sampleRate * 2, 1, sampleRate, true);
 			//            	yield return StartCoroutine (Experiment.Instance.audioRecorder.Record(Experiment.Instance.SessionDirectory, "micTest.wav", 5));
 			if (_device == null && Microphone.devices.Length > 0) {
 				UnityEngine.Debug.Log("samson index is: "  + samsonIndex.ToString());

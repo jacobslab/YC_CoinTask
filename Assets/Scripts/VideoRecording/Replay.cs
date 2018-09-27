@@ -673,7 +673,7 @@ public class Replay : MonoBehaviour {
 									}
 
 
-									particles.emit = true;
+									//particles.emit = true;
 									
 								}
 								else if (loggedProperty == "PARTICLE_EMITTER_STOPPED"){
@@ -683,7 +683,7 @@ public class Replay : MonoBehaviour {
 										particles = objInScene.transform.Find( particleSystemName ).GetComponent<ParticleEmitter>();
 									}
 									
-									particles.emit = false;
+									//particles.emit = false;
 									
 								}
 
