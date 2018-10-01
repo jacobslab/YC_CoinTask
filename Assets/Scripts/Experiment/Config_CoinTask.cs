@@ -95,11 +95,6 @@ public class Config_CoinTask : MonoBehaviour {
 #else
 	public static int numTestTrials = 40; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
 
-
-	//eyetracker settings
-	public static float minInvalidOriginTime = 10f; //for eyetracker connection to be classified as "not connected"
-	public static float maxValidOriginTime = 5f; //for reconnection
-
 	//practice settings
 	public static int numTrialsPract = 1;
 	public static bool isPractice = false;
@@ -114,7 +109,12 @@ public class Config_CoinTask : MonoBehaviour {
 
 #endif
 
-	public enum MemoryState{
+    //eyetracker settings
+    public static float minInvalidOriginTime = 10f; //for eyetracker connection to be classified as "not connected"
+    public static float maxValidOriginTime = 5f; //for reconnection
+
+
+    public enum MemoryState{
 		yes,
 		maybe,
 		no

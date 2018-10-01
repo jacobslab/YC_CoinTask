@@ -1,13 +1,13 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/EEG Communication/SyncboxControl.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Eyetracker/EyetrackerManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/Experiment/InputMic.cs" Line="28" Column="74" />
+      <File FileName="Assets/Scripts/VideoRecording/Replay.cs" Line="619" Column="35" />
       <File FileName="Assets/Scripts/Logging/ParticleLogTrack.cs" Line="99" Column="35" />
-      <File FileName="Assets/Scripts/VideoRecording/Replay.cs" Line="686" Column="35" />
-      <File FileName="Assets/Scripts/EEG Communication/SyncboxControl.cs" Line="262" Column="1" />
-      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="623" Column="1" />
-      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="19" Column="6" />
+      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="927" Column="1" />
+      <File FileName="Assets/Scripts/Eyetracker/EyetrackerManager.cs" Line="87" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
