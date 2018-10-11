@@ -168,9 +168,9 @@ public class DefaultItem : MonoBehaviour {
 	public IEnumerator Open(GameObject opener){
 
 		if (GetIsSpecial ()) {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_SPECIAL, true);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_SPECIAL, true);
 		} else {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_EMPTY, true);
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_EMPTY, true);
 		}
 
 		float distOpenerToPivotA = (pivotA.position - opener.transform.position).magnitude;
@@ -229,9 +229,9 @@ public class DefaultItem : MonoBehaviour {
 
 	void EndTreasureState(){
 		if (GetIsSpecial ()) {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_SPECIAL, false);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_SPECIAL, false);
 		} else {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_EMPTY, false);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_EMPTY, false);
 		}
 		UnityEngine.Debug.Log ("NUM DEFAULT: " + exp.trialController.NumDefaultObjectsCollected);
 //		switch (exp.trialController.NumDefaultObjectsCollected) {

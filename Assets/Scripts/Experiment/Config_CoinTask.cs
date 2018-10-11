@@ -76,15 +76,15 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public static string audioPath = "";
 #if MRIVERSION
-	public static int numTestTrials = 8; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
+	public static int numTestTrials = 16; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
 	
 	
 	//practice settings
 	public static int numTrialsPract = 3;
-	public static bool isPractice = true;
-    public static int numSpecialObjectsPract = 2;
-    public static int numTwoItemTrials = 20;
-	public static int numThreeItemTrials = 20;
+	public static bool isPractice = false;
+    public static int[] numSpecialObjectsPract = { 2, 2, 3 };
+    public static int numTwoItemTrials = 8;
+	public static int numThreeItemTrials = 8;
 	public static int numTrialsPerBlock = 8;
 	
 	//FEEDBACK SETTINGS:

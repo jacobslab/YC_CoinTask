@@ -201,7 +201,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 				StartCoroutine(RunInstructions());
 
 			}
-			else*/ if (currentState == ExperimentState.inExperiment && !isRunningExperiment && EyetrackerManager.finishedCalibration) {
+			else*/ if (currentState == ExperimentState.inExperiment && !isRunningExperiment) {
 				Debug.Log("running experiment");
 				StartCoroutine(BeginExperiment());
 			}

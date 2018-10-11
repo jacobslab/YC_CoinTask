@@ -117,7 +117,7 @@ public class TrialController : MonoBehaviour
 
 		#if MRIVERSION
 		for(int i = 0; i < Config_CoinTask.numTrialsPract; i++){
-			Trial practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract,0, false);	//2 special objects for practice trial
+			Trial practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract[i],0, false);	//2 special objects for practice trial
 			practiceTrials.Add(practiceTrial);
 		}
 		#else
@@ -450,13 +450,13 @@ public class TrialController : MonoBehaviour
 			//exp.player.controls.Pause(true);
 			exp.uiController.PauseUI.alpha = 1.0f;
 			Time.timeScale = 0.0f;
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.PAUSED, true);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.PAUSED, true);
 		} else {
 			Time.timeScale = 1.0f;
 			//exp.player.controls.Pause(false);
 			//exp.player.controls.ShouldLockControls = false;
 			exp.uiController.PauseUI.alpha = 0.0f;
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.PAUSED, false);
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.PAUSED, false);
 		}
 	}
 
@@ -507,6 +507,7 @@ public class TrialController : MonoBehaviour
 				yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			}
 			else{
+                Debug.Log("showing instructions");
 				exp.currInstructions.SetInstructionsColorful();
 				exp.currInstructions.DisplayText(initialInstructions1);
 				scoreInstructionsGroup.alpha = 0.0f;
@@ -587,14 +588,14 @@ public class TrialController : MonoBehaviour
 			trialLogger.LogInstructionEvent ();
 			exp.uiController.blockCompletedUI.Play (i, exp.scoreController.score, ListOfTrialBlocks.Count);
 			trialLogger.LogBlockScreenStarted (true);
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
 
 			yield return StartCoroutine (exp.WaitForActionButton ());
 
 			exp.uiController.blockCompletedUI.Stop ();
 			trialLogger.LogBlockScreenStarted (false);
 
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, false);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, false);
 			if (i < ListOfTrialBlocks.Count - 1)
 				yield return StartCoroutine (exp.uiController.pirateController.PlayEncouragingPirate ());
 			exp.scoreController.Reset ();
@@ -768,7 +769,7 @@ public class TrialController : MonoBehaviour
 		} else {
 			trialLogger.Log (numRealTrials, currentTrial.DefaultObjectLocationsXZ.Count, currentTrial.SpecialObjectLocationsXZ.Count, ExperimentSettings_CoinTask.isOneByOneReveal, currentTrial.isStim);
 			numRealTrials++;
-			TCPServer.Instance.SendTrialNum (numRealTrials);
+			//TCPServer.Instance.SendTrialNum (numRealTrials);
 			Debug.Log ("Logged trial #: " + numRealTrials);
 		}
 
@@ -804,9 +805,9 @@ public class TrialController : MonoBehaviour
 		//START NAVIGATION --> TODO: make this its own function. or a delegate. ...clean it up.
 		trialLogger.LogTrialNavigation (true);
 		if (currentTrial.isStim) {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.STIM_NAVIGATION, true);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.STIM_NAVIGATION, true);
 		} else {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, true);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, true);
 		}
 
 		exp.uiController.goText.Play ();
@@ -852,9 +853,9 @@ public class TrialController : MonoBehaviour
 		//exp.player.TurnOnVisuals (false);
 		trialLogger.LogTrialNavigation (false);
 		if (currentTrial.isStim) {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.STIM_NAVIGATION, false);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.STIM_NAVIGATION, false);
 		} else {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, false);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, false);
 		}
 		trialLogger.LogTransportationToTowerEvent (true);
 		currentDefaultObject = null; //set to null so that arrows stop showing up...
@@ -863,10 +864,10 @@ public class TrialController : MonoBehaviour
 
 		//RUN DISTRACTOR GAME
 		trialLogger.LogDistractorGame (true);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, true);
+		//TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, true);
 		yield return StartCoroutine (exp.boxGameController.RunGame ());
 		trialLogger.LogDistractorGame (false);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, false);
+		//TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, false);
 
 		//jitter before the first object is shown
 		yield return StartCoroutine (exp.WaitForJitter (Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
@@ -949,20 +950,7 @@ public class TrialController : MonoBehaviour
 				exp.environmentController.myPositionSelector.Reset ();
 				exp.environmentController.myPositionSelector.EnableSelection (true);
 
-				switch (randomOrderIndex) {
-				case 0:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_1, false);
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, true);
-					break;
-				case 1:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_2, false);
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, true);
-					break;
-				case 2:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, false);
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, true);
-					break;
-				}
+				
 				trialLogger.LogRecallChoiceStarted (true, 2);
 
 //			exp.uiController.doYouRememberUI.Stop();
@@ -1005,18 +993,6 @@ public class TrialController : MonoBehaviour
 				//disable position selection
 				exp.environmentController.myPositionSelector.EnableSelection (false);
 				trialLogger.LogRecallChoiceStarted (false, 2);
-
-				switch (randomOrderIndex) {
-				case 0:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, false);
-					break;
-				case 1:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, false);
-					break;
-				case 2:
-					TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, false);
-					break;
-				}
 
 
 				trialLogger.LogInstructionEvent ();
@@ -1486,7 +1462,7 @@ public class TrialController : MonoBehaviour
 		trialLogger.LogTemporalFeedbackEnded ();
 
 		trialLogger.LogScoreScreenStarted (true);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
+	//	TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
 		exp.uiController.scoreRecapUI.Play (currTrialNum, timeBonus + memoryScore + temporalScore, Config_CoinTask.GetTotalNumTrials (), objectScores, specialObjectListRecallOrder, timeBonus, temporalScore, trialTimer.GetSecondsFloat ());
 
 #if MRIVERSION
@@ -1497,7 +1473,7 @@ public class TrialController : MonoBehaviour
 
 		exp.uiController.scoreRecapUI.Stop ();
 		trialLogger.LogScoreScreenStarted (false);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);
+	//	TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);
 
 
 		//delete all indicators & special objects
@@ -1506,7 +1482,7 @@ public class TrialController : MonoBehaviour
 		DestroyGameObjectList (exp.objectController.CurrentTrialSpecialObjects);
 
 		trialLogger.LogFeedback (false);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, false);
+	//	TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, false);
 
 		yield return 0;
 	}
@@ -1515,7 +1491,7 @@ public class TrialController : MonoBehaviour
 	IEnumerator ShowFeedback (List<int> specialObjectOrder, List<Vector3> chosenPositions, List<bool>isFoil, List<int>recallAnswers)
 	{
 		trialLogger.LogFeedback (true);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
+	//	TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
 
 		int correctRecallCues = 0; 
 		int totalRecallCues = 0;
@@ -1647,7 +1623,7 @@ public class TrialController : MonoBehaviour
 
 		trialLogger.LogInstructionEvent ();
 		trialLogger.LogScoreScreenStarted (true);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
+	//	TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
 		exp.uiController.scoreRecapUI.Play (currTrialNum, timeBonus + memoryScore + temporalScore, Config_CoinTask.GetTotalNumTrials (), objectScores, specialObjectListRecallOrder, timeBonus, temporalScore, trialTimer.GetSecondsFloat ());
 
 		#if MRIVERSION
@@ -1658,7 +1634,7 @@ public class TrialController : MonoBehaviour
 
 		exp.uiController.scoreRecapUI.Stop ();
 		trialLogger.LogScoreScreenStarted (false);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);
+	//	TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);
 
 
 		//delete all indicators & special objects
@@ -1671,7 +1647,7 @@ public class TrialController : MonoBehaviour
 		exp.objectController.CurrentTrialFoilObjects = 0;
 
 		trialLogger.LogFeedback (false);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, false);
+	//	TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, false);
 
 		yield return 0;
 	}

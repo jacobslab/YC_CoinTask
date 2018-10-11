@@ -5,7 +5,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.IO;
-using MonoLibUsb;
+//using MonoLibUsb;
 public class SyncboxControl : MonoBehaviour
 {
     Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
@@ -263,6 +263,7 @@ public class SyncboxControl : MonoBehaviour
 		UnityEngine.Debug.Log(CloseUSB().ToString());
 	}
 #else
+
     private const short FREIBURG_SYNCBOX_VENDOR_ID = 0x0403;
     private const short FREIBURG_SYNCBOX_PRODUCT_ID = 0x6001;
     private const int FREIBURG_SYNCBOX_TIMEOUT_MS = 500;
@@ -272,12 +273,12 @@ public class SyncboxControl : MonoBehaviour
 
     private const float TIME_BETWEEN_PULSES_MIN = 0.8f;
     private const float TIME_BETWEEN_PULSES_MAX = 1.2f;
-
+/*
     private MonoLibUsb.MonoUsbSessionHandle sessionHandle = new MonoUsbSessionHandle();
     private MonoLibUsb.Profile.MonoUsbProfileList profileList = null;
     private MonoLibUsb.Profile.MonoUsbProfile freiburgSyncboxProfile = null;
     private MonoLibUsb.MonoUsbDeviceHandle freiburgSyncboxDeviceHandle = null;
-
+    */
     // Use this for initialization
     void Start()
     {
@@ -286,6 +287,7 @@ public class SyncboxControl : MonoBehaviour
 
     private void BeginFreiburgSyncSession()
     {
+        /*
         if (sessionHandle.IsInvalid)
             throw new ExternalException("Failed to initialize context.");
 
@@ -320,6 +322,7 @@ public class SyncboxControl : MonoBehaviour
             UnityEngine.Debug.Log("The ftd USB device was found but couldn't be opened");
 
         StartCoroutine(FreiburgPulse());
+        */
     }
 
     private void EndFreiburgSyncSession()
@@ -333,6 +336,7 @@ public class SyncboxControl : MonoBehaviour
 
     private IEnumerator FreiburgPulse()
     {
+        /*
         while (true)
         {
             yield return new WaitForSeconds(UnityEngine.Random.Range(TIME_BETWEEN_PULSES_MIN, TIME_BETWEEN_PULSES_MAX));
@@ -353,6 +357,8 @@ public class SyncboxControl : MonoBehaviour
         UnityEngine.Debug.Log("Restarting sync session.");
         EndFreiburgSyncSession();
         BeginFreiburgSyncSession();
+        */
+        yield return null;
     }
 
     private void LogPulse(long time, int duration)
