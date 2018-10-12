@@ -26,7 +26,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
 #else
-	public static bool isSyncbox = true;
+	public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
 #endif
 
@@ -139,18 +139,23 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float pauseAtTreasureTime = 1.5f;
 
 	public static float maxChestNavigationTime = 8.0f;
+    public static float initialInstructionsTime = 20f;
 	public static float maxInstructionTime = 3.0f;
 	public static float maxFeedbackTime = 3.0f;
 	public static float maxAnswerTime = 5.0f;
 	public static float maxBoxAnswerTime = 5.0f;
 	public static float maxScoreScreenTime = 5.0f;
-	public static float maxLocationChooseTime = 10.0f;
+    public static float maxTemporalChooseTime = 4.0f;
+	public static float maxLocationChooseTime = 6.0f;
 
 	public static float MRIAutoDriveTimeMult = 2.0f;
 #else
 	public static float rotateToSpecialObjectSpeed = 33.33f;
 	public static float pauseAtTreasureTime = 1.5f;
 #endif
+
+
+
 	
 	public static float minInitialInstructionsTime = 0.0f; //TODO: change back to 5.0f
 	public static float minDefaultInstructionTime = 0.0f; //time each learning trial instruction should be displayed for

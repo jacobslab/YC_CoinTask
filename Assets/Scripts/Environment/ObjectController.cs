@@ -160,6 +160,7 @@ public class ObjectController : MonoBehaviour {
 			newObj.transform.position = objPos;
 			newObj.tag = "FoilObject";
 			newObj.GetComponent<SpawnableObject> ().TurnVisible (false);
+            UnityEngine.Debug.Log("FOUND A FOIL OBJECT");
 			exp.trialController.IncrementNumDefaultObjectsCollected ();
 			newObj = previousDefaultObj;
 		} else {

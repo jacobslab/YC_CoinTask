@@ -50,7 +50,7 @@ public class TrialController : MonoBehaviour
 		"\n\n Benutzen Sie den Joystick zum navigieren. " +
 		"\n\nSchatzkisten öffnen sich bei Kontakt. " +
 		"\n\nVersuchen Sie sich  für jeden Gegenstand zu merken wo Sie ihn gefunden haben. " +
-		"\n\nDrücken Sie (X) zum Fortfahren.";
+		"\n\n";
 	
 
 	string initialInstructions2 = "Nachdem Sie zu den Schatzkisten navigiert sind, werden Sie automatisch zum Ende der Umgebung transportiert." +
@@ -58,7 +58,7 @@ public class TrialController : MonoBehaviour
 		"\n\nWenn Sie sich an den Gegenstand nicht erinnern können, sagen Sie bitte 'VERGESSEN'" +
 		"\n\nWenn wir einen Ort markieren, an dem keine Schatzkiste war, sagen Sie bitte 'NICHTS' ins Mikrophon.  " +
 		"\n\nSie haben 6 Sekunden Zeit zum Antworten. " +
-		"\n\nDrücken Sie (X) zum Fortfahren";
+		"\n\n";
 
 	
 
@@ -375,17 +375,23 @@ public class TrialController : MonoBehaviour
 
 				newBlock.Add (threeItemTrials [randomThreeItemIndex]);
 				newBlock.Add (fourItemTrials [randomFourItemIndex]);
-				if (Random.value < 0.5f) {
+#if !MRIVERSION
+                if (Random.value < 0.5f) {
 					threeItemTrials [randomThreeItemIndex].trialRecallType = ExperimentSettings_CoinTask.RecallType.Location;
 					fourItemTrials [randomFourItemIndex].trialRecallType = ExperimentSettings_CoinTask.RecallType.Object;
 				} else {
 					threeItemTrials [randomThreeItemIndex].trialRecallType = ExperimentSettings_CoinTask.RecallType.Object;
 					fourItemTrials [randomFourItemIndex].trialRecallType = ExperimentSettings_CoinTask.RecallType.Location;
 				}
-				//				newBlock.Add(fiveItemTrials[randomFiveItemIndex]);
-				//				newBlock.Add(sixItemTrials[randomSixItemIndex]);
+#else
 
-				threeItemTrials.RemoveAt (randomThreeItemIndex);
+                threeItemTrials[randomThreeItemIndex].trialRecallType = ExperimentSettings_CoinTask.RecallType.Location;
+                fourItemTrials[randomFourItemIndex].trialRecallType = ExperimentSettings_CoinTask.RecallType.Location;
+#endif
+                //				newBlock.Add(fiveItemTrials[randomFiveItemIndex]);
+                //				newBlock.Add(sixItemTrials[randomSixItemIndex]);
+
+                threeItemTrials.RemoveAt (randomThreeItemIndex);
 				fourItemTrials.RemoveAt (randomFourItemIndex);
 				//				fiveItemTrials.RemoveAt(randomFiveItemIndex);
 				//				sixItemTrials.RemoveAt(randomSixItemIndex);
@@ -475,7 +481,7 @@ public class TrialController : MonoBehaviour
 			}
 				
 #if (!(MRIVERSION))
-			#if (!UNITY_WEBPLAYER)
+#if (!UNITY_WEBPLAYER)
 			//		if(!ExperimentSettings_CoinTask.Instance.isWebBuild){
 			trialLogger.LogVideoEvent (true);
     
@@ -484,17 +490,22 @@ public class TrialController : MonoBehaviour
 			exp.instrVideoPlayer.DisableVideo ();
 			trialLogger.LogVideoEvent (false);
 			//		}
-			#endif
+#endif
 #endif
 
 			//CREATE SESSION STARTED FILE!
 			exp.CreateSessionStartedFile ();
-
+            /*
 			//show instructions for exploring, wait for the action button
 			trialLogger.LogInstructionEvent ();
 			initialInstPanel.alpha = 1f;
             Debug.Log("waiting for action button");
-			yield return StartCoroutine (exp.WaitForActionButton ());
+#if MRIVERSION
+            yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxInstructionTime));
+#else
+            yield return StartCoroutine (exp.WaitForActionButton ());
+#endif
+*/
             Debug.Log("action button pressed");
 			initialInstPanel.alpha = 0f;
 			yield return StartCoroutine (exp.uiController.pirateController.PlayWelcomingPirate ());
@@ -526,17 +537,17 @@ public class TrialController : MonoBehaviour
 			//yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 #endif
 
-			#if MRIVERSION
+#if MRIVERSION
 			if(Config_CoinTask.isPractice){
 				yield return StartCoroutine(RunPracticeTrials()); //if MRI practice, ONLY run the practice trials
 			}
 			else{
 				yield return StartCoroutine(RunTrials());
 			}
-			#else
+#else
 			yield return StartCoroutine (RunPracticeTrials ());
 			yield return StartCoroutine (RunTrials ());
-			#endif	
+#endif
 
 			yield return 0;
 		}
@@ -630,7 +641,7 @@ public class TrialController : MonoBehaviour
 		isConnectingToHardware = false;
 	}
 
-	#if MRIVERSION
+#if MRIVERSION
 	IEnumerator WaitForMRIConnectionKey(){
 		exp.uiController.WaitingForMRIUI.alpha = 1.0f;
 		while (Input.GetAxis("MRI Start Button") <= 0.0f) {
@@ -722,7 +733,7 @@ public class TrialController : MonoBehaviour
 		MRITimer.StopTimer ();
 		exp.uiController.MRITimerUI.alpha = 0.0f;
 	}
-	#endif
+#endif
 
 	//GETS CALLED IN WAITFORTREASUREPAUSE() -- this is when treasure is paused in its open state.
 	//...one the pause for encoding ends, we increment.
@@ -797,9 +808,9 @@ public class TrialController : MonoBehaviour
 		if (numRealTrials > 1) { //note: if numRealTrials > 1, not a practice trial.
 			trialLogger.LogInstructionEvent ();
 
-			#if !(MRIVERSION)
+#if !(MRIVERSION)
 			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToStart, true, true, false, Config_CoinTask.minDefaultInstructionTime));
-			#endif
+#endif
 		}
 
 		//START NAVIGATION --> TODO: make this its own function. or a delegate. ...clean it up.
@@ -827,20 +838,20 @@ public class TrialController : MonoBehaviour
 
 		//wait for player to collect all default objects
 		int numDefaultObjectsToCollect = currentTrial.DefaultObjectLocationsXZ.Count;
-
-		#if MRIVERSION
-		for(int i = 0; i <numDefaultObjectsToCollect; i++){
-			Debug.Log("WAIT FOR NAVIGATION TIMEOUT");
-			yield return StartCoroutine(WaitForMRINavigationTimeout(Config_CoinTask.maxChestNavigationTime));
+        UnityEngine.Debug.Log("NUM DEFAULT OBJECTS TO COLLECT " + numDefaultObjectsToCollect.ToString());
+#if MRIVERSION
+        while(numDefaultObjectsCollected < numDefaultObjectsToCollect)
+        { 
+            yield return StartCoroutine(WaitForMRINavigationTimeout(Config_CoinTask.maxChestNavigationTime));
 		}
-		#else //if not MRI version, just wait until all chests are collected;
+#else //if not MRI version, just wait until all chests are collected;
 		while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
 			yield return 0;
 		}
-		#endif
+#endif
 
-		//Add time bonus
-		trialTimer.StopTimer ();
+        //Add time bonus
+        trialTimer.StopTimer ();
 		timeBonus = exp.scoreController.CalculateTimeBonus (trialTimer.GetSecondsInt ());
 
 		//reset num default objects collected
@@ -957,24 +968,26 @@ public class TrialController : MonoBehaviour
 
 				//show single selection instruction and wait for selection button press
 				string selectObjectText = exp.currInstructions.selectTheLocationText;
+                exp.currInstructions.SetTextPanelOn();
 				if (ExperimentSettings_CoinTask.myLanguage == ExperimentSettings_CoinTask.LanguageSetting.Spanish) {
 					//check for masculine article
 					string[] splitName = specialItemDisplayName.Split (' ');
 					if (splitName [0] == "el") {
 						string displayNameNoEl = specialItemDisplayName.Remove (0, 3);
-						selectObjectText = selectObjectText + "l" + " " + displayNameNoEl + "? (X)."; //add the 'l' to "de" to make "del"
+						selectObjectText = selectObjectText + "l" + " " + displayNameNoEl + "? "; //add the 'l' to "de" to make "del"
 					} else {
-						selectObjectText = selectObjectText + " " + specialItemDisplayName + "? (X).";
+						selectObjectText = selectObjectText + " " + specialItemDisplayName + "?";
 					}
 				} else { //english
-					selectObjectText = selectObjectText + " " + specialItemDisplayName + "? (X).";
+					selectObjectText = selectObjectText + " " + specialItemDisplayName + "?";
 				}
 
 #if MRIVERSION
 			exp.currInstructions.SetInstructionsTransparentOverlay();
 			exp.currInstructions.DisplayText(selectObjectText);
 			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
-			exp.currInstructions.SetInstructionsBlank();
+                exp.currInstructions.SetTextPanelOff();
+                exp.currInstructions.SetInstructionsBlank();
 #else
 				exp.uiController.instructionPanel.SetActive (true);
 				yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
@@ -1078,7 +1091,7 @@ public class TrialController : MonoBehaviour
 				//yield return new WaitForSeconds (2f);
 				//trialLogger.LogInstructionEvent ();
 				//yield return StartCoroutine (exp.uiController.doYouRememberObjectUI.PlayObjectRecall());
-				#if MRIVERSION
+#if MRIVERSION
 			Config_CoinTask.MemoryState rememberResponse;
 			isMRITimeout = false;
 			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxAnswerTime));
@@ -1090,8 +1103,8 @@ public class TrialController : MonoBehaviour
 			}
 			rememberResponses.Add(rememberResponse);
 			trialLogger.LogRememberResponse(rememberResponse);
-				#else
-				#endif
+#else
+#endif
 				//yield return StartCoroutine (exp.WaitForActionButton ());
 				//				Config_CoinTask.MemoryState rememberResponse = exp.uiController.doYouRememberObjectUI.myAnswerSelector.GetMemoryState ();
 				//				rememberResponses.Add (rememberResponse);
@@ -1111,12 +1124,12 @@ public class TrialController : MonoBehaviour
 				exp.currInstructions.SetTextPanelOn ();
 
 
-				#if MRIVERSION
+#if MRIVERSION
 			exp.currInstructions.SetInstructionsTransparentOverlay();
 			exp.currInstructions.DisplayText(selectObjectText);
 			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
 			exp.currInstructions.SetInstructionsBlank();
-				#else
+#else
 
 
 				//set your own instructions
@@ -1124,7 +1137,7 @@ public class TrialController : MonoBehaviour
 				exp.currInstructions.DisplayText (selectObjectText);
 
 				//yield return new WaitForSeconds(3f);
-				#endif
+#endif
 
 
 				int logTrialNumber = i; //just the object number for this current trial
@@ -1140,7 +1153,7 @@ public class TrialController : MonoBehaviour
 
 				//initialize it to zero; it will remain this if the keyword isn't detected
 				recallAnswers [randomOrderIndex] = 0;
-				#if !UNITY_EDITOR_OSX
+#if !UNITY_EDITOR_OSX
 				//Create keywords for keyword recognizer
 				keywords.Add (currentRecallObject, () => {
 					// action to be performed when this keyword is spoken
@@ -1154,7 +1167,7 @@ public class TrialController : MonoBehaviour
 
 				keywordRecognizer.Start ();
 				UnityEngine.Debug.Log ("STARTED KEYWORD REC for" + currentRecallObject);
-				#endif
+#endif
 				//start recording
 				yield return StartCoroutine (exp.audioController.audioRecorder.Record (exp.sessionDirectory + "audio", fileName, recallTime));
 
@@ -1194,12 +1207,12 @@ public class TrialController : MonoBehaviour
 					yield return StartCoroutine (exp.WaitForISI (Config_CoinTask.isiTime));
 					Debug.Log ("waited for jitter and ISI time");
 				}
-				#if !UNITY_EDITOR_OSX
+#if !UNITY_EDITOR_OSX
 				if(!foundKeyword)
 				trialLogger.LogCortanaResponse(0);
 				foundKeyword=false;
 				keywords.Clear ();
-				#endif
+#endif
 				Debug.Log ("moving to the position");
 			} 
 
@@ -1289,9 +1302,13 @@ public class TrialController : MonoBehaviour
 				yield return StartCoroutine (exp.uiController.temporalRetrievalUI.Play (optionBCopy, optionACopy, optionBName, optionAName));
 				trialLogger.LogTemporalRetrievalOptions (optionBName, optionAName);
 			}
-			yield return StartCoroutine (exp.WaitForActionButton ());
-
-			int correctAnswerIndex = -1;
+#if MRIVERSION
+  
+            yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxTemporalChooseTime));
+#else
+            yield return StartCoroutine (exp.WaitForActionButton ());
+#endif
+            int correctAnswerIndex = -1;
 
 			if (indexA > indexB) {
 				Debug.Log (optionA.name + " is more recent");
@@ -1349,8 +1366,9 @@ public class TrialController : MonoBehaviour
 	IEnumerator ShowFeedback (List<int> specialObjectOrder, List<Vector3> chosenPositions)
 	{
 		trialLogger.LogFeedback (true);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
-
+#if !MRIVERSION
+        TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
+#endif
 		memoryScore = 0;
 		temporalScore = 0;
 		List<GameObject> CorrectPositionIndicators = new List<GameObject> ();
@@ -1461,18 +1479,18 @@ public class TrialController : MonoBehaviour
 		yield return StartCoroutine (exp.uiController.temporalRetrievalUI.ShowAnswer ());
 		trialLogger.LogTemporalFeedbackEnded ();
 
-		trialLogger.LogScoreScreenStarted (true);
+		//trialLogger.LogScoreScreenStarted (true);
 	//	TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
-		exp.uiController.scoreRecapUI.Play (currTrialNum, timeBonus + memoryScore + temporalScore, Config_CoinTask.GetTotalNumTrials (), objectScores, specialObjectListRecallOrder, timeBonus, temporalScore, trialTimer.GetSecondsFloat ());
+		//exp.uiController.scoreRecapUI.Play (currTrialNum, timeBonus + memoryScore + temporalScore, Config_CoinTask.GetTotalNumTrials (), objectScores, specialObjectListRecallOrder, timeBonus, temporalScore, trialTimer.GetSecondsFloat ());
 
 #if MRIVERSION
-		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxScoreScreenTime));
+		//yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxScoreScreenTime));
 #else
 		yield return StartCoroutine (exp.WaitForActionButton ());
 #endif
 
-		exp.uiController.scoreRecapUI.Stop ();
-		trialLogger.LogScoreScreenStarted (false);
+		//exp.uiController.scoreRecapUI.Stop ();
+		//trialLogger.LogScoreScreenStarted (false);
 	//	TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);
 
 
@@ -1512,9 +1530,9 @@ public class TrialController : MonoBehaviour
 			//throw bomb to selected location
 			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't actually want its visuals showing up as we wait
 
-			#if !(MRIVERSION)
+#if !(MRIVERSION)
 			yield return StartCoroutine (exp.objectController.ThrowExplosive (exp.player.transform.position, chosenPosition, i));
-			#endif
+#endif
 
 			int randomOrderIndex = specialObjectOrder [i];
 
@@ -1595,23 +1613,23 @@ public class TrialController : MonoBehaviour
 
 			//WAIT BEFORE NEXT FEEDBACK
 			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't want its visuals showing up as we wait
-			#if !(MRIVERSION)
+#if !(MRIVERSION)
 			yield return new WaitForSeconds (Config_CoinTask.feedbackTimeBetweenObjects);
-			#endif
+#endif
 		}
 
 		//disable original selector
 		exp.environmentController.myPositionSelector.EnableVisibility (false);
 
-		#if MRIVERSION
+#if MRIVERSION
 		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxFeedbackTime));
-		#else
+#else
 		//wait for selection button press
 
 		exp.currInstructions.SetTextPanelOn ();
 		yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 		exp.currInstructions.SetTextPanelOff ();
-		#endif
+#endif
 
 		currTrialNum++;
 
@@ -1626,11 +1644,11 @@ public class TrialController : MonoBehaviour
 	//	TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
 		exp.uiController.scoreRecapUI.Play (currTrialNum, timeBonus + memoryScore + temporalScore, Config_CoinTask.GetTotalNumTrials (), objectScores, specialObjectListRecallOrder, timeBonus, temporalScore, trialTimer.GetSecondsFloat ());
 
-		#if MRIVERSION
+#if MRIVERSION
 		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxScoreScreenTime));
-		#else
+#else
 		yield return StartCoroutine (exp.WaitForActionButton ());
-		#endif
+#endif
 
 		exp.uiController.scoreRecapUI.Stop ();
 		trialLogger.LogScoreScreenStarted (false);
