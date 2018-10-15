@@ -14,9 +14,7 @@ public class MirrorFlipCamera : MonoBehaviour {
 	void Awake(){
 		myCamera = GetComponent<Camera> ();
 #if MRIVERSION
-		if(!Config_CoinTask.isPractice){
-			shouldFlip = true;
-		}
+        shouldFlip = ExperimentSettings_CoinTask.shouldMirror;
 #endif
 	}
 

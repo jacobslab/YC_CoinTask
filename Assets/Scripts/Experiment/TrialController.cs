@@ -1475,9 +1475,9 @@ public class TrialController : MonoBehaviour
 
 
 		//temporal feedback
-		trialLogger.LogTemporalFeedbackStarted ();
-		yield return StartCoroutine (exp.uiController.temporalRetrievalUI.ShowAnswer ());
-		trialLogger.LogTemporalFeedbackEnded ();
+		//trialLogger.LogTemporalFeedbackStarted ();
+		//yield return StartCoroutine (exp.uiController.temporalRetrievalUI.ShowAnswer ());
+		//trialLogger.LogTemporalFeedbackEnded ();
 
 		//trialLogger.LogScoreScreenStarted (true);
 	//	TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);

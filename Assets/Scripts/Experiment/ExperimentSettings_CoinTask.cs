@@ -11,8 +11,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
 
+    public static bool shouldMirror = true;
 
-	private static Subject _currentSubject;
+    private static Subject _currentSubject;
 
 	public static Subject currentSubject{ 
 		get{ return _currentSubject; } 
@@ -20,7 +21,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			_currentSubject = value;
 		}
 	}
-
+    public Toggle mirrorToggle;
 	public GameObject quitButton; //must turn this off in web build
 
 	//subject selection controller
@@ -128,6 +129,11 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			#endif
 		#endif
 	}
+
+    public void UpdateMirrorToggle()
+    {
+        shouldMirror = mirrorToggle.isOn;
+    }
 
 	void InitLoggingPath(){
 		ResetDefaultLoggingPath ();
