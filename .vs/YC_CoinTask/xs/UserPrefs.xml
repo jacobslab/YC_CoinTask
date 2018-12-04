@@ -1,13 +1,17 @@
-﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
+﻿<Properties StartupConfiguration="{A218A5EE-DF74-1DCB-D94D-8592C475B0EA}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/EEG Communication/SyncboxControl.cs">
     <Files>
       <File FileName="Assets/Scripts/Experiment/InputMic.cs" Line="28" Column="74" />
       <File FileName="Assets/Scripts/Logging/ParticleLogTrack.cs" Line="99" Column="35" />
       <File FileName="Assets/Scripts/VideoRecording/Replay.cs" Line="686" Column="35" />
-      <File FileName="Assets/Scripts/EEG Communication/SyncboxControl.cs" Line="262" Column="1" />
-      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="623" Column="1" />
-      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="19" Column="6" />
+      <File FileName="Assets/Scripts/EEG Communication/SyncboxControl.cs" Line="316" Column="1" />
+      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="882" Column="1" />
+      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="76" Column="1" />
+      <File FileName="Assets/Scripts/Eyetracker/EyetrackerManager.cs" Line="42" Column="5" />
+      <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" Line="14" Column="4" />
+      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" Line="224" Column="110" />
+      <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" Line="56" Column="21" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
@@ -16,4 +20,5 @@
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.YC__CoinTask PreferredExecutionTarget="Unity.Editor" />
 </Properties>
