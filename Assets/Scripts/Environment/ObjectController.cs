@@ -18,6 +18,7 @@ public class ObjectController : MonoBehaviour {
 	public List<GameObject> FoilObjects;
 	public int CurrentTrialFoilObjects=0;
 	public GameObject defaultFoilObject;
+    public GameObject flagPrefab;
 
 	//experiment singleton
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
@@ -133,16 +134,16 @@ public class ObjectController : MonoBehaviour {
 	}
 
 	//special positions get passed in so that the default object can get a special tag for later use for spawning special objects
-	public void SpawnDefaultObjects(List<Vector2> defaultPositions, List<Vector2> specialPositions, ExperimentSettings_CoinTask.RecallType recallType){
+    public void SpawnDefaultObjects(List<Vector2> defaultPositions, List<Vector2> specialPositions,ExperimentSettings_CoinTask.RecallType recallType){
 		Debug.Log ("IN SPAWN DEFAULT OBJECTS");
 		for(int i = 0; i < defaultPositions.Count; i++){
 			Vector2 currPos = defaultPositions[i];
-			SpawnDefaultObject( currPos, specialPositions, i, recallType);
+            SpawnDefaultObject( currPos, specialPositions, i,recallType);
 		}
 	}
 
 	//special positions get passed in so that the default object can get a special tag for later use for spawning special objects
-	public GameObject SpawnDefaultObject (Vector2 positionXZ, List<Vector2> specialPositions, int index, ExperimentSettings_CoinTask.RecallType recallType) {
+    public GameObject SpawnDefaultObject (Vector2 positionXZ, List<Vector2> specialPositions, int index, ExperimentSettings_CoinTask.RecallType recallType) {
 		
 		GameObject newObj;
 		Vector3 objPos;
@@ -162,7 +163,8 @@ public class ObjectController : MonoBehaviour {
 			newObj.GetComponent<SpawnableObject> ().TurnVisible (false);
 			exp.trialController.IncrementNumDefaultObjectsCollected ();
 			newObj = previousDefaultObj;
-		} else {
+		} 
+        else {
 			newObj = null;
 
 			exp.trialController.IncrementNumDefaultObjectsCollected ();
@@ -214,7 +216,27 @@ public class ObjectController : MonoBehaviour {
 		}
 	}
 
-	public List<Vector2> GenerateOrderedDefaultObjectPositions (int numDefaultObjects, Vector3 distancePos){ //ORDERED BY DISTANCE TO PLAYER START POS
+    public Vector2 GenerateFlagPosition(List<Vector2> defaultPositions,Vector3 distancePos)
+    {
+        bool objectsAreFarEnough=false;
+        float smallestDistance = 0f;
+        Vector2 randomEnvPositionVec2 = Vector2.zero;
+        while (!objectsAreFarEnough)
+        {
+            // generate a random position
+            Vector3 randomEnvPosition = exp.environmentController.GetRandomPositionWithinWallsXZ(Config_CoinTask.radiusBuffer);
+            randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
+
+
+            //check if the generated position is far enough from all other positions
+            objectsAreFarEnough = CheckObjectsFarEnoughXZ(randomEnvPositionVec2, defaultPositions, new Vector2(distancePos.x, distancePos.z), out smallestDistance);
+        }
+
+        return randomEnvPositionVec2;
+    }
+
+
+    public List<Vector2> GenerateOrderedDefaultObjectPositions (int numDefaultObjects, Vector3 distancePos){ //ORDERED BY DISTANCE TO PLAYER START POS
 		List<Vector2> defaultPositions = new List<Vector2> ();
 
 		for (int i = 0; i < numDefaultObjects; i++) {

@@ -82,8 +82,15 @@ public class InstructionsController : MonoBehaviour {
 	public string maybeExplanationInstruction = "win 100 points / lose 50 points";
 	public string noExplanationInstruction = "win 50 points / lose 0 points";
 
-	//go & hurry up
-	public string GoText = "GO!";
+
+    //go back to goal location 
+    public string goalLocationInstruction = "Go to the flag location and press (X) button";
+
+    //free recall instruction
+    public string freeRecallInstruction = "Try to recall the names of all objects you encountered";
+
+    //go & hurry up
+    public string GoText = "GO!";
 	public string hurryUpText = "hurry up!";
 
 	//box swap

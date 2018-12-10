@@ -12,9 +12,7 @@ public class PlayerControls : MonoBehaviour{
 
 	public Transform TiltableTransform;
 	public Transform towerPositionTransform1;
-	public Transform towerPositionTransform2;
 	public Transform startPositionTransform1;
-	public Transform startPositionTransform2;
 
 	float RotationSpeed = 50.0f;
 	
@@ -34,8 +32,8 @@ public class PlayerControls : MonoBehaviour{
 			GetComponent<Collider>().enabled = true;
 		}
 
-		furthestTravelDist = (startPositionTransform1.position - towerPositionTransform2.position).magnitude; //close start, far tower
-		closestTravelDist = (startPositionTransform1.position - towerPositionTransform1.position).magnitude; //close start, close tower
+		//furthestTravelDist = (startPositionTransform1.position - towerPositionTransform2.position).magnitude; //close start, far tower
+		//closestTravelDist = (startPositionTransform1.position - towerPositionTransform1.position).magnitude; //close start, close tower
 
 	}
 	
@@ -172,7 +170,67 @@ public class PlayerControls : MonoBehaviour{
 		
 	}
 
-	public IEnumerator SmoothMoveTo(Vector3 targetPosition, Quaternion targetRotation, bool isChestAutoDrive){
+    public IEnumerator SmoothRotateTo(Quaternion targetRotation){
+
+        SetTilt(0.0f, 1.0f);
+
+        //stop collisions
+        GetComponent<Collider>().enabled = false;
+
+        Quaternion origRotation = transform.rotation;
+        Vector3 origPosition = transform.position;
+
+        float timeToRotate = 1f;
+#if MRIVERSION
+        if(isChestAutoDrive){
+            timeToTravel *= Config_CoinTask.MRIAutoDriveTimeMult;
+        }
+#endif
+
+        float tElapsed = 0.0f;
+        //float epsilon = 0.01f;
+
+        //DEBUG
+        //float totalTimeElapsed = 0.0f;
+
+        //float angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
+        //float angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
+        //      bool arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
+        //while ( ( angleDiffY >= epsilon ) || ( angleDiffX >= epsilon ) || (!arePositionsCloseEnough) ){
+        //Debug.Log("time to travel is " + timeToTravel.ToString());
+        Debug.Log("about to rotate");
+        while (tElapsed < timeToRotate)
+        {
+            //totalTimeElapsed += Time.deltaTime;
+
+            //tElapsed += (Time.deltaTime * moveAndRotateRate);
+
+            tElapsed += Time.deltaTime;
+
+            float percentageTime = tElapsed / timeToRotate;
+
+            //will spherically interpolate the rotation for config.spinTime seconds
+            transform.rotation = Quaternion.Slerp(origRotation, targetRotation, percentageTime); //SLERP ALWAYS TAKES THE SHORTEST PATH.
+
+            //calculate new differences
+            //angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
+            //angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
+            //arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
+
+            yield return 0;
+        }
+
+
+        transform.rotation = targetRotation;
+
+        //enable collisions again
+        GetComponent<Collider>().enabled = true;
+
+        yield return null;
+    }
+
+
+	public IEnumerator SmoothMoveTo(Vector3 targetPosition, bool isChestAutoDrive){
 
 		SetTilt (0.0f, 1.0f);
 
@@ -189,7 +247,8 @@ public class PlayerControls : MonoBehaviour{
 		float travelDistance = (origPosition - targetPosition).magnitude;
 
 
-		float timeToTravel = GetTimeToTravel (travelDistance);//travelDistance / smoothMoveSpeed;
+        //float timeToTravel = GetTimeToTravel (travelDistance);//travelDistance / smoothMoveSpeed;
+        float timeToTravel = 1f; //fixed time now
 		#if MRIVERSION
 		if(isChestAutoDrive){
 			timeToTravel *= Config_CoinTask.MRIAutoDriveTimeMult;
@@ -197,39 +256,20 @@ public class PlayerControls : MonoBehaviour{
 		#endif
 
 		float tElapsed = 0.0f;
-		//float epsilon = 0.01f;
+        //float epsilon = 0.01f;
 
-		//DEBUG
-		float totalTimeElapsed = 0.0f;
+        Debug.Log("about to move");
+        while(tElapsed < timeToTravel)
+        {
+            tElapsed += Time.deltaTime;
 
-		//float angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
-		//float angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
-//		bool arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
-		//while ( ( angleDiffY >= epsilon ) || ( angleDiffX >= epsilon ) || (!arePositionsCloseEnough) ){
-		while(tElapsed < timeToTravel){
-			totalTimeElapsed += Time.deltaTime;
+            float percentageTime = tElapsed / timeToTravel;
+            transform.position = Vector3.Lerp(origPosition, targetPosition, percentageTime);
+            yield return 0;
+        }
 
-			//tElapsed += (Time.deltaTime * moveAndRotateRate);
+        //Debug.Log ("TOTAL TIME ELAPSED FOR SMOOTH MOVE: " + totalTimeElapsed);
 
-			tElapsed += Time.deltaTime;
-
-			float percentageTime = tElapsed / timeToTravel;
-
-			//will spherically interpolate the rotation for config.spinTime seconds
-			transform.rotation = Quaternion.Slerp(origRotation, targetRotation, percentageTime); //SLERP ALWAYS TAKES THE SHORTEST PATH.
-			transform.position = Vector3.Lerp(origPosition, targetPosition, percentageTime);
-
-			//calculate new differences
-			//angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
-			//angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
-			//arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
-
-			yield return 0;
-		}
-		
-		//Debug.Log ("TOTAL TIME ELAPSED FOR SMOOTH MOVE: " + totalTimeElapsed);
-
-		transform.rotation = targetRotation;
 		transform.position = targetPosition;
 
 		//enable collisions again

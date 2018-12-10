@@ -34,7 +34,8 @@ public class Experiment_CoinTask : MonoBehaviour
     public TrialController trialController;
 
     //DISTRACTOR GAME
-    public BoxSwapGameController boxGameController;
+    public DotGameController dotGameController;
+    //public BoxSwapGameController boxGameController;
 
     //instruction video player
     public VideoPlay instrVideoPlayer;
@@ -223,14 +224,15 @@ public class Experiment_CoinTask : MonoBehaviour
 			else*/
             if (currentState == ExperimentState.inExperiment && !isRunningExperiment && EyetrackerManager.finishedCalibration)
             {
-             if (currentState == ExperimentState.inExperiment && !isRunningExperiment && EyetrackerManager.finishedCalibration)
-            {
-              Debug.Log("running experiment");
-				StartCoroutine(BeginExperiment());
-			}
+                if (currentState == ExperimentState.inExperiment && !isRunningExperiment && EyetrackerManager.finishedCalibration)
+                {
+                    Debug.Log("running experiment");
+                    StartCoroutine(BeginExperiment());
+                }
 
-		}
-	}
+            }
+        }
+    }
 
 	public IEnumerator RunOutOfTrials(){
 
