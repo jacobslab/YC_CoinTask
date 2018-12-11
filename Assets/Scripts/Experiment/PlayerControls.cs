@@ -180,7 +180,7 @@ public class PlayerControls : MonoBehaviour{
         Quaternion origRotation = transform.rotation;
         Vector3 origPosition = transform.position;
 
-        float timeToRotate = 1f;
+        float timeToRotate = 1.5f;
 #if MRIVERSION
         if(isChestAutoDrive){
             timeToTravel *= Config_CoinTask.MRIAutoDriveTimeMult;
@@ -248,7 +248,7 @@ public class PlayerControls : MonoBehaviour{
 
 
         //float timeToTravel = GetTimeToTravel (travelDistance);//travelDistance / smoothMoveSpeed;
-        float timeToTravel = 1f; //fixed time now
+        float timeToTravel = 1.5f; //fixed time now
 		#if MRIVERSION
 		if(isChestAutoDrive){
 			timeToTravel *= Config_CoinTask.MRIAutoDriveTimeMult;

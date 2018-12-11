@@ -575,14 +575,16 @@ public class TrialController : MonoBehaviour
             exp.CreateSessionStartedFile();
 
             //show instructions for exploring, wait for the action button
+            /*
             trialLogger.LogInstructionEvent();
             initialInstPanel.alpha = 1f;
             Debug.Log("waiting for action button");
             yield return StartCoroutine(exp.WaitForActionButton());
             Debug.Log("action button pressed");
             initialInstPanel.alpha = 0f;
-            yield return StartCoroutine(exp.uiController.pirateController.PlayWelcomingPirate());
-
+            
+    yield return StartCoroutine(exp.uiController.pirateController.PlayWelcomingPirate());
+    */
 #if MRIVERSION
 			if(Config_CoinTask.isPractice){
 				yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
