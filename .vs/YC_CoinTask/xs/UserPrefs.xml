@@ -1,20 +1,23 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Anim. &amp; Visuals/ChosenIndicatorController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Experiment/TrialController.cs">
     <Files>
-      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="1023" Column="18" />
-      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="76" Column="10" />
-      <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" Line="359" Column="29" />
-      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" Line="18" Column="31" />
-      <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" Line="56" Column="21" />
-      <File FileName="Assets/Scripts/Experiment/Trial.cs" Line="106" Column="28" />
+      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="497" Column="10" />
+      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="99" Column="42" />
+      <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" Line="363" Column="1" />
+      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" Line="315" Column="5" />
+      <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" Line="253" Column="21" />
+      <File FileName="Assets/Scripts/Experiment/Trial.cs" Line="82" Column="71" />
       <File FileName="Assets/Scripts/Experiment/PlayerControls.cs" Line="206" Column="64" />
       <File FileName="Assets/Scripts/Environment/EnvironmentPositionSelector.cs" Line="79" Column="6" />
-      <File FileName="Assets/Scripts/Environment/ObjectController.cs" Line="45" Column="3" />
+      <File FileName="Assets/Scripts/Environment/ObjectController.cs" Line="153" Column="78" />
       <File FileName="Assets/Flag.cs" Line="26" Column="1" />
-      <File FileName="Assets/Scripts/Experiment/InstructionsController.cs" Line="95" Column="5" />
-      <File FileName="Assets/DotGameController.cs" Line="22" Column="26" />
-      <File FileName="Assets/Scripts/Anim. &amp; Visuals/ChosenIndicatorController.cs" Line="25" Column="39" />
+      <File FileName="Assets/Scripts/Experiment/InstructionsController.cs" Line="163" Column="38" />
+      <File FileName="Assets/DotGameController.cs" Line="34" Column="1" />
+      <File FileName="Assets/Scripts/Anim. &amp; Visuals/ChosenIndicatorController.cs" Line="33" Column="28" />
+      <File FileName="Assets/Scripts/Anim. &amp; Visuals/CorrectPositionIndicatorController.cs" Line="74" Column="69" />
+      <File FileName="Assets/Scripts/GUI/ScoreRecapUI.cs" Line="111" Column="7" />
+      <File FileName="Assets/Scripts/GUI/UIController.cs" Line="56" Column="22" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

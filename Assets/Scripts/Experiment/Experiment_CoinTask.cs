@@ -234,75 +234,86 @@ public class Experiment_CoinTask : MonoBehaviour
         }
     }
 
-	public IEnumerator RunOutOfTrials(){
+    public IEnumerator RunOutOfTrials()
+    {
 
-		currInstructions.SetInstructionsColorful(); //want to keep a dark screen before transitioning to the end!
-		EndExperiment();
+        currInstructions.SetInstructionsColorful(); //want to keep a dark screen before transitioning to the end!
+        EndExperiment();
 
-		yield return 0;
-	}
+        yield return 0;
+    }
 
-	public IEnumerator RunInstructions(){
-		isRunningInstructions = true;
+    public IEnumerator RunInstructions()
+    {
+        isRunningInstructions = true;
 
-		//IF THERE ARE ANY PRELIMINARY INSTRUCTIONS YOU WANT TO SHOW BEFORE THE EXPERIMENT STARTS, YOU COULD PUT THEM HERE...
+        //IF THERE ARE ANY PRELIMINARY INSTRUCTIONS YOU WANT TO SHOW BEFORE THE EXPERIMENT STARTS, YOU COULD PUT THEM HERE...
 
-		currentState = ExperimentState.inExperiment;
-		isRunningInstructions = false;
+        currentState = ExperimentState.inExperiment;
+        isRunningInstructions = false;
 
-		yield return 0;
+        yield return 0;
 
-	}
+    }
 
 
-	public IEnumerator BeginExperiment(){
-		isRunningExperiment = true;
+    public IEnumerator BeginExperiment()
+    {
+        isRunningExperiment = true;
 
-		yield return StartCoroutine(trialController.RunExperiment());
-		
-		yield return StartCoroutine(RunOutOfTrials()); //calls EndExperiment()
+        yield return StartCoroutine(trialController.RunExperiment());
 
-		yield return 0;
+        yield return StartCoroutine(RunOutOfTrials()); //calls EndExperiment()
 
-	}
+        yield return 0;
 
-	public void EndExperiment(){
-		currInstructions.DisplayText("...loading end screen...");
+    }
 
-		Debug.Log ("Experiment Over");
-		currentState = ExperimentState.inExperimentOver;
-		isRunningExperiment = false;
+    public void EndExperiment()
+    {
+        currInstructions.DisplayText("...loading end screen...");
+
+        Debug.Log("Experiment Over");
+        currentState = ExperimentState.inExperimentOver;
+        isRunningExperiment = false;
 #if UNITY_WEBPLAYER
 		Application.LoadLevel ("MainIsland"); //avoid main menu for web build.
 #else
-		SceneController.Instance.LoadEndMenu();
+        SceneController.Instance.LoadEndMenu();
 #endif
-	}
+    }
 
-	//TODO: move to instructions controller...
-	public IEnumerator ShowSingleInstruction(string line, bool isDark, bool waitForButton, bool addRandomPostJitter, float minDisplayTimeSeconds){
-		if(isDark){
-			currInstructions.SetInstructionsColorful();
-		}
-		else{
-			currInstructions.SetInstructionsTransparentOverlay();
-		}
-		line = line.Replace ("NEWLINE", "\n");
-		currInstructions.DisplayText(line);
+    //TODO: move to instructions controller...
+    public IEnumerator ShowSingleInstruction(string line, bool isDark, bool waitForButton, bool addRandomPostJitter, float minDisplayTimeSeconds)
+    {
+        if (isDark)
+        {
+            currInstructions.SetInstructionsColorful();
+        }
+        else
+        {
+            currInstructions.SetInstructionsTransparentOverlay();
+        }
+        currInstructions.TurnOnInstructions();
+        line = line.Replace("NEWLINE", "\n");
+        currInstructions.DisplayText(line);
 
-		yield return new WaitForSeconds (minDisplayTimeSeconds);
+        yield return new WaitForSeconds(minDisplayTimeSeconds);
 
-		if (waitForButton) {
-			yield return StartCoroutine (WaitForActionButton ());
-		}
+        if (waitForButton)
+        {
+            yield return StartCoroutine(WaitForActionButton());
+        }
 
-		if (addRandomPostJitter) {
-			yield return StartCoroutine(WaitForJitter ( Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax ) );
-		}
+        if (addRandomPostJitter)
+        {
+            yield return StartCoroutine(WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
+        }
 
-		currInstructions.TurnOffInstructions ();
-		cameraController.SetInGame();
-	}
+        currInstructions.TurnOffInstructions();
+        cameraController.SetInGame();
+    }
+
 	
 	public IEnumerator WaitForActionButton(){
 		bool hasPressedButton = false;

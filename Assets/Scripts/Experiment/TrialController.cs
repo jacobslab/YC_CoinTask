@@ -45,6 +45,9 @@ public class TrialController : MonoBehaviour
     bool foundKeyword = false;
     public CanvasGroup initialInstPanel;
 
+
+    public List<Material> skyboxes;
+
 #if FREIBURG
 
     string initialInstructions1 = "Willkommen bei der Schatzsuche! " +
@@ -167,7 +170,7 @@ public class TrialController : MonoBehaviour
             //generate blocks from trials
             int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
             Debug.Log("NUMBER OF BLOCKS: " + numTrialBlocks.ToString());
-            GenerateTrialBlocks(ListOfTwoItemTrials, ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
+            GenerateTrialBlocks(ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
         }
     }
 
@@ -391,7 +394,7 @@ public class TrialController : MonoBehaviour
         return trialList;
     }
 
-    void GenerateTrialBlocks(List<Trial> threeItemTrials, List<Trial> fourItemTrials, int numBlocks, int numTrialsPerBlock)
+    void GenerateTrialBlocks(List<Trial> threeItemTrials, int numBlocks, int numTrialsPerBlock)
     {
         for (int i = 0; i < numBlocks; i++)
         {
@@ -399,19 +402,19 @@ public class TrialController : MonoBehaviour
             for (int j = 0; j < 4; j++)
             { //half two item, half one item
                 int randomThreeItemIndex = Random.Range(0, threeItemTrials.Count);
-                int randomFourItemIndex = Random.Range(0, fourItemTrials.Count);
+                //int randomFourItemIndex = Random.Range(0, fourItemTrials.Count);
                 //				int randomFiveItemIndex = Random.Range (0, fiveItemTrials.Count);
                 //				int randomSixItemIndex = Random.Range (0, sixItemTrials.Count);
 
                 newBlock.Add(threeItemTrials[randomThreeItemIndex]);
-                newBlock.Add(fourItemTrials[randomFourItemIndex]);
+                //newBlock.Add(fourItemTrials[randomFourItemIndex]);
                 threeItemTrials[randomThreeItemIndex].trialRecallType = ExperimentSettings_CoinTask.RecallType.Object;
-                fourItemTrials[randomFourItemIndex].trialRecallType = ExperimentSettings_CoinTask.RecallType.Object;
+                //fourItemTrials[randomFourItemIndex].trialRecallType = ExperimentSettings_CoinTask.RecallType.Object;
                 //				newBlock.Add(fiveItemTrials[randomFiveItemIndex]);
                 //				newBlock.Add(sixItemTrials[randomSixItemIndex]);
 
                 threeItemTrials.RemoveAt(randomThreeItemIndex);
-                fourItemTrials.RemoveAt(randomFourItemIndex);
+                //fourItemTrials.RemoveAt(randomFourItemIndex);
                 //				fiveItemTrials.RemoveAt(randomFiveItemIndex);
                 //				sixItemTrials.RemoveAt(randomSixItemIndex);
             }
@@ -450,6 +453,47 @@ public class TrialController : MonoBehaviour
 #else
             GetPauseInput();
 #endif
+        }
+
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            RenderSettings.skybox = skyboxes[0];
+        }
+        else if(Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            RenderSettings.skybox = skyboxes[1];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            RenderSettings.skybox = skyboxes[2];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            RenderSettings.skybox = skyboxes[2];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            RenderSettings.skybox = skyboxes[3];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            RenderSettings.skybox = skyboxes[4];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            RenderSettings.skybox = skyboxes[5];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            RenderSettings.skybox = skyboxes[6];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            RenderSettings.skybox = skyboxes[7];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            RenderSettings.skybox = skyboxes[8];
         }
     }
 
@@ -850,6 +894,10 @@ public class TrialController : MonoBehaviour
             yield return StartCoroutine(exp.player.controls.SmoothMoveTo(currentTrial.avatarStartPos, false));
             trialLogger.LogTransportationToHomeEvent(false, currentTrial.avatarStartPos);
             Debug.Log("done transporting");
+
+        }
+        else
+        {
             firstTime = false;
         }
 
@@ -1628,9 +1676,9 @@ public class TrialController : MonoBehaviour
 
 
         //temporal feedback
-        trialLogger.LogTemporalFeedbackStarted();
-        yield return StartCoroutine(exp.uiController.temporalRetrievalUI.ShowAnswer());
-        trialLogger.LogTemporalFeedbackEnded();
+        //trialLogger.LogTemporalFeedbackStarted();
+        //yield return StartCoroutine(exp.uiController.temporalRetrievalUI.ShowAnswer());
+        //trialLogger.LogTemporalFeedbackEnded();
 
         trialLogger.LogInstructionEvent();
         trialLogger.LogScoreScreenStarted(true);

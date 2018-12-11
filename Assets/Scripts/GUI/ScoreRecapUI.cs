@@ -51,26 +51,26 @@ public class ScoreRecapUI : MonoBehaviour {
 			for (int i = 0; i < objectScores.Count; i++) {
 
 				//set object score text & object names
-				string currObjectScore = FormatScore(objectScores[i]);
-				ObjectLocationScores [ObjectLocationScores.Length - 1 - i].text = currObjectScore;
-				ObjectNames [ObjectNames.Length - 1 - i].text = specialObjects [i].GetComponent<SpawnableObject>().GetDisplayName () + ":";
+				//string currObjectScore = FormatScore(objectScores[i]);
+				//ObjectLocationScores [ObjectLocationScores.Length - 1 - i].text = currObjectScore;
+				//ObjectNames [ObjectNames.Length - 1 - i].text = specialObjects [i].GetComponent<SpawnableObject>().GetDisplayName () + ":";
 
 				trialScore += objectScores [i];
 			}
 
 			//adjust positioning of the central content based on how many objects there were. or weren't.
-			if(ObjectLocationScores.Length > 2){
-				float distanceBetweenObjectText = ObjectLocationScores[0].transform.position.y - ObjectLocationScores[1].transform.position.y;
-				int spaceToMoveMult = ObjectLocationScores.Length - objectScores.Count;
-				ObjectScoreContent.transform.position += Vector3.up * ( Mathf.Abs(distanceBetweenObjectText) * spaceToMoveMult );
-			}
+			//if(ObjectLocationScores.Length > 2){
+			//	float distanceBetweenObjectText = ObjectLocationScores[0].transform.position.y - ObjectLocationScores[1].transform.position.y;
+			//	int spaceToMoveMult = ObjectLocationScores.Length - objectScores.Count;
+			//	ObjectScoreContent.transform.position += Vector3.up * ( Mathf.Abs(distanceBetweenObjectText) * spaceToMoveMult );
+			//}
 
-			TimeBonusText.text = FormatScore(timeBonus);
+			//TimeBonusText.text = FormatScore(timeBonus);
 
-			TemporalScoreText.text = FormatScore (temporalScore);
+			//TemporalScoreText.text = FormatScore (temporalScore);
 
 
-			TrialNumText.text = exp.currInstructions.trial + " " + (numTrialsComplete) + "/" + maxNumTrials + " " + exp.currInstructions.completed;
+			TrialNumText.text = "Sie haben " +(numTrialsComplete) + "/" + maxNumTrials + " " + " von 40 Runden absolviert.";
 
 			TotalTrialScoreText.text = FormatScore(trialScore + timeBonus + temporalScore + ScoreController.LastBoxSwapScore);
 

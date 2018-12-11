@@ -15,7 +15,8 @@ public class DotGameController : MonoBehaviour {
         dotGamePanel = gameObject.GetComponent<CanvasGroup>();
         instrPanel.alpha = 0f;
         dotGamePanel.alpha = 0f;
-	}
+        dotImage.enabled = false;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -24,12 +25,14 @@ public class DotGameController : MonoBehaviour {
 
     public IEnumerator RunGame()
     {
+        dotImage.enabled = false;
         dotGamePanel.alpha = maxAlpha;
 
         instrPanel.alpha = 1f;
         yield return StartCoroutine(Experiment_CoinTask.Instance.WaitForActionButton());
         instrPanel.alpha = 0f;
 
+        dotImage.enabled = true;
         //show dots in random locations with a random probability of red-white for 20 seconds
 
         float elapsedTime = 0f;
@@ -46,6 +49,7 @@ public class DotGameController : MonoBehaviour {
         elapsedTime += 1f;
         }
 
+        dotImage.enabled = false;
         dotGamePanel.alpha = 0f;
 		yield return null;
 	}

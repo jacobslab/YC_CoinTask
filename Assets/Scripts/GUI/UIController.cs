@@ -127,9 +127,9 @@ public class UIController : MonoBehaviour {
 
 		//trial score screen
 		trialCompleteTitle.text = exp.currInstructions.trialCompleteText;
-		timeBonusTitle.text = exp.currInstructions.timeBonusText + ":";
-		boxSwapBonusTitle.text = exp.currInstructions.boxSwapBonusText + ":";
-		recentObjectBonusTitle.text = exp.currInstructions.recentObjectBonusText + ":";
+		//timeBonusTitle.text = exp.currInstructions.timeBonusText + ":";
+		//boxSwapBonusTitle.text = exp.currInstructions.boxSwapBonusText + ":";
+		//recentObjectBonusTitle.text = exp.currInstructions.recentObjectBonusText + ":";
 		trialScoreTitle.text = exp.currInstructions.trialScoreText + ":";
 		scoreScreenPressToContinue.text = exp.currInstructions.pressToContinue;
 
