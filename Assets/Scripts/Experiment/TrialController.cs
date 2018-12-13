@@ -663,8 +663,8 @@ public class TrialController : MonoBehaviour
     IEnumerator RunTrials()
     {
 
-        exp.player.gameObject.transform.position = exp.player.controls.startPositionTransform1.position;
-        exp.player.gameObject.transform.rotation = exp.player.controls.startPositionTransform1.rotation;
+        exp.player.gameObject.transform.position = exp.player.controls.towerPositionTransform1.position;
+        exp.player.gameObject.transform.rotation = exp.player.controls.towerPositionTransform1.rotation;
         //RUN THE REST OF THE BLOCKS
         for (int i = 0; i < ListOfTrialBlocks.Count; i++)
         {
@@ -882,28 +882,23 @@ public class TrialController : MonoBehaviour
             //TCPServer.Instance.SendTrialNum(numRealTrials);
             Debug.Log("Logged trial #: " + numRealTrials);
         }
-
-        //move player to home location & rotation
-        if (!firstTime)
-        {
-            trialLogger.LogTransportationToHomeEvent(true, currentTrial.avatarStartPos);
-            //		Vector3 avatarStartPos = new Vector3 (Random.Range (exp.environmentController.WallsXNeg.position.x+5f, exp.environmentController.WallsXPos.position.x-5f), currentTrial.avatarStartPos.y, Random.Range (exp.environmentController.WallsZNeg.position.z+5f, exp.environmentController.WallsZPos.position.z-5f));
+        //spawn a flag
+        GameObject flagObj = Instantiate(exp.objectController.flagPrefab, new Vector3(currentTrial.FlagLocationXZ.x, 3.2f, currentTrial.FlagLocationXZ.y), Quaternion.identity) as GameObject;
 
 
-            Debug.Log("transported to : " + currentTrial.avatarStartPos.ToString());
-            trialLogger.LogStartPosition(currentTrial.avatarStartPos);
+        //flag position but with y-coordinate suitable for player
+        Vector3 transportablePos = new Vector3(flagObj.transform.position.x, currentTrial.avatarStartPos.y, flagObj.transform.position.z);
+        //move player to flag 
+
+        trialLogger.LogTransportationToHomeEvent(true, transportablePos);
+        //		Vector3 avatarStartPos = new Vector3 (Random.Range (exp.environmentController.WallsXNeg.position.x+5f, exp.environmentController.WallsXPos.position.x-5f), currentTrial.avatarStartPos.y, Random.Range (exp.environmentController.WallsZNeg.position.z+5f, exp.environmentController.WallsZPos.position.z-5f));
+
+        Debug.Log("transported to : " +transportablePos.ToString());
+        trialLogger.LogStartPosition(transportablePos);
             yield return StartCoroutine(exp.player.controls.SmoothRotateTo(currentTrial.avatarStartRot));
-            yield return StartCoroutine(exp.player.controls.SmoothMoveTo(currentTrial.avatarStartPos, false));
-            trialLogger.LogTransportationToHomeEvent(false, currentTrial.avatarStartPos);
+        yield return StartCoroutine(exp.player.controls.SmoothMoveTo(transportablePos, false));
+        trialLogger.LogTransportationToHomeEvent(false, transportablePos);
             Debug.Log("done transporting");
-
-        }
-        else
-        {
-            firstTime = false;
-        }
-
-
         //
 
         //disable selection
@@ -919,7 +914,7 @@ public class TrialController : MonoBehaviour
             trialLogger.LogInstructionEvent();
 
 #if !(MRIVERSION)
-            yield return StartCoroutine(exp.ShowSingleInstruction(exp.currInstructions.pressToStart, true, true, false, Config_CoinTask.minDefaultInstructionTime));
+            //yield return StartCoroutine(exp.ShowSingleInstruction(exp.currInstructions.pressToStart, true, true, false, Config_CoinTask.minDefaultInstructionTime));
 #endif
         }
 
@@ -943,9 +938,7 @@ public class TrialController : MonoBehaviour
         exp.player.controls.ShouldLockControls = false;
 
 
-        //spawn a flag
-        GameObject flagObj = Instantiate(exp.objectController.flagPrefab, new Vector3(currentTrial.FlagLocationXZ.x, 3.2f, currentTrial.FlagLocationXZ.y), Quaternion.identity) as GameObject;
-
+       
         //wait for them to reach the flag
         yield return StartCoroutine(flagObj.GetComponent<Flag>().WaitTillFlagReached());
 
@@ -1565,9 +1558,9 @@ public class TrialController : MonoBehaviour
                                                                                     //throw bomb to selected location
             exp.environmentController.myPositionSelector.EnableSelection(false); //turn off selector -- don't actually want its visuals showing up as we wait
 
-#if !(MRIVERSION)
-            yield return StartCoroutine(exp.objectController.ThrowExplosive(exp.player.transform.position, chosenPosition, i));
-#endif
+//#if !(MRIVERSION)
+//            yield return StartCoroutine(exp.objectController.ThrowExplosive(exp.player.transform.position, chosenPosition, i));
+//#endif
 
             int randomOrderIndex = specialObjectOrder[i];
 
@@ -1669,9 +1662,9 @@ public class TrialController : MonoBehaviour
 #else
         //wait for selection button press
 
-        exp.currInstructions.SetTextPanelOn();
-        yield return StartCoroutine(exp.ShowSingleInstruction(exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
-        exp.currInstructions.SetTextPanelOff();
+        //exp.currInstructions.SetTextPanelOn();
+        //yield return StartCoroutine(exp.ShowSingleInstruction(exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
+        //exp.currInstructions.SetTextPanelOff();
 #endif
 
         currTrialNum++;

@@ -29,8 +29,8 @@ public class DotGameController : MonoBehaviour {
         dotGamePanel.alpha = maxAlpha;
 
         instrPanel.alpha = 1f;
-        yield return StartCoroutine(Experiment_CoinTask.Instance.WaitForActionButton());
-        instrPanel.alpha = 0f;
+        //yield return StartCoroutine(Experiment_CoinTask.Instance.WaitForActionButton());
+        //instrPanel.alpha = 0f;
 
         dotImage.enabled = true;
         //show dots in random locations with a random probability of red-white for 20 seconds
@@ -39,7 +39,7 @@ public class DotGameController : MonoBehaviour {
 
         for (int i = 0; i < 20; i++)
         {
-            dotImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(Random.Range(100f, 1150f), Random.Range(-610f, -40f));
+            dotImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(Random.Range(390f, 845f), Random.Range(-514f, -260f));
         if (Random.value < 0.5f)
             dotImage.GetComponent<RawImage>().color = Color.red;
         else
@@ -48,7 +48,7 @@ public class DotGameController : MonoBehaviour {
         yield return new WaitForSeconds(1f);
         elapsedTime += 1f;
         }
-
+        instrPanel.alpha = 0f;
         dotImage.enabled = false;
         dotGamePanel.alpha = 0f;
 		yield return null;

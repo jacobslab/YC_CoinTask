@@ -75,7 +75,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 	//recall
 	public static int recallTime=6;
-    public static int freeRecallTime = 20;
+    public static int freeRecallTime = 10;
 
     public static string audioPath = "";
 #if MRIVERSION
@@ -113,7 +113,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 
 	//FEEDBACK SETTINGS:
-	public static float feedbackTimeBetweenObjects = 0.5f;
+	public static float feedbackTimeBetweenObjects = 1f;
 
 #endif
 
