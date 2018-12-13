@@ -278,7 +278,62 @@ public class PlayerControls : MonoBehaviour{
 		yield return 0;
 	}
 
-	float GetTimeToTravel(float distanceFromTarget){
+    public IEnumerator SmoothMoveRotateTo(Vector3 targetPosition, Quaternion targetRotation, bool isChestAutoDrive)
+    {
+
+        SetTilt(0.0f, 1.0f);
+
+        //notify tilting that we're smoothly moving, and thus should not tilt
+        //isSmoothMoving = true;
+
+
+        //stop collisions
+        GetComponent<Collider>().enabled = false;
+
+
+        Quaternion origRotation = transform.rotation;
+        Vector3 origPosition = transform.position;
+
+        float travelDistance = (origPosition - targetPosition).magnitude;
+
+
+        //float timeToTravel = GetTimeToTravel (travelDistance);//travelDistance / smoothMoveSpeed;
+        float timeToTravel = 3f; //fixed time now
+#if MRIVERSION
+        if(isChestAutoDrive){
+            timeToTravel *= Config_CoinTask.MRIAutoDriveTimeMult;
+        }
+#endif
+
+        float tElapsed = 0.0f;
+        //float epsilon = 0.01f;
+
+        Debug.Log("about to move");
+        while (tElapsed < timeToTravel)
+        {
+            tElapsed += Time.deltaTime;
+
+            float percentageTime = tElapsed / timeToTravel;
+            transform.position = Vector3.Lerp(origPosition, targetPosition, percentageTime); tElapsed += Time.deltaTime;
+
+
+            //will spherically interpolate the rotation for config.spinTime seconds
+            transform.rotation = Quaternion.Slerp(origRotation, targetRotation, percentageTime); //SLERP ALWAYS TAKES THE SHORTEST PATH.
+
+            yield return 0;
+        }
+
+        //Debug.Log ("TOTAL TIME ELAPSED FOR SMOOTH MOVE: " + totalTimeElapsed);
+
+        transform.position = targetPosition;
+
+        //enable collisions again
+        GetComponent<Collider>().enabled = true;
+
+        yield return 0;
+    }
+
+    float GetTimeToTravel(float distanceFromTarget){
 		//on the very first trial, you may not have explored very far!
 		//Then you get sent back to a home base, and not a tower -- which is much closer.
 		if (distanceFromTarget < closestTravelDist) {

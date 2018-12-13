@@ -455,46 +455,6 @@ public class TrialController : MonoBehaviour
 #endif
         }
 
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            RenderSettings.skybox = skyboxes[0];
-        }
-        else if(Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            RenderSettings.skybox = skyboxes[1];
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            RenderSettings.skybox = skyboxes[2];
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            RenderSettings.skybox = skyboxes[2];
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            RenderSettings.skybox = skyboxes[3];
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            RenderSettings.skybox = skyboxes[4];
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            RenderSettings.skybox = skyboxes[5];
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            RenderSettings.skybox = skyboxes[6];
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            RenderSettings.skybox = skyboxes[7];
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            RenderSettings.skybox = skyboxes[8];
-        }
     }
 
     bool isPauseButtonPressed = false;
@@ -895,8 +855,9 @@ public class TrialController : MonoBehaviour
 
         Debug.Log("transported to : " +transportablePos.ToString());
         trialLogger.LogStartPosition(transportablePos);
-            yield return StartCoroutine(exp.player.controls.SmoothRotateTo(currentTrial.avatarStartRot));
-        yield return StartCoroutine(exp.player.controls.SmoothMoveTo(transportablePos, false));
+        yield return StartCoroutine(exp.player.controls.SmoothMoveRotateTo(transportablePos,currentTrial.avatarStartRot,false));
+        //    yield return StartCoroutine(exp.player.controls.SmoothRotateTo(currentTrial.avatarStartRot));
+        //yield return StartCoroutine(exp.player.controls.SmoothMoveTo(transportablePos, false));
         trialLogger.LogTransportationToHomeEvent(false, transportablePos);
             Debug.Log("done transporting");
         //
@@ -988,6 +949,8 @@ public class TrialController : MonoBehaviour
 
         // wait till they press the X button to confirm their location
         yield return StartCoroutine(exp.WaitForActionButton());
+        //play the flag confirm audio
+        exp.audioController.flagConfirm.Play();
 
         float pathIntegrationError = Vector2.Distance(new Vector2(exp.player.transform.position.x, exp.player.transform.position.z), new Vector2(flagObj.transform.position.x, flagObj.transform.position.z));
         Debug.Log("the path integration error is  " + pathIntegrationError.ToString());
@@ -1011,8 +974,9 @@ public class TrialController : MonoBehaviour
         trialLogger.LogTransportationToTowerEvent(true);
         currentDefaultObject = null; //set to null so that arrows stop showing up...
         yield return StartCoroutine(exp.player.controls.SmoothRotateTo(currentTrial.avatarStartRot));
-        yield return StartCoroutine(exp.player.controls.SmoothMoveTo(currentTrial.avatarTowerPos, false));//PlayerControls.toTowerTime) );
-        yield return StartCoroutine(exp.player.controls.SmoothRotateTo(currentTrial.avatarTowerRot));
+        yield return StartCoroutine(exp.player.controls.SmoothMoveRotateTo(currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, false));
+        //yield return StartCoroutine(exp.player.controls.SmoothMoveTo(currentTrial.avatarTowerPos, false));//PlayerControls.toTowerTime) );
+        //yield return StartCoroutine(exp.player.controls.SmoothRotateTo(currentTrial.avatarTowerRot));
         trialLogger.LogTransportationToTowerEvent(false);
 
         //RUN DISTRACTOR GAME
@@ -1033,7 +997,6 @@ public class TrialController : MonoBehaviour
 
 
         //have a 20 second free recall period here
-
         yield return StartCoroutine(StarFreeRecall());
 
         //THR-styled location cued verbal recall

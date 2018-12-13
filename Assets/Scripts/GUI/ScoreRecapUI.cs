@@ -70,7 +70,7 @@ public class ScoreRecapUI : MonoBehaviour {
 			//TemporalScoreText.text = FormatScore (temporalScore);
 
 
-			TrialNumText.text = "Sie haben " +(numTrialsComplete) + "/" + maxNumTrials + " " + " von 40 Runden absolviert.";
+            TrialNumText.text = "Sie haben " +(numTrialsComplete)+ " von " + maxNumTrials.ToString() + " Runden absolviert.";
 
 			TotalTrialScoreText.text = FormatScore(trialScore + timeBonus + temporalScore + ScoreController.LastBoxSwapScore);
 
