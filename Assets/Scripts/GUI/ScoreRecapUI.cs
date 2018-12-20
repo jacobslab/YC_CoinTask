@@ -36,7 +36,7 @@ public class ScoreRecapUI : MonoBehaviour {
 		BoxSwapText.text = FormatScore(boxSwapBonus);
 	}
 
-	public void Play(int numTrialsComplete, int currentTrialScore, int maxNumTrials, List<int> objectScores, List<GameObject> specialObjects, int timeBonus, int temporalScore, float time){
+	public void Play(int numTrialsComplete, int currentTrialScore, int maxNumTrials, List<int> objectScores, List<GameObject> specialObjects, int pathIntegrationBonus, int temporalScore){
 		Enable (true);
 
 		Reset();
@@ -72,7 +72,7 @@ public class ScoreRecapUI : MonoBehaviour {
 
             TrialNumText.text = "Sie haben " +(numTrialsComplete)+ " von " + maxNumTrials.ToString() + " Runden absolviert.";
 
-			TotalTrialScoreText.text = FormatScore(trialScore + timeBonus + temporalScore + ScoreController.LastBoxSwapScore);
+            TotalTrialScoreText.text = FormatScore(trialScore + pathIntegrationBonus);
 
 		}
 

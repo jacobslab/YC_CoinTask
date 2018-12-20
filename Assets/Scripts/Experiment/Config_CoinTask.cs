@@ -74,7 +74,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float micLoudThreshold = 0.1f;
 
 	//recall
-	public static int recallTime=6;
+	public static int recallTime=5;
     public static int freeRecallTime = 10;
 
     public static string audioPath = "";

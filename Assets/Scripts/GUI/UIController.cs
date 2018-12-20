@@ -67,6 +67,9 @@ public class UIController : MonoBehaviour {
 	public TextMesh blockTitle5;
 	public TextMesh blockScreenPressToContinue;
 
+    //path integration score
+    public GoText pathIntegrationText;
+
 
 	//MRI VERSION
 	public CanvasGroup WaitingForMRIUI;
@@ -127,10 +130,10 @@ public class UIController : MonoBehaviour {
 
 		//trial score screen
 		trialCompleteTitle.text = exp.currInstructions.trialCompleteText;
-		//timeBonusTitle.text = exp.currInstructions.timeBonusText + ":";
-		//boxSwapBonusTitle.text = exp.currInstructions.boxSwapBonusText + ":";
-		//recentObjectBonusTitle.text = exp.currInstructions.recentObjectBonusText + ":";
-		trialScoreTitle.text = exp.currInstructions.trialScoreText + ":";
+        //timeBonusTitle.text = exp.currInstructions.timeBonusText + ":";
+        //boxSwapBonusTitle.text = exp.currInstructions.boxSwapBonusText + ":";
+        //recentObjectBonusTitle.text = exp.currInstructions.recentObjectBonusText + ":";
+        trialScoreTitle.text = exp.currInstructions.trialScoreText;
 		scoreScreenPressToContinue.text = exp.currInstructions.pressToContinue;
 
 		//block screen
