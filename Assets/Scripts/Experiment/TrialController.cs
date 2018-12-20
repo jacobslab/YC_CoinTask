@@ -444,6 +444,31 @@ public class TrialController : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            RenderSettings.skybox = skyboxes[0];
+        }
+        else if(Input.GetKeyDown(KeyCode.Alpha2))
+        {
+
+            RenderSettings.skybox = skyboxes[1];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+
+            RenderSettings.skybox = skyboxes[2];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+
+            RenderSettings.skybox = skyboxes[3];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+
+            RenderSettings.skybox = skyboxes[4];
+        }
+
         if (!isConnectingToHardware)
         {
 #if MRIVERSION
