@@ -988,19 +988,10 @@ public class TrialController : MonoBehaviour
 
         //reset it to the default
         pathIntegrationScore = 100;
-        //show path integration score
-        if(pathIntegrationError < 0.25f*exp.environmentController.envRadius)
-        {
-            pathIntegrationScore = 400;
-        }
-        else if(pathIntegrationError < 0.5f * exp.environmentController.envRadius)
-        {
-            pathIntegrationScore = 200;
-        }
-        else
-        {
-            pathIntegrationScore = 100;
-        }
+
+        pathIntegrationScore = exp.scoreController.CalculatePathIntegrationScore(pathIntegrationError);
+
+       
 
         exp.uiController.pathIntegrationText.Play("+" + pathIntegrationScore.ToString());
 
