@@ -38,7 +38,9 @@ public class TriSpawn : MonoBehaviour {
         float spawnDistance = radius;
         Vector3 v = cubeB.transform.position - cubeA.transform.position;
 
-        Vector3 dir = Vector3.Cross(v.normalized, Vector3.up);
+        //Vector3 dir = Vector3.Cross(v.normalized, Vector3.up);
+        Vector3 dir = new Vector3(Mathf.Sin(Mathf.Deg2Rad * angle), 0f, Mathf.Cos(Mathf.Deg2Rad * angle));
+        //dir = Vector3.Cross(dir, Vector3.up);
         Debug.Log("dir " + dir.ToString());
         cubeC.transform.position = cubeB.transform.position + (dir * radius);
         ////Vector2 vec = (new Vector2(-v.y, v.x) / Mathf.Sqrt(Mathf.Pow(v.x,2) + Mathf.Pow(v.y, 2))) * 5f;

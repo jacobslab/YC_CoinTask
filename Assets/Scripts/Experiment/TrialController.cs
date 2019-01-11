@@ -127,7 +127,7 @@ public class TrialController : MonoBehaviour
 			practiceTrials.Add(practiceTrial);
 		}
 #else
-        Trial practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract, 0, false);  //2 special objects for practice trial
+        Trial practiceTrial = new Trial(Config_CoinTask.numSpecialObjectsPract, 0, false,true);  //2 special objects for practice trial
         practiceTrials.Add(practiceTrial);
 #endif
     }
@@ -185,8 +185,8 @@ public class TrialController : MonoBehaviour
         //half should be two-item trials, half should be three-item trials
         for (int i = 0; i < Config_CoinTask.numTrialsPerBlock / 2; i++)
         {
-            Trial t2 = new Trial(2, 0, false);
-            Trial t3 = new Trial(3, 0, false);
+            Trial t2 = new Trial(2, 0, false,true);
+            Trial t3 = new Trial(3, 0, false,true);
 
             currBlock.Add(t2);
             currBlock.Add(t3);
@@ -204,8 +204,8 @@ public class TrialController : MonoBehaviour
         int numOrigTrials = Config_CoinTask.numTrialsPerBlock * blocksLeft;
         for (int i = 0; i < numOrigTrials / 2; i++)
         {
-            Trial t2 = new Trial(2, 0, false);
-            Trial t3 = new Trial(3, 0, false);
+            Trial t2 = new Trial(2, 0, false,true);
+            Trial t3 = new Trial(3, 0, false,true);
 
             twoItemOrigTrials.Add(t2);
             threeItemOrigTrials.Add(t3);
@@ -348,7 +348,7 @@ public class TrialController : MonoBehaviour
                 }
 
                 //make and add manual trials
-                Trial trial = new Trial(numSpecial, 0, false); //non-stim.
+                Trial trial = new Trial(numSpecial, 0, false,true); //non-stim.
                                                                //add specific objects to the generated trial
                 int objectNameIndex = 5;
                 for (int i = 0; i < numSpecial; i++)
@@ -379,9 +379,9 @@ public class TrialController : MonoBehaviour
             //				trial = new Trial(numSpecial,2, shouldStim);
             //				halfChance = 0;
             //			}
-            Trial trial = new Trial(numSpecial, 1, shouldStim);
+            Trial trial = new Trial(numSpecial, 1, shouldStim, true);
 
-            Trial anotherTrial = new Trial(numSpecial, 1, shouldStim);
+            Trial anotherTrial = new Trial(numSpecial, 1, shouldStim, false);
             //			Trial counterTrial = trial.GetCounterSelf(shouldStimCounter);
             trialList.Add(trial);
             trialList.Add(anotherTrial);

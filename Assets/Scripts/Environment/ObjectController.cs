@@ -263,7 +263,7 @@ public class ObjectController : MonoBehaviour {
         return randomEnvPositionVec2;
     }
 
-    public List<Vector2> GenerateTriangularDefaultObjectPositions(int numDefaultObjects,Vector3 distancePos, out Vector2 startPosition)
+    public List<Vector2> GenerateTriangularDefaultObjectPositions(int numDefaultObjects,Vector3 distancePos, bool isRightAngle,out Vector2 startPosition)
     {
         List<Vector2> defaultPositions = new List<Vector2>();
         startPosition = Vector2.zero;
@@ -304,9 +304,18 @@ public class ObjectController : MonoBehaviour {
                     secondPoint = new Vector3(randomEnvPosition.x + circleAdditive.x, randomEnvPosition.y, randomEnvPosition.z + circleAdditive.y); //select second point at the specified distance from first point
                     secondPointVec2 = new Vector2(secondPoint.x, secondPoint.z);
 
-                    Vector3 firstLeg = secondPoint - randomEnvPosition; //first leg of the triangle
-                    Vector3 cross = Vector3.Cross(firstLeg.normalized, Vector3.up);
+                    Vector3 firstLeg = firstLeg = secondPoint - randomEnvPosition; //first leg of the triangle
 
+                    Vector3 cross = Vector3.zero;
+                    if (isRightAngle)
+                    {
+                        cross = Vector3.Cross(firstLeg.normalized, Vector3.up);
+                    }
+                    else
+                    {
+                        float angle = 60f;
+                        cross =  new Vector3(Mathf.Sin(Mathf.Deg2Rad * angle), 0f, Mathf.Cos(Mathf.Deg2Rad * angle));
+                    }
 
                     int numTries = 0;
                     //repeat until third point is inside

@@ -32,7 +32,7 @@ public class Trial {
 		SpecialObjectLocationsXZ = new List<Vector2> ();
 	}
 
-	public Trial(int numSpecial,int numFoils, bool shouldStim){
+	public Trial(int numSpecial,int numFoils, bool shouldStim, bool isRightAngle){
 
 		numSpecialObjects = numSpecial;
 
@@ -105,7 +105,7 @@ public class Trial {
 
         //init default and special locations
         Vector2 startPosition = Vector2.zero;
-        DefaultObjectLocationsXZ = exp.objectController.GenerateTriangularDefaultObjectPositions(numDefaultObjects, avatarStartPos, out startPosition);
+        DefaultObjectLocationsXZ = exp.objectController.GenerateTriangularDefaultObjectPositions(numDefaultObjects, avatarStartPos, isRightAngle, out startPosition);
         //DefaultObjectLocationsXZ = exp.objectController.GenerateOrderedDefaultObjectPositions (numDefaultObjects, avatarStartPos);
         //FlagLocationXZ = exp.objectController.GenerateFlagPosition(DefaultObjectLocationsXZ,avatarStartPos);
         FlagLocationXZ = startPosition;
