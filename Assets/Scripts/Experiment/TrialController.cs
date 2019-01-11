@@ -1555,7 +1555,7 @@ public class TrialController : MonoBehaviour
 
         List<int> objectScores = new List<int>();
 
-        for (int i = 0; i < specialObjectOrder.Count-1; i++)
+        for (int i = 0; i < specialObjectOrder.Count; i++)
         {
             Vector3 chosenPosition = chosenPositions[i];
             chosenPosition = new Vector3(chosenPosition.x, 1.2f, chosenPosition.z); //to make sure explosive lands on the ground

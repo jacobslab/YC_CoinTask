@@ -104,9 +104,11 @@ public class Trial {
         //Debug.Log ("number of foil objects is: " + numFoils);
 
         //init default and special locations
-        DefaultObjectLocationsXZ = exp.objectController.GenerateTriangularDefaultObjectPositions(numDefaultObjects, avatarStartPos);
-		//DefaultObjectLocationsXZ = exp.objectController.GenerateOrderedDefaultObjectPositions (numDefaultObjects, avatarStartPos);
-        FlagLocationXZ = exp.objectController.GenerateFlagPosition(DefaultObjectLocationsXZ,avatarStartPos);
+        Vector2 startPosition = Vector2.zero;
+        DefaultObjectLocationsXZ = exp.objectController.GenerateTriangularDefaultObjectPositions(numDefaultObjects, avatarStartPos, out startPosition);
+        //DefaultObjectLocationsXZ = exp.objectController.GenerateOrderedDefaultObjectPositions (numDefaultObjects, avatarStartPos);
+        //FlagLocationXZ = exp.objectController.GenerateFlagPosition(DefaultObjectLocationsXZ,avatarStartPos);
+        FlagLocationXZ = startPosition;
         //FoilObjectLocationsXZ = exp.objectController.GenerateFoilPositions (numFoils, DefaultObjectLocationsXZ, avatarStartPos);
         //Debug.Log ("number of default positions is: " + DefaultObjectLocationsXZ.Count+"/"+numDefaultObjects);
         //Debug.Log ("number of foil positions is: " + FoilObjectLocationsXZ.Count);
