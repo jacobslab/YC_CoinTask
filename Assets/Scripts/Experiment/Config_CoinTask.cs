@@ -108,7 +108,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static bool isPractice = false;
 	public static int numSpecialObjectsPract = 2;
 	public static int numTwoItemTrials = 0;
-	public static int numThreeItemTrials = 33;
+	public static int numThreeItemTrials = 15;
 	public static int numTrialsPerBlock = 11;
 
 
@@ -126,6 +126,8 @@ public class Config_CoinTask : MonoBehaviour {
 
 	//OBJECTS
 	public static int numDefaultObjects = 4;
+
+    public static int numChestsPerTrial = 6;
 
 	public static float selectionDiameter = 26.0f;
 

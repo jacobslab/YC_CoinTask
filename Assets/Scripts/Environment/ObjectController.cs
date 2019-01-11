@@ -15,7 +15,11 @@ public class ObjectController : MonoBehaviour {
 	public List<GameObject> CurrentTrialSpecialObjects;
 	public List<GameObject> RecallObjectList;
 
-	public List<GameObject> FoilObjects;
+    public GameObject cubePrefabOne;
+    public GameObject cubePrefabTwo;
+    public GameObject cubePrefabThree;
+
+    public List<GameObject> FoilObjects;
 	public int CurrentTrialFoilObjects=0;
 	public GameObject defaultFoilObject;
     public GameObject flagPrefab;
@@ -172,10 +176,34 @@ public class ObjectController : MonoBehaviour {
 
 		return newObj;
 	}
-	
-	
-	//for more generic object spawning -- such as in Replay!
-	public GameObject SpawnObject( GameObject objToSpawn, Vector3 spawnPos ){
+
+    List<float> GetTriplets()
+    {
+        List<float> triplets = new List<float>();
+        float total = 1f;
+
+        float firstVal = Random.Range(0.15f, 0.75f);
+        float secondVal = Random.Range(0.15f, 0.85f - firstVal);
+
+        float thirdVal = total - (firstVal + secondVal);
+
+        triplets.Add(thirdVal);
+        triplets.Add(secondVal);
+        triplets.Add(firstVal);
+        return triplets;
+    }
+    public static Vector2 RandomPointOnUnitCircle(float radius)
+    {
+        float angle = Random.Range(0f, Mathf.PI * 2);
+        float x = Mathf.Sin(angle) * radius;
+        float y = Mathf.Cos(angle) * radius;
+
+        return new Vector2(x, y);
+
+    }
+
+    //for more generic object spawning -- such as in Replay!
+    public GameObject SpawnObject( GameObject objToSpawn, Vector3 spawnPos ){
 		GameObject spawnedObj = Instantiate(objToSpawn, spawnPos, objToSpawn.transform.rotation) as GameObject;
 
 		return spawnedObj;
@@ -235,6 +263,92 @@ public class ObjectController : MonoBehaviour {
         return randomEnvPositionVec2;
     }
 
+    public List<Vector2> GenerateTriangularDefaultObjectPositions(int numDefaultObjects,Vector3 distancePos)
+    {
+        List<Vector2> defaultPositions = new List<Vector2>();
+
+        //pick a random 
+
+        //repeat process once for each trial
+        for (int i = 0; i < numDefaultObjects / Config_CoinTask.numChestsPerTrial; i++)
+        {
+            Debug.Log("iteration no " + i.ToString());
+            Vector3 randomEnvPosition = Vector3.zero;
+            Vector2 randomEnvPositionVec2 = Vector2.zero;
+            float sideLength = Random.Range(20f, 45f);
+
+            Debug.Log("side length is " + sideLength.ToString());
+
+            //pick a random position   
+            randomEnvPosition = exp.environmentController.GetRandomPositionWithinWallsXZ(Config_CoinTask.radiusBuffer);
+            GameObject firstObj = Instantiate(cubePrefabOne, randomEnvPosition, Quaternion.identity) as GameObject;
+            randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
+
+
+            //now pick a second and third point that's inside the circle arena
+            Vector3 secondPoint = Vector3.zero;
+            Vector2 secondPointVec2 = Vector2.zero;
+            Vector3 thirdPoint = Vector3.zero;
+            Vector2 thirdPointVec2 = Vector2.zero;
+
+            while (Vector3.Distance(secondPoint, exp.environmentController.arenaCenter.position) >= exp.environmentController.envRadius)
+            {
+                Vector2 circleAdditive = RandomPointOnUnitCircle(sideLength);
+                secondPoint = new Vector3(randomEnvPosition.x + circleAdditive.x, randomEnvPosition.y,randomEnvPosition.z + circleAdditive.y); //select second point at the specified distance from first point
+                secondPointVec2 = new Vector2(secondPoint.x, secondPoint.z);
+
+                Vector3 firstLeg = secondPoint - randomEnvPosition; //first leg of the triangle
+                Vector3 cross = Vector3.Cross(firstLeg.normalized, Vector3.up);
+
+                Debug.Log("cross is " + cross.ToString());
+
+                int numTries = 0;
+                //repeat until third point is inside
+                while (Vector3.Distance(thirdPoint, exp.environmentController.arenaCenter.position) >= exp.environmentController.envRadius && numTries < 100)
+                {
+                    numTries++;
+                    thirdPoint = secondPoint + (cross * sideLength);
+                    //thirdPoint = new Vector3(thirdPointVec2.x, secondPoint.y, thirdPointVec2.y);
+                }
+
+            }
+            Debug.Log("side one length " + Vector3.Distance(randomEnvPosition, secondPoint).ToString());
+            Debug.Log("side two length " + Vector3.Distance(secondPoint, thirdPoint).ToString());
+            GameObject secondObj = Instantiate(cubePrefabTwo, secondPoint, Quaternion.identity) as GameObject;
+            GameObject thirdObj = Instantiate(cubePrefabThree, thirdPoint, Quaternion.identity) as GameObject;
+            //for the first leg
+            Debug.Log("between first " + randomEnvPosition.ToString() + " and second " + secondPoint.ToString());
+            List<float> firstLegFactors = new List<float>();
+            firstLegFactors = GetTriplets();
+            Vector3 firstChestPos = Vector3.Lerp(randomEnvPosition, secondPoint, firstLegFactors[0]);
+
+            defaultPositions.Add(new Vector2(firstChestPos.x,firstChestPos.z));
+            Vector3 secondChestPos = Vector3.Lerp(randomEnvPosition, secondPoint, firstLegFactors[1]);
+            defaultPositions.Add(new Vector2(secondChestPos.x,secondChestPos.z));
+            Vector3 thirdChestPos = Vector3.Lerp(randomEnvPosition, secondPoint, firstLegFactors[2]);
+            defaultPositions.Add(new Vector2(thirdChestPos.x,thirdChestPos.z));
+            
+            //for the second leg
+
+            List<float> secondLegFactors = new List<float>();
+            Debug.Log("between second " + secondPoint.ToString() + " and third " + thirdPoint.ToString());
+            secondLegFactors = GetTriplets();
+            Vector3 fourthChestPos = Vector3.Lerp(secondPoint, thirdPoint, secondLegFactors[0]);
+            defaultPositions.Add(new Vector2(fourthChestPos.x,fourthChestPos.z));
+            Vector3 fifthChestPos = Vector3.Lerp(secondPoint, thirdPoint, secondLegFactors[1]);
+            defaultPositions.Add(new Vector2(fifthChestPos.x,fifthChestPos.z));
+            Vector3 sixthChestPos = Vector3.Lerp(secondPoint, thirdPoint, secondLegFactors[2]);
+            defaultPositions.Add(new Vector2(sixthChestPos.x,sixthChestPos.z));
+
+            for (int j = 0; j < defaultPositions.Count;j++)
+            {
+                Debug.Log("default position " + defaultPositions[j].ToString());
+            }
+        }
+
+        return defaultPositions;
+    }
+
 
     public List<Vector2> GenerateOrderedDefaultObjectPositions (int numDefaultObjects, Vector3 distancePos){ //ORDERED BY DISTANCE TO PLAYER START POS
 		List<Vector2> defaultPositions = new List<Vector2> ();
@@ -247,6 +361,10 @@ public class ObjectController : MonoBehaviour {
 
 			Vector3 randomEnvPosition = Vector3.zero;
 			Vector2 randomEnvPositionVec2 = Vector2.zero;
+
+
+
+
 
 			float smallestDistance = 0.0f; //will get filled in by CheckObjectsFarEnoughXZ function
 			float currentBiggestSmallestDistance = 0; //if we fail at positioning in the allotted number of tries, we want to position the treasure chest with the maximal distance to the closest neighbor chest.
@@ -287,8 +405,8 @@ public class ObjectController : MonoBehaviour {
 		}
 
 //		//insertion sort by distance
-//		Vector2 distancePosXZ = new Vector2 (distancePos.x, distancePos.z);
-//		defaultPositions = SortByNextClosest(defaultPositions, distancePosXZ);
+		Vector2 distancePosXZ = new Vector2 (distancePos.x, distancePos.z);
+		defaultPositions = SortByNextClosest(defaultPositions, distancePosXZ);
 
 		return defaultPositions;
 	}

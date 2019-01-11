@@ -166,8 +166,8 @@ public class TrialController : MonoBehaviour
             }
 
             //generate all trials, two & three object, including counter-balanced trials
-            List<Trial> ListOfTwoItemTrials = GenerateTrialsWithCounterTrials(Config_CoinTask.numTwoItemTrials, 2, false, false);
-            List<Trial> ListOfThreeItemTrials = GenerateTrialsWithCounterTrials(Config_CoinTask.numThreeItemTrials, 3, false, false);
+            List<Trial> ListOfTwoItemTrials = GenerateTrialsWithCounterTrials(Config_CoinTask.numTwoItemTrials, 6, false, false);
+            List<Trial> ListOfThreeItemTrials = GenerateTrialsWithCounterTrials(Config_CoinTask.numThreeItemTrials, 6, false, false);
 
             //generate blocks from trials
             int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
