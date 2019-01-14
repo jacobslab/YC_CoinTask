@@ -285,11 +285,11 @@ public class ObjectController : MonoBehaviour {
             int bufferMultiplier = 1;
             while (!numTriedOut)
             {
-                float sideLength = Random.Range(25f, 45f);
+                float sideLength = Random.Range(30f, 48f);
                 //Debug.Log("side length " + sideLength.ToString() + " buffer multiplier " + bufferMultiplier.ToString());
                 //pick a random position   
                 randomEnvPosition = exp.environmentController.GetRandomPositionWithinWallsXZ(Config_CoinTask.radiusBuffer * bufferMultiplier);
-                GameObject firstObj = Instantiate(cubePrefabOne, randomEnvPosition, Quaternion.identity) as GameObject;
+                //GameObject firstObj = Instantiate(cubePrefabOne, randomEnvPosition, Quaternion.identity) as GameObject;
                 randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
                 secondPoint = Vector3.zero;
                 secondPointVec2 = Vector2.zero;
@@ -341,8 +341,8 @@ public class ObjectController : MonoBehaviour {
         }
             //Debug.Log("side one length " + Vector3.Distance(randomEnvPosition, secondPoint).ToString());
             //Debug.Log("side two length " + Vector3.Distance(secondPoint, thirdPoint).ToString());
-            GameObject secondObj = Instantiate(cubePrefabTwo, secondPoint, Quaternion.identity) as GameObject;
-            GameObject thirdObj = Instantiate(cubePrefabThree, thirdPoint, Quaternion.identity) as GameObject;
+            //GameObject secondObj = Instantiate(cubePrefabTwo, secondPoint, Quaternion.identity) as GameObject;
+            //GameObject thirdObj = Instantiate(cubePrefabThree, thirdPoint, Quaternion.identity) as GameObject;
             //for the first leg
             //Debug.Log("between first " + randomEnvPosition.ToString() + " and second " + secondPoint.ToString());
             List<float> firstLegFactors = new List<float>();

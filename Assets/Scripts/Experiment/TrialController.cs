@@ -379,7 +379,7 @@ public class TrialController : MonoBehaviour
             //				trial = new Trial(numSpecial,2, shouldStim);
             //				halfChance = 0;
             //			}
-            Trial trial = new Trial(numSpecial, 1, shouldStim, true);
+            Trial trial = new Trial(numSpecial, 1, shouldStim, false);
 
             Trial anotherTrial = new Trial(numSpecial, 1, shouldStim, false);
             //			Trial counterTrial = trial.GetCounterSelf(shouldStimCounter);
