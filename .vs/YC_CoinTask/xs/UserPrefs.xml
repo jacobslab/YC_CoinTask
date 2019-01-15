@@ -1,13 +1,13 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Experiment/TrialController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/EEG Communication/SyncboxControl.cs">
     <Files>
-      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="358" Column="18" />
+      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="384" Column="40" />
       <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="134" Column="22" />
       <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" Line="363" Column="1" />
       <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" Line="65" Column="16" />
       <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" Line="253" Column="21" />
-      <File FileName="Assets/Scripts/Experiment/Trial.cs" Line="113" Column="113" />
+      <File FileName="Assets/Scripts/Experiment/Trial.cs" Line="108" Column="83" />
       <File FileName="Assets/Scripts/Experiment/PlayerControls.cs" Line="301" Column="31" />
       <File FileName="Assets/Scripts/Environment/EnvironmentPositionSelector.cs" Line="79" Column="6" />
       <File FileName="Assets/Flag.cs" Line="18" Column="24" />
@@ -17,7 +17,7 @@
       <File FileName="Assets/Scripts/Anim. &amp; Visuals/CorrectPositionIndicatorController.cs" Line="74" Column="69" />
       <File FileName="Assets/Scripts/GUI/ScoreRecapUI.cs" Line="75" Column="87" />
       <File FileName="Assets/Scripts/GUI/UIController.cs" Line="136" Column="68" />
-      <File FileName="Assets/Scripts/EEG Communication/SyncboxControl.cs" Line="370" Column="2" />
+      <File FileName="Assets/Scripts/EEG Communication/SyncboxControl.cs" Line="371" Column="1" />
       <File FileName="Assets/Scripts/Experiment/DefaultItem.cs" Line="236" Column="1" />
       <File FileName="Assets/Scripts/Experiment/Player.cs" Line="8" Column="21" />
       <File FileName="Assets/Scripts/Audio/AudioController.cs" Line="8" Column="36" />
@@ -26,7 +26,7 @@
       <File FileName="Assets/Scripts/GUI/TimeBonusUIController.cs" Line="63" Column="34" />
       <File FileName="Assets/Scripts/Experiment/UsefulFunctions.cs" Line="8" Column="26" />
       <File FileName="Assets/Scripts/Experiment/ScoreController.cs" Line="222" Column="37" />
-      <File FileName="Assets/Scripts/Environment/ObjectController.cs" Line="273" Column="80" />
+      <File FileName="Assets/Scripts/Environment/ObjectController.cs" Line="412" Column="133" />
       <File FileName="Assets/Scripts/Experiment/TreasureGenerationTester.cs" Line="21" Column="38" />
       <File FileName="Assets/TriSpawn.cs" Line="41" Column="65" />
     </Files>

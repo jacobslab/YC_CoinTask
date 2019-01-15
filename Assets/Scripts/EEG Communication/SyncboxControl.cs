@@ -5,7 +5,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.IO;
-#if !UNITY_EDITOR_OSX
+#if !UNITY_EDITOR_OSX && !UNITY_STANDALONE_OSX
 using MonoLibUsb;
 #endif
 public class SyncboxControl : MonoBehaviour
@@ -274,7 +274,7 @@ public class SyncboxControl : MonoBehaviour
 
     private const float TIME_BETWEEN_PULSES_MIN = 0.8f;
     private const float TIME_BETWEEN_PULSES_MAX = 1.2f;
-#if !UNITY_EDITOR_OSX
+#if !UNITY_EDITOR_OSX && !UNITY_STANDALONE_OSX
     private MonoLibUsb.MonoUsbSessionHandle sessionHandle = new MonoUsbSessionHandle();
     private MonoLibUsb.Profile.MonoUsbProfileList profileList = null;
     private MonoLibUsb.Profile.MonoUsbProfile freiburgSyncboxProfile = null;
