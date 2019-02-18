@@ -21,6 +21,9 @@ public class InstructionsController : MonoBehaviour {
 	public Image oculusBackground;
 	public Color backgroundColorDefault;
 
+    public CanvasGroup headerInstructionGroup;
+    public Text headerInstructionText;
+
 
 
 	//CHANGE THESE IN THE EDITOR DEPENDING ON LANGUAGE.
@@ -115,6 +118,7 @@ public class InstructionsController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        
 		TurnOffInstructions ();
 	}
 	
@@ -128,13 +132,21 @@ public class InstructionsController : MonoBehaviour {
 	}
 
 	public void TurnOffInstructions(){
+
 		SetInstructionsTransparentOverlay();
 		SetInstructionsBlank();
+        EnableHeaderInstruction(false,"");
 	}
 
 	void SetText(string newText){
 			text.text = newText;
 	}
+
+    public void EnableHeaderInstruction(bool isVisible,string instructionText)
+    {
+        headerInstructionGroup.alpha = isVisible ? 1f : 0f;
+        headerInstructionText.text = instructionText;
+    }
 
 	public void SetInstructionsColorful(){
 		//Debug.Log("set instructions dark");
@@ -146,6 +158,8 @@ public class InstructionsController : MonoBehaviour {
 		//Debug.Log("set instructions transparent overlay");
 			background.color = new Color(0,0,0,0);
 			text.color = textColorOverlay;
+        
+
 	}
 
 	public void DisplayText(string line){

@@ -45,15 +45,15 @@ public class Trial {
 		}
 
 
-
+        //changed this to reflect the new design of the task to allow for first-person navigation retrieval
 		fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
 		if (fiftyFiftyChance == 0) {
-			avatarTowerPos = exp.player.controls.towerPositionTransform1.position;
-			avatarTowerRot = exp.player.controls.towerPositionTransform1.rotation;
+			avatarTowerPos = exp.player.controls.startPositionTransform1.position;
+			avatarTowerRot = exp.player.controls.startPositionTransform1.rotation;
 		}
 		else {
-			avatarTowerPos = exp.player.controls.towerPositionTransform2.position;
-			avatarTowerRot = exp.player.controls.towerPositionTransform2.rotation;
+			avatarTowerPos = exp.player.controls.startPositionTransform2.position;
+			avatarTowerRot = exp.player.controls.startPositionTransform2.rotation;
 		}
 
 
@@ -115,12 +115,12 @@ public class Trial {
 
 		//flip the tower positions
 		if (avatarTowerPos == exp.player.controls.towerPositionTransform1.position) {
-			counterTrial.avatarTowerPos = exp.player.controls.towerPositionTransform2.position;
-			counterTrial.avatarTowerRot = exp.player.controls.towerPositionTransform2.rotation;
+			counterTrial.avatarTowerPos = exp.player.controls.startPositionTransform2.position;
+			counterTrial.avatarTowerRot = exp.player.controls.startPositionTransform2.rotation;
 		}
 		else {
-			counterTrial.avatarTowerPos = exp.player.controls.towerPositionTransform1.position;
-			counterTrial.avatarTowerRot = exp.player.controls.towerPositionTransform1.rotation;
+			counterTrial.avatarTowerPos = exp.player.controls.startPositionTransform1.position;
+			counterTrial.avatarTowerRot = exp.player.controls.startPositionTransform1.rotation;
 		}
 
 

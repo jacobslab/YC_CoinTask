@@ -719,17 +719,20 @@ public class TrialController : MonoBehaviour {
 		//lock player movement
 		exp.player.controls.ShouldLockControls = true;
 
+
+        //disabled below block because we now keep the player where they are.
 		//bring player to tower
 		//exp.player.TurnOnVisuals (false);
 		trialLogger.LogTrialNavigation (false);
-		if (currentTrial.isStim) {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.STIM_NAVIGATION, false);
-		} 
-		else {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, false);
-		}
+		//if (currentTrial.isStim) {
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.STIM_NAVIGATION, false);
+		//} 
+		//else {
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, false);
+		//}
+
 		trialLogger.LogTransportationToTowerEvent (true);
-		currentDefaultObject = null; //set to null so that arrows stop showing up...
+		//currentDefaultObject = null; //set to null so that arrows stop showing up...
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, false));//PlayerControls.toTowerTime) );
 		trialLogger.LogTransportationToTowerEvent (false);
 
@@ -805,94 +808,116 @@ public class TrialController : MonoBehaviour {
 			trialLogger.LogRememberResponse(rememberResponse);
 #endif
 
+            
+            trialLogger.LogRecallChoiceStarted(true);
+
+            exp.uiController.doYouRememberUI.Stop();
+            //unlock player movement
+            exp.player.controls.ShouldLockControls = false;
+           
+                      //show single selection instruction and wait for selection button press
+                      string selectObjectText = exp.currInstructions.selectTheLocationText;
+                      if (ExperimentSettings_CoinTask.myLanguage == ExperimentSettings_CoinTask.LanguageSetting.Spanish) {
+                          //check for masculine article
+                          string[] splitName = specialItemDisplayName.Split(' ');
+                          if (splitName [0] == "el") {
+                              string displayNameNoEl = specialItemDisplayName.Remove (0, 3);
+                              selectObjectText = selectObjectText + "l" + " " + displayNameNoEl + " (X)."; //add the 'l' to "de" to make "del"
+                          }
+                          else {
+                              selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
+                          }
+                      } 
+                      else { //english
+                          selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
+                      }
+            exp.currInstructions.EnableHeaderInstruction(true, selectObjectText);
+            //wait till the player walks to a location and presses X button to retrieve the encoded location
+            yield return StartCoroutine(exp.WaitForActionButton());
+            //yield return StartCoroutine(exp.ShowSingleInstruction(selectObjectText, true, true, false, Config_CoinTask.minDefaultInstructionTime));
+            ////log the chosen position and correct position
+            exp.environmentController.myPositionSelector.logTrack.LogPositionChosen( exp.player.transform.position, specialObj.transform.position, specialSpawnable );
+
+            //add current chosen position to list of chosen positions
+            chosenPositions.Add(exp.player.transform.position);
+
 
 
 			//SELECT LOCATION
 			//enable position selection, turn off fancy selection UI
-			exp.environmentController.myPositionSelector.Reset();
-			exp.environmentController.myPositionSelector.EnableSelection (true);
+//			exp.environmentController.myPositionSelector.Reset();
+//			exp.environmentController.myPositionSelector.EnableSelection (true);
 
-			switch(randomOrderIndex){
-			case 0:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_1, false);
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, true);
-				break;
-			case 1:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_2, false);
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, true);
-				break;
-			case 2:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, false);
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, true);
-				break;
-			}
-			trialLogger.LogRecallChoiceStarted(true);
+//			switch(randomOrderIndex){
+//			case 0:
+//				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_1, false);
+//				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, true);
+//				break;
+//			case 1:
+//				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_2, false);
+//				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, true);
+//				break;
+//			case 2:
+//				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, false);
+//				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, true);
+//				break;
+//			}
+//			trialLogger.LogRecallChoiceStarted(true);
 
-			exp.uiController.doYouRememberUI.Stop();
-
-			//show single selection instruction and wait for selection button press
-			string selectObjectText = exp.currInstructions.selectTheLocationText;
-			if (ExperimentSettings_CoinTask.myLanguage == ExperimentSettings_CoinTask.LanguageSetting.Spanish) {
-				//check for masculine article
-				string[] splitName = specialItemDisplayName.Split(' ');
-				if (splitName [0] == "el") {
-					string displayNameNoEl = specialItemDisplayName.Remove (0, 3);
-					selectObjectText = selectObjectText + "l" + " " + displayNameNoEl + " (X)."; //add the 'l' to "de" to make "del"
-				}
-				else {
-					selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
-				}
-			} 
-			else { //english
-				selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
-			}
-
-#if MRIVERSION
-			exp.currInstructions.SetInstructionsTransparentOverlay();
-			exp.currInstructions.DisplayText(selectObjectText);
-			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
-			exp.currInstructions.SetInstructionsBlank();
-#else
-			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
-#endif
-			//log the chosen position and correct position
-			exp.environmentController.myPositionSelector.logTrack.LogPositionChosen( exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position, specialSpawnable );
-
-			//wait for the position selector to choose the position, runs color changing of the selector
-			yield return StartCoroutine (exp.environmentController.myPositionSelector.ChoosePosition());
+//			exp.uiController.doYouRememberUI.Stop();
 
 
-			//add current chosen position to list of chosen positions
-			chosenPositions.Add(exp.environmentController.myPositionSelector.GetSelectorPosition());
 
-			//disable position selection
-			exp.environmentController.myPositionSelector.EnableSelection (false);
-			trialLogger.LogRecallChoiceStarted(false);
+//#if MRIVERSION
+//			exp.currInstructions.SetInstructionsTransparentOverlay();
+//			exp.currInstructions.DisplayText(selectObjectText);
+//			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
+//			exp.currInstructions.SetInstructionsBlank();
+//#else
+//			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
+//#endif
+			////log the chosen position and correct position
+			//exp.environmentController.myPositionSelector.logTrack.LogPositionChosen( exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position, specialSpawnable );
 
-			switch(randomOrderIndex){
-			case 0:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, false);
-				break;
-			case 1:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, false);
-				break;
-			case 2:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, false);
-				break;
-			}
+			////wait for the position selector to choose the position, runs color changing of the selector
+			//yield return StartCoroutine (exp.environmentController.myPositionSelector.ChoosePosition());
+
+
+			////add current chosen position to list of chosen positions
+			//chosenPositions.Add(exp.environmentController.myPositionSelector.GetSelectorPosition());
+
+			////disable position selection
+			//exp.environmentController.myPositionSelector.EnableSelection (false);
+			//trialLogger.LogRecallChoiceStarted(false);
+
+			//switch(randomOrderIndex){
+			//case 0:
+			//	TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, false);
+			//	break;
+			//case 1:
+			//	TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, false);
+			//	break;
+			//case 2:
+			//	TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, false);
+			//	break;
+			//}
 
 
 			trialLogger.LogInstructionEvent();
 
+            //lock the movement before the next round of retrieval
+            exp.player.controls.ShouldLockControls = true;
+
+        exp.currInstructions.EnableHeaderInstruction(false, "");
 			if(i <= exp.objectController.CurrentTrialSpecialObjects.Count - 1){
 				//jitter if it's not the last object to be shown
 				yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
 			}
 
 		}
-
 		trialLogger.LogRecallPhaseStarted(false);
 		
+        //skipping feedback for now
 		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses));
 
 		//increment subject's trial count
