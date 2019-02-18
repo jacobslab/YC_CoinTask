@@ -44,8 +44,10 @@ public class Config_CoinTask : MonoBehaviour {
 	//REPLAY
 	public static int replayPadding = 6;
 
-	//JUICE
-	public static bool isJuice = true;
+    //FIXED indicator height
+    public static float fixedIndicatorHeight = 4.53f;
+    //JUICE
+    public static bool isJuice = true;
 	public static bool isSoundtrack = false; //WON'T PLAY IF ISJUICE IS FALSE.
 
 

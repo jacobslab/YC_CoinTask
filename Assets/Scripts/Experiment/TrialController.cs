@@ -916,10 +916,13 @@ public class TrialController : MonoBehaviour {
 
 		}
 		trialLogger.LogRecallPhaseStarted(false);
-		
+
+        //disable lock on player movement so they can freely look around
+        exp.player.controls.ShouldLockControls = false;
         //skipping feedback for now
 		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses));
-
+        //lock controls before resuming to the next trial
+        exp.player.controls.ShouldLockControls = true;
 		//increment subject's trial count
 #if !UNITY_WEBPLAYER
 		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
@@ -963,6 +966,7 @@ public class TrialController : MonoBehaviour {
 			
 			//create an indicator for each special object
 			float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;
+            Debug.Log("Indicator HEIGHT " + indicatorHeight.ToString());
 			Vector3 correctPosition = new Vector3 (specialObj.transform.position.x, indicatorHeight, specialObj.transform.position.z);
 			GameObject correctPositionIndicator = Instantiate( exp.environmentController.myPositionSelector.CorrectPositionIndicator, correctPosition, exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.rotation) as GameObject;
 			correctPositionIndicator.GetComponent<SpawnableObject>().SetNameID(correctPositionIndicator.transform, i);
@@ -971,7 +975,8 @@ public class TrialController : MonoBehaviour {
 			//create an indicator for each chosen position
 			//spawn the indicator at the height of the original indicator
 			exp.environmentController.myPositionSelector.EnableSelection (true); //turn on selector for spawning indicator
-			float chosenIndicatorHeight = exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.position.y;
+			float chosenIndicatorHeight = Config_CoinTask.fixedIndicatorHeight;
+            Debug.Log("CHOSEN INDICATOR HEIGHT " + chosenIndicatorHeight.ToString());
 			Vector3 chosenIndicatorPosition = new Vector3(chosenPosition.x, chosenIndicatorHeight, chosenPosition.z);
 			GameObject chosenPositionIndicator = Instantiate (exp.environmentController.myPositionSelector.PositionSelectorVisuals, chosenIndicatorPosition, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.rotation) as GameObject;
 
