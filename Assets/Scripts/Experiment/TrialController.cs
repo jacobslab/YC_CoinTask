@@ -950,7 +950,7 @@ public class TrialController : MonoBehaviour {
 			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't actually want its visuals showing up as we wait
 
 #if !(MRIVERSION)
-			yield return StartCoroutine( exp.objectController.ThrowExplosive( exp.player.transform.position, chosenPosition, i ) );
+			//yield return StartCoroutine( exp.objectController.ThrowExplosive( exp.player.transform.position, chosenPosition, i ) );
 #endif
 
 			int randomOrderIndex = specialObjectOrder[i];
