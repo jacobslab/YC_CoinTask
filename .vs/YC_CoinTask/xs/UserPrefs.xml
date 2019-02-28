@@ -1,19 +1,20 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Experiment/TrialController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Experiment/PlayerControls.cs">
     <Files>
       <File FileName="Assets/Scripts/Logging/ParticleLogTrack.cs" Line="41" Column="25" />
       <File FileName="Assets/Scripts/VideoRecording/Replay.cs" Line="619" Column="32" />
-      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="834" Column="46" />
+      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="1014" Column="1" />
       <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" Line="210" Column="1" />
       <File FileName="Assets/Scripts/Experiment/Trial.cs" Line="127" Column="64" />
-      <File FileName="Assets/Scripts/Experiment/InstructionsController.cs" Line="148" Column="54" />
+      <File FileName="Assets/Scripts/Experiment/InstructionsController.cs" Line="145" Column="17" />
       <File FileName="Assets/Scripts/Environment/EnvironmentController.cs" Line="39" Column="32" />
       <File FileName="Assets/Scripts/Environment/ObjectController.cs" Line="91" Column="74" />
       <File FileName="Assets/Scripts/Experiment/Explosive.cs" Line="28" Column="21" />
       <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="48" Column="49" />
       <File FileName="Assets/Scripts/Experiment/JuiceController.cs" Line="51" Column="41" />
       <File FileName="Assets/Scripts/Audio/AudioController.cs" Line="42" Column="25" />
+      <File FileName="Assets/Scripts/Experiment/PlayerControls.cs" Line="41" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
