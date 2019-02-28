@@ -1028,11 +1028,13 @@ public class TrialController : MonoBehaviour {
 #if MRIVERSION
 		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxFeedbackTime));
 #else
-		//wait for selection button press
-		yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
+        //wait for selection button press
+        exp.currInstructions.EnableHeaderInstruction(true,exp.currInstructions.pressToContinue);
+        yield return StartCoroutine(exp.WaitForActionButton());
+        //yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 #endif
 
-		currTrialNum++;
+        currTrialNum++;
 
 
 		trialLogger.LogInstructionEvent();
