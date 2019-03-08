@@ -98,7 +98,7 @@ public class TrialController : MonoBehaviour {
 
 			//generate blocks from trials
 			int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
-			GenerateTrialBlocks (ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
+			GenerateTrialBlocks (ListOfTwoItemTrials,ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
 		}
 	}
 
@@ -281,17 +281,17 @@ public class TrialController : MonoBehaviour {
 		return trialList;
 	}
 
-	void GenerateTrialBlocks(List<Trial> threeItemTrials, int numBlocks, int numTrialsPerBlock){
+	void GenerateTrialBlocks(List<Trial> twoItemTrials, List<Trial> threeItemTrials, int numBlocks, int numTrialsPerBlock){
 		for(int i = 0; i < numBlocks; i++){
 			List<Trial> newBlock = new List<Trial>();
-			for(int j = 0; j < numTrialsPerBlock; j++){ //half two item, half one item
-				//int randomTwoItemIndex = Random.Range (0, twoItemTrials.Count);
+			for(int j = 0; j < numTrialsPerBlock/2; j++){ //half two item, half one item
+				int randomTwoItemIndex = Random.Range (0, twoItemTrials.Count);
 				int randomThreeItemIndex = Random.Range (0, threeItemTrials.Count);
 
-				//newBlock.Add(twoItemTrials[randomTwoItemIndex]);
+				newBlock.Add(twoItemTrials[randomTwoItemIndex]);
 				newBlock.Add(threeItemTrials[randomThreeItemIndex]);
 
-				//twoItemTrials.RemoveAt(randomTwoItemIndex);
+				twoItemTrials.RemoveAt(randomTwoItemIndex);
 				threeItemTrials.RemoveAt(randomThreeItemIndex);
 			}
 			ListOfTrialBlocks.Add(newBlock);

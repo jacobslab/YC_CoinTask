@@ -9,9 +9,9 @@ public class RabbitCatcher : MonoBehaviour
     //public Text debugText;
     //public CanvasGroup distractorPanel;
     //public Text distractorText;
-    //public GameObject correctParticlePrefab;
-    //public GameObject wrongParticlePrefab;
-
+    public GameObject correctParticlePrefab;
+    public GameObject wrongParticlePrefab;
+    public GameObject smokeParticlePrefab;
     //public GameObject foundCube; //the invisible cube that will serve as a collision check for the rabbit
 
     public static bool rabbitLooking = false; //used to control if the device camera is looking at the rabbit or not; this is to make sure the rabbit is centrally viewed before it begins its movement
@@ -151,18 +151,22 @@ public class RabbitCatcher : MonoBehaviour
         rabbitObj.SetActive(false);
         //briefly lock controls
         exp.player.controls.ShouldLockControls = true;
-
+        GameObject feedbackParticle;
         //TreasureHuntController_ARKit.Instance.trialLog.LogDistractorResult(caughtRabbit);
         //show success or failure message
         if (caughtRabbit)
         {
+            feedbackParticle = Instantiate(correctParticlePrefab, exp.player.controls.myCamera.transform.position, Quaternion.identity) as GameObject;
             exp.currInstructions.headerInstructionText.text = successInstructions;
              yield return new WaitForSeconds(2.5f);
         }
         else
         {
+            feedbackParticle = Instantiate(wrongParticlePrefab, exp.player.controls.myCamera.transform.position, Quaternion.identity) as GameObject;
+            GameObject smoke = Instantiate(smokeParticlePrefab, rabbitObj.transform.position, Quaternion.identity) as GameObject;
             exp.currInstructions.headerInstructionText.text = failureInstructions;
             yield return new WaitForSeconds(2.5f);
+            Destroy(smoke);
         }
 
         //reset rabbit looking var
@@ -170,6 +174,7 @@ public class RabbitCatcher : MonoBehaviour
         //foundCube.SetActive(false);
         exp.currInstructions.headerInstructionText.text = "";
         exp.currInstructions.headerInstructionGroup.alpha = 0f;
+        Destroy(feedbackParticle);
 
         yield return null;
     }
