@@ -98,7 +98,7 @@ public class TrialController : MonoBehaviour {
 
 			//generate blocks from trials
 			int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
-			GenerateTrialBlocks (ListOfTwoItemTrials, ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
+			GenerateTrialBlocks (ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
 		}
 	}
 
@@ -281,17 +281,17 @@ public class TrialController : MonoBehaviour {
 		return trialList;
 	}
 
-	void GenerateTrialBlocks(List<Trial> twoItemTrials, List<Trial> threeItemTrials, int numBlocks, int numTrialsPerBlock){
+	void GenerateTrialBlocks(List<Trial> threeItemTrials, int numBlocks, int numTrialsPerBlock){
 		for(int i = 0; i < numBlocks; i++){
 			List<Trial> newBlock = new List<Trial>();
-			for(int j = 0; j < numTrialsPerBlock / 2; j++){ //half two item, half one item
-				int randomTwoItemIndex = Random.Range (0, twoItemTrials.Count);
+			for(int j = 0; j < numTrialsPerBlock; j++){ //half two item, half one item
+				//int randomTwoItemIndex = Random.Range (0, twoItemTrials.Count);
 				int randomThreeItemIndex = Random.Range (0, threeItemTrials.Count);
 
-				newBlock.Add(twoItemTrials[randomTwoItemIndex]);
+				//newBlock.Add(twoItemTrials[randomTwoItemIndex]);
 				newBlock.Add(threeItemTrials[randomThreeItemIndex]);
 
-				twoItemTrials.RemoveAt(randomTwoItemIndex);
+				//twoItemTrials.RemoveAt(randomTwoItemIndex);
 				threeItemTrials.RemoveAt(randomThreeItemIndex);
 			}
 			ListOfTrialBlocks.Add(newBlock);
@@ -739,7 +739,8 @@ public class TrialController : MonoBehaviour {
 		//RUN DISTRACTOR GAME
 		trialLogger.LogDistractorGame (true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, true);
-		yield return StartCoroutine(exp.boxGameController.RunGame());
+        //yield return StartCoroutine(exp.boxGameController.RunGame());
+        yield return StartCoroutine(exp.rabbitCatcher.Run());
 		trialLogger.LogDistractorGame (false);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, false);
 
@@ -778,40 +779,40 @@ public class TrialController : MonoBehaviour {
 
 			//show nice UI, log special object
 			trialLogger.LogObjectToRecall(specialSpawnable);
-			GameObject specialObjUICopy = Instantiate (specialObj, Vector3.zero, specialObj.transform.rotation) as GameObject;
-			specialObjUICopy.name += "UICopy";
+//			GameObject specialObjUICopy = Instantiate (specialObj, Vector3.zero, specialObj.transform.rotation) as GameObject;
+//			specialObjUICopy.name += "UICopy";
 
-			specialObjUICopy.transform.parent = exp.cameraController.UICamera.transform; //make this copy follow camera/head movement. mainly for VR.
+//			specialObjUICopy.transform.parent = exp.cameraController.UICamera.transform; //make this copy follow camera/head movement. mainly for VR.
 
-			//set layer of object & children to PlayerUI
-			specialObjUICopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI");
+//			//set layer of object & children to PlayerUI
+//			specialObjUICopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI");
 
-			trialLogger.LogInstructionEvent();
-			yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy, specialItemDisplayName) );
+//			trialLogger.LogInstructionEvent();
+//			yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy, specialItemDisplayName) );
 
-#if MRIVERSION
-			Config_CoinTask.MemoryState rememberResponse;
-			isMRITimeout = false;
-			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxAnswerTime));
-			if(isMRITimeout){
-				rememberResponse = Config_CoinTask.MemoryState.no;
-			}
-			else{
-				rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
-			}
-			rememberResponses.Add(rememberResponse);
-			trialLogger.LogRememberResponse(rememberResponse);
-#else
-			yield return StartCoroutine (exp.WaitForActionButton());
-			Config_CoinTask.MemoryState rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
-			rememberResponses.Add(rememberResponse);
-			trialLogger.LogRememberResponse(rememberResponse);
-#endif
+//#if MRIVERSION
+//			Config_CoinTask.MemoryState rememberResponse;
+//			isMRITimeout = false;
+//			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxAnswerTime));
+//			if(isMRITimeout){
+//				rememberResponse = Config_CoinTask.MemoryState.no;
+//			}
+//			else{
+//				rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
+//			}
+//			rememberResponses.Add(rememberResponse);
+//			trialLogger.LogRememberResponse(rememberResponse);
+//#else
+//			yield return StartCoroutine (exp.WaitForActionButton());
+//			Config_CoinTask.MemoryState rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
+//			rememberResponses.Add(rememberResponse);
+//			trialLogger.LogRememberResponse(rememberResponse);
+//#endif
 
             
             trialLogger.LogRecallChoiceStarted(true);
 
-            exp.uiController.doYouRememberUI.Stop();
+            //exp.uiController.doYouRememberUI.Stop();
             //unlock player movement
             exp.player.controls.ShouldLockControls = false;
            
@@ -920,7 +921,7 @@ public class TrialController : MonoBehaviour {
         //disable lock on player movement so they can freely look around
         exp.player.controls.ShouldLockControls = false;
         //skipping feedback for now
-		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses));
+		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions));
         //lock controls before resuming to the next trial
         exp.player.controls.ShouldLockControls = true;
 		//increment subject's trial count
@@ -930,7 +931,7 @@ public class TrialController : MonoBehaviour {
 	}
 
 	int currTrialNum = 0;
-	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<Config_CoinTask.MemoryState> rememberResponses){
+	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions){
 		trialLogger.LogFeedback(true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
 
@@ -989,7 +990,7 @@ public class TrialController : MonoBehaviour {
 			//calculate the memory points and display them
 			exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
 
-			int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position, rememberResponses[i]);//, areYouSureResponses[i] );
+			int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position);//, areYouSureResponses[i] );
 
 			//change chosen indicator color to reflect right or wrong
 			ChosenIndicatorController chosenIndicatorController = chosenPositionIndicator.GetComponent<ChosenIndicatorController>();
