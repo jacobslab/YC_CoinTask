@@ -65,6 +65,8 @@ public class RabbitCatcher : MonoBehaviour
         exp.currInstructions.headerInstructionText.text = catchInstructions;
 
         Debug.Log("put rabbit on a random spawn pos");
+        Vector3 initialSpawnPos = exp.environmentController.GetRandomPositionWithinWallsXZ(Config_CoinTask.objectToWallBuffer);
+        rabbitObj.transform.position = new Vector3(initialSpawnPos.x, rabbitObj.transform.position.y, initialSpawnPos.z);
 
         //find a random position that is reasonable distance away from the rabbit
         Vector3 targetPos = Vector3.zero;
@@ -115,7 +117,7 @@ public class RabbitCatcher : MonoBehaviour
         rabbitObj.transform.parent = null;
 
         //unlock player movement
-        exp.player.controls.ShouldLockControls = false;
+        //exp.player.controls.ShouldLockControls = false;
 
         //reset the rabbit caught flag
         ResetRabbitFlag();
@@ -150,7 +152,7 @@ public class RabbitCatcher : MonoBehaviour
         //set the rabbit inactive regardless of the result
         rabbitObj.SetActive(false);
         //briefly lock controls
-        exp.player.controls.ShouldLockControls = true;
+        //exp.player.controls.ShouldLockControls = true;
         GameObject feedbackParticle;
         //TreasureHuntController_ARKit.Instance.trialLog.LogDistractorResult(caughtRabbit);
         //show success or failure message
@@ -159,6 +161,7 @@ public class RabbitCatcher : MonoBehaviour
             feedbackParticle = Instantiate(correctParticlePrefab, exp.player.controls.myCamera.transform.position, Quaternion.identity) as GameObject;
             exp.currInstructions.headerInstructionText.text = successInstructions;
              yield return new WaitForSeconds(2.5f);
+            Experiment_CoinTask.Instance.scoreController.AddBoxSwapperPoints();
         }
         else
         {
@@ -166,6 +169,7 @@ public class RabbitCatcher : MonoBehaviour
             GameObject smoke = Instantiate(smokeParticlePrefab, rabbitObj.transform.position, Quaternion.identity) as GameObject;
             exp.currInstructions.headerInstructionText.text = failureInstructions;
             yield return new WaitForSeconds(2.5f);
+            Experiment_CoinTask.Instance.scoreController.RemoveBoxSwapperPoints();
             Destroy(smoke);
         }
 

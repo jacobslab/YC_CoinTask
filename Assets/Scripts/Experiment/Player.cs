@@ -47,11 +47,11 @@ public class Player : MonoBehaviour {
 			//if the angle is bigger than the threshold, turn on the appropriate arrows
 			if( Mathf.Abs(angleBetweenPlayerAndTreasure) > arrowAngleThreshold){
 				if(angleBetweenPlayerAndTreasure < 0){
-					TurnOnLeftArrows(true);
+					//TurnOnLeftArrows(true);
 					TurnOnRightArrows(false);
 				}
 				else{
-					TurnOnRightArrows(true);
+					//TurnOnRightArrows(true);
 					TurnOnLeftArrows(false);
 				}
 			}

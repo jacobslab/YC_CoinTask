@@ -93,12 +93,12 @@ public class TrialController : MonoBehaviour {
 			}
 
 			//generate all trials, two & three object, including counter-balanced trials
-			List<Trial> ListOfTwoItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numTwoItemTrials, 2, false, false);
+			//List<Trial> ListOfTwoItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numTwoItemTrials, 2, false, false);
 			List<Trial> ListOfThreeItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numThreeItemTrials, 3, false, false);
 
 			//generate blocks from trials
 			int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
-			GenerateTrialBlocks (ListOfTwoItemTrials,ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
+			GenerateTrialBlocks (ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
 		}
 	}
 
@@ -281,17 +281,17 @@ public class TrialController : MonoBehaviour {
 		return trialList;
 	}
 
-	void GenerateTrialBlocks(List<Trial> twoItemTrials, List<Trial> threeItemTrials, int numBlocks, int numTrialsPerBlock){
+	void GenerateTrialBlocks(List<Trial> threeItemTrials, int numBlocks, int numTrialsPerBlock){
 		for(int i = 0; i < numBlocks; i++){
 			List<Trial> newBlock = new List<Trial>();
-			for(int j = 0; j < numTrialsPerBlock/2; j++){ //half two item, half one item
-				int randomTwoItemIndex = Random.Range (0, twoItemTrials.Count);
+			for(int j = 0; j < numTrialsPerBlock; j++){ //100% 3-item trials
+				//int randomTwoItemIndex = Random.Range (0, twoItemTrials.Count);
 				int randomThreeItemIndex = Random.Range (0, threeItemTrials.Count);
 
-				newBlock.Add(twoItemTrials[randomTwoItemIndex]);
+				//newBlock.Add(twoItemTrials[randomTwoItemIndex]);
 				newBlock.Add(threeItemTrials[randomThreeItemIndex]);
 
-				twoItemTrials.RemoveAt(randomTwoItemIndex);
+				//twoItemTrials.RemoveAt(randomTwoItemIndex);
 				threeItemTrials.RemoveAt(randomThreeItemIndex);
 			}
 			ListOfTrialBlocks.Add(newBlock);
@@ -410,9 +410,9 @@ public class TrialController : MonoBehaviour {
 #else
 			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 1.0f;
-			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			//yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 0.0f;
-			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			//yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 #endif
 
 			#if MRIVERSION
@@ -731,10 +731,10 @@ public class TrialController : MonoBehaviour {
 		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, false);
 		//}
 
-		trialLogger.LogTransportationToTowerEvent (true);
-		//currentDefaultObject = null; //set to null so that arrows stop showing up...
-		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, false));//PlayerControls.toTowerTime) );
-		trialLogger.LogTransportationToTowerEvent (false);
+		//trialLogger.LogTransportationToTowerEvent (true);
+		////currentDefaultObject = null; //set to null so that arrows stop showing up...
+		//yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, false));//PlayerControls.toTowerTime) );
+		//trialLogger.LogTransportationToTowerEvent (false);
 
 		//RUN DISTRACTOR GAME
 		trialLogger.LogDistractorGame (true);
@@ -744,8 +744,15 @@ public class TrialController : MonoBehaviour {
 		trialLogger.LogDistractorGame (false);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, false);
 
-		//jitter before the first object is shown
-		yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
+        //transporting
+        trialLogger.LogTransportationToTowerEvent(true);
+        //currentDefaultObject = null; //set to null so that arrows stop showing up...
+        yield return StartCoroutine(exp.player.controls.SmoothMoveTo(currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, false));//PlayerControls.toTowerTime) );
+        trialLogger.LogTransportationToTowerEvent(false);
+
+
+        //jitter before the first object is shown
+        yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
 
 		//show instructions for location selection 
 		trialLogger.LogRecallPhaseStarted(true);

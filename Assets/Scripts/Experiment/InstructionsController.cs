@@ -69,7 +69,7 @@ public class InstructionsController : MonoBehaviour {
 	public string hurryUpText = "hurry up!";
 
 	//box swap
-	public string boxSwapBonusTitle = "Box Swap Bonus!";
+	public string boxSwapBonusTitle = "Rabbit Hunt Bonus!";
 	public string boxSwapExplanation = "when the boxes stop moving,\npress (X) to select a box";
 
 	//recall
@@ -90,7 +90,7 @@ public class InstructionsController : MonoBehaviour {
 	//score screen
 	public string trialCompleteText = "Trial Complete!";
 	public string timeBonusText = "time bonus";
-	public string boxSwapBonusText = "box swap bonus";
+	public string boxSwapBonusText = "rabbit hunt bonus";
 	public string trialScoreText = "Trial Score";
 
 	//trial 1/40 completed
