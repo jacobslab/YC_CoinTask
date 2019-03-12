@@ -17,6 +17,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//public InstructionsController inGameInstructionsController;
 	public CameraController cameraController;
 
+    //audio
+    public AudioController audioController;
+
 	//logging
 	private string subjectLogfile; //gets set based on the current subject in Awake()
 	public Logger_Threading subjectLog;

@@ -745,10 +745,10 @@ public class TrialController : MonoBehaviour {
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, false);
 
         //transporting
-        trialLogger.LogTransportationToTowerEvent(true);
-        //currentDefaultObject = null; //set to null so that arrows stop showing up...
-        yield return StartCoroutine(exp.player.controls.SmoothMoveTo(currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, false));//PlayerControls.toTowerTime) );
-        trialLogger.LogTransportationToTowerEvent(false);
+        //trialLogger.LogTransportationToTowerEvent(true);
+        ////currentDefaultObject = null; //set to null so that arrows stop showing up...
+        //yield return StartCoroutine(exp.player.controls.SmoothMoveTo(currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, false));//PlayerControls.toTowerTime) );
+        //trialLogger.LogTransportationToTowerEvent(false);
 
 
         //jitter before the first object is shown
@@ -954,7 +954,9 @@ public class TrialController : MonoBehaviour {
 
 			Vector3 chosenPosition = chosenPositions[i];
 
-			//throw bomb to selected location
+            //play splash audio to indicate a feedback
+            AudioController.PlayAudio(exp.audioController.feedbackSplashEffect);
+
 			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't actually want its visuals showing up as we wait
 
 #if !(MRIVERSION)
@@ -979,6 +981,7 @@ public class TrialController : MonoBehaviour {
 			GameObject correctPositionIndicator = Instantiate( exp.environmentController.myPositionSelector.CorrectPositionIndicator, correctPosition, exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.rotation) as GameObject;
 			correctPositionIndicator.GetComponent<SpawnableObject>().SetNameID(correctPositionIndicator.transform, i);
 			CorrectPositionIndicators.Add(correctPositionIndicator); 
+
 
 			//create an indicator for each chosen position
 			//spawn the indicator at the height of the original indicator

@@ -128,8 +128,17 @@ public class ObjectController : MonoBehaviour {
 	public GameObject SpawnDefaultObject (Vector2 positionXZ, List<Vector2> specialPositions, int index) {
 		Vector3 objPos = new Vector3(positionXZ.x, DefaultObject.transform.position.y, positionXZ.y);
 		GameObject newObj = Instantiate(DefaultObject, objPos, DefaultObject.transform.rotation) as GameObject;
-		
-		SpawnableObject newSpawnableObj = newObj.GetComponent<SpawnableObject>();
+        Debug.Log("new obj is " + newObj.gameObject.name);
+        SpawnableObject newSpawnableObj;
+        //SpawnableObject newSpawnableObj = newObj.GetComponent<SpawnableObject>(); 
+        //if (newObj.gameObject.name.Contains("Pedestal"))
+        //{
+        //    newSpawnableObj = newObj.transform.GetChild(0).gameObject.GetComponent<SpawnableObject>(); //we get the child as it is on a pedestal
+        //}
+        //else
+        //{
+            newSpawnableObj = newObj.GetComponent<SpawnableObject>();
+        //}
 		newSpawnableObj.SetNameID(newObj.transform, index);
 		
 		if( specialPositions.Contains(positionXZ) ){
@@ -150,6 +159,7 @@ public class ObjectController : MonoBehaviour {
 	//spawn random object at a specified location
 	public GameObject SpawnSpecialObject (Vector3 spawnPos){
 		GameObject objToSpawn;
+
 		if (exp.trialController.currentTrial.ManualSpecialObjectNames != null) {
 			if (exp.trialController.currentTrial.ManualSpecialObjectNames.Count > 0) {
 				objToSpawn = ChooseSpawnableObject (exp.trialController.currentTrial.ManualSpecialObjectNames [0]);
@@ -165,7 +175,8 @@ public class ObjectController : MonoBehaviour {
 		if (objToSpawn != null) {
 
 			GameObject newObject = Instantiate(objToSpawn, spawnPos, objToSpawn.transform.rotation) as GameObject;
-
+            Debug.Log("halving the local scale of spawned obj");
+            newObject.transform.localScale = new Vector3(newObject.transform.localScale.x / 2f, newObject.transform.localScale.y / 2f, newObject.transform.localScale.z / 2f);
 			float randomRot = GenerateRandomRotationY();
 			newObject.transform.RotateAround(newObject.transform.position, Vector3.up, randomRot);
 

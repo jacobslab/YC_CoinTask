@@ -12,6 +12,8 @@ public class RabbitCatcher : MonoBehaviour
     public GameObject correctParticlePrefab;
     public GameObject wrongParticlePrefab;
     public GameObject smokeParticlePrefab;
+    public AudioSource correctAudio;
+    public AudioSource incorrectAudio;
     //public GameObject foundCube; //the invisible cube that will serve as a collision check for the rabbit
 
     public static bool rabbitLooking = false; //used to control if the device camera is looking at the rabbit or not; this is to make sure the rabbit is centrally viewed before it begins its movement
@@ -56,6 +58,8 @@ public class RabbitCatcher : MonoBehaviour
     public IEnumerator Run()
     {
 
+        //unlock player movement
+        exp.player.controls.ShouldLockControls = false;
         //debugText.enabled = true;
         //make the rabbit visible
         rabbitObj.SetActive(true);
@@ -116,8 +120,6 @@ public class RabbitCatcher : MonoBehaviour
         rabbitObj.GetComponent<Animator>().SetBool("CanMove?", false);
         rabbitObj.transform.parent = null;
 
-        //unlock player movement
-        //exp.player.controls.ShouldLockControls = false;
 
         //reset the rabbit caught flag
         ResetRabbitFlag();
@@ -158,6 +160,7 @@ public class RabbitCatcher : MonoBehaviour
         //show success or failure message
         if (caughtRabbit)
         {
+            AudioController.PlayAudio(correctAudio);
             feedbackParticle = Instantiate(correctParticlePrefab, exp.player.controls.myCamera.transform.position, Quaternion.identity) as GameObject;
             exp.currInstructions.headerInstructionText.text = successInstructions;
              yield return new WaitForSeconds(2.5f);
@@ -165,6 +168,7 @@ public class RabbitCatcher : MonoBehaviour
         }
         else
         {
+            AudioController.PlayAudio(incorrectAudio);
             feedbackParticle = Instantiate(wrongParticlePrefab, exp.player.controls.myCamera.transform.position, Quaternion.identity) as GameObject;
             GameObject smoke = Instantiate(smokeParticlePrefab, rabbitObj.transform.position, Quaternion.identity) as GameObject;
             exp.currInstructions.headerInstructionText.text = failureInstructions;
@@ -180,6 +184,8 @@ public class RabbitCatcher : MonoBehaviour
         exp.currInstructions.headerInstructionGroup.alpha = 0f;
         Destroy(feedbackParticle);
 
+        //unlock player movement
+        exp.player.controls.ShouldLockControls = true;
         yield return null;
     }
 

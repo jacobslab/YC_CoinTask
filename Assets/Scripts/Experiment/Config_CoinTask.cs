@@ -20,7 +20,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static Version BuildVersion = Version.TH1;
 #endif
 
-	public static string VersionNumber = "2.042";
+	public static string VersionNumber = "Room750";
 
 #if MRIVERSION
 	public static bool isSyncbox = false;
@@ -45,7 +45,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static int replayPadding = 6;
 
     //FIXED indicator height
-    public static float fixedIndicatorHeight = 4.53f;
+    public static float fixedIndicatorHeight = 4.92f;
     //JUICE
     public static bool isJuice = true;
 	public static bool isSoundtrack = false; //WON'T PLAY IF ISJUICE IS FALSE.
@@ -110,7 +110,7 @@ public class Config_CoinTask : MonoBehaviour {
 	//OBJECTS
 	public static int numDefaultObjects = 4;
 
-	public static float selectionDiameter = 26.0f;
+	public static float selectionDiameter = 13.0f;
 
 	public static float objectToWallBuffer = 13.0f; //half of the selection diameter.
 	public static float objectToObjectBuffer { get { return CalculateObjectToObjectBuffer(); } } //calculated base on min time to drive between objects!

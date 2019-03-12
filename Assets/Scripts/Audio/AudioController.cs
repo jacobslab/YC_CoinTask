@@ -4,6 +4,7 @@ using System.Collections;
 public class AudioController : MonoBehaviour {
 
 	public AudioSource[] MainGameSongs;
+    public AudioSource feedbackSplashEffect;
 	AudioSource currentSong;
 	int currentSongIndex = -1; //when we play the next song, currentSongIndex will ++;
 

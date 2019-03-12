@@ -36,7 +36,7 @@ public class ScoreController : MonoBehaviour {
 	static int timeBonusMed = 100;
 	public static int TimeBonusMed { get { return timeBonusMed; } }
 
-	static int timeBonusBig = 200;
+	static int timeBonusBig = 50;
 	public static int TimeBonusBig { get { return timeBonusBig; } }
 	
 
@@ -52,16 +52,16 @@ public class ScoreController : MonoBehaviour {
 	static int memoryScoreNoWrong = 0;
 	public static int MemoryScoreNoWrong { get { return memoryScoreNoWrong; } }
 
-	static int memoryScoreYesRight = 200;
+	static int memoryScoreYesRight = 250;
 	public static int MemoryScoreYesRight { get { return memoryScoreYesRight; } }
 
-	static int memoryScoreYesWrong = -350;
+	static int memoryScoreYesWrong = -100;
 	public static int MemoryScoreYesWrong { get { return memoryScoreYesWrong; } }
 
 	static int specialObjectPoints = 0;
 	public static int SpecialObjectPoints { get { return specialObjectPoints; } }
 
-	static int boxSwapperPoints = 200;
+	static int boxSwapperPoints = 50;
 	public static int BoxSwapperPoints { get { return boxSwapperPoints; } }
 
 	static int boxSwapperNegPoints = 0;
@@ -206,12 +206,14 @@ public class ScoreController : MonoBehaviour {
 
 	public int CalculateTimeBonus(float secondsToCompleteTrial){
 		int timeBonusScore = 0;
-		if (secondsToCompleteTrial < timeBonusTimeMin) {
+        if (secondsToCompleteTrial < timeBonusTimeMed) {
 			timeBonusScore = timeBonusBig;
-		} 
-		else if (secondsToCompleteTrial < timeBonusTimeMed) {
-			timeBonusScore = timeBonusMed;
-		} 
+		}
+
+
+		//else if (secondsToCompleteTrial < timeBonusTimeMed) {
+		//	timeBonusScore = timeBonusMed;
+		//} 
 		//else if (secondsToCompleteTrial < timeBonusTimeMax) {
 		//	timeBonusScore = timeBonusSmall;
 		//} 
