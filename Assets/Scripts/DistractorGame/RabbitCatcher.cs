@@ -20,8 +20,8 @@ public class RabbitCatcher : MonoBehaviour
 
     private bool caughtRabbit = false; // flag that determines whether rabbit was caught or not
 
-    private string catchInstructions = "Catch the rabbit by going near its location!";
-    private string successInstructions = "Success! You caught the rabbit!";
+    private string catchInstructions = "Chase the rabbit by going near its location!";
+    private string successInstructions = "Success! You chased the rabbit!";
     private string failureInstructions = "The rabbit escaped! Better luck next time!";
     Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 

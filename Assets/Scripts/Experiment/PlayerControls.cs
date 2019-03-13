@@ -65,7 +65,7 @@ public class PlayerControls : MonoBehaviour{
 		float verticalAxisInput = Input.GetAxis ("Vertical");
 
         //only accept forward movement
-		if (verticalAxisInput > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
+        if (Mathf.Abs(verticalAxisInput) > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
 			Vector3 movementDir = movementTransform.forward;
 			float angleDifference = 0;
 			if(wasNotMoving){
