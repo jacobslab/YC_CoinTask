@@ -88,7 +88,7 @@ public class TrialLogTrack : LogTrack {
 		Debug.Log ("REMEMBER LOGGED: " + response);
 	}
 
-	#if MRIVERSION
+    #if MRIVERSION
 
 	public void LogMRITimeout(){
 		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "MRI_TIMEOUT");
@@ -135,10 +135,10 @@ public class TrialLogTrack : LogTrack {
 		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "MRI_DISTRACTOR_FEEDBACK_TIMEOUT");
 		Debug.Log ("distractor feedback timeout");
 	}*/
-	#endif
+#endif
 
-	//if the UI answer selector has moved TODO: move to an answer selector logger?
-	public void LogAnswerPositionMoved(Config_CoinTask.MemoryState memoryState, bool isRememberResponse){ //either remember response or double down response
+    //if the UI answer selector has moved TODO: move to an answer selector logger?
+    public void LogAnswerPositionMoved(Config_CoinTask.MemoryState memoryState, bool isRememberResponse){ //either remember response or double down response
 		if (ExperimentSettings_CoinTask.isLogging) {
 			string answerPosition = "NO";
 

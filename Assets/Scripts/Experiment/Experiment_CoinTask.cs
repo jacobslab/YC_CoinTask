@@ -50,6 +50,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 	//UI controller
 	public UIController uiController;
+    
 
 	//avatar
 	public Player player;
