@@ -931,9 +931,10 @@ public class TrialController : MonoBehaviour {
 		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions));
         //lock controls before resuming to the next trial
         exp.player.controls.ShouldLockControls = true;
-		//increment subject's trial count
+        yield return StartCoroutine(CheckEyetrackerConnectionStatus());
+        //increment subject's trial count
 #if !UNITY_WEBPLAYER
-		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
+        ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
 #endif
 	}
 
@@ -1075,7 +1076,38 @@ public class TrialController : MonoBehaviour {
 		yield return 0;
 	}
 
-	void SetConnectingLines( GameObject correctPositionIndicator, Vector3 chosenPosition, Color chosenIndicatorColor){//, EnvironmentPositionSelector.SelectionRadiusType chosenRadiusSize ){
+
+    IEnumerator CheckEyetrackerConnectionStatus()
+    {
+        Debug.Log("checking connection status");
+        if (GazeTracker.shouldReconnect)
+        {
+            yield return StartCoroutine(InitiateEyetrackerReconnection());
+        }
+        yield return null;
+    }
+
+    IEnumerator InitiateEyetrackerReconnection()
+    {
+        Debug.Log("initiating reconnection");
+        exp.uiController.eyetrackerConnectionPanel.alpha = 1f;
+        exp.uiController.eyetrackerConnectionStatusImage.color = Color.red;
+        while (!exp.gazeTracker.userPresent)
+        {
+            Debug.Log("waiting for user to be present");
+            yield return 0;
+        }
+
+        Debug.Log("finished reconnection");
+        exp.uiController.eyetrackerConnectionStatusImage.color = Color.green;
+        yield return new WaitForSeconds(1f);
+        exp.uiController.eyetrackerConnectionPanel.alpha = 0f;
+        GazeTracker.shouldReconnect = false;
+
+        yield return null;
+    }
+
+    void SetConnectingLines( GameObject correctPositionIndicator, Vector3 chosenPosition, Color chosenIndicatorColor){//, EnvironmentPositionSelector.SelectionRadiusType chosenRadiusSize ){
 		correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>().SetLineTarget(chosenPosition, chosenIndicatorColor);
 	}
 
