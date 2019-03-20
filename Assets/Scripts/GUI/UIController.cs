@@ -62,9 +62,12 @@ public class UIController : MonoBehaviour {
 	public TextMesh blockTitle5;
 	public TextMesh blockScreenPressToContinue;
 
+    public CanvasGroup eyetrackerConnectionPanel;
+    public RawImage eyetrackerConnectionStatusImage;
 
-	//MRI VERSION
-	public CanvasGroup WaitingForMRIUI;
+
+    //MRI VERSION
+    public CanvasGroup WaitingForMRIUI;
 	public CanvasGroup FixationRestUI;
 	public CanvasGroup MRITimerUI;
 

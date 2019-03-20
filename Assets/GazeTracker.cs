@@ -14,18 +14,36 @@ public class GazeTracker : MonoBehaviour {
     public int VisualizationDistance = 10;
     private SpriteRenderer _gazeBubbleRenderer;
     public LayerMask layerMask;
-
+    public bool userPresent = false;
+    public static bool shouldReconnect = false;
+    float disconnectionTimer = 0f;
     private EyetrackerLog eyetrackerLog;
+    private UserPresence userPresence;
+
     // Use this for initialization
     void Start () {
 
         _gazeBubbleRenderer = GetComponent<SpriteRenderer>();
         eyetrackerLog = GetComponent<EyetrackerLog>();
     }
+
 	
 	// Update is called once per frame
 	void Update () {
+        
         var gazePoint = TobiiAPI.GetGazePoint();
+        userPresence = TobiiAPI.GetUserPresence();
+        userPresent = userPresence.IsUserPresent();
+        if(!userPresent && !shouldReconnect)
+        {
+            disconnectionTimer += Time.deltaTime;
+            if (disconnectionTimer > 15f)
+                shouldReconnect = true;
+        }
+        else
+        {
+            disconnectionTimer = 0f;
+        }
         if (gazePoint.IsRecent() && Camera.main != null)
         {
             long gazeDeviceTimestamp = gazePoint.PreciseTimestamp;

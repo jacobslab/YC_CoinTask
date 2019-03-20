@@ -50,7 +50,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 	//avatar
 	public Player player;
 
-	//public bool isOculus = false;
+    //public bool isOculus = false;
+
+    public GazeTracker gazeTracker;
 
 	//state enum
 	public ExperimentState currentState = ExperimentState.inExperiment;
