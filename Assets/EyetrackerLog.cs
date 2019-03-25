@@ -18,7 +18,7 @@ public class EyetrackerLog : LogTrack
 
     public void LogEyetrackerScreenPosition(Vector3 screenPos, long timestamp)
     {
-        subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "EYETRACKER_SCREEN_POINT" + separator + screenPos.x.ToString() + separator + screenPos.y.ToString() + separator + timestamp.ToString());
+        subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "EYETRACKER_DISPLAY_POINT" + separator + screenPos.x.ToString() + separator + screenPos.y.ToString() + separator + timestamp.ToString());
     }
 
     public void LogGazeObject(string objName, long timestamp)
@@ -27,6 +27,6 @@ public class EyetrackerLog : LogTrack
     }
     public void LogVirtualPointData(Vector3 hitpoint, long timestamp)
     {
-        subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "EYETRACKER_VIRTUAL_POINT" + separator + hitpoint.x.ToString() + separator + hitpoint.y.ToString() + separator + timestamp.ToString());
+        subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "EYETRACKER_VIRTUAL_POINT" + separator + hitpoint.x.ToString() + separator + hitpoint.y.ToString() + separator + hitpoint.z.ToString() + separator+ timestamp.ToString());
     }
 }

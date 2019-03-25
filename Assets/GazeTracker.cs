@@ -63,7 +63,7 @@ public class GazeTracker : MonoBehaviour {
             }
           //  Debug.Log("screen point " + gazePoint.Screen.ToString());
             //transform.position = ProjectToPlaneInWorld(gazePoint);
-            eyetrackerLog.LogEyetrackerScreenPosition(gazePoint.Screen, gazeDeviceTimestamp);
+            eyetrackerLog.LogEyetrackerScreenPosition(gazePoint.Screen.normalized, gazeDeviceTimestamp);
          //  Vector2 screenPos = new Vector2(gazePoint.Screen.normalized.x * Screen.width, gazePoint.Screen.normalized.y * Screen.height);
           //  eyeIndicator.GetComponent<RectTransform>().anchoredPosition = screenPos;
         }
