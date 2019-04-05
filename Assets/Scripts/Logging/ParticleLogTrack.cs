@@ -5,7 +5,7 @@ public class ParticleLogTrack : LogTrack {
 
 	//should be able to log either or both of these.
 	public ParticleSystem particleSystem;
-	public EllipsoidParticleEmitter particleEmitter;
+	//public EllipsoidParticleEmitter particleEmitter;
 
 	SpawnableObject spawnableObject;
 
@@ -37,36 +37,36 @@ public class ParticleLogTrack : LogTrack {
 			}
 		}
 
-		if (particleEmitter != null) {
-			if (!isEmitterPlaying) {
-				isEmitterPlaying = true;
-				LogParticleEmitterPlaying (particleEmitter.transform.position);
-			} 
-			else if (isEmitterPlaying) {
-				isEmitterPlaying = false;
-				LogParticleEmitterOver (particleEmitter.transform.position);
-			}
-		}
+		//if (particleEmitter != null) {
+		//	if (!isEmitterPlaying) {
+		//		isEmitterPlaying = true;
+		//		LogParticleEmitterPlaying (particleEmitter.transform.position);
+		//	} 
+		//	else if (isEmitterPlaying) {
+		//		isEmitterPlaying = false;
+		//		LogParticleEmitterOver (particleEmitter.transform.position);
+		//	}
+		//}
 	}
 
 	//for logging the particle system
 	void LogParticleSystemPlaying(Vector3 systemLocation){
-		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_SYSTEM_PLAYING" + separator + particleSystem.name + separator + "IS_LOOPING" + separator + particleSystem.loop + separator + systemLocation.x + separator + systemLocation.y + separator + systemLocation.z);
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_SYSTEM_PLAYING" + separator + particleSystem.name + separator + "IS_LOOPING" + separator + particleSystem.main.loop + separator + systemLocation.x + separator + systemLocation.y + separator + systemLocation.z);
 	}
 
 	void LogParticleSystemOver(Vector3 systemLocation){
-		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_SYSTEM_STOPPED" + separator + particleSystem.name + separator + "IS_LOOPING" + separator + particleSystem.loop + separator + systemLocation.x + separator + systemLocation.y + separator + systemLocation.z);
+		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_SYSTEM_STOPPED" + separator + particleSystem.name + separator + "IS_LOOPING" + separator + particleSystem.main.loop + separator + systemLocation.x + separator + systemLocation.y + separator + systemLocation.z);
 	}
 
 	//for logging the particle emitter
 	//note: emitters do not have a looping property
-	void LogParticleEmitterPlaying(Vector3 emitterLocation){
-		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_EMITTER_PLAYING" + separator + particleEmitter.name + separator + emitterLocation.x + separator + emitterLocation.y + separator + emitterLocation.z);
-	}
+	//void LogParticleEmitterPlaying(Vector3 emitterLocation){
+	//	subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_EMITTER_PLAYING" + separator + particleEmitter.name + separator + emitterLocation.x + separator + emitterLocation.y + separator + emitterLocation.z);
+	//}
 	
-	void LogParticleEmitterOver(Vector3 emitterLocation){
-		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_EMITTER_STOPPED" + separator + particleEmitter.name + separator + emitterLocation.x + separator + emitterLocation.y + separator + emitterLocation.z);
-	}
+	//void LogParticleEmitterOver(Vector3 emitterLocation){
+	//	subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_EMITTER_STOPPED" + separator + particleEmitter.name + separator + emitterLocation.x + separator + emitterLocation.y + separator + emitterLocation.z);
+	//}
 
 	string GetNameToLog(){
 		string name = gameObject.name;
@@ -82,10 +82,10 @@ public class ParticleLogTrack : LogTrack {
 			LogParticleSystemOver (particleSystem.transform.position);
 		}
 
-		if (isEmitterPlaying) {
-			isEmitterPlaying = false;
-			LogParticleEmitterOver(particleEmitter.transform.position);
-		}
+		//if (isEmitterPlaying) {
+		//	isEmitterPlaying = false;
+		//	LogParticleEmitterOver(particleEmitter.transform.position);
+		//}
 	}
 
 	void OnDisable(){
@@ -94,10 +94,10 @@ public class ParticleLogTrack : LogTrack {
 			particleSystem.Stop();
 			LogParticleSystemOver (particleSystem.transform.position);
 		}
-		if (isEmitterPlaying) {
-			isEmitterPlaying = false;
-			//particleEmitter.emit = false;
-			LogParticleEmitterOver(particleEmitter.transform.position);
-		}
+		//if (isEmitterPlaying) {
+		//	isEmitterPlaying = false;
+		//	//particleEmitter.emit = false;
+		//	LogParticleEmitterOver(particleEmitter.transform.position);
+		//}
 	}
 }
