@@ -598,27 +598,27 @@ public class Replay : MonoBehaviour {
 								}
 
 								//PARTICLE EMITTERS
-								else if (loggedProperty == "PARTICLE_EMITTER_PLAYING"){
-									string particleSystemName = splitLine [i+2];
-									ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter>();
-									if(particles == null){
-										particles = objInScene.transform.Find( particleSystemName ).GetComponent<ParticleEmitter>();
-									}
+								//else if (loggedProperty == "PARTICLE_EMITTER_PLAYING"){
+								//	string particleSystemName = splitLine [i+2];
+								//	ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter>();
+								//	if(particles == null){
+								//		particles = objInScene.transform.Find( particleSystemName ).GetComponent<ParticleEmitter>();
+								//	}
 
 
-									//particles.emit = true;
+								//	//particles.emit = true;
 									
-								}
-								else if (loggedProperty == "PARTICLE_EMITTER_STOPPED"){
-									string particleSystemName = splitLine [i+2];
-									ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter>();
-									if(particles == null){
-										particles = objInScene.transform.Find( particleSystemName ).GetComponent<ParticleEmitter>();
-									}
+								//}
+								//else if (loggedProperty == "PARTICLE_EMITTER_STOPPED"){
+								//	string particleSystemName = splitLine [i+2];
+								//	ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter>();
+								//	if(particles == null){
+								//		particles = objInScene.transform.Find( particleSystemName ).GetComponent<ParticleEmitter>();
+								//	}
 									
-									//particles.emit = false;
+								//	//particles.emit = false;
 									
-								}
+								//}
 
 								//AUDIO
 								else if (loggedProperty == "AUDIO_PLAYING"){
