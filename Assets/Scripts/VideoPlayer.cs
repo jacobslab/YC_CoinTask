@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class VideoPlayer : MonoBehaviour {
 	
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 	
-	MovieTexture movie;
+	VideoPlayer movie;
 	AudioSource movieAudio;
 	
 	public CanvasGroup group;
@@ -14,22 +15,25 @@ public class VideoPlayer : MonoBehaviour {
 	void Awake(){
 		group.alpha = 0.0f;
 	}
+
+    //TODO: FIX video playing
 	
 	// Use this for initialization
 	void Start () {
-		RawImage rim = GetComponent<RawImage>();
-		if(rim != null){
-			if(rim.texture != null){
-				movie = (MovieTexture)rim.mainTexture;
-			}
-		}
+        //RawImage rim = GetComponent<RawImage>();
+        //if(rim != null){
+        //	if(rim.texture != null){
+        //		movie =
+        //	}
+        //}
+        movie = GetComponent<VideoPlayer>();
 		movieAudio = GetComponent<AudioSource> ();
 	}
 	
 	bool isMoviePaused = false;
 	void Update () {
 		if (movie != null) {
-			if (movie.isPlaying) {
+			if (!movie.isMoviePaused) {
 				if (Input.GetAxis (Config_CoinTask.ActionButtonName) > 0.2f) { //skip movie!
 					Debug.Log("skip movie");
 					Stop ();
@@ -62,11 +66,9 @@ public class VideoPlayer : MonoBehaviour {
 				movieAudio.Play ();
 				movie.Play ();
 			
-				while (movie.isPlaying || isMoviePaused) {
+				while (movie.isMoviePaused) {
 					yield return 0;
 				}
-			
-				isMoviePaused = false;
 			
 				group.alpha = 0.0f;
 			}

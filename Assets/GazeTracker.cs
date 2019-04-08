@@ -20,6 +20,11 @@ public class GazeTracker : MonoBehaviour {
     private EyetrackerLog eyetrackerLog;
     private UserPresence userPresence;
 
+    private void Awake()
+    {
+        gameObject.SetActive(ExperimentSettings_CoinTask.hasEyetracking);
+    }
+
     // Use this for initialization
     void Start () {
 
