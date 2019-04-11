@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -96,7 +96,7 @@ public class ScoreController : MonoBehaviour {
 	void AddToScore(int amountToAdd){
 		amountLeftToAdd += amountToAdd;
 		score += amountToAdd;
-#if !UNITY_WEBPLAYER
+#if !UNITY_WEBGL
 		ExperimentSettings_CoinTask.currentSubject.score = score;
 #endif
 	}

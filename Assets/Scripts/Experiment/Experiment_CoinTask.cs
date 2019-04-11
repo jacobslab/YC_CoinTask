@@ -92,7 +92,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 		InitInstructionsController ();
 
 		if (ExperimentSettings_CoinTask.isLogging) {
-#if !UNITY_WEBPLAYER
+#if !UNITY_WEBGL
 			InitLogging();
 #else
 			ExperimentSettings_CoinTask.isLogging = false;
@@ -119,15 +119,17 @@ public class Experiment_CoinTask : MonoBehaviour {
 	
 	//TODO: move to logger_threading perhaps? *shrug*
 	void InitLogging(){
+         #if !UNITY_WEBGL
 		string subjectDirectory = ExperimentSettings_CoinTask.defaultLoggingPath + ExperimentSettings_CoinTask.currentSubject.name + "/";
 		sessionDirectory = subjectDirectory + "session_0" + "/";
 		
 		sessionID = 0;
 		string sessionIDString = "_0";
-		
+       
 		if(!Directory.Exists(subjectDirectory)){
 			Directory.CreateDirectory(subjectDirectory);
 		}
+
 		while (File.Exists(sessionDirectory + sessionStartedFileName)){//Directory.Exists(sessionDirectory)) {
 			sessionID++;
 
@@ -150,7 +152,8 @@ public class Experiment_CoinTask : MonoBehaviour {
 		
 		subjectLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "Log" + ".txt";
 		eegLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "EEGLog" + ".txt";
-	}
+#endif
+        }
 
 	//In order to increment the session, this file must be present. Otherwise, the session has not actually started.
 	//This accounts for when we don't successfully connect to hardware -- wouldn't want new session folders.
@@ -222,7 +225,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 		Debug.Log ("Experiment Over");
 		currentState = ExperimentState.inExperimentOver;
 		isRunningExperiment = false;
-#if UNITY_WEBPLAYER
+#if UNITY_WEBGL
 		Application.LoadLevel ("MainIsland"); //avoid main menu for web build.
 #else
 		SceneController.Instance.LoadEndMenu();

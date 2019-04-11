@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class SceneController : MonoBehaviour { //there can be a separate scene controller in each scene
@@ -53,10 +53,13 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 		}
 
 		if (ExperimentSettings_CoinTask.Instance.isRelease){ //no subject, not replay, is pilot
-			ExperimentSettings_CoinTask.Instance.subjectSelectionController.SendMessage("AddNewSubject");
-			if(ExperimentSettings_CoinTask.currentSubject != null){
+
+            //DISABLING TEMPORARILY FOR WEBGL
+
+            	//ExperimentSettings_CoinTask.Instance.subjectSelectionController.SendMessage("AddNewSubject");
+			//if(ExperimentSettings_CoinTask.currentSubject != null){
 				LoadExperimentLevel();
-			}
+			//}
 		}
 		
 		else if (ExperimentSettings_CoinTask.currentSubject != null && !ExperimentSettings_CoinTask.Instance.isRelease) {
@@ -69,13 +72,13 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 	}
 
 	void LoadExperimentLevel(){
-		if (ExperimentSettings_CoinTask.currentSubject.trials < Config_CoinTask.GetTotalNumTrials ()) {
+		//if (ExperimentSettings_CoinTask.currentSubject.trials < Config_CoinTask.GetTotalNumTrials ()) {
 			Debug.Log ("loading experiment!");
 			Application.LoadLevel (1);
-		} else {
-			Debug.Log ("Subject has already finished all blocks! Loading end menu.");
-			Application.LoadLevel (2);
-		}
+		//} else {
+		//	Debug.Log ("Subject has already finished all blocks! Loading end menu.");
+		//	Application.LoadLevel (2);
+		//}
 	}
 
 	public void LoadEndMenu(){
@@ -89,7 +92,7 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 	}
 
 	public void Quit(){
-#if !UNITY_WEBPLAYER
+#if !UNITY_WEBGL
 		SubjectReaderWriter.Instance.RecordSubjects();
 #endif
 		Application.Quit();
@@ -97,7 +100,7 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 
 	void OnApplicationQuit(){
 		Debug.Log("On Application Quit!");
-#if !UNITY_WEBPLAYER
+#if !UNITY_WEBGL
 		SubjectReaderWriter.Instance.RecordSubjects();
 #endif
 	}

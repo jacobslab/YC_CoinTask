@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -50,7 +50,7 @@ public class SubjectSelectionController : MonoBehaviour {
 	
 	void AddNewSubject() {
 
-#if UNITY_WEBPLAYER
+#if UNITY_WEBGL
 		string newSubjName = "WebSubject";
 #else
 		string newSubjName = SubjectInputField.text;

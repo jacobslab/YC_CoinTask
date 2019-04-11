@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
@@ -375,7 +375,7 @@ public class TrialController : MonoBehaviour {
 			}
 				
 #if (!(MRIVERSION))
-	#if (!UNITY_WEBPLAYER)
+	#if (!UNITY_WEBGL)
 	//		if(!ExperimentSettings_CoinTask.Instance.isWebBuild){
 				trialLogger.LogVideoEvent(true);
 				yield return StartCoroutine(exp.instrVideoPlayer.Play());
@@ -431,7 +431,7 @@ public class TrialController : MonoBehaviour {
 		}
 
 		StartCoroutine(exp.uiController.pirateController.PlayEndingPirate ());
-#if UNITY_WEBPLAYER
+#if UNITY_WEBGL
 		yield return StartCoroutine(exp.ShowSingleInstruction("You have finished your trials! \nPress (X) to restart.", true, true, false, 0.0f));
 #else
 		yield return StartCoroutine(exp.ShowSingleInstruction(exp.currInstructions.youHaveFinishedText, true, true, false, 0.0f));
@@ -896,7 +896,7 @@ public class TrialController : MonoBehaviour {
 		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses));
         yield return StartCoroutine(CheckEyetrackerConnectionStatus());
 		//increment subject's trial count
-#if !UNITY_WEBPLAYER
+#if !UNITY_WEBGL
 		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
 #endif
 	}

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using System.IO;
@@ -92,8 +92,8 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		}
 		_instance = this;
 
-#if UNITY_WEBPLAYER
-		InitWebSettings ();
+#if UNITY_WEBGL
+        InitWebSettings();
 #else
 		InitLoggingPath ();
 #endif
@@ -103,7 +103,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	}
 
 	void ResetDefaultLoggingPath(){
-		#if (!UNITY_WEBPLAYER)
+		#if (!UNITY_WEBGL)
 			#if MRIVERSION
 			defaultLoggingPath = System.IO.Directory.GetCurrentDirectory() + "/TextFiles/";
 			#else
@@ -121,10 +121,11 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 	void InitLoggingPath(){
 		ResetDefaultLoggingPath ();
-		
-		if(!Directory.Exists(defaultLoggingPath)) {
+#if !UNITY_WEBGL
+        if(!Directory.Exists(defaultLoggingPath)) {
 			Directory.CreateDirectory(defaultLoggingPath);
 		}
+#endif
 
 		if (Config_CoinTask.BuildVersion == Config_CoinTask.Version.TH1) {
 			if(Config_CoinTask.isSyncbox || Config_CoinTask.isSystem2){ //only add the folder if it's not the demo version.
@@ -145,10 +146,11 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 				defaultLoggingPath += MRIFolder;
 			}
 		}
-
+        #if !UNITY_WEBGL
 		if(!Directory.Exists(defaultLoggingPath)){ //if that TH folder doesn't exist, make it!
 			Directory.CreateDirectory(defaultLoggingPath);
 		}
+#endif
 
 		if (defaultLoggingPathDisplay != null) {
 			defaultLoggingPathDisplay.text = defaultLoggingPath;
@@ -168,11 +170,11 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 			} else {
 				BuildType.text = "Demo";
 			}
-			#if UNITY_WEBPLAYER
+#if UNITY_WEBGL
 				BuildType.text = "WebDemo";
-			#elif MRIVERSION
+#elif MRIVERSION
 				BuildType.text = "MRI";
-			#endif
+#endif
 			if(Config_CoinTask.isPractice){
 				BuildType.text += " Practice";
 			}

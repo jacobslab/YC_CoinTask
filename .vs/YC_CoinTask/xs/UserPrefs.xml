@@ -1,14 +1,20 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GUI/UIController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Tobii/Framework/Internal/TobiiEulaFile.cs">
     <Files>
       <File FileName="Assets/Scripts/Logging/ParticleLogTrack.cs" Line="65" Column="5" />
       <File FileName="Assets/Scripts/VideoRecording/Replay.cs" Line="601" Column="8" />
       <File FileName="Assets/Scripts/VideoPlayer.cs" Line="105" Column="18" />
       <File FileName="Assets/Scripts/Logging/CameraLogTrack.cs" Line="13" Column="36" />
-      <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" Line="47" Column="41" />
+      <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" Line="151" Column="14" />
       <File FileName="Assets/GazeTracker.cs" Line="25" Column="74" />
       <File FileName="Assets/Scripts/Experiment/InstructionsController.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/GUI/UIController.cs" Line="76" Column="9" />
+      <File FileName="Assets/Scripts/Experiment/SceneController.cs" Line="90" Column="34" />
+      <File FileName="Assets/Scripts/SubjectSelection&amp;Saving/SubjectSelectionController.cs" Line="51" Column="7" />
+      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" Line="150" Column="14" />
+      <File FileName="Assets/Tobii/Framework/Internal/GazeFocusSettings.cs" Line="113" Column="1" />
+      <File FileName="Assets/Tobii/Plugins/SimpleJSON.cs" Line="446" Column="33" />
+      <File FileName="Assets/Tobii/Framework/Internal/TobiiEulaFile.cs" Line="47" Column="15" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

@@ -110,15 +110,17 @@ namespace Tobii.Gaming.Internal
 
 		private static void Initialize()
 		{
-			Directory.CreateDirectory(DirectoryPath);
+#if !UNITY_WEBGL
+            Directory.CreateDirectory(DirectoryPath);
+#endif
 			Set(CreateDefault());
 		}
 #endif
 
-		/// <summary>
-		/// Creates a default layer mask with all non-empty layers selected.
-		/// </summary>
-		private static int CreateDefaultLayerMask()
+            /// <summary>
+            /// Creates a default layer mask with all non-empty layers selected.
+            /// </summary>
+            private static int CreateDefaultLayerMask()
 		{
 			int layerMask = 0;
 			for (int i = 0; i < MaximumLayersInUnity; ++i)
