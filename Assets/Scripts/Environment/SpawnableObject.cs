@@ -12,7 +12,12 @@ public class SpawnableObject : MonoBehaviour {
 
 	ObjectLogTrack myLogTrack;
 
-	Vector3 origScale;
+    float timeToScaleUp = 0.3f;
+
+    float fullScaleMult = 1.0f;
+    float smallScaleMult = 0.5f;
+
+    Vector3 origScale;
 
 	//NAME LOCALIZATION
 	public string SpanishName;
@@ -138,11 +143,12 @@ public class SpawnableObject : MonoBehaviour {
 		myLogTrack.LogShadowSettings (shadowMode);
 	}
 
-	void ScaleUp(){
-		float timeToScaleUp = 0.3f;
-		
-		float fullScaleMult = 1.0f;
-		float smallScaleMult = 0.5f;
+    public void SetScale(float distance)
+    {
+        fullScaleMult = Mathf.Lerp(2f,Config_CoinTask.maxObjScale, distance /Config_CoinTask.maxDistanceToPlayer);
+    }
+
+    void ScaleUp(){
 		StartCoroutine( GetComponent<ScaleAnimator>().AnimateScaleUp(timeToScaleUp, fullScaleMult, smallScaleMult) );
 	}
 

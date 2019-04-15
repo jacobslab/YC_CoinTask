@@ -571,7 +571,7 @@ public class Replay : MonoBehaviour {
 									string labelText = splitLine[i+2];
 									DefaultItem tChest = objInScene.GetComponent<DefaultItem>();
 									if(tChest != null){
-										tChest.SetSpecialObjectText(labelText);
+										tChest.SetSpecialObjectText(labelText,10f);
 									}
 								}
 

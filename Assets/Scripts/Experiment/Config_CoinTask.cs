@@ -112,6 +112,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 	public static float selectionDiameter = 13.0f;
 
+
 	public static float objectToWallBuffer = 13.0f; //half of the selection diameter.
 	public static float objectToObjectBuffer { get { return CalculateObjectToObjectBuffer(); } } //calculated base on min time to drive between objects!
 	public static float specialObjectBufferMult = 0.0f; //the distance the object controller will try to keep between special objects. should be a multiple of objectToObjectBuffer
@@ -150,6 +151,11 @@ public class Config_CoinTask : MonoBehaviour {
     public static float minRabbitSpawnDistance = 1f;
     public static float minRabbitCatchDistance = 8f;
     public static float maxRabbitCatchTime = 8f;
+
+    //static version only
+    public static float maxDistanceToPlayer = 100f;
+    public static float maxFontSize = 400f;
+    public static float maxObjScale = 6f;
 
     //drive variables
     public static float driveSpeed = 22;

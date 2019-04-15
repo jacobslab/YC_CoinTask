@@ -1,8 +1,18 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/VideoRecording/Replay.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Environment/SpawnableObject.cs">
     <Files>
-      <File FileName="Assets/Scripts/Logging/ParticleLogTrack.cs" Line="66" Column="2" />
-      <File FileName="Assets/Scripts/VideoRecording/Replay.cs" Line="621" Column="12" />
+      <File FileName="Assets/Scripts/Logging/ParticleLogTrack.cs" Line="89" Column="3" />
+      <File FileName="Assets/Scripts/VideoRecording/Replay.cs" Line="573" Column="29" />
+      <File FileName="Assets/Scripts/DistractorGame/RabbitCatcher.cs" Line="166" Column="60" />
+      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="940" Column="66" />
+      <File FileName="Assets/Scripts/Experiment/PlayerControls.cs" Line="46" Column="26" />
+      <File FileName="Assets/Scripts/Experiment/DefaultItem.cs" Line="173" Column="9" />
+      <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" Line="295" Column="1" />
+      <File FileName="Assets/Scripts/Environment/EnvironmentPositionSelector.cs" Line="62" Column="136" />
+      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="115" Column="22" />
+      <File FileName="Assets/Scripts/Anim. &amp; Visuals/ScaleAnimator.cs" Line="16" Column="21" />
+      <File FileName="Assets/Scripts/GUI/GoText.cs" Line="52" Column="62" />
+      <File FileName="Assets/Scripts/Environment/SpawnableObject.cs" Line="144" Column="30" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

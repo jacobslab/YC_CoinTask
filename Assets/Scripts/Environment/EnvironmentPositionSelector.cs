@@ -56,16 +56,20 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	void GetMovementInput(){
 		float verticalAxisInput = Input.GetAxis (Config_CoinTask.VerticalAxisName);
 		float horizontalAxisInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
-
+       
 		float epsilon = 0.1f;
-		bool positionCloseToTower1 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.towerPositionTransform1.position);
-		bool positionCloseToTower2 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.towerPositionTransform2.position);
+		bool positionCloseToTower1 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.startPositionTransform1.position);
+		bool positionCloseToTower2 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.startPositionTransform2.position);
 
-		if (positionCloseToTower1) {
-			Move (verticalAxisInput * selectionMovementSpeed * Time.deltaTime, horizontalAxisInput * selectionMovementSpeed * Time.deltaTime);
+		if (positionCloseToTower1)
+        {
+            Debug.Log("movement input " + verticalAxisInput.ToString());
+            Move (verticalAxisInput * selectionMovementSpeed * Time.deltaTime, horizontalAxisInput * selectionMovementSpeed * Time.deltaTime);
 		} 
-		else if (positionCloseToTower2) {
-			Move (-verticalAxisInput * selectionMovementSpeed * Time.deltaTime, -horizontalAxisInput * selectionMovementSpeed * Time.deltaTime);
+		else if (positionCloseToTower2)
+        {
+            Debug.Log("movement input " + verticalAxisInput.ToString());
+            Move (-verticalAxisInput * selectionMovementSpeed * Time.deltaTime, -horizontalAxisInput * selectionMovementSpeed * Time.deltaTime);
 		}
 	}
 
@@ -114,6 +118,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 				PositionSelector.transform.position -= PositionSelector.transform.right*horizDist;
 			}
 		}
+        Debug.Log("position selector " + PositionSelector.transform.position.ToString());
 	}
 
 

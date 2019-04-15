@@ -90,7 +90,26 @@ public class DefaultItem : MonoBehaviour {
 		}
 	}
 
-	IEnumerator RunCollision(){
+    public IEnumerator OpenTreasureChest()
+    {
+        StartCoroutine(Open(Experiment_CoinTask.Instance.player.gameObject));
+
+        //if it was a special spot and this is the default object...
+        //...we should spawn the special object!
+        if (tag == "DefaultSpecialObject")
+        {
+
+            yield return StartCoroutine(SpawnSpecialObject(specialObjectSpawnPoint.position));
+
+        }
+        else
+        {
+            yield return StartCoroutine(RunDefaultCollision());
+        }
+        yield return null;
+    }
+
+    IEnumerator RunCollision(){
 
 		yield return StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForPlayerRotationToTreasure(gameObject));
 
@@ -141,13 +160,15 @@ public class DefaultItem : MonoBehaviour {
 
 	IEnumerator SpawnSpecialObject(Vector3 specialSpawnPos){
 		Experiment_CoinTask.Instance.scoreController.AddSpecialPoints();
-		
+
+        float distanceToPlayer = Vector3.Distance(specialSpawnPos, exp.player.transform.position);
 		//TODO: spawn with default objects, show on collision???
 		
 		GameObject specialObject = Experiment_CoinTask.Instance.objectController.SpawnSpecialObject(specialSpawnPos);
 		
 		//set special object text
-		SetSpecialObjectText (specialObject.GetComponent<SpawnableObject> ().GetDisplayName ());
+		SetSpecialObjectText (specialObject.GetComponent<SpawnableObject> ().GetDisplayName (),distanceToPlayer);
+        specialObject.GetComponent<SpawnableObject>().SetScale(distanceToPlayer);
 
 		PlayJuice (true);
 
@@ -158,8 +179,10 @@ public class DefaultItem : MonoBehaviour {
 		Destroy(gameObject);
 	}
 
-	public void SetSpecialObjectText(string text){
+	public void SetSpecialObjectText(string text,float distance){
 		specialObjectText.text = text;
+        Debug.Log("distance is " + distance.ToString());
+        specialObjectText.fontSize =(int) Mathf.Lerp(150f,Config_CoinTask.maxFontSize, distance / Config_CoinTask.maxDistanceToPlayer);
 		GetComponent<TreasureChestLogTrack> ().LogTreasureLabel (specialObjectText.text);
 	}
 

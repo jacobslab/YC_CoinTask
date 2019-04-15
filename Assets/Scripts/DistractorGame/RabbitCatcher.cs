@@ -16,6 +16,7 @@ public class RabbitCatcher : MonoBehaviour
     public AudioSource incorrectAudio;
     //public GameObject foundCube; //the invisible cube that will serve as a collision check for the rabbit
 
+    public LayerMask layerMask;
     public static bool rabbitLooking = false; //used to control if the device camera is looking at the rabbit or not; this is to make sure the rabbit is centrally viewed before it begins its movement
 
     private bool caughtRabbit = false; // flag that determines whether rabbit was caught or not
@@ -59,7 +60,11 @@ public class RabbitCatcher : MonoBehaviour
     {
 
         //unlock player movement
+#if !STATIC
         exp.player.controls.ShouldLockControls = false;
+#else
+        exp.player.controls.ShouldLockControls=true;
+#endif
         //debugText.enabled = true;
         //make the rabbit visible
         rabbitObj.SetActive(true);
@@ -100,7 +105,9 @@ public class RabbitCatcher : MonoBehaviour
 
         Debug.Log("The target pos is " + targetPos.ToString());
         Debug.Log("waiting for rabbit to be looked at");
+
         yield return StartCoroutine(WaitTillRabbitLooked());
+
 
         Debug.Log("setting rabbit anim to move");
         rabbitObj.GetComponent<Animator>().SetBool("CanMove?", true);
@@ -127,6 +134,7 @@ public class RabbitCatcher : MonoBehaviour
             //then wait for the player to come closer to the rabbit
             float distance = 10f;
             float durationTimer = 0f;
+#if !STATIC
         while (distance > Config_CoinTask.minRabbitCatchDistance && durationTimer < Config_CoinTask.maxRabbitCatchTime)
             {
                 Debug.Log("waiting for the rabbit to be caught");
@@ -142,7 +150,25 @@ public class RabbitCatcher : MonoBehaviour
             {
                 MarkRabbitCaught();
             }
-
+#else
+        while (durationTimer < Config_CoinTask.maxRabbitCatchTime)
+        {
+            Debug.Log("waiting for the rabbit to be caught");
+            durationTimer += Time.deltaTime;
+            if (Input.GetMouseButtonDown(0))
+            {
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit, 100f, layerMask.value))
+                {
+                    //select.tag = "none";
+                    caughtRabbit=true;
+                    durationTimer = Config_CoinTask.maxRabbitCatchTime;
+                }
+            }
+            yield return 0;
+        }
+#endif
 
         ////tapping on the rabbit will suffice
         //else
