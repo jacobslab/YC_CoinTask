@@ -926,14 +926,14 @@ public class TrialController : MonoBehaviour {
             yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
             exp.currInstructions.SetInstructionsBlank();
 #else
-            yield return StartCoroutine(exp.ShowSingleInstruction(selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
+            //yield return StartCoroutine(exp.ShowSingleInstruction(selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 #endif
             //log the chosen position and correct position
             exp.environmentController.myPositionSelector.logTrack.LogPositionChosen(exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position, specialSpawnable);
 
             //wait for the position selector to choose the position, runs color changing of the selector
             yield return StartCoroutine(exp.environmentController.myPositionSelector.ChoosePosition());
-            //yield return StartCoroutine(exp.WaitForActionButton());
+            yield return StartCoroutine(exp.WaitForActionButton());
            //exp.environmentController.myPositionSelector.logTrack.LogPositionChosen(exp.player.transform.position, specialObj.transform.position, specialSpawnable);
 
             //add current chosen position to list of chosen positions
