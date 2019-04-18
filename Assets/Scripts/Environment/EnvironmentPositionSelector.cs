@@ -47,7 +47,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	}
 
 	Vector3 GetStartPosition(){
-		Vector3 envCenter = exp.environmentController.GetEnvironmentCenter ();
+		Vector3 envCenter = exp.environmentController.GetRandomPositionWithinWallsXZ (Config_CoinTask.objectToWallBuffer);
 		Vector3 newStartPos = new Vector3 (envCenter.x, PositionSelector.transform.position.y, envCenter.z);
 
 		return newStartPos;

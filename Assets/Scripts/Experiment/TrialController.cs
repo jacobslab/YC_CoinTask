@@ -273,12 +273,12 @@ public class TrialController : MonoBehaviour {
 
 	List<Trial> GenerateTrialsWithCounterTrials(int numTrialsToGenerate, int numSpecial, bool shouldStim, bool shouldStimCounter){
 		List<Trial> trialList = new List<Trial>();
-		for(int i = 0; i < numTrialsToGenerate / 2; i++){ //we're adding trial and a counter trial
+		for(int i = 0; i < numTrialsToGenerate; i++){ //we're adding trial and a counter trial
 			Trial trial = new Trial(numSpecial, shouldStim);
-			Trial counterTrial = trial.GetCounterSelf(shouldStimCounter);
+			//Trial counterTrial = trial.GetCounterSelf(shouldStimCounter);
 			
 			trialList.Add(trial);
-			trialList.Add(counterTrial);
+			//trialList.Add(counterTrial);
 		}
 
 		return trialList;

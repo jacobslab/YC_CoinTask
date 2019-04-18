@@ -117,7 +117,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float objectToObjectBuffer { get { return CalculateObjectToObjectBuffer(); } } //calculated base on min time to drive between objects!
 	public static float specialObjectBufferMult = 0.0f; //the distance the object controller will try to keep between special objects. should be a multiple of objectToObjectBuffer
 
-	public static float minDriveTimeBetweenObjects = 0.5f; //half a second driving between objects
+	public static float minDriveTimeBetweenObjects = 0.001f; //half a second driving between objects
 
 #if MRIVERSION
 	public static float rotateToSpecialObjectSpeed = 45.0f;
@@ -193,7 +193,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 			buffer += Experiment_CoinTask.Instance.objectController.GetMaxDefaultObjectColliderBoundXZ ();
 
-			//Debug.Log ("BUFFER: " + buffer);
+			Debug.Log ("BUFFER: " + buffer);
 			if(buffer < Config_CoinTask.selectionDiameter){
 				buffer = Config_CoinTask.selectionDiameter;
 			}

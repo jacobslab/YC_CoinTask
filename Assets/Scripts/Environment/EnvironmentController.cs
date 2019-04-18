@@ -10,6 +10,8 @@ public class EnvironmentController : MonoBehaviour {
 	public GameObject HomeBaseIndicatorA;
 	public GameObject HomeBaseIndicatorB;
 
+    public GameObject sphere;
+
 	public Vector3 center{ get { return GetEnvironmentCenter(); } }
 
 	public EnvironmentPositionSelector myPositionSelector;
@@ -17,8 +19,10 @@ public class EnvironmentController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
-	}
+        GameObject centerSphere =GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        centerSphere.transform.position = GetEnvironmentCenter();
+
+    }
 	
 	// Update is called once per frame
 	void Update () {

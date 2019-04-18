@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Environment/SpawnableObject.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Experiment/Trial.cs">
     <Files>
       <File FileName="Assets/Scripts/Logging/ParticleLogTrack.cs" Line="89" Column="3" />
       <File FileName="Assets/Scripts/VideoRecording/Replay.cs" Line="573" Column="29" />
@@ -9,10 +9,13 @@
       <File FileName="Assets/Scripts/Experiment/DefaultItem.cs" Line="173" Column="9" />
       <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" Line="295" Column="1" />
       <File FileName="Assets/Scripts/Environment/EnvironmentPositionSelector.cs" Line="62" Column="136" />
-      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="115" Column="22" />
+      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="195" Column="13" />
       <File FileName="Assets/Scripts/Anim. &amp; Visuals/ScaleAnimator.cs" Line="16" Column="21" />
       <File FileName="Assets/Scripts/GUI/GoText.cs" Line="52" Column="62" />
-      <File FileName="Assets/Scripts/Environment/SpawnableObject.cs" Line="144" Column="30" />
+      <File FileName="Assets/Scripts/Environment/SpawnableObject.cs" Line="144" Column="3" />
+      <File FileName="Assets/Scripts/Environment/EnvironmentController.cs" Line="58" Column="37" />
+      <File FileName="Assets/Scripts/Environment/ObjectController.cs" Line="412" Column="15" />
+      <File FileName="Assets/Scripts/Experiment/Trial.cs" Line="101" Column="9" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
