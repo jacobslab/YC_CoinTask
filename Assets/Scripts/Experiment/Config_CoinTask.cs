@@ -20,7 +20,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static Version BuildVersion = Version.TH1;
 #endif
 
-	public static string VersionNumber = "Room750";
+	public static string VersionNumber = "Room750_StaticARControl";
 
 #if MRIVERSION
 	public static bool isSyncbox = false;
