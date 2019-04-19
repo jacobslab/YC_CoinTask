@@ -337,7 +337,11 @@ public class TrialController : MonoBehaviour {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, 100f, floorLayerMask.value))
             {
-                exp.environmentController.myPositionSelector.gameObject.transform.position = hit.point;
+                Vector3 newPos=hit.point;
+                Debug.Log(newPos.ToString());
+                if (newPos.z > exp.environmentController.WallsZNeg.transform.position.z && newPos.z < exp.environmentController.WallsZPos.transform.position.z 
+                    && newPos.x > exp.environmentController.WallsXNeg.transform.position.x && newPos.x < exp.environmentController.WallsXPos.transform.position.x)
+                    exp.environmentController.myPositionSelector.gameObject.transform.position = newPos;
                 //dist = Vector3.Distance(hit.collider.gameObject.transform.position, Camera.main.gameObject.transform.position);
             }
 
