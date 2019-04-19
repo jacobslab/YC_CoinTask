@@ -328,25 +328,25 @@ public class TrialController : MonoBehaviour {
 #endif
 		}
 
-        //if (enableSelection)
-        //{
-        //    exp.environmentController.myPositionSelector.EnableSelection(true);
-        //    float dist = 0f;
-        //    Debug.Log(exp.environmentController.myPositionSelector.gameObject.transform.position.ToString());
-        //    RaycastHit hit;
-        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //    if (Physics.Raycast(ray, out hit, 10f, floorLayerMask.value))
-        //    {
-        //        exp.environmentController.myPositionSelector.gameObject.transform.position = hit.point;
-        //        //dist = Vector3.Distance(hit.collider.gameObject.transform.position, Camera.main.gameObject.transform.position);
-        //    }
+        if (enableSelection)
+        {
+            exp.environmentController.myPositionSelector.EnableSelection(true);
+            float dist = 0f;
+            Debug.Log(exp.environmentController.myPositionSelector.gameObject.transform.position.ToString());
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, 100f, floorLayerMask.value))
+            {
+                exp.environmentController.myPositionSelector.gameObject.transform.position = hit.point;
+                //dist = Vector3.Distance(hit.collider.gameObject.transform.position, Camera.main.gameObject.transform.position);
+            }
 
-        //   //Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,Input.mousePosition.y,dist));
-        //}
-        //else
-        //{
-        //    exp.environmentController.myPositionSelector.EnableSelection(false);
-        //}
+           //Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,Input.mousePosition.y,dist));
+        }
+        else
+        {
+            exp.environmentController.myPositionSelector.EnableSelection(false);
+        }
 
     }
 
@@ -890,8 +890,9 @@ public class TrialController : MonoBehaviour {
 
             //SELECT LOCATION
             //enable position selection, turn off fancy selection UI
-            exp.environmentController.myPositionSelector.Reset();
+            //exp.environmentController.myPositionSelector.Reset();
             exp.environmentController.myPositionSelector.EnableSelection(true);
+            enableSelection = true;
             //wait till the player walks to a location and presses X button to retrieve the encoded location
       
 
@@ -929,15 +930,15 @@ public class TrialController : MonoBehaviour {
             //yield return StartCoroutine(exp.ShowSingleInstruction(selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 #endif
             //log the chosen position and correct position
-            exp.environmentController.myPositionSelector.logTrack.LogPositionChosen(exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position, specialSpawnable);
-
+          
             //wait for the position selector to choose the position, runs color changing of the selector
             yield return StartCoroutine(exp.environmentController.myPositionSelector.ChoosePosition());
             yield return StartCoroutine(exp.WaitForActionButton());
-           //exp.environmentController.myPositionSelector.logTrack.LogPositionChosen(exp.player.transform.position, specialObj.transform.position, specialSpawnable);
+            //exp.environmentController.myPositionSelector.logTrack.LogPositionChosen(exp.player.transform.position, specialObj.transform.position, specialSpawnable);
 
             //add current chosen position to list of chosen positions
             //chosenPositions.Add(exp.player.transform.position);
+            exp.environmentController.myPositionSelector.logTrack.LogPositionChosen(exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position, specialSpawnable);
 
 
             //add current chosen position to list of chosen positions
@@ -962,6 +963,7 @@ public class TrialController : MonoBehaviour {
 
 		}
 		trialLogger.LogRecallPhaseStarted(false);
+        enableSelection = false;
 
         //disable lock on player movement so they can freely look around
 #if !STATIC

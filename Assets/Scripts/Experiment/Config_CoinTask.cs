@@ -110,7 +110,7 @@ public class Config_CoinTask : MonoBehaviour {
 	//OBJECTS
 	public static int numDefaultObjects = 4;
 
-	public static float selectionDiameter = 13.0f;
+	public static float selectionDiameter = 6.0f;
 
 
 	public static float objectToWallBuffer = 13.0f; //half of the selection diameter.
