@@ -44,16 +44,16 @@ public class PlayerControls : MonoBehaviour{
 
 		if (exp.currentState == Experiment_CoinTask.ExperimentState.inExperiment) {
 			if(!ShouldLockControls){
-				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationY; // TODO: on collision, don't allow a change in angular velocity?
-
+                GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationY; // TODO: on collision, don't allow a change in angular velocity?
 				//sets velocities
 				GetInput ();
 			}
 			else{
-				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-				SetTilt(0.0f, 1.0f);
-			}
-		}
+                GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                GetInput();
+                //SetTilt(0.0f, 1.0f);
+            }
+        }
 	}
 
 	public Camera myCamera;
