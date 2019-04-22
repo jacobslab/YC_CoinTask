@@ -391,7 +391,10 @@ public class TrialController : MonoBehaviour {
 
 	//FILL THIS IN DEPENDING ON EXPERIMENT SPECIFICATIONS
 	public IEnumerator RunExperiment(){
+
 		if (!ExperimentSettings_CoinTask.isReplay) {
+            exp.player.controls.ShouldLockRotation = true;
+   
 			exp.player.controls.ShouldLockControls = true;
 
 			if(Config_CoinTask.isSystem2 || Config_CoinTask.isSyncbox){
@@ -675,7 +678,7 @@ public class TrialController : MonoBehaviour {
 			TCPServer.Instance.SendTrialNum(numRealTrials);
 			Debug.Log("Logged trial #: " + numRealTrials);
 		}
-
+        exp.player.controls.ShouldLockRotation = false;
 		//move player to home location & rotation
 		trialLogger.LogTransportationToHomeEvent (true);
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));
@@ -980,6 +983,7 @@ public class TrialController : MonoBehaviour {
         yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions));
         //lock controls before resuming to the next trial
         exp.player.controls.ShouldLockControls = true;
+        exp.player.controls.ShouldLockRotation = true;
         yield return StartCoroutine(CheckEyetrackerConnectionStatus());
         //increment subject's trial count
 #if !UNITY_WEBPLAYER

@@ -7,10 +7,10 @@ public class PlayerControls : MonoBehaviour{
 
 
 	public bool ShouldLockControls = false;
+    public bool ShouldLockRotation = false;
+    //bool isSmoothMoving = false;
 
-	//bool isSmoothMoving = false;
-
-	public Transform TiltableTransform;
+    public Transform TiltableTransform;
 	public Transform towerPositionTransform1;
 	public Transform towerPositionTransform2;
 	public Transform startPositionTransform1;
@@ -50,7 +50,8 @@ public class PlayerControls : MonoBehaviour{
 			}
 			else{
                 GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-                GetInput();
+                if(!ShouldLockRotation)
+                    GetInput();
                 //SetTilt(0.0f, 1.0f);
             }
         }
