@@ -110,7 +110,7 @@ public class Config_CoinTask : MonoBehaviour {
 	//OBJECTS
 	public static int numDefaultObjects = 4;
 
-	public static float selectionDiameter = 6.0f;
+	public static float selectionDiameter = 8.0f;
 
 
 	public static float objectToWallBuffer = 13.0f; //half of the selection diameter.
@@ -155,7 +155,7 @@ public class Config_CoinTask : MonoBehaviour {
     //static version only
     public static float maxDistanceToPlayer = 100f;
     public static float maxFontSize = 400f;
-    public static float maxObjScale = 6f;
+    public static float maxObjScale = 2f;
 
     //drive variables
     public static float driveSpeed = 22;

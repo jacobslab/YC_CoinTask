@@ -885,7 +885,7 @@ public class TrialController : MonoBehaviour {
                           }
                       } 
                       else { //english
-                          selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
+                          selectObjectText = selectObjectText + " " + specialItemDisplayName + " and click on it";
                       }
             exp.currInstructions.EnableHeaderInstruction(true, selectObjectText);
 
@@ -937,7 +937,8 @@ public class TrialController : MonoBehaviour {
           
             //wait for the position selector to choose the position, runs color changing of the selector
             yield return StartCoroutine(exp.environmentController.myPositionSelector.ChoosePosition());
-            yield return StartCoroutine(exp.WaitForActionButton());
+            yield return StartCoroutine(exp.WaitForMouseClick());
+            //yield return StartCoroutine(exp.WaitForActionButton());
             //exp.environmentController.myPositionSelector.logTrack.LogPositionChosen(exp.player.transform.position, specialObj.transform.position, specialSpawnable);
 
             //add current chosen position to list of chosen positions

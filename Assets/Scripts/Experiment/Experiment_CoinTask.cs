@@ -270,7 +270,17 @@ public class Experiment_CoinTask : MonoBehaviour {
 		}
 	}
 
-	public IEnumerator WaitForJitter(float minJitter, float maxJitter){
+    public IEnumerator WaitForMouseClick()
+    {
+        while (!Input.GetMouseButtonDown(0))
+        {
+            yield return 0;
+        }
+        yield return null;
+    }
+
+
+    public IEnumerator WaitForJitter(float minJitter, float maxJitter){
 		float randomJitter = Random.Range(minJitter, maxJitter);
 		trialController.GetComponent<TrialLogTrack>().LogWaitForJitterStarted(randomJitter);
 		
