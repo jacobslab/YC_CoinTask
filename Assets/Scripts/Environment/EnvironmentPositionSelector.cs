@@ -9,10 +9,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	public GameObject PositionSelector;
 	public GameObject PositionSelectorVisuals;
 	public GameObject CorrectPositionIndicator;
-
 	public PositionSelectorLogTrack logTrack;
-
-
 	public Color VisualsDefaultColor;
 	public Color VisualsSelectColor;
 	
@@ -118,7 +115,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 				PositionSelector.transform.position -= PositionSelector.transform.right*horizDist;
 			}
 		}
-        Debug.Log("position selector " + PositionSelector.transform.position.ToString());
 	}
 
 

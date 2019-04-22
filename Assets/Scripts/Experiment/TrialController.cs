@@ -332,13 +332,13 @@ public class TrialController : MonoBehaviour {
         {
             exp.environmentController.myPositionSelector.EnableSelection(true);
             float dist = 0f;
-            Debug.Log(exp.environmentController.myPositionSelector.gameObject.transform.position.ToString());
+            //Debug.Log(exp.environmentController.myPositionSelector.gameObject.transform.position.ToString());
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, 100f, floorLayerMask.value))
             {
                 Vector3 newPos=hit.point;
-                Debug.Log(newPos.ToString());
+                //Debug.Log(newPos.ToString());
                 if (newPos.z > exp.environmentController.WallsZNeg.transform.position.z && newPos.z < exp.environmentController.WallsZPos.transform.position.z 
                     && newPos.x > exp.environmentController.WallsXNeg.transform.position.x && newPos.x < exp.environmentController.WallsXPos.transform.position.x)
                     exp.environmentController.myPositionSelector.gameObject.transform.position = newPos;
@@ -1003,6 +1003,7 @@ public class TrialController : MonoBehaviour {
 		for (int i = 0; i < specialObjectOrder.Count; i++){
 
 			Vector3 chosenPosition = chosenPositions[i];
+            Debug.Log("CHOSEN POSITION is " + chosenPosition.ToString());
 
             //play splash audio to indicate a feedback
             AudioController.PlayAudio(exp.audioController.feedbackSplashEffect);
@@ -1050,15 +1051,17 @@ public class TrialController : MonoBehaviour {
 			//calculate the memory points and display them
 			exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
 
-			int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position);//, areYouSureResponses[i] );
+			int points = exp.scoreController.CalculateMemoryPoints( correctPositionIndicator.transform.position);//, areYouSureResponses[i] );
 
 			//change chosen indicator color to reflect right or wrong
 			ChosenIndicatorController chosenIndicatorController = chosenPositionIndicator.GetComponent<ChosenIndicatorController>();
 			Color chosenPositionColor = chosenIndicatorController.RightColor;
 			if(points > 0){
+                Debug.Log("CORRECT");
 				chosenIndicatorController.ChangeToRightColor();
 			}
 			else if (points <= 0){
+                Debug.Log("WRONG");
 				chosenIndicatorController.ChangeToWrongColor();
 				chosenPositionColor = chosenIndicatorController.WrongColor;
 			}

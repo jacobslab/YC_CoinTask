@@ -188,10 +188,12 @@ public class PlayerControls : MonoBehaviour{
 		Quaternion origRotation = transform.rotation;
 		Vector3 origPosition = transform.position;
 
-		float travelDistance = (origPosition - targetPosition).magnitude;
+		float travelDistance = (origRotation.eulerAngles - targetRotation.eulerAngles).magnitude;
 
-
+        Debug.Log("travel distance " + travelDistance.ToString());
+        //float timeToTravel = 2f;
 		float timeToTravel = GetTimeToTravel (travelDistance);//travelDistance / smoothMoveSpeed;
+        Debug.Log("time to travel " + timeToTravel.ToString());
 		#if MRIVERSION
 		if(isChestAutoDrive){
 			timeToTravel *= Config_CoinTask.MRIAutoDriveTimeMult;
