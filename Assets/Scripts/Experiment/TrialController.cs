@@ -509,9 +509,10 @@ public class TrialController : MonoBehaviour {
 			trialLogger.LogBlockScreenStarted(true);
 			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
 
-			yield return StartCoroutine(exp.WaitForActionButton());
+            //yield return StartCoroutine(exp.WaitForActionButton());
+            yield return StartCoroutine(exp.WaitForMouseClick());
 
-			exp.uiController.blockCompletedUI.Stop();
+            exp.uiController.blockCompletedUI.Stop();
 			trialLogger.LogBlockScreenStarted(false);
 			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, false);
 
@@ -1098,7 +1099,9 @@ public class TrialController : MonoBehaviour {
 #else
         //wait for selection button press
         exp.currInstructions.EnableHeaderInstruction(true,exp.currInstructions.pressToContinue);
-        yield return StartCoroutine(exp.WaitForActionButton());
+        yield return StartCoroutine(exp.WaitForMouseClick());
+        exp.currInstructions.EnableHeaderInstruction(false, "");
+        //yield return StartCoroutine(exp.WaitForActionButton());
         //yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 #endif
 
@@ -1113,10 +1116,11 @@ public class TrialController : MonoBehaviour {
 #if MRIVERSION
 		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxScoreScreenTime));
 #else
-		yield return StartCoroutine (exp.WaitForActionButton ());
+        //yield return StartCoroutine (exp.WaitForActionButton ());
+        yield return StartCoroutine(exp.WaitForMouseClick());
 #endif
 
-		exp.uiController.scoreRecapUI.Stop ();
+        exp.uiController.scoreRecapUI.Stop ();
 		trialLogger.LogScoreScreenStarted(false);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);
 

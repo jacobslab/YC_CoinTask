@@ -83,7 +83,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float MRIFixationTime = 30.0f;
 
 #else
-	public static int numTestTrials = 20; //100% 3-OBJ trial
+	public static int numTestTrials = 12; //100% 3-OBJ trial
 
 
 	//practice settings
@@ -91,8 +91,8 @@ public class Config_CoinTask : MonoBehaviour {
 	public static bool isPractice = false;
 	public static int numSpecialObjectsPract = 2;
 	public static int numTwoItemTrials = 0;
-    public static int numThreeItemTrials = 20;
-	public static int numTrialsPerBlock = 10;
+    public static int numThreeItemTrials = 12;
+	public static int numTrialsPerBlock = 12;
 
 
 	//FEEDBACK SETTINGS:
