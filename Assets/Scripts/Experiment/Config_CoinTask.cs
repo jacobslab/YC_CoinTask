@@ -81,16 +81,16 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float MRIFixationTime = 30.0f;
 
 #else
-	public static int numTestTrials = 20; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
+	public static int numTestTrials = 12; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
 
 
 	//practice settings
 	public static int numTrialsPract = 1;
 	public static bool isPractice = false;
 	public static int numSpecialObjectsPract = 2;
-	public static int numTwoItemTrials = 10;
-	public static int numThreeItemTrials = 10;
-	public static int numTrialsPerBlock = 10;
+	public static int numTwoItemTrials = 6;
+    public static int numThreeItemTrials = 6;
+	public static int numTrialsPerBlock = 12;
 
 
 	//FEEDBACK SETTINGS:
