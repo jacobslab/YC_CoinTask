@@ -3,6 +3,7 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine.UI;
 
 public class TrialController : MonoBehaviour {
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
@@ -38,6 +39,8 @@ public class TrialController : MonoBehaviour {
 	
 	List<List<Trial>> ListOfTrialBlocks;
 	List<Trial> practiceTrials;
+
+    public Text ConnectionText; 
 
 	void Start(){
 		#if MRIVERSION

@@ -1,4 +1,6 @@
-﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 // Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
 
 //SOURCE: http://en.wikibooks.org/wiki/Cg_Programming/Unity/Two-Sided_Surfaces
@@ -98,7 +100,7 @@ Properties {
  
             output.col = float4(ambientLighting + diffuseReflection 
                + specularReflection, 1.0);
-            output.pos = mul(UNITY_MATRIX_MVP, input.vertex);
+            output.pos = UnityObjectToClipPos(input.vertex);
             return output;
          }
  
@@ -194,7 +196,7 @@ Properties {
             output.col = float4(diffuseReflection 
                + specularReflection, 1.0);
                // no ambient contribution in this pass
-            output.pos = mul(UNITY_MATRIX_MVP, input.vertex);
+            output.pos = UnityObjectToClipPos(input.vertex);
             return output;
          }
  
@@ -291,7 +293,7 @@ Properties {
  
             output.col = float4(ambientLighting + diffuseReflection 
                + specularReflection, 1.0);
-            output.pos = mul(UNITY_MATRIX_MVP, input.vertex);
+            output.pos = UnityObjectToClipPos(input.vertex);
             return output;
          }
  
@@ -387,7 +389,7 @@ Properties {
             output.col = float4(diffuseReflection 
                + specularReflection, 1.0);
                // no ambient contribution in this pass
-            output.pos = mul(UNITY_MATRIX_MVP, input.vertex);
+            output.pos = UnityObjectToClipPos(input.vertex);
             return output;
          }
  
