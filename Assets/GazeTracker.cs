@@ -19,12 +19,18 @@ public class GazeTracker : MonoBehaviour {
     float disconnectionTimer = 0f;
     private EyetrackerLog eyetrackerLog;
     private UserPresence userPresence;
+    public Text eyeText;
+    public GameObject regularCircle;
+    public GameObject normalizedCircle;
 
     // Use this for initialization
     void Start () {
 
+
         _gazeBubbleRenderer = GetComponent<SpriteRenderer>();
         eyetrackerLog = GetComponent<EyetrackerLog>();
+
+        eyetrackerLog.LogResolution();
     }
 
 	
@@ -63,9 +69,17 @@ public class GazeTracker : MonoBehaviour {
             }
           //  Debug.Log("screen point " + gazePoint.Screen.ToString());
             //transform.position = ProjectToPlaneInWorld(gazePoint);
-            eyetrackerLog.LogEyetrackerScreenPosition(gazePoint.Screen.normalized, gazeDeviceTimestamp);
-         //  Vector2 screenPos = new Vector2(gazePoint.Screen.normalized.x * Screen.width, gazePoint.Screen.normalized.y * Screen.height);
-          //  eyeIndicator.GetComponent<RectTransform>().anchoredPosition = screenPos;
+            eyetrackerLog.LogEyetrackerScreenPosition(gazePoint.Screen, gazeDeviceTimestamp);
+            //Debug.Log("res " + Screen.width.ToString() + " x " + Screen.height.ToString());
+            //eyeText.text = "eye " + gazePoint.Screen.ToString() + "\n eye normalized  " + gazePoint.Screen.normalized.ToString();
+          //  Vector2 screenPos = new Vector2(gazePoint.Screen.x, gazePoint.Screen.y);
+          //  Vector2 normalizedScreenPos = new Vector2(gazePoint.Screen.normalized.x * Screen.width, gazePoint.Screen.normalized.y * Screen.height);
+           // normalizedCircle.GetComponent<RectTransform>().anchoredPosition = screenPos;
+           // regularCircle.GetComponent<RectTransform>().anchoredPosition = screenPos;
+            // Debug.Log("eye " + gazePoint.Screen.ToString());
+            // Debug.Log("eye normalized " + gazePoint.Screen.normalized.ToString());
+            //Vector2 screenPos = new Vector2(gazePoint.Screen.normalized.x * Screen.width, gazePoint.Screen.normalized.y * Screen.height);
+            // _gazeBubbleRenderer.GetComponent<RectTransform>().anchoredPosition = screenPos;
         }
 
        // LeftEyeClosed = RightEyeClosed = TobiiAPI.GetUserPresence().IsUserPresent() && (Time.unscaledTime - gazePoint.Timestamp) > 0.15f || !gazePoint.IsRecent();
