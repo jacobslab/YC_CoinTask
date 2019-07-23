@@ -21,6 +21,11 @@ public class TrialLogTrack : LogTrack {
 			LogTrial (trialNumber, numTreasureChests, numSpecialObjects, isSequential, isStim);
 		}
 	}
+	public void LogChestVisiblity(bool isVisible, Vector3 screenPos)
+	{
+		subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "CHEST_VISIBILITY" + separator + isVisible.ToString() + separator + screenPos.x + separator + screenPos.y + separator + screenPos.z);
+
+	}
 
 	void LogVersion(){
 		Debug.Log ("LOGGED VERSION");
