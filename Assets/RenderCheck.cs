@@ -17,7 +17,7 @@ public class RenderCheck : MonoBehaviour
     {
         if (m_renderer.isVisible)
         {
-            screenPos = Camera.main.ViewportToScreenPoint(transform.position);
+            screenPos = Camera.main.WorldToViewportPoint(transform.position);
             Experiment_CoinTask.Instance.trialController.trialLogger.LogChestVisiblity(true,screenPos);
         }
 
