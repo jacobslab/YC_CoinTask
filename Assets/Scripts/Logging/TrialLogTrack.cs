@@ -39,6 +39,11 @@ public class TrialLogTrack : LogTrack {
 							+ "IS_SEQUENTIAL" + separator + isSequential + separator + "IS_STIM" + separator + isStim);
 	}
 
+	public void LogChestVisiblity(bool isVisible, Vector3 screenPos)
+	{
+		subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "CHEST_VISIBILITY" + separator + isVisible.ToString() + separator + screenPos.x + separator + screenPos.y + separator + screenPos.z);
+
+	}
 
 	//TODO: move to an experiment or an environment logger... just want to log this once at the beginning of the trials so there is a reference for all positions in the world.
 	void LogEnvironmentDimensions(){

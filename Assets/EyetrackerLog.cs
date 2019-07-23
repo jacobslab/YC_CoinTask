@@ -15,8 +15,12 @@ public class EyetrackerLog : LogTrack
 		
 	}
 
+	public void LogResolution()
+	{
+		subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "SCREEN_RESOLUTION" + separator + Screen.width.ToString() + separator + Screen.height.ToString());
+	}
 
-    public void LogEyetrackerScreenPosition(Vector3 screenPos, long timestamp)
+	public void LogEyetrackerScreenPosition(Vector3 screenPos, long timestamp)
     {
         subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "EYETRACKER_DISPLAY_POINT" + separator + screenPos.x.ToString() + separator + screenPos.y.ToString() + separator + timestamp.ToString());
     }

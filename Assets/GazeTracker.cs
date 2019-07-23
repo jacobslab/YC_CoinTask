@@ -25,7 +25,9 @@ public class GazeTracker : MonoBehaviour {
 
         _gazeBubbleRenderer = GetComponent<SpriteRenderer>();
         eyetrackerLog = GetComponent<EyetrackerLog>();
-    }
+
+		eyetrackerLog.LogResolution();
+	}
 
 	
 	// Update is called once per frame
@@ -61,12 +63,12 @@ public class GazeTracker : MonoBehaviour {
                 eyetrackerLog.LogGazeObject(hit.collider.gameObject.name, gazeDeviceTimestamp);
                 eyetrackerLog.LogVirtualPointData(hit.point,gazeDeviceTimestamp);
             }
-          //  Debug.Log("screen point " + gazePoint.Screen.ToString());
-            //transform.position = ProjectToPlaneInWorld(gazePoint);
-            eyetrackerLog.LogEyetrackerScreenPosition(gazePoint.Screen.normalized, gazeDeviceTimestamp);
-         //  Vector2 screenPos = new Vector2(gazePoint.Screen.normalized.x * Screen.width, gazePoint.Screen.normalized.y * Screen.height);
-          //  eyeIndicator.GetComponent<RectTransform>().anchoredPosition = screenPos;
-        }
+			//  Debug.Log("screen point " + gazePoint.Screen.ToString());
+			//transform.position = ProjectToPlaneInWorld(gazePoint);
+			eyetrackerLog.LogEyetrackerScreenPosition(gazePoint.Screen, gazeDeviceTimestamp);
+			//  Vector2 screenPos = new Vector2(gazePoint.Screen.normalized.x * Screen.width, gazePoint.Screen.normalized.y * Screen.height);
+			//  eyeIndicator.GetComponent<RectTransform>().anchoredPosition = screenPos;
+		}
 
        // LeftEyeClosed = RightEyeClosed = TobiiAPI.GetUserPresence().IsUserPresent() && (Time.unscaledTime - gazePoint.Timestamp) > 0.15f || !gazePoint.IsRecent();
     }
