@@ -17,7 +17,7 @@ public class TrialController : MonoBehaviour {
 	public SimpleTimer trialTimer;
 	public SimpleTimer MRITimer;
 
-	TrialLogTrack trialLogger;
+	public TrialLogTrack trialLogger;
 
 	bool isPracticeTrial = false;
 	int numRealTrials = 0; //used for logging trial ID's
