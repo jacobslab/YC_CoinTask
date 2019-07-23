@@ -17,7 +17,7 @@ public class TrialController : MonoBehaviour {
 	public SimpleTimer trialTimer;
 	public SimpleTimer MRITimer;
 
-	TrialLogTrack trialLogger;
+	public TrialLogTrack trialLogger;
     private bool enableSelection = false;
 
 	bool isPracticeTrial = false;
