@@ -125,7 +125,6 @@ public class EnvironmentPositionSelector : MonoBehaviour {
             PositionSelector.transform.position = chosenPositions[i];
             float distance = (correctPosition - PositionSelector.transform.position).magnitude;
             float positionSelectorRadius = PositionSelectorVisuals.transform.localScale.x / 2.0f;
-            Debug.Log("distance was " + distance.ToString());
             if (distance < positionSelectorRadius)
             {
                 return true;
@@ -135,7 +134,24 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		return false;
 	}
 
-	public Vector3 GetSelectorPosition(){
+    public bool CheckAnyOverlap(List<Vector3>correctPositions, Vector3 chosenPosition)
+    {
+            for (int j = 0; j < correctPositions.Count; j++)
+            {
+                PositionSelector.transform.position = chosenPosition;
+                float distance = (correctPositions[j] - PositionSelector.transform.position).magnitude;
+                float positionSelectorRadius = PositionSelectorVisuals.transform.localScale.x / 2.0f;
+                if (distance < positionSelectorRadius)
+                {
+                    return true;
+                }
+            }
+        
+
+        return false;
+    }
+
+    public Vector3 GetSelectorPosition(){
 		return PositionSelector.transform.position;
 	}
 	

@@ -21,6 +21,17 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 	public EyetrackerManager eyeManager;
 
+    public enum BlockType
+    {
+        SpatialLocationFreeRecall, //coin collection during navigation; first-person retrieval
+        SpatialObjectFreeRecall,
+        VerbalObjectFreeRecall
+    }
+
+    public List<BlockType> blockTypeList = new List<BlockType>();
+
+    public BlockType currentBlockType = BlockType.SpatialLocationFreeRecall;
+
 	//logging
 	private string subjectLogfile; //gets set based on the current subject in Awake()
 	public Logger_Threading subjectLog;

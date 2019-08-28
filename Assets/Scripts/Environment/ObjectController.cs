@@ -10,8 +10,9 @@ public class ObjectController : MonoBehaviour {
 	//it should also have a special name in the scene.
 	public GameObject InGameDefaultObject;
 
-	public GameObject DefaultObject; //the prefab used to instantiate the other default objects.
-	public GameObject ExplosiveObject;
+	public GameObject DefaultObject; //this will be used during spatial object free recall phase
+    public GameObject CollectibleObject; //this will be used during spatial location free recall phase
+    public GameObject ExplosiveObject;
 	public List<GameObject> CurrentTrialSpecialObjects;
 
 
@@ -127,9 +128,16 @@ public class ObjectController : MonoBehaviour {
 	//special positions get passed in so that the default object can get a special tag for later use for spawning special objects
 	public GameObject SpawnDefaultObject (Vector2 positionXZ, List<Vector2> specialPositions, int index) {
 		Vector3 objPos = new Vector3(positionXZ.x, DefaultObject.transform.position.y, positionXZ.y);
-		GameObject newObj = Instantiate(DefaultObject, objPos, DefaultObject.transform.rotation) as GameObject;
-		
-		SpawnableObject newSpawnableObj = newObj.GetComponent<SpawnableObject>();
+
+        GameObject newObj = null;
+
+        //spawn treasure chest if spatial object FR, or coins if spatial location FR 
+        if(exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialObjectFreeRecall)
+		    newObj = Instantiate(DefaultObject, objPos, DefaultObject.transform.rotation) as GameObject;
+        else if(exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialLocationFreeRecall)
+            newObj = Instantiate(CollectibleObject, objPos, DefaultObject.transform.rotation) as GameObject;
+
+        SpawnableObject newSpawnableObj = newObj.GetComponent<SpawnableObject>();
 		newSpawnableObj.SetNameID(newObj.transform, index);
 		
 		if( specialPositions.Contains(positionXZ) ){

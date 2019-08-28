@@ -1,7 +1,7 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Environment/EnvironmentPositionSelector.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GUI/ScoreRecapUI.cs">
     <Files>
-      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="1057" Column="67" />
+      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="1123" Column="35" />
       <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="34" Column="35" />
       <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" />
       <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" />
@@ -9,15 +9,17 @@
       <File FileName="Assets/Scripts/VideoRecording/Replay.cs" Line="700" Column="51" />
       <File FileName="Assets/Scripts/Eyetracker/EyetrackerManager.cs" Line="184" Column="3" />
       <File FileName="Assets/Scripts/Experiment/SceneController.cs" />
-      <File FileName="Assets/Scripts/Environment/ObjectController.cs" Line="151" Column="28" />
+      <File FileName="Assets/Scripts/Environment/ObjectController.cs" Line="118" Column="1" />
       <File FileName="Assets/Scripts/Experiment/DefaultItem.cs" Line="97" Column="20" />
       <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" Line="325" Column="1" />
       <File FileName="Assets/CollectibleItem.cs" Line="100" Column="39" />
       <File FileName="Assets/Scripts/Experiment/PlayerControls.cs" Line="211" Column="67" />
       <File FileName="Assets/Scripts/Logging/PositionSelectorLogTrack.cs" Line="16" Column="22" />
-      <File FileName="Assets/Scripts/Experiment/ScoreController.cs" Line="195" Column="1" />
+      <File FileName="Assets/Scripts/Experiment/ScoreController.cs" Line="172" Column="69" />
       <File FileName="Assets/Scripts/Experiment/InstructionsController.cs" Line="66" Column="96" />
-      <File FileName="Assets/Scripts/Environment/EnvironmentPositionSelector.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Environment/EnvironmentPositionSelector.cs" Line="141" Column="69" />
+      <File FileName="Assets/Scripts/Logging/TreasureChestLogTrack.cs" Line="26" Column="1" />
+      <File FileName="Assets/Scripts/GUI/ScoreRecapUI.cs" Line="38" Column="14" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -25,10 +27,11 @@
           <Node name="YC_CoinTask" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="Environment" expanded="True">
-                  <Node name="EnvironmentPositionSelector.cs" selected="True" />
-                </Node>
+                <Node name="Environment" expanded="True" />
                 <Node name="Experiment" expanded="True" />
+                <Node name="GUI" expanded="True">
+                  <Node name="ScoreRecapUI.cs" selected="True" />
+                </Node>
                 <Node name="Logging" expanded="True" />
               </Node>
             </Node>

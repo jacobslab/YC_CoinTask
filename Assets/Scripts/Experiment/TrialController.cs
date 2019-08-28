@@ -493,15 +493,20 @@ public class TrialController : MonoBehaviour {
 	}
 
 	IEnumerator RunTrials(){
+
+        int currentBlockIndex = 0;
+
 		//RUN THE REST OF THE BLOCKS
 		for( int i = 0; i < ListOfTrialBlocks.Count; i++){
 			List<Trial> currentTrialBlock = ListOfTrialBlocks[i];
-			while (currentTrialBlock.Count > 0) {
+
+            exp.currentBlockType = exp.blockTypeList[currentBlockIndex];
+
+            while (currentTrialBlock.Count > 0) {
 				Trial nextTrial = PickRandomTrial (currentTrialBlock);
-
 				yield return StartCoroutine (RunTrial ( nextTrial ));
-
 			}
+
 
 			//FINISHED A TRIAL BLOCK, SHOW UI
 			trialLogger.LogInstructionEvent();
@@ -518,7 +523,11 @@ public class TrialController : MonoBehaviour {
 
 			exp.scoreController.Reset();
 
-			Debug.Log ("TRIAL Block: " + i);
+
+            //increment trial block index
+            currentBlockIndex++;
+
+            Debug.Log ("TRIAL Block: " + i);
 		}
 	}
 
@@ -668,7 +677,8 @@ public class TrialController : MonoBehaviour {
             yield return StartCoroutine(exp.player.controls.SmoothMoveTo(targetChestPos, desiredRot, true));
             //yield return StartCoroutine(WaitForPlayerToLookAt(currentDefaultObject));
             //wait until we've actually collected the chest
-
+            if(exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialObjectFreeRecall)
+                yield return StartCoroutine(WaitForPlayerToLookAt(currentDefaultObject));
 
             while (!treasureCollected)
             {
@@ -1004,8 +1014,17 @@ public class TrialController : MonoBehaviour {
 		List<GameObject> CorrectPositionIndicators = new List<GameObject> ();
 		List<GameObject> ChosenPositionIndicators = new List<GameObject> ();
 		List<GameObject> specialObjectListRecallOrder = new List<GameObject>();
+        List<Vector3> CorrectPositions = new List<Vector3>();
 
 		List<int> objectScores = new List<int> ();
+
+        for(int j=0;j<specialObjectOrder.Count;j++)
+        {
+            int randomOrderIndex = specialObjectOrder[j];
+            GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects[randomOrderIndex];
+            CorrectPositions.Add(specialObj.transform.position);
+            specialObjectListRecallOrder.Add(specialObj);
+        }
 
 		for (int i = 0; i < specialObjectOrder.Count; i++){
 
@@ -1020,9 +1039,8 @@ public class TrialController : MonoBehaviour {
 
 			int randomOrderIndex = specialObjectOrder[i];
 
-			//turn on each special object & scale up for better visibility
-			GameObject specialObj =exp.objectController.CurrentTrialSpecialObjects[randomOrderIndex];
-			specialObjectListRecallOrder.Add(specialObj);
+            //turn on each special object & scale up for better visibility
+            GameObject specialObj = specialObjectListRecallOrder[randomOrderIndex];
 
 			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
             specialObj.SetActive(true); //just turn it active to make it visible again
@@ -1043,6 +1061,8 @@ public class TrialController : MonoBehaviour {
 			exp.environmentController.myPositionSelector.EnableSelection (true); //turn on selector for spawning indicator
 			float chosenIndicatorHeight = exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.position.y;
 			Vector3 chosenIndicatorPosition = new Vector3(chosenPosition.x, indicatorHeight, chosenPosition.z);
+
+
 			GameObject chosenPositionIndicator = Instantiate (exp.environmentController.myPositionSelector.PositionSelectorVisuals, chosenIndicatorPosition, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.rotation) as GameObject;
 
 			chosenPositionIndicator.GetComponent<SpawnableObject>().SetNameID(chosenPositionIndicator.transform, i);
@@ -1061,10 +1081,15 @@ public class TrialController : MonoBehaviour {
 			//change chosen indicator color to reflect right or wrong
 			ChosenIndicatorController chosenIndicatorController = chosenPositionIndicator.GetComponent<ChosenIndicatorController>();
 			Color chosenPositionColor = chosenIndicatorController.RightColor;
-			if(points > 0){
+
+            bool doesOverlap = exp.environmentController.myPositionSelector.CheckAnyOverlap(CorrectPositions, chosenPosition);
+
+
+            if (doesOverlap){
 				chosenIndicatorController.ChangeToRightColor();
 			}
-			else if (points <= 0){
+
+			else{
 				chosenIndicatorController.ChangeToWrongColor();
 				chosenPositionColor = chosenIndicatorController.WrongColor;
 			}
