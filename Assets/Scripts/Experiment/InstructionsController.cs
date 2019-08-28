@@ -63,7 +63,7 @@ public class InstructionsController : MonoBehaviour {
 	public string noPointsText = "win a little / lose a little";
 
 	public string pressToSelect = "press (X) to select";
-	public string selectTheLocationText = "Select the location of the ";
+	public string selectTheLocationText = "Press (X) at all the locations \n where you found coins";
 
 	public string pressToContinue = "press (X) to continue";
 	public string pressToStart = "Press (X) to start!";

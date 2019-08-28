@@ -29,5 +29,14 @@ public class PositionSelectorLogTrack : LogTrack {
 			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "CORRECT_TEST_POSITION" + separator + correctPosition.x + separator + correctPosition.y + separator + correctPosition.z + separator + specialSpawnable.GetName());
 		}
 	}
+
+    public void LogCoinPositionChosen(Vector3 chosenPosition)
+    {
+        if(ExperimentSettings_CoinTask.isLogging)
+        {
+            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "CHOSEN_TEST_POSITION" + separator + chosenPosition.x + separator + chosenPosition.y + separator + chosenPosition.z);
+
+        }
+    }
 	
 }

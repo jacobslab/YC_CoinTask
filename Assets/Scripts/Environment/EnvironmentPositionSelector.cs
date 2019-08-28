@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class EnvironmentPositionSelector : MonoBehaviour {
@@ -118,12 +119,18 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 
 
-	public bool GetRadiusOverlap(Vector3 correctPosition){
-		float distance = (correctPosition - PositionSelector.transform.position).magnitude;
-		float positionSelectorRadius = PositionSelectorVisuals.transform.localScale.x / 2.0f;
-		if (distance < positionSelectorRadius) {
-			return true;
-		}
+	public bool GetRadiusOverlap(Vector3 correctPosition,List<Vector3> chosenPositions){
+        for (int i = 0; i < chosenPositions.Count; i++)
+        {
+            PositionSelector.transform.position = chosenPositions[i];
+            float distance = (correctPosition - PositionSelector.transform.position).magnitude;
+            float positionSelectorRadius = PositionSelectorVisuals.transform.localScale.x / 2.0f;
+            Debug.Log("distance was " + distance.ToString());
+            if (distance < positionSelectorRadius)
+            {
+                return true;
+            }
+        }
 
 		return false;
 	}

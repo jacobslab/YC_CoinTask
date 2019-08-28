@@ -202,30 +202,54 @@ public class PlayerControls : MonoBehaviour{
 		//DEBUG
 		float totalTimeElapsed = 0.0f;
 
-		//float angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
-		//float angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
-//		bool arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
-		//while ( ( angleDiffY >= epsilon ) || ( angleDiffX >= epsilon ) || (!arePositionsCloseEnough) ){
-		while(tElapsed < timeToTravel){
-			totalTimeElapsed += Time.deltaTime;
+        //float angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
+        //float angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
+        //		bool arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
+        //while ( ( angleDiffY >= epsilon ) || ( angleDiffX >= epsilon ) || (!arePositionsCloseEnough) ){
 
-			//tElapsed += (Time.deltaTime * moveAndRotateRate);
 
-			tElapsed += Time.deltaTime;
+        //we will rotate first and drive after if it's "autodrive"
+        if (isChestAutoDrive)
+        {
+            while (tElapsed < timeToTravel)
+            {
+                totalTimeElapsed += Time.deltaTime;
 
-			float percentageTime = tElapsed / timeToTravel;
+                tElapsed += Time.deltaTime;
 
-			//will spherically interpolate the rotation for config.spinTime seconds
-			transform.rotation = Quaternion.Slerp(origRotation, targetRotation, percentageTime); //SLERP ALWAYS TAKES THE SHORTEST PATH.
-			transform.position = Vector3.Lerp(origPosition, targetPosition, percentageTime);
+                float percentageTime = tElapsed / timeToTravel;
+                //will spherically interpolate the rotation for config.spinTime seconds
+                transform.rotation = Quaternion.Slerp(origRotation, targetRotation, percentageTime); //SLERP ALWAYS TAKES THE SHORTEST PATH.
 
-			//calculate new differences
-			//angleDiffY = Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y);
-			//angleDiffX = Mathf.Abs(transform.rotation.eulerAngles.x - targetRotation.eulerAngles.x);
-			//arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
+                yield return 0;
+            }
 
-			yield return 0;
-		}
+            tElapsed = 0f;
+
+            while (tElapsed < timeToTravel)
+            {
+                tElapsed += Time.deltaTime;
+                float percentageTime = tElapsed / timeToTravel;
+                transform.position = Vector3.Lerp(origPosition, targetPosition, percentageTime);
+
+                yield return 0;
+            }
+        }
+        else
+        {
+            while (tElapsed < timeToTravel)
+            {
+                totalTimeElapsed += Time.deltaTime;
+                tElapsed += Time.deltaTime;
+                float percentageTime = tElapsed / timeToTravel;
+
+                //will spherically interpolate the rotation for config.spinTime seconds
+                transform.rotation = Quaternion.Slerp(origRotation, targetRotation, percentageTime); //SLERP ALWAYS TAKES THE SHORTEST PATH.
+                transform.position = Vector3.Lerp(origPosition, targetPosition, percentageTime);
+                yield return 0;
+            }
+
+        }
 		
 		//Debug.Log ("TOTAL TIME ELAPSED FOR SMOOTH MOVE: " + totalTimeElapsed);
 

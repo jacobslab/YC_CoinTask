@@ -20,23 +20,27 @@ public class Config_CoinTask : MonoBehaviour {
 	public static Version BuildVersion = Version.TH1;
 #endif
 
-	public static string VersionNumber = "2.100";
+	public static string VersionNumber = "3.100";
 
 #if MRIVERSION
 	public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
-#else
+#elif SYNCBOX
+
 	public static bool isSyncbox = true;
 	public static bool isSystem2 = false;
-#endif
+#else
+    public static bool isSyncbox = false;
+    public static bool isSystem2= false;
+#endif 
 
-	//#if MRIVERSION
-//	public static string HorizontalAxisName = "MRI Horizontal";
-	//public static string VerticalAxisName = "MRI Vertical";
-	//public static string ActionButtonName = "MRI Action Button";
-	//#else
-	//INPUT
-	public static string HorizontalAxisName = "Horizontal";
+    //#if MRIVERSION
+    //	public static string HorizontalAxisName = "MRI Horizontal";
+    //public static string VerticalAxisName = "MRI Vertical";
+    //public static string ActionButtonName = "MRI Action Button";
+    //#else
+    //INPUT
+    public static string HorizontalAxisName = "Horizontal";
 	public static string VerticalAxisName = "Vertical";
 	public static string ActionButtonName = "Action Button";
 //	#endif

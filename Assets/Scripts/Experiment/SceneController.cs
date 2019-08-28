@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-
+using UnityEngine.SceneManagement;
 public class SceneController : MonoBehaviour { //there can be a separate scene controller in each scene
 
 
@@ -43,7 +43,7 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 
 		Debug.Log("loading main menu!");
 		SubjectReaderWriter.Instance.RecordSubjects();
-		Application.LoadLevel(0);
+		SceneManager.LoadScene(0);
 	}
 
 	public void LoadExperiment(){
@@ -64,17 +64,17 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 		} 
 		else if (ExperimentSettings_CoinTask.isReplay) {
 			Debug.Log ("loading experiment!");
-			Application.LoadLevel (1);
+			SceneManager.LoadScene(1);
 		}
 	}
 
 	void LoadExperimentLevel(){
 		if (ExperimentSettings_CoinTask.currentSubject.trials < Config_CoinTask.GetTotalNumTrials ()) {
 			Debug.Log ("loading experiment!");
-			Application.LoadLevel (1);
+			SceneManager.LoadScene(1);
 		} else {
 			Debug.Log ("Subject has already finished all blocks! Loading end menu.");
-			Application.LoadLevel (2);
+			SceneManager.LoadScene(2);
 		}
 	}
 
@@ -85,7 +85,7 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 
 		SubjectReaderWriter.Instance.RecordSubjects();
 		Debug.Log("loading end menu!");
-		Application.LoadLevel(2);
+		SceneManager.LoadScene(2);
 	}
 
 	public void Quit(){

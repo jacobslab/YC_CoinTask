@@ -32,6 +32,10 @@ public class TrialController : MonoBehaviour {
 
 	public Trial currentTrial;
 
+
+    //used to guide autodrive to stop when a coin is collected
+    private bool treasureCollected = false;
+
 	//instructions
 	private string initialInstructions1 = "Welcome to Treasure Island!" + 
 		"\n\nYou are going on a treasure hunt." + 
@@ -395,20 +399,21 @@ public class TrialController : MonoBehaviour {
 				exp.uiController.ConnectionUI.alpha = 0.0f;
 			}
 
-
-			while(!EyetrackerManager.finishedCalibration)
+#if EYETRACKER
+            while(!EyetrackerManager.finishedCalibration)
 			{	
 				yield return 0;
 			}
+#endif
 #if (!(MRIVERSION))
-	#if (!UNITY_WEBPLAYER)
+#if (!UNITY_WEBPLAYER)
 	//		if(!ExperimentSettings_CoinTask.Instance.isWebBuild){
 				trialLogger.LogVideoEvent(true);
 				yield return StartCoroutine(exp.instrVideoPlayer.Play());
 				trialLogger.LogVideoEvent(false);
 			
 	//		}
-	#endif
+#endif
 #endif
 
 			//CREATE SESSION STARTED FILE!
@@ -442,17 +447,17 @@ public class TrialController : MonoBehaviour {
 			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 #endif
 
-			#if MRIVERSION
+#if MRIVERSION
 			if(Config_CoinTask.isPractice){
 				yield return StartCoroutine(RunPracticeTrials()); //if MRI practice, ONLY run the practice trials
 			}
 			else{
 				yield return StartCoroutine(RunTrials());
 			}
-			#else
+#else
 			yield return StartCoroutine(RunPracticeTrials());
 			yield return StartCoroutine(RunTrials());
-			#endif	
+#endif
 
 			yield return 0;
 		}
@@ -634,14 +639,63 @@ public class TrialController : MonoBehaviour {
 		MRITimer.StopTimer ();
 		exp.uiController.MRITimerUI.alpha = 0.0f;
 	}
-	#endif
+#endif
+
+
+    public IEnumerator PerformAutodriveNavigation()
+    {
+        trialLogger.LogPlayerAutodrive(true);
+
+        int numDefaultObjectsToCollect = currentTrial.DefaultObjectLocationsXZ.Count;
+
+        int currentCollectedObjects = 0;
+
+        while (currentCollectedObjects < numDefaultObjectsToCollect)
+        {
+
+            Vector2 currChestPos = currentTrial.DefaultObjectLocationsXZ[currentCollectedObjects];
+            Vector3 targetChestPos = new Vector3(currChestPos.x, exp.player.transform.position.y, currChestPos.y);
+
+            Debug.Log("current chest pos " + currChestPos.ToString());
+
+            float collisionBuffer = Experiment_CoinTask.Instance.objectController.GetMaxDefaultObjectColliderBoundXZ();
+            Vector3 direction = targetChestPos - exp.player.transform.position;
+            targetChestPos = targetChestPos - (direction.normalized * collisionBuffer);
+
+            Quaternion desiredRot = UsefulFunctions.GetDesiredRotation(exp.player.transform, targetChestPos);
+            Debug.Log("desired rot " + desiredRot.eulerAngles.ToString());
+
+            yield return StartCoroutine(exp.player.controls.SmoothMoveTo(targetChestPos, desiredRot, true));
+            //yield return StartCoroutine(WaitForPlayerToLookAt(currentDefaultObject));
+            //wait until we've actually collected the chest
+
+
+            while (!treasureCollected)
+            {
+                yield return 0;
+                //if (!exp.player.controls.ShouldLockControls)
+                //{
+                float tinyMovement = 0.1f;
+                exp.player.transform.position += (exp.player.transform.forward * tinyMovement);
+                //}
+            }
+            //reset it
+            treasureCollected = false;
+            currentCollectedObjects++;
+            yield return 0;
+        }
+        trialLogger.LogPlayerAutodrive(false);
+
+        yield return null;
+    }
 
 	//GETS CALLED IN WAITFORTREASUREPAUSE() -- this is when treasure is paused in its open state.
 	//...one the pause for encoding ends, we increment.
 	public void IncrementNumDefaultObjectsCollected(){
 		numDefaultObjectsCollected++;
+        treasureCollected = true;
 		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
-			CreateNextDefaultObject ( numDefaultObjectsCollected );
+			CreateNextDefaultObject (numDefaultObjectsCollected);
 		}
 	}
 
@@ -652,6 +706,9 @@ public class TrialController : MonoBehaviour {
 
 				Vector2 positionXZ = currentTrial.DefaultObjectLocationsXZ [currentIndex];
 				currentDefaultObject = exp.objectController.SpawnDefaultObject (positionXZ, currentTrial.SpecialObjectLocationsXZ, currentIndex);
+
+                //in this version of the task, the default object (coin) serves as the "special object"
+                exp.objectController.CurrentTrialSpecialObjects.Add(currentDefaultObject);
 			} else {
 				Debug.Log ("Can't create a default object at that index. Index is too big.");
 			}
@@ -700,9 +757,9 @@ public class TrialController : MonoBehaviour {
 		if(numRealTrials > 1 || trial.avatarStartPos != exp.player.controls.startPositionTransform1.position){ //note: if numRealTrials > 1, not a practice trial.
 			trialLogger.LogInstructionEvent ();
 
-			#if !(MRIVERSION)
+#if !(MRIVERSION)
 			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToStart, true, true, false, Config_CoinTask.minDefaultInstructionTime));
-			#endif
+#endif
 		}
 
 		//START NAVIGATION --> TODO: make this its own function. or a delegate. ...clean it up.
@@ -725,16 +782,18 @@ public class TrialController : MonoBehaviour {
 		//wait for player to collect all default objects
 		int numDefaultObjectsToCollect = currentTrial.DefaultObjectLocationsXZ.Count;
 
-		#if MRIVERSION
+        yield return StartCoroutine(PerformAutodriveNavigation());
+
+#if MRIVERSION
 		for(int i = 0; i <numDefaultObjectsToCollect; i++){
 			Debug.Log("WAIT FOR NAVIGATION TIMEOUT");
 			yield return StartCoroutine(WaitForMRINavigationTimeout(Config_CoinTask.maxChestNavigationTime));
 		}
-		#else //if not MRI version, just wait until all chests are collected;
-		while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
-			yield return 0;
-		}
-		#endif
+#else //if not MRI version, just wait until all chests are collected;
+  //      while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
+		//	yield return 0;
+		//}
+#endif
 
 		//Add time bonus
 		trialTimer.StopTimer ();
@@ -757,7 +816,7 @@ public class TrialController : MonoBehaviour {
 		}
 		trialLogger.LogTransportationToTowerEvent (true);
 		currentDefaultObject = null; //set to null so that arrows stop showing up...
-		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, false));//PlayerControls.toTowerTime) );
+		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));//PlayerControls.toTowerTime) );
 		trialLogger.LogTransportationToTowerEvent (false);
 
 		//RUN DISTRACTOR GAME
@@ -774,21 +833,23 @@ public class TrialController : MonoBehaviour {
 		trialLogger.LogRecallPhaseStarted(true);
 
 		//ask player to locate each object individually
-		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
+		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( currentTrial.DefaultObjectLocationsXZ.Count);
 		List<Vector3> chosenPositions = new List<Vector3> (); //chosen positions will be in the same order as the random special object order
 		List<Config_CoinTask.MemoryState> rememberResponses = new List<Config_CoinTask.MemoryState> (); //keep track of whether or not the player remembered each object
 		//List<bool> areYouSureResponses = new List<bool> (); //keep track of whether or not the player wanted to double down on each object
 
-		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
+		for (int i = 0; i < currentTrial.DefaultObjectLocationsXZ.Count; i++) {
 
+            Debug.Log("special obj " + i.ToString());
 			//show instructions for location selection
 			int randomOrderIndex = randomSpecialObjectOrder[i];
-			GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
-			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
-			string specialItemDisplayName = specialSpawnable.GetDisplayName ();
+            GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects[randomOrderIndex];
 
-			//set TCP state true
-			switch(randomOrderIndex){
+            SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
+            string specialItemDisplayName = specialSpawnable.GetDisplayName();
+
+            //set TCP state true
+            switch (randomOrderIndex){
 			case 0:
 				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_1, true);
 				break;
@@ -800,18 +861,18 @@ public class TrialController : MonoBehaviour {
 				break;
 			}
 
-			//show nice UI, log special object
-			trialLogger.LogObjectToRecall(specialSpawnable);
-			GameObject specialObjUICopy = Instantiate (specialObj, Vector3.zero, specialObj.transform.rotation) as GameObject;
-			specialObjUICopy.name += "UICopy";
+            //show nice UI, log special object
+            //trialLogger.LogObjectToRecall(specialSpawnable);
+            //GameObject specialObjUICopy = Instantiate (specialObj, Vector3.zero, specialObj.transform.rotation) as GameObject;
+            //specialObjUICopy.name += "UICopy";
 
-			specialObjUICopy.transform.parent = exp.cameraController.UICamera.transform; //make this copy follow camera/head movement. mainly for VR.
+            //specialObjUICopy.transform.parent = exp.cameraController.UICamera.transform; //make this copy follow camera/head movement. mainly for VR.
 
-			//set layer of object & children to PlayerUI
-			specialObjUICopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI");
+            ////set layer of object & children to PlayerUI
+            //specialObjUICopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI");
 
-			trialLogger.LogInstructionEvent();
-			yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy, specialItemDisplayName) );
+            //trialLogger.LogInstructionEvent();
+            //yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy, specialItemDisplayName));
 
 #if MRIVERSION
 			Config_CoinTask.MemoryState rememberResponse;
@@ -826,18 +887,19 @@ public class TrialController : MonoBehaviour {
 			rememberResponses.Add(rememberResponse);
 			trialLogger.LogRememberResponse(rememberResponse);
 #else
-			yield return StartCoroutine (exp.WaitForActionButton());
-			Config_CoinTask.MemoryState rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
-			rememberResponses.Add(rememberResponse);
-			trialLogger.LogRememberResponse(rememberResponse);
+            //yield return StartCoroutine (exp.WaitForActionButton());
+            //Config_CoinTask.MemoryState rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
+            //rememberResponses.Add(rememberResponse);
+            //trialLogger.LogRememberResponse(rememberResponse);
 #endif
 
+            //allow free player movement
+            exp.player.controls.ShouldLockControls = false;
 
-
-			//SELECT LOCATION
-			//enable position selection, turn off fancy selection UI
-			exp.environmentController.myPositionSelector.Reset();
-			exp.environmentController.myPositionSelector.EnableSelection (true);
+            //SELECT LOCATION
+            //enable position selection, turn off fancy selection UI
+   //         exp.environmentController.myPositionSelector.Reset();
+			//exp.environmentController.myPositionSelector.EnableSelection (true);
 
 			switch(randomOrderIndex){
 			case 0:
@@ -855,24 +917,24 @@ public class TrialController : MonoBehaviour {
 			}
 			trialLogger.LogRecallChoiceStarted(true);
 
-			exp.uiController.doYouRememberUI.Stop();
+			//exp.uiController.doYouRememberUI.Stop();
 
-			//show single selection instruction and wait for selection button press
-			string selectObjectText = exp.currInstructions.selectTheLocationText;
-			if (ExperimentSettings_CoinTask.myLanguage == ExperimentSettings_CoinTask.LanguageSetting.Spanish) {
-				//check for masculine article
-				string[] splitName = specialItemDisplayName.Split(' ');
-				if (splitName [0] == "el") {
-					string displayNameNoEl = specialItemDisplayName.Remove (0, 3);
-					selectObjectText = selectObjectText + "l" + " " + displayNameNoEl + " (X)."; //add the 'l' to "de" to make "del"
-				}
-				else {
-					selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
-				}
-			} 
-			else { //english
-				selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
-			}
+            //show single selection instruction and wait for selection button press
+            string selectObjectText = exp.currInstructions.selectTheLocationText;
+            //if (ExperimentSettings_CoinTask.myLanguage == ExperimentSettings_CoinTask.LanguageSetting.Spanish) {
+            //	//check for masculine article
+            //	string[] splitName = specialItemDisplayName.Split(' ');
+            //	if (splitName [0] == "el") {
+            //		string displayNameNoEl = specialItemDisplayName.Remove (0, 3);
+            //		selectObjectText = selectObjectText + "l" + " " + displayNameNoEl + " (X)."; //add the 'l' to "de" to make "del"
+            //	}
+            //	else {
+            //		selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
+            //	}
+            //} 
+            //else { //english
+            //	selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
+            //}
 
 #if MRIVERSION
 			exp.currInstructions.SetInstructionsTransparentOverlay();
@@ -880,20 +942,23 @@ public class TrialController : MonoBehaviour {
 			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
 			exp.currInstructions.SetInstructionsBlank();
 #else
-			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
+            yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 #endif
-			//log the chosen position and correct position
-			exp.environmentController.myPositionSelector.logTrack.LogPositionChosen( exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position, specialSpawnable );
 
-			//wait for the position selector to choose the position, runs color changing of the selector
-			yield return StartCoroutine (exp.environmentController.myPositionSelector.ChoosePosition());
+            //exp.environmentController.myPositionSelector.logTrack.LogPositionChosen( exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position, specialSpawnable );
 
+            //wait for the position selector to choose the position, runs color changing of the selector
+            //yield return StartCoroutine (exp.environmentController.myPositionSelector.ChoosePosition());
 
-			//add current chosen position to list of chosen positions
-			chosenPositions.Add(exp.environmentController.myPositionSelector.GetSelectorPosition());
+            //yield return StartCoroutine(exp.WaitForActionButton());
+            //log the chosen position which is player's current position
+            exp.environmentController.myPositionSelector.logTrack.LogCoinPositionChosen(exp.player.transform.position);
+
+            //add current chosen position to list of chosen positions
+            chosenPositions.Add(exp.player.transform.position);
 
 			//disable position selection
-			exp.environmentController.myPositionSelector.EnableSelection (false);
+			//exp.environmentController.myPositionSelector.EnableSelection (false);
 			trialLogger.LogRecallChoiceStarted(false);
 
 			switch(randomOrderIndex){
@@ -919,12 +984,13 @@ public class TrialController : MonoBehaviour {
 		}
 
 		trialLogger.LogRecallPhaseStarted(false);
-		
-		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses));
 
-		//increment subject's trial count
+        yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses));
+        exp.player.controls.ShouldLockControls = true;
+
+        //increment subject's trial count
 #if !UNITY_WEBPLAYER
-		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
+        ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
 #endif
 	}
 
@@ -949,22 +1015,24 @@ public class TrialController : MonoBehaviour {
 			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't actually want its visuals showing up as we wait
 
 #if !(MRIVERSION)
-			yield return StartCoroutine( exp.objectController.ThrowExplosive( exp.player.transform.position, chosenPosition, i ) );
+			yield return StartCoroutine(exp.objectController.ThrowExplosive( exp.player.transform.position, chosenPosition, i ) );
 #endif
 
 			int randomOrderIndex = specialObjectOrder[i];
 
 			//turn on each special object & scale up for better visibility
-			GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
+			GameObject specialObj =exp.objectController.CurrentTrialSpecialObjects[randomOrderIndex];
 			specialObjectListRecallOrder.Add(specialObj);
 
 			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
-			specialSpawnable.TurnVisible(true);
+            specialObj.SetActive(true); //just turn it active to make it visible again
+			//specialSpawnable.TurnVisible(true);
 			specialSpawnable.Scale(2.0f);
 			UsefulFunctions.FaceObject( specialObj, exp.player.gameObject, false);
-			
-			//create an indicator for each special object
-			float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;
+
+            //create an indicator for each special object
+            //float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;
+            float indicatorHeight = exp.objectController.CurrentTrialSpecialObjects[0].transform.position.y;
 			Vector3 correctPosition = new Vector3 (specialObj.transform.position.x, indicatorHeight, specialObj.transform.position.z);
 			GameObject correctPositionIndicator = Instantiate( exp.environmentController.myPositionSelector.CorrectPositionIndicator, correctPosition, exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.rotation) as GameObject;
 			correctPositionIndicator.GetComponent<SpawnableObject>().SetNameID(correctPositionIndicator.transform, i);
@@ -974,7 +1042,7 @@ public class TrialController : MonoBehaviour {
 			//spawn the indicator at the height of the original indicator
 			exp.environmentController.myPositionSelector.EnableSelection (true); //turn on selector for spawning indicator
 			float chosenIndicatorHeight = exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.position.y;
-			Vector3 chosenIndicatorPosition = new Vector3(chosenPosition.x, chosenIndicatorHeight, chosenPosition.z);
+			Vector3 chosenIndicatorPosition = new Vector3(chosenPosition.x, indicatorHeight, chosenPosition.z);
 			GameObject chosenPositionIndicator = Instantiate (exp.environmentController.myPositionSelector.PositionSelectorVisuals, chosenIndicatorPosition, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.rotation) as GameObject;
 
 			chosenPositionIndicator.GetComponent<SpawnableObject>().SetNameID(chosenPositionIndicator.transform, i);
@@ -985,9 +1053,11 @@ public class TrialController : MonoBehaviour {
 			
 			//calculate the memory points and display them
 			exp.environmentController.myPositionSelector.PositionSelector.transform.position = chosenPosition;
+            Debug.Log("chosen position " + chosenPosition.ToString());
 
-			int points = exp.scoreController.CalculateMemoryPoints( specialObj.transform.position, rememberResponses[i]);//, areYouSureResponses[i] );
+            int points = exp.scoreController.CalculateMemoryPoints(specialObj.transform.position,chosenPositions);// rememberResponses[i]);//, areYouSureResponses[i] );
 
+            Debug.Log("POINTS  " + points.ToString());
 			//change chosen indicator color to reflect right or wrong
 			ChosenIndicatorController chosenIndicatorController = chosenPositionIndicator.GetComponent<ChosenIndicatorController>();
 			Color chosenPositionColor = chosenIndicatorController.RightColor;
@@ -1001,7 +1071,7 @@ public class TrialController : MonoBehaviour {
 
 
 			//connect the chosen and correct indicators via a line
-			SetConnectingLines( correctPositionIndicator, chosenPosition, chosenPositionColor);
+			//SetConnectingLines( correctPositionIndicator, chosenPosition, chosenPositionColor);
 
 
 			CorrectPositionIndicatorController correctPosController = correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>();
@@ -1054,19 +1124,23 @@ public class TrialController : MonoBehaviour {
 		DestroyGameObjectList (exp.objectController.CurrentTrialSpecialObjects);
 
 		trialLogger.LogFeedback(false);
-		if (EyetrackerManager.shouldCheckHead) {
+#if EYETRACKER
+        if (EyetrackerManager.shouldCheckHead) {
 			Debug.Log ("initiating reconnection");
 			yield return StartCoroutine (InitiateEyetrackerReconnection ());
 		}
+#endif
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, false);
 
 		yield return 0;
 	}
-	IEnumerator InitiateEyetrackerReconnection ()
+#if EYETRACKER
+    IEnumerator InitiateEyetrackerReconnection ()
 	{
 		yield return StartCoroutine (exp.eyeManager.StartReconnection ());
 		yield return null;
 	}
+#endif
 
 	void SetConnectingLines( GameObject correctPositionIndicator, Vector3 chosenPosition, Color chosenIndicatorColor){//, EnvironmentPositionSelector.SelectionRadiusType chosenRadiusSize ){
 		correctPositionIndicator.GetComponent<CorrectPositionIndicatorController>().SetLineTarget(chosenPosition, chosenIndicatorColor);

@@ -38,7 +38,9 @@ public class EyetrackerManager : MonoBehaviour {
 	public Calibration calibration;
 
 	public string filepath = "";
-	void Awake()
+
+#if EYETRACKER
+    void Awake()
 	{
 		//filepath = Application.dataPath;
 		filepath = @"C:\Users\" + Environment.UserName + @"\AppData\Local\TobiiProEyeTrackerManager\app-1.6.0";
@@ -324,5 +326,5 @@ public class EyetrackerManager : MonoBehaviour {
 
 
 	}
-
+#endif
 }

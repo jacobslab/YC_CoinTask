@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -165,33 +166,14 @@ public class ScoreController : MonoBehaviour {
 		scoreLogger.LogTreasureOpenScoreAdded (specialObjectPoints);
 	}
 
-	public int CalculateMemoryPoints (Vector3 correctPosition, Config_CoinTask.MemoryState memoryState){//, bool doubledDown){
+	public int CalculateMemoryPoints (Vector3 correctPosition,List<Vector3> chosenPositions)
+    { //, Config_CoinTask.MemoryState memoryState){//, bool doubledDown){
 		int memoryPoints = 0;
-		if (exp.environmentController.myPositionSelector.GetRadiusOverlap (correctPosition)) {
-			switch(memoryState){
-				case Config_CoinTask.MemoryState.yes:
-					memoryPoints = memoryScoreYesRight;
-					break;
-				case Config_CoinTask.MemoryState.maybe:
-					memoryPoints = memoryScoreMaybeRight;
-					break;
-				case Config_CoinTask.MemoryState.no:
-					memoryPoints = memoryScoreNoRight;
-				break;
-			}
+		if (exp.environmentController.myPositionSelector.GetRadiusOverlap (correctPosition,chosenPositions)) {
+            memoryPoints = memoryScoreYesRight;
 		}
 		else{ //wrong
-			switch(memoryState){
-				case Config_CoinTask.MemoryState.yes:
-					memoryPoints = memoryScoreYesWrong;
-					break;
-				case Config_CoinTask.MemoryState.maybe:
-					memoryPoints = memoryScoreMaybeWrong;
-					break;
-				case Config_CoinTask.MemoryState.no:
-					memoryPoints = memoryScoreNoWrong;
-				break;
-			}
+            memoryPoints = memoryScoreMaybeWrong;
 		}
 
 		AddToScore(memoryPoints);

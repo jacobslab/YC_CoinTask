@@ -88,7 +88,7 @@ public class TrialLogTrack : LogTrack {
 		Debug.Log ("REMEMBER LOGGED: " + response);
 	}
 
-	#if MRIVERSION
+#if MRIVERSION
 
 	public void LogMRITimeout(){
 		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "MRI_TIMEOUT");
@@ -100,16 +100,7 @@ public class TrialLogTrack : LogTrack {
 		Debug.Log ("chest navigation timeout");
 	}
 
-	public void LogPlayerAutodrive(bool isStarted){
-		if(isStarted){
-			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "MRI_AUTODRIVE_STARTED");
-			Debug.Log ("chest autodrive starting");
-		}
-		else{
-			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "MRI_AUTODRIVE_ENDED");
-			Debug.Log ("chest autodrive ending");
-		}
-	}
+
 
 	/*public void LogRememberResponseTimeout(){
 		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "MRI_REMEMBER_RESPONSE_TIMEOUT");
@@ -135,10 +126,23 @@ public class TrialLogTrack : LogTrack {
 		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), gameObject.name + separator + "MRI_DISTRACTOR_FEEDBACK_TIMEOUT");
 		Debug.Log ("distractor feedback timeout");
 	}*/
-	#endif
+#endif
 
-	//if the UI answer selector has moved TODO: move to an answer selector logger?
-	public void LogAnswerPositionMoved(Config_CoinTask.MemoryState memoryState, bool isRememberResponse){ //either remember response or double down response
+    public void LogPlayerAutodrive(bool isStarted)
+    {
+        if (isStarted)
+        {
+            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "AUTODRIVE_STARTED");
+            Debug.Log("chest autodrive starting");
+        }
+        else
+        {
+            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "AUTODRIVE_ENDED");
+            Debug.Log("chest autodrive ending");
+        }
+    }
+    //if the UI answer selector has moved TODO: move to an answer selector logger?
+    public void LogAnswerPositionMoved(Config_CoinTask.MemoryState memoryState, bool isRememberResponse){ //either remember response or double down response
 		if (ExperimentSettings_CoinTask.isLogging) {
 			string answerPosition = "NO";
 
