@@ -52,7 +52,9 @@ public class ScoreRecapUI : MonoBehaviour {
 				//set object score text & object names
 				string currObjectScore = FormatScore(objectScores[i]);
 				ObjectLocationScores [ObjectLocationScores.Length - 1 - i].text = currObjectScore;
+
 				ObjectNames [ObjectNames.Length - 1 - i].text = specialObjects [i].GetComponent<SpawnableObject>().GetDisplayName () + ":";
+                print("Object Names " + ObjectNames[ObjectNames.Length - 1 - i].text.ToString());
 
 				trialScore += objectScores [i];
 			}
@@ -74,6 +76,7 @@ public class ScoreRecapUI : MonoBehaviour {
 		}
 
 	}
+
 
 	void PlayJuice(){
 		if (Config_CoinTask.isJuice) {

@@ -37,7 +37,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	public Logger_Threading subjectLog;
 	private string eegLogfile; //gets set based on the current subject in Awake()
 	public Logger_Threading eegLog;
-	string sessionDirectory;
+	public string sessionDirectory;
 	public static string sessionStartedFileName = "sessionStarted.txt";
 	public static int sessionID;
 
@@ -61,6 +61,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 	//environment controller
 	public EnvironmentController environmentController;
+
+    //audio controller
+    public AudioController audioController;
 
 	//UI controller
 	public UIController uiController;
@@ -157,8 +160,8 @@ public class Experiment_CoinTask : MonoBehaviour {
 		else{ //if directory didn't exist, make it!
 			Directory.CreateDirectory(sessionDirectory);
 		}
-		
-		subjectLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "Log" + ".txt";
+
+        subjectLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "Log" + ".txt";
 		eegLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "EEGLog" + ".txt";
 
 		ExperimentSettings_CoinTask.isLogging = true;

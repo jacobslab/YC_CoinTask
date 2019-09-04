@@ -144,6 +144,7 @@ public class PlayerControls : MonoBehaviour{
 		
 	public IEnumerator PlayerLookingAt(GameObject specialItem)
 	{
+        Debug.Log("player looking at " + specialItem.name);
 		bool wasLooking = false; // used for OnStartLook and OnEndLook
 		// generate the ray before we raycast it
 		while (!wasLooking) {
@@ -154,11 +155,14 @@ public class PlayerControls : MonoBehaviour{
 
 			Debug.DrawRay (ray.origin, ray.direction * 1000f, Color.yellow);
 
-			// actually shooting the raycast now
-			if (Physics.Raycast (ray, out rayHitInfo, 1000f)
-			   && rayHitInfo.transform == specialItem.transform) {
-				// is the raycast hitting the thing we put this script on?
-				if (wasLooking == false) {
+            Debug.Log("player looking at " + specialItem.name);
+            // actually shooting the raycast now
+            if (Physics.Raycast (ray, out rayHitInfo, 1000f)
+			   && rayHitInfo.transform == specialItem.transform)
+            {
+                Debug.Log("rayhitinfo transform " + rayHitInfo.transform.gameObject.name);
+                // is the raycast hitting the thing we put this script on?
+                if (wasLooking == false) {
 					wasLooking = true;
 				}
 			} else {

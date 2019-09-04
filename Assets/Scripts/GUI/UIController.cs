@@ -62,6 +62,10 @@ public class UIController : MonoBehaviour {
 	public TextMesh blockTitle5;
 	public TextMesh blockScreenPressToContinue;
 
+    //free recall panel
+    public CanvasGroup freeRecallInstructionGroup;
+    public CanvasGroup freeRecallFixationGroup;
+
 
 	//MRI VERSION
 	public CanvasGroup WaitingForMRIUI;

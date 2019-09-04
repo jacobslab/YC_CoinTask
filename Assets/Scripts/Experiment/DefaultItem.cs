@@ -74,6 +74,7 @@ public class DefaultItem : MonoBehaviour {
 
 	IEnumerator WaitForObjectLookAt()
 	{
+        Debug.Log("default item wait for object look at");
 		yield return StartCoroutine (Experiment_CoinTask.Instance.trialController.WaitForPlayerToLookAt (gameObject));
 		//open the object
 		StartCoroutine( Open(Experiment_CoinTask.Instance.player.gameObject) );
@@ -154,7 +155,7 @@ public class DefaultItem : MonoBehaviour {
 		//tell the trial controller to wait for the animation
 		yield return StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForTreasurePause(specialObject));
 
-		//should destroy the chest after the special object time
+        //should destroy the chest after the special object time
 		Destroy(gameObject);
 	}
 
@@ -222,8 +223,10 @@ public class DefaultItem : MonoBehaviour {
 		return false;
 	}
 
-	void OnDestroy(){
-		EndTreasureState ();
+	void OnDestroy()
+    {
+        Debug.Log("destroying chest");
+        EndTreasureState ();
 	}
 
 	void EndTreasureState(){

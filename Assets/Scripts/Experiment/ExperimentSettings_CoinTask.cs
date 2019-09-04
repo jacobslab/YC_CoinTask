@@ -39,9 +39,12 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	#endif
 	public Dropdown languageDropdown;
 
+    //mic test indicator
+    public Image micTestIndicator;
 
-	//TOGGLES & SETTINGS
-	public static bool isOculus = false;
+
+    //TOGGLES & SETTINGS
+    public static bool isOculus = false;
 	public static bool isReplay = false;
 	public static bool isLogging = false; //if not in replay mode, should log things! or can be toggled off in main menu.
 
@@ -93,7 +96,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 #if UNITY_WEBPLAYER
 		InitWebSettings ();
 #else
-		InitLoggingPath ();
+
+        DoMicTest();
+        InitLoggingPath ();
 #endif
 		InitMainMenuLabels ();
 
@@ -262,7 +267,23 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		}
 	}
 
-	public void SetLanguage(){
+
+    void DoMicTest()
+    {
+        if (micTestIndicator != null)
+        {
+            if (AudioRecorder.CheckForRecordingDevice())
+            {
+                micTestIndicator.color = Color.green;
+            }
+            else
+            {
+                micTestIndicator.color = Color.red;
+            }
+        }
+    }
+
+    public void SetLanguage(){
 		Debug.Log ("SETTING LANGUAGE");
 		if (languageDropdown != null) {
 			switch (languageDropdown.options [languageDropdown.value].text) {

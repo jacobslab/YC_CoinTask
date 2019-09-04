@@ -157,6 +157,10 @@ public class Config_CoinTask : MonoBehaviour {
 	//drive variables
 	public static float driveSpeed = 22;
 
+
+    //recall variables
+    public static int recallTime = 20;
+
 	//object buffer variables
 
 	void Awake(){
