@@ -37,11 +37,17 @@ public class InstructionsController : MonoBehaviour {
 	public string pauseText = "[(B) to Pause]";
 	public string gamePausedText = "✪ GAME PAUSED ✪";
 
-	public string pointsText = "Points";
+    public string pointsText = "Points";
+
+
+    //small instruction panel
+    public CanvasGroup smallInstructionPanel;
+    public Text smallInstructionText;
 
 
 
-	public string yesExplanationInstruction = "win 200 points / lose 200 points";
+
+    public string yesExplanationInstruction = "win 200 points / lose 200 points";
 	public string maybeExplanationInstruction = "win 100 points / lose 50 points";
 	public string noExplanationInstruction = "win 50 points / lose 0 points";
 
@@ -114,7 +120,20 @@ public class InstructionsController : MonoBehaviour {
 	public void TurnOffInstructions(){
 		SetInstructionsTransparentOverlay();
 		SetInstructionsBlank();
+        TurnOffSmallInstructionPanel();
 	}
+
+    public void SetSmallInstructionPanel(string newText)
+    {
+        smallInstructionPanel.alpha = 1f;
+        smallInstructionText.text = newText;
+    }
+
+    public void TurnOffSmallInstructionPanel()
+    {
+        smallInstructionPanel.alpha = 0f;
+        smallInstructionText.text = "";
+    }
 
 	void SetText(string newText){
 			text.text = newText;

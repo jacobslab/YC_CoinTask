@@ -961,6 +961,8 @@ public class TrialController : MonoBehaviour {
 
                 //show single selection instruction and wait for selection button press
                 string selectObjectText = exp.currInstructions.selectTheLocationText;
+
+                Debug.Log("select text " + selectObjectText);
                 //if (ExperimentSettings_CoinTask.myLanguage == ExperimentSettings_CoinTask.LanguageSetting.Spanish) {
                 //	//check for masculine article
                 //	string[] splitName = specialItemDisplayName.Split(' ');
@@ -982,7 +984,8 @@ public class TrialController : MonoBehaviour {
 			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
 			exp.currInstructions.SetInstructionsBlank();
 #else
-                yield return StartCoroutine(exp.ShowSingleInstruction(selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
+                yield return StartCoroutine(exp.ShowSmallInstructions(selectObjectText, true, Config_CoinTask.minDefaultInstructionTime));
+                //yield return StartCoroutine(exp.ShowSingleInstruction(selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 #endif
 
                 //exp.environmentController.myPositionSelector.logTrack.LogPositionChosen( exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position, specialSpawnable );
@@ -1070,6 +1073,18 @@ public class TrialController : MonoBehaviour {
             specialObjectListRecallOrder.Add(specialObj);
         }
 
+        if (exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialLocationFreeRecall)
+        {
+            for (int i = 0; i < specialObjectListRecallOrder.Count; i++)
+            {
+
+                GameObject specialObj = specialObjectListRecallOrder[i];
+
+                SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
+                specialObj.SetActive(true); //just turn it active to make it visible again
+            }
+
+        }
 		for (int i = 0; i < specialObjectOrder.Count; i++){
 
 			Vector3 chosenPosition = chosenPositions[i];
@@ -1088,8 +1103,13 @@ public class TrialController : MonoBehaviour {
 
 			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
             specialObj.SetActive(true); //just turn it active to make it visible again
-			//specialSpawnable.TurnVisible(true);
-			specialSpawnable.Scale(2.0f);
+                                        //specialSpawnable.TurnVisible(true);
+
+            //only scale up if it is not involving a collectible "coin" object
+            if (exp.currentBlockType != Experiment_CoinTask.BlockType.SpatialLocationFreeRecall)
+            {
+                specialSpawnable.Scale(2.0f);
+            }
 			UsefulFunctions.FaceObject( specialObj, exp.player.gameObject, false);
 
             //create an indicator for each special object
@@ -1166,12 +1186,13 @@ public class TrialController : MonoBehaviour {
 
         //if spatial location free recall, add all combined points of identical "coins" into one line on the scoreboard
         if (exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialLocationFreeRecall)
-            objectScores.Add(points);
+            objectScores.Add(memoryScore);
 #if MRIVERSION
 		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxFeedbackTime));
 #else
         //wait for selection button press
-        yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
+        yield return StartCoroutine(exp.ShowSmallInstructions(exp.currInstructions.pressToContinue, true, Config_CoinTask.minDefaultInstructionTime));
+        //yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 #endif
 
 		currTrialNum++;

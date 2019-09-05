@@ -49,6 +49,7 @@ public class SpawnableObject : MonoBehaviour {
 		string name = gameObject.name;
 		name = Regex.Replace (name, "(Clone)", "");
 		name = Regex.Replace (name, "[()]", "");
+        name = Regex.Replace(name, @"[\d-]", "");
 
 		return name;
 	}
@@ -143,7 +144,7 @@ public class SpawnableObject : MonoBehaviour {
 		
 		float fullScaleMult = 1.0f;
 		float smallScaleMult = 0.5f;
-		StartCoroutine( GetComponent<ScaleAnimator>().AnimateScaleUp(timeToScaleUp, fullScaleMult, smallScaleMult) );
+		StartCoroutine( GetComponent<ScaleAnimator>().AnimateScaleUp(timeToScaleUp, fullScaleMult, smallScaleMult));
 	}
 
 }

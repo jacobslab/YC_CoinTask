@@ -66,9 +66,8 @@ public class UIController : MonoBehaviour {
     public CanvasGroup freeRecallInstructionGroup;
     public CanvasGroup freeRecallFixationGroup;
 
-
-	//MRI VERSION
-	public CanvasGroup WaitingForMRIUI;
+    //MRI VERSION
+    public CanvasGroup WaitingForMRIUI;
 	public CanvasGroup FixationRestUI;
 	public CanvasGroup MRITimerUI;
 

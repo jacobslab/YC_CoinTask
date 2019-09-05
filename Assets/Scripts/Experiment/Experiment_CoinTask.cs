@@ -244,6 +244,20 @@ public class Experiment_CoinTask : MonoBehaviour {
 #endif
 	}
 
+    public IEnumerator ShowSmallInstructions(string line, bool waitForButton, float minDisplayTimeSeconds)
+    {
+        currInstructions.SetSmallInstructionPanel(line);
+        yield return new WaitForSeconds(minDisplayTimeSeconds);
+        if (waitForButton)
+        {
+            yield return StartCoroutine(WaitForActionButton());
+        }
+
+
+        currInstructions.TurnOffSmallInstructionPanel();
+        yield return null;
+    }
+
 	//TODO: move to instructions controller...
 	public IEnumerator ShowSingleInstruction(string line, bool isDark, bool waitForButton, bool addRandomPostJitter, float minDisplayTimeSeconds){
 		if(isDark){
