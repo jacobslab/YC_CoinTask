@@ -1,6 +1,0 @@
-%Welcome to Yellow Cab in Unity!
-Press the space bar to skip to the next instruction.
-%Instructions are read in through a text file, but can be set directly in code as well.
-%Each instruction lasts for a certain amount of time that can be set in the editor.
-%Also, you can skip any instruction with your action button.
-%And now, on to the experiment!

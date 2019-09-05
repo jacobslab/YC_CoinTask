@@ -213,6 +213,7 @@ public class Replay : MonoBehaviour {
 
 
 			splitLine = currentLogFileLine.Split(splitCharacter);
+            //Debug.Log(splitLine[0].ToString());
 
 			if(splitLine.Length > 0){
 				for (int i = 0; i < splitLine.Length; i++){
@@ -270,7 +271,7 @@ public class Replay : MonoBehaviour {
 					else if (i == 2){
 						string objName = splitLine[i];
 						
-						if(objName != "Mouse" && objName != "Keyboard" && objName != "Trial Info" && objName!="Experiment Info"){
+						if(objName != "Mouse" && objName != "Keyboard" && objName != "Trial Info" && objName!="Experiment Info" && objName !="Trial Event" && !objName.Contains("EYETRACKER")){
 
 							GameObject objInScene;
 								
@@ -317,8 +318,13 @@ public class Replay : MonoBehaviour {
 										isUIObj = true;
 									}
 
-									objInScene = exp.objectController.ChooseSpawnableObject(objShortName);
-									
+                                    Debug.Log("obj short name " + objShortName);
+                                    if(objShortName == "TreasureChest")
+                                    {
+                                        objShortName = "TreasureChestPedestal";
+                                    }
+                                    objInScene = exp.objectController.ChooseSpawnableObject(objShortName);
+
 									if(objInScene != null){ //if it did grab the prefab...
 										objInScene = exp.objectController.SpawnObject(objInScene, Vector3.zero); //position and rotation should be set next...
 										SpawnableObject objInSceneSpawnable = objInScene.GetComponent<SpawnableObject>();
@@ -678,6 +684,24 @@ public class Replay : MonoBehaviour {
 							}
 							
 						}
+                        else if (objName.Contains("EYETRACKER"))
+                        {
+                            if(objName=="EYETRACKER_DISPLAY_POINT")
+                            {
+
+                                float posX = float.Parse(splitLine[3]);
+                                float posZ = float.Parse(splitLine[4]);
+                                exp.uiController.displayEyeImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(posX, posZ);
+                            }
+
+                            if(objName == "EYETRACKER_VIRTUAL_POINT")
+                            {
+                                float posX = float.Parse(splitLine[3]);
+                                float posY = float.Parse(splitLine[4]);
+                                float posZ = float.Parse(splitLine[5]);
+                                exp.uiController.virtualSphereMarker.transform.position = new Vector3(posX, posY, posZ);
+                            }
+                        }
 					}
 
 				}

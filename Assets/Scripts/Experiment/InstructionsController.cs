@@ -90,7 +90,7 @@ public class InstructionsController : MonoBehaviour {
 	//score screen
 	public string trialCompleteText = "Trial Complete!";
 	public string timeBonusText = "time bonus";
-	public string boxSwapBonusText = "rabbit hunt bonus";
+	public string boxSwapBonusText = "Box Swap Bonus";
 	public string trialScoreText = "Trial Score";
 
 	//trial 1/40 completed

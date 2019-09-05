@@ -59,7 +59,9 @@ public class ObjectController : MonoBehaviour {
 		spawnableListToFill.Clear();
 		Object[] specialPrefabs = Resources.LoadAll("Prefabs/Objects");
 		Object[] otherPrefabs = Resources.LoadAll("Prefabs/OtherSpawnables");
-		for (int i = 0; i < specialPrefabs.Length; i++) {
+        Object[] mriPrefabs = Resources.LoadAll("Prefabs/MRIPracticeObjects");
+
+        for (int i = 0; i < specialPrefabs.Length; i++) {
 			SpawnableObject spawnable = ( (GameObject)specialPrefabs[i] ).GetComponent<SpawnableObject>();
 			spawnableListToFill.Add(spawnable);
 		}
@@ -67,7 +69,13 @@ public class ObjectController : MonoBehaviour {
 			SpawnableObject spawnable = ( (GameObject)otherPrefabs[i] ).GetComponent<SpawnableObject>();
 			spawnableListToFill.Add(spawnable);
 		}
-	}
+
+        for (int i = 0; i < mriPrefabs.Length; i++)
+        {
+            SpawnableObject spawnable = ((GameObject)mriPrefabs[i]).GetComponent<SpawnableObject>();
+            spawnableListToFill.Add(spawnable);
+        }
+    }
 
 	//used in replay
 	public GameObject ChooseSpawnableObject(string objectName){
@@ -75,6 +83,9 @@ public class ObjectController : MonoBehaviour {
 		CreateCompleteSpawnableList (allSpawnables);
 
 		for (int i = 0; i < allSpawnables.Count; i++) {
+
+            Debug.Log("all spawnable " + allSpawnables[i].ToString());
+            Debug.Log("all spawnable " + allSpawnables[i].GetName());
 			if(allSpawnables[i].GetName() == objectName){
 				return allSpawnables[i].gameObject;
 			}

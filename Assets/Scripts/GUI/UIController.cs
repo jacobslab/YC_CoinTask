@@ -70,6 +70,10 @@ public class UIController : MonoBehaviour {
 	public CanvasGroup FixationRestUI;
 	public CanvasGroup MRITimerUI;
 
+    //replay helpers
+    public RawImage displayEyeImage;
+    public GameObject virtualSphereMarker;
+
 	void Start(){
 		#if MRIVERSION
 		//turn off pause instruction in main version, as the player cannot pause!
