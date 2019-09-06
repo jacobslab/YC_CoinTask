@@ -1293,7 +1293,7 @@ public class TrialController : MonoBehaviour {
 
 		Debug.Log ("the player has looked at");
 		//unlock the avatar controls
-		Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;
+		//Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;
 
 
         //LOG end of waiting for player to look at
@@ -1310,7 +1310,7 @@ public class TrialController : MonoBehaviour {
 		yield return StartCoroutine (exp.player.controls.RotateTowardSpecialObject (treasureChest));
 
 		//unlock the avatar controls
-		Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;
+		//Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;
 
 		trialLogger.LogPlayerChestRotation (false);
 	}
@@ -1325,7 +1325,7 @@ public class TrialController : MonoBehaviour {
 		yield return new WaitForSeconds (Config_CoinTask.pauseAtTreasureTime);
 		
 		//unlock the avatar controls
-		Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;
+		//Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;
 
 		//turn the special object invisible
 		if(specialObject != null){
