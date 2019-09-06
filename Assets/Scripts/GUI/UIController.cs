@@ -62,6 +62,10 @@ public class UIController : MonoBehaviour {
 	public TextMesh blockTitle5;
 	public TextMesh blockScreenPressToContinue;
 
+    //eyetracker replay
+    public RawImage displayEyeImage;
+    public GameObject virtualSphereMarker;
+
 
 	//MRI VERSION
 	public CanvasGroup WaitingForMRIUI;

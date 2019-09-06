@@ -4,6 +4,7 @@ using System.IO;
 using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Text.RegularExpressions;
 
 
@@ -334,7 +335,7 @@ public class Replay : MonoBehaviour {
 							float diameter = float.Parse(splitLine [i + 1]);
 							eyeLogTrack.LogPupilData (diameter, "RIGHT",deviceTimestamp);
 						}
-						else if(objName != "Mouse" && objName != "Keyboard" && objName != "Trial Info" && objName!="Experiment Info"){
+						else if(objName != "Mouse" && objName != "Keyboard" && objName != "Trial Info" && objName!="Experiment Info" && !objName.Contains("EYETRACKER")){
 
 							GameObject objInScene;
 								
@@ -662,27 +663,27 @@ public class Replay : MonoBehaviour {
 								}
 
 								//PARTICLE EMITTERS
-								else if (loggedProperty == "PARTICLE_EMITTER_PLAYING"){
-									string particleSystemName = splitLine [i+2];
-									ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter>();
-									if(particles == null){
-										particles = objInScene.transform.Find( particleSystemName ).GetComponent<ParticleEmitter>();
-									}
+								//else if (loggedProperty == "PARTICLE_EMITTER_PLAYING"){
+								//	string particleSystemName = splitLine [i+2];
+								//	ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter>();
+								//	if(particles == null){
+								//		particles = objInScene.transform.Find( particleSystemName ).GetComponent<ParticleEmitter>();
+								//	}
 
 
-									particles.emit = true;
+								//	particles.emit = true;
 									
-								}
-								else if (loggedProperty == "PARTICLE_EMITTER_STOPPED"){
-									string particleSystemName = splitLine [i+2];
-									ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter>();
-									if(particles == null){
-										particles = objInScene.transform.Find( particleSystemName ).GetComponent<ParticleEmitter>();
-									}
+								//}
+								//else if (loggedProperty == "PARTICLE_EMITTER_STOPPED"){
+								//	string particleSystemName = splitLine [i+2];
+								//	ParticleEmitter particles = objInScene.GetComponent<ParticleEmitter>();
+								//	if(particles == null){
+								//		particles = objInScene.transform.Find( particleSystemName ).GetComponent<ParticleEmitter>();
+								//	}
 									
-									particles.emit = false;
+								//	particles.emit = false;
 									
-								}
+								//}
 
 								//AUDIO
 								else if (loggedProperty == "AUDIO_PLAYING"){
@@ -740,17 +741,36 @@ public class Replay : MonoBehaviour {
 							else{
 								Debug.Log("REPLAY: No obj in scene named " + objName + " at timestamp: " + currentTimeStamp);
 							}
-							
+
+
 						}
-					}
+                        else if (objName.Contains("EYETRACKER"))
+                        {
+                            if (objName == "EYETRACKER_DISPLAY_POINT")
+                            {
 
-				}
+                                float posX = float.Parse(splitLine[3]);
+                                float posZ = float.Parse(splitLine[4]);
+                                exp.uiController.displayEyeImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(posX, posZ);
+                            }
+
+                            if (objName == "EYETRACKER_VIRTUAL_POINT")
+                            {
+                                float posX = float.Parse(splitLine[3]);
+                                float posY = float.Parse(splitLine[4]);
+                                float posZ = float.Parse(splitLine[5]);
+                                exp.uiController.virtualSphereMarker.transform.position = new Vector3(posX, posY, posZ);
+                            }
+                        }
+                    }
+
+                }
 
 
-			}
+            }
 
-			//read the next line at the end of the while loop
-			currentLogFileLine = fileReader.ReadLine ();
+            //read the next line at the end of the while loop
+            currentLogFileLine = fileReader.ReadLine ();
 
 			if(hasFinishedSettingFrame){ //
 				yield return 0; //WHILE LOGGED ON FIXED UPDATE, REPLAY ON UPDATE TO GET A CONSTANT #RENDERED FRAMES
@@ -765,7 +785,7 @@ public class Replay : MonoBehaviour {
 			RecordScreenShot (currentTimeStamp);
 		}
 		yield return 0;
-		Application.LoadLevel(0); //return to main menu
+		SceneManager.LoadScene(0); //return to main menu
 	}
 
 }

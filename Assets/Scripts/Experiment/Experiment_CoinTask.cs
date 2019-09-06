@@ -118,39 +118,47 @@ public class Experiment_CoinTask : MonoBehaviour {
 	
 	//TODO: move to logger_threading perhaps? *shrug*
 	void InitLogging(){
-		string subjectDirectory = ExperimentSettings_CoinTask.defaultLoggingPath + ExperimentSettings_CoinTask.currentSubject.name + "/";
-		sessionDirectory = subjectDirectory + "session_0" + "/";
-		
-		sessionID = 0;
-		string sessionIDString = "_0";
-		
-		if(!Directory.Exists(subjectDirectory)){
-			Directory.CreateDirectory(subjectDirectory);
-		}
-		while (File.Exists(sessionDirectory + sessionStartedFileName)){//Directory.Exists(sessionDirectory)) {
-			sessionID++;
+        if (!ExperimentSettings_CoinTask.isReplay)
+        {
+            string subjectDirectory = ExperimentSettings_CoinTask.defaultLoggingPath + ExperimentSettings_CoinTask.currentSubject.name + "/";
+            sessionDirectory = subjectDirectory + "session_0" + "/";
 
-			sessionIDString = "_" + sessionID.ToString();
-			
-			sessionDirectory = subjectDirectory + "session" + sessionIDString + "/";
-		}
-		
-		//delete old files.
-		if(Directory.Exists(sessionDirectory)){
-			DirectoryInfo info = new DirectoryInfo(sessionDirectory);
-			FileInfo[] fileInfo = info.GetFiles();
-			for(int i = 0; i < fileInfo.Length; i++){
-				File.Delete(fileInfo[i].ToString());
-			}
-		}
-		else{ //if directory didn't exist, make it!
-			Directory.CreateDirectory(sessionDirectory);
-		}
-		
-		subjectLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "Log" + ".txt";
-		eegLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "EEGLog" + ".txt";
+            sessionID = 0;
+            string sessionIDString = "_0";
 
-		ExperimentSettings_CoinTask.isLogging = true;
+            if (!Directory.Exists(subjectDirectory))
+            {
+                Directory.CreateDirectory(subjectDirectory);
+            }
+            while (File.Exists(sessionDirectory + sessionStartedFileName))
+            {//Directory.Exists(sessionDirectory)) {
+                sessionID++;
+
+                sessionIDString = "_" + sessionID.ToString();
+
+                sessionDirectory = subjectDirectory + "session" + sessionIDString + "/";
+            }
+
+            //delete old files.
+            if (Directory.Exists(sessionDirectory))
+            {
+                DirectoryInfo info = new DirectoryInfo(sessionDirectory);
+                FileInfo[] fileInfo = info.GetFiles();
+                for (int i = 0; i < fileInfo.Length; i++)
+                {
+                    File.Delete(fileInfo[i].ToString());
+                }
+            }
+            else
+            { //if directory didn't exist, make it!
+                Directory.CreateDirectory(sessionDirectory);
+            }
+
+            subjectLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "Log" + ".txt";
+            eegLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "EEGLog" + ".txt";
+
+            ExperimentSettings_CoinTask.isLogging = true;
+        }
 	}
 
 	//In order to increment the session, this file must be present. Otherwise, the session has not actually started.
