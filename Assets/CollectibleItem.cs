@@ -53,14 +53,10 @@ public class CollectibleItem : MonoBehaviour {
             if (!ExperimentSettings_CoinTask.isOculus)
             {
                 GetComponent<TreasureChestLogTrack>().LogPlayerChestCollision();
-
                 isExecutingPlayerCollision = true;
                 StartCoroutine(RunCollision());
             }
-            else
-            {
-                StartCoroutine("WaitForObjectLookAt");
-            }
+          
         }
     }
 
@@ -87,15 +83,20 @@ public class CollectibleItem : MonoBehaviour {
         //shouldDie = true;
 
         //PlayJuice(false);
+        Debug.Log("treasure collected");
+        exp.trialController.chestCollided = true;
 
-        //yield return StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForTreasurePause(null));
+        yield return StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForTreasurePause(null));
+
+
 
         //unlock the avatar controls
         //Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;
 
 
-        Debug.Log("INCREMENT CHEST COUNT");
-        Experiment_CoinTask.Instance.trialController.IncrementNumDefaultObjectsCollected();
+        //Debug.Log("INCREMENT CHEST COUNT");
+        //Experiment_CoinTask.Instance.trialController.IncrementNumDefaultObjectsCollected();
+
 
         //turn the gameobject inactive
         gameObject.SetActive(false);

@@ -50,8 +50,9 @@ public class SpawnableObject : MonoBehaviour {
 		name = Regex.Replace (name, "(Clone)", "");
 		name = Regex.Replace (name, "[()]", "");
         name = Regex.Replace(name, @"[\d-]", "");
+        name = Regex.Replace(name, @"(Collectible)", "");
 
-		return name;
+        return name;
 	}
 	
 	public string GetName(GameObject obj){

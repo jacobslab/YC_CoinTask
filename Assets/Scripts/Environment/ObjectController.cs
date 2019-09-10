@@ -412,14 +412,17 @@ public class ObjectController : MonoBehaviour {
 
 		Collider defaultCollider = InGameDefaultObject.GetComponent<Collider> ();
 		Vector3 bounds = defaultCollider.bounds.size;
+        Debug.Log("bounds " + bounds.ToString());
 		float maxBound = bounds.x;
+        Debug.Log("bounds x " + bounds.x.ToString());
+        Debug.Log("bounds z " + bounds.z.ToString());
 		if (bounds.z > bounds.x){
 			maxBound = bounds.z;
 		}
 
 		InGameDefaultObject.SetActive (false);
 
-		return maxBound;
+		return maxBound-1;
 	}
 
 }

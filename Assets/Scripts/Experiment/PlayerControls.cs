@@ -235,6 +235,7 @@ public class PlayerControls : MonoBehaviour{
                 tElapsed += Time.deltaTime;
                 float percentageTime = tElapsed / timeToTravel;
                 transform.position = Vector3.Lerp(origPosition, targetPosition, percentageTime);
+                //Debug.Log("ORIG POS " + origPosition.ToString() + " target pos " + targetPosition.ToString() + " percentage time " + percentageTime.ToString());
 
                 yield return 0;
             }

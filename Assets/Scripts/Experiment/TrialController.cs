@@ -32,9 +32,10 @@ public class TrialController : MonoBehaviour {
 
 	public Trial currentTrial;
 
-
-    //used to guide autodrive to stop when a coin is collected
-    private bool treasureCollected = false;
+    //used to determine if autodrive has collided with the chest or not
+    public bool chestCollided = false;
+    //used to guide autodrive to stop when a chest is "collected"
+    public bool treasureCollected = false;
 
 	//instructions
 	private string initialInstructions1 = "Welcome to Treasure Island!" + 
@@ -668,14 +669,11 @@ public class TrialController : MonoBehaviour {
             Vector2 currChestPos = currentTrial.DefaultObjectLocationsXZ[currentCollectedObjects];
             Vector3 targetChestPos = new Vector3(currChestPos.x, exp.player.transform.position.y, currChestPos.y);
 
-            Debug.Log("current chest pos " + currChestPos.ToString());
-
             float collisionBuffer = Experiment_CoinTask.Instance.objectController.GetMaxDefaultObjectColliderBoundXZ();
             Vector3 direction = targetChestPos - exp.player.transform.position;
             targetChestPos = targetChestPos - (direction.normalized * collisionBuffer);
 
             Quaternion desiredRot = UsefulFunctions.GetDesiredRotation(exp.player.transform, targetChestPos);
-            Debug.Log("desired rot " + desiredRot.eulerAngles.ToString());
 
             yield return StartCoroutine(exp.player.controls.SmoothMoveTo(targetChestPos, desiredRot, true));
             //yield return StartCoroutine(WaitForPlayerToLookAt(currentDefaultObject));
@@ -695,9 +693,8 @@ public class TrialController : MonoBehaviour {
             }
 
 
-            while (!treasureCollected)
+            while (!chestCollided)
             {
-                Debug.Log("waiting for treasure to be collected");
                 //if (!exp.player.controls.ShouldLockControls)
                 //{
                 if (exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialLocationFreeRecall)
@@ -709,9 +706,15 @@ public class TrialController : MonoBehaviour {
 
                 yield return 0;
             }
+            while(!treasureCollected)
+            {
+                yield return 0;
+            }
+
             Debug.Log("reset treasure collected");
             //reset it
             treasureCollected = false;
+           
             currentCollectedObjects++;
             yield return 0;
         }
@@ -1093,10 +1096,11 @@ public class TrialController : MonoBehaviour {
 			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't actually want its visuals showing up as we wait
 
 #if !(MRIVERSION)
-			yield return StartCoroutine(exp.objectController.ThrowExplosive( exp.player.transform.position, chosenPosition, i ) );
+			yield return StartCoroutine(exp.objectController.ThrowExplosive( exp.player.transform.position, new Vector3(chosenPosition.x,exp.objectController.CurrentTrialSpecialObjects[0].transform.position.y,chosenPosition.z),i));
 #endif
 
-			int randomOrderIndex = specialObjectOrder[i];
+
+            int randomOrderIndex = specialObjectOrder[i];
 
             //turn on each special object & scale up for better visibility
             GameObject specialObj = specialObjectListRecallOrder[randomOrderIndex];
@@ -1323,14 +1327,18 @@ public class TrialController : MonoBehaviour {
 		exp.player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 
 		yield return new WaitForSeconds (Config_CoinTask.pauseAtTreasureTime);
-		
-		//unlock the avatar controls
-		//Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;
 
-		//turn the special object invisible
-		if(specialObject != null){
-			specialObject.GetComponent<SpawnableObject> ().TurnVisible (false);
-		}
+        //unlock the avatar controls
+        //Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;
+
+        //turn the special object invisible
+        if (exp.currentBlockType != Experiment_CoinTask.BlockType.SpatialLocationFreeRecall)
+        {
+            if (specialObject != null)
+            {
+                specialObject.GetComponent<SpawnableObject>().TurnVisible(false);
+            }
+        }
 
 
 		//only after the pause should we increment the number of coins collected...

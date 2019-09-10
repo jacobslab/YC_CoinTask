@@ -96,7 +96,7 @@ public class DefaultItem : MonoBehaviour {
 		yield return StartCoroutine(Experiment_CoinTask.Instance.trialController.WaitForPlayerRotationToTreasure(gameObject));
 
 		//open the object
-		StartCoroutine( Open(Experiment_CoinTask.Instance.player.gameObject) );
+		StartCoroutine( Open(Experiment_CoinTask.Instance.player.gameObject));
 
 		//if it was a special spot and this is the default object...
 		//...we should spawn the special object!
