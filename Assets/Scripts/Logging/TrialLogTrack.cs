@@ -305,7 +305,32 @@ public class TrialLogTrack : LogTrack {
 		}
 	}
 
-	public void LogFeedback(bool isStarting){
+    //verbal free recall
+    public void LogWordTextOn(string word, int wordCount)
+    {
+        if (ExperimentSettings_CoinTask.isLogging)
+        {
+            string stimStatus = ExperimentSettings_CoinTask.shouldStim ? "STIM" : "NON_STIM";
+            //if (!ExperimentSettings_CoinTask.practice)
+            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "WORD" + separator + "text" + separator + word + separator + wordCount.ToString() + separator + stimStatus);
+            //else
+            //    subjectLog.Log(GameClock.SystemTime_Milliseconds, "1" + separator + "PRACTICE_WORD" + separator + word);
+
+        }
+    }
+    public void LogWordTextOff()
+    {
+        if (ExperimentSettings_CoinTask.isLogging)
+        {
+            //if (!ExperimentSettings_CoinTask.practice)
+            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "WORD_OFF");
+            //else
+            //subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "PRACTICE_WORD_OFF");
+
+        }
+    }
+
+    public void LogFeedback(bool isStarting){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			if(isStarting){
 				subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "FEEDBACK_STARTED");

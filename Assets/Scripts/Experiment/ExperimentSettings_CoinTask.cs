@@ -42,6 +42,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
     //mic test indicator
     public Image micTestIndicator;
 
+    //STIMULATION
+    public static bool shouldStim = false;
+
 
     //TOGGLES & SETTINGS
     public static bool isOculus = false;

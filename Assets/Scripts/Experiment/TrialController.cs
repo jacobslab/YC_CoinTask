@@ -485,7 +485,7 @@ public class TrialController : MonoBehaviour {
 			int numPracticeTrialsRun = 0;
 			while(numPracticeTrialsRun < practiceTrials.Count){
 
-				yield return StartCoroutine (RunTrial ( practiceTrials[numPracticeTrialsRun] ));
+				yield return StartCoroutine (RunSpatialTrial( practiceTrials[numPracticeTrialsRun] ));
 				numPracticeTrialsRun++;
 			}
 			Debug.Log ("PRACTICE TRIALS COMPLETED");
@@ -503,10 +503,18 @@ public class TrialController : MonoBehaviour {
 
             exp.currentBlockType = exp.blockTypeList[currentBlockIndex];
 
-            while (currentTrialBlock.Count > 0) {
+            while (exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialLocationFreeRecall || exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialObjectFreeRecall) {
 				Trial nextTrial = PickRandomTrial (currentTrialBlock);
-				yield return StartCoroutine (RunTrial ( nextTrial ));
+				yield return StartCoroutine (RunSpatialTrial( nextTrial ));
 			}
+
+            if(exp.currentBlockType == Experiment_CoinTask.BlockType.VerbalObjectFreeRecall)
+            {
+                for (int j = 0; j < Config_CoinTask.numTrialsPerBlock; j++)
+                {
+                    yield return StartCoroutine(RunFRTrial());
+                }
+            }
 
 
 			//FINISHED A TRIAL BLOCK, SHOW UI
@@ -752,9 +760,45 @@ public class TrialController : MonoBehaviour {
 		}
 	}
 
+
+    //run a single trial of verbal free recall
+    IEnumerator RunFRTrial()
+    {
+        exp.uiController.verbalFRGroup.alpha = 1f;
+        for (int i = 0; i < Config_CoinTask.verbalFRListLength; i++)
+        {
+            //jitter before presentation
+            yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.freeRecallJitterMin, Config_CoinTask.freeRecallJitterMax));
+
+            //obtain the next word to be presented
+            string currentWord  = exp.wordListGenerator.SelectWords();
+            trialLogger.LogWordTextOn(currentWord, i);
+            //set the word on UI
+            exp.uiController.verbalFRWordText.text = currentWord;
+
+            //wait while presenting
+            yield return new WaitForSeconds(Config_CoinTask.verbalFRPresentationTime);
+
+            exp.uiController.verbalFRWordText.text = "";
+            trialLogger.LogWordTextOff();
+        }
+        //reset the text
+        exp.uiController.verbalFRWordText.text = "";
+        //exp.uiController.verbalFRGroup.alpha = 0f;
+        //math distractor
+        exp.uiController.mathDistractorGroup.alpha = 1f;
+        yield return StartCoroutine(exp.mathDistractor.RunMathDistractor());
+        exp.uiController.mathDistractorGroup.alpha = 0f;
+
+        //free recall
+        yield return StartCoroutine(StartFreeRecall());
+
+        yield return null;
+    }
+
 	//INDIVIDUAL TRIALS -- implement for repeating the same thing over and over again
 	//could also create other IEnumerators for other types of trials
-	IEnumerator RunTrial(Trial trial){
+	IEnumerator RunSpatialTrial(Trial trial){
 
 		currentTrial = trial;
 
@@ -1173,10 +1217,11 @@ public class TrialController : MonoBehaviour {
 			memoryScore += points;
 
             //we will add for each feedback only if it is object free recall as they are all distinct objects
-            if(exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialObjectFreeRecall)
-			    objectScores.Add(points);
-            Debug.Log("object scores " + points.ToString());
-
+            if (exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialObjectFreeRecall)
+            {
+                objectScores.Add(points);
+                Debug.Log("object scores " + points.ToString());
+            }
 
 			//WAIT BEFORE NEXT FEEDBACK
 			exp.environmentController.myPositionSelector.EnableSelection (false); //turn off selector -- don't want its visuals showing up as we wait

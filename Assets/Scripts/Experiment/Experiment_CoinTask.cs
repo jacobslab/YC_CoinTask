@@ -23,9 +23,9 @@ public class Experiment_CoinTask : MonoBehaviour {
 
     public enum BlockType
     {
-        SpatialLocationFreeRecall, //coin collection during navigation; first-person retrieval
-        SpatialObjectFreeRecall,
-        VerbalObjectFreeRecall
+        SpatialLocationFreeRecall, //just treasure chest collection during navigation; first-person retrieval
+        SpatialObjectFreeRecall, // standard-TH navigation;  verbal recall during retrieval phase
+        VerbalObjectFreeRecall // standard verbal free recall; no spatial component
     }
 
     public List<BlockType> blockTypeList = new List<BlockType>();
@@ -67,6 +67,12 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 	//UI controller
 	public UIController uiController;
+
+    //free recall word list generator
+    public WordListGenerator wordListGenerator;
+
+    //math distractor
+    public MathDistractor mathDistractor;
 
 	//avatar
 	public Player player;

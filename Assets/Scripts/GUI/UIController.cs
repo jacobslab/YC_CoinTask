@@ -66,6 +66,10 @@ public class UIController : MonoBehaviour {
     public CanvasGroup freeRecallInstructionGroup;
     public CanvasGroup freeRecallFixationGroup;
 
+    public CanvasGroup verbalFRGroup;
+    public CanvasGroup mathDistractorGroup;
+    public Text verbalFRWordText;
+
     //MRI VERSION
     public CanvasGroup WaitingForMRIUI;
 	public CanvasGroup FixationRestUI;
