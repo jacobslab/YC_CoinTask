@@ -312,7 +312,7 @@ public class TrialLogTrack : LogTrack {
         {
             string stimStatus = ExperimentSettings_CoinTask.shouldStim ? "STIM" : "NON_STIM";
             //if (!ExperimentSettings_CoinTask.practice)
-            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "WORD" + separator + "text" + separator + word + separator + wordCount.ToString() + separator + stimStatus);
+            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "WORD" + separator + word + separator + wordCount.ToString() + separator + stimStatus);
             //else
             //    subjectLog.Log(GameClock.SystemTime_Milliseconds, "1" + separator + "PRACTICE_WORD" + separator + word);
 

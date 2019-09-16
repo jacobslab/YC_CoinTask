@@ -114,7 +114,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float maxValidOriginTime = 5f; //for reconnection
 
     //verbal free recall
-    public static float verbalFRListLength = 8; // number of words that should be in a single trial of Verbal FR
+    public static float verbalFRListLength = 12; // number of words that should be in a single trial of Verbal FR
     public static float verbalFRPresentationTime = 1.6f; //how long to show each word for
     public static float freeRecallJitterMin = 0.75f;
     public static float freeRecallJitterMax = 1f;

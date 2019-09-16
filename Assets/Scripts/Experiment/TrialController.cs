@@ -38,22 +38,19 @@ public class TrialController : MonoBehaviour {
     public bool treasureCollected = false;
 
 	//instructions
-	private string initialInstructions1 = "Welcome to Treasure Island!" + 
+	private string locationFRInstruction = "Welcome to Treasure Island!" + 
 		"\n\nYou are going on a treasure hunt." + 
-		"\n\nUse the joystick to control your movement." + 
-		"\n\nDrive into treasure chests to open them. Remember where each object is located!" +
+		"\n\nFirst, you will be driven to different treasure chests." + 
+		"\n\nRemember where each treasure chest is located! You will later be asked about their location." +
 		"\n\nPress (X) to continue.";
 
-	private string initialInstructions2 = "When you are asked about remembering an object's location, you must answer [ YES ], [ MAYBE ], or [ NO ], and choose a location." +
-		"\n\nYou will win points for correct locations and you will lose points for incorrect locations." +
-		"\n\nPress (X) to continue.";
+	private string objectFRInstruction = "Now, you will be driven to different treasure chests." +
+        "\n These chests will be either empty or contain a unique item. Please try to remember the NAMES of all the unique items you encounter." +
+        "\n\n You will later be asked to remember the names of all the items you found in the treasure chests.";
 
-	private string initialInstructions3 = "TIPS FOR MAXIMIZING YOUR SCORE" + 
-		"\n\nGet a time bonus by driving to the chests quickly." +
-		"\n\nIf you are more than 75% sure, you should select [YES]." +
-		"\n\nIf you are at least 50% sure, you should select [MAYBE]." +
-		"\n\nOtherwise, you should select [NO]." +
-		"\n\nPress (X) to begin!";
+	private string verbalFRInstruction = "Next, you will see several words appear on your screen." +
+        "\n\nPlease try to remember as many of those words as you can." +
+        "\n\n You will later be asked to speak into the microphone all the words you can recall.";
 
 	[HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
 
@@ -441,11 +438,11 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine( WaitForMRIFixationRest());
 			}
 #else
-			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			//yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 1.0f;
-			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			//yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 0.0f;
-			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
+			//yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 #endif
 
 #if MRIVERSION
@@ -503,6 +500,11 @@ public class TrialController : MonoBehaviour {
 
             exp.currentBlockType = exp.blockTypeList[currentBlockIndex];
 
+            if(exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialLocationFreeRecall)
+            {
+
+            }
+
             while (exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialLocationFreeRecall || exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialObjectFreeRecall) {
 				Trial nextTrial = PickRandomTrial (currentTrialBlock);
 				yield return StartCoroutine (RunSpatialTrial( nextTrial ));
@@ -510,15 +512,19 @@ public class TrialController : MonoBehaviour {
 
             if(exp.currentBlockType == Experiment_CoinTask.BlockType.VerbalObjectFreeRecall)
             {
+                //disable ambient waves sound
+                exp.audioController.ToggleAmbientSound(false);
                 for (int j = 0; j < Config_CoinTask.numTrialsPerBlock; j++)
                 {
                     yield return StartCoroutine(RunFRTrial());
                 }
             }
 
+            //enable ambient waves again
+            exp.audioController.ToggleAmbientSound(true);
 
-			//FINISHED A TRIAL BLOCK, SHOW UI
-			trialLogger.LogInstructionEvent();
+            //FINISHED A TRIAL BLOCK, SHOW UI
+            trialLogger.LogInstructionEvent();
 			StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
 			exp.uiController.blockCompletedUI.Play(i, exp.scoreController.score, ListOfTrialBlocks.Count);
 			trialLogger.LogBlockScreenStarted(true);
@@ -764,6 +770,7 @@ public class TrialController : MonoBehaviour {
     //run a single trial of verbal free recall
     IEnumerator RunFRTrial()
     {
+        exp.uiController.verbalFRWordText.text = "";
         exp.uiController.verbalFRGroup.alpha = 1f;
         for (int i = 0; i < Config_CoinTask.verbalFRListLength; i++)
         {
@@ -784,7 +791,8 @@ public class TrialController : MonoBehaviour {
         }
         //reset the text
         exp.uiController.verbalFRWordText.text = "";
-        //exp.uiController.verbalFRGroup.alpha = 0f;
+        //jitter before the distractor phase
+        yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.freeRecallJitterMin, Config_CoinTask.freeRecallJitterMax));
         //math distractor
         exp.uiController.mathDistractorGroup.alpha = 1f;
         yield return StartCoroutine(exp.mathDistractor.RunMathDistractor());
@@ -1307,7 +1315,10 @@ public class TrialController : MonoBehaviour {
 
     public IEnumerator StartFreeRecall()
     {
-        exp.uiController.freeRecallFixationGroup.alpha = 1f;
+        //exp.uiController.freeRecallFixationGroup.alpha = 1f;
+        exp.uiController.verbalFRWordText.text = "******";
+        exp.uiController.verbalFRWordText.color = Color.white;
+        exp.uiController.verbalFRGroup.alpha = 1f;
         int currentTrialNumber = currTrialNum;
 
         string fileName = currentTrialNumber.ToString();
@@ -1317,6 +1328,7 @@ public class TrialController : MonoBehaviour {
         //DO AUDIO RECORDING
         //play on record beep
         exp.audioController.audioRecorder.beepHigh.Play();
+        exp.uiController.verbalFRWordText.color = Color.red;
 
 
         //start recording
@@ -1324,7 +1336,12 @@ public class TrialController : MonoBehaviour {
 
         //play off beep
         exp.audioController.audioRecorder.beepLow.Play();
-        exp.uiController.freeRecallFixationGroup.alpha = 0f;
+        //exp.uiController.freeRecallFixationGroup.alpha = 0f;
+
+        exp.uiController.verbalFRWordText.text = "";
+        exp.uiController.verbalFRWordText.color = Color.white;
+        exp.uiController.verbalFRGroup.alpha = 0f;
+
         yield return null;
     }
 

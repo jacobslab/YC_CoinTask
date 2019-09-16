@@ -5,6 +5,8 @@ public class AudioController : MonoBehaviour {
 
 	public AudioSource[] MainGameSongs;
     public AudioRecorder audioRecorder;
+    public AudioSource ambientWaves;
+    public AudioSource ambientSeagulls;
     AudioSource currentSong;
 	int currentSongIndex = -1; //when we play the next song, currentSongIndex will ++;
 
@@ -36,6 +38,8 @@ public class AudioController : MonoBehaviour {
 		}
 	}
 
+
+
 	void PlayNextSong(){
 		currentSongIndex++;
 
@@ -54,5 +58,11 @@ public class AudioController : MonoBehaviour {
 			audio.Play (); 
 		}
 	}
+
+    public void ToggleAmbientSound(bool shouldEnable)
+    {
+        ambientWaves.enabled = shouldEnable;
+        ambientSeagulls.enabled = shouldEnable;
+    }
 
 }

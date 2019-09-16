@@ -1,16 +1,16 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Experiment/TrialController.cs">
     <Files>
-      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="765" Column="29" />
-      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="117" Column="113" />
+      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="524" Column="58" />
+      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="132" Column="1" />
       <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" Line="72" Column="48" />
+      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" />
       <File FileName="Assets/Scripts/Logging/ParticleLogTrack.cs" />
-      <File FileName="Assets/Scripts/Eyetracker/EyetrackerManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Eyetracker/EyetrackerManager.cs" />
       <File FileName="Assets/Scripts/Experiment/SceneController.cs" />
-      <File FileName="Assets/Scripts/Environment/ObjectController.cs" Line="409" Column="45" />
+      <File FileName="Assets/Scripts/Environment/ObjectController.cs" />
       <File FileName="Assets/Scripts/Experiment/DefaultItem.cs" />
-      <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" />
+      <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" Line="188" Column="3" />
       <File FileName="Assets/CollectibleItem.cs" />
       <File FileName="Assets/Scripts/Experiment/PlayerControls.cs" />
       <File FileName="Assets/Scripts/Logging/PositionSelectorLogTrack.cs" />
@@ -22,15 +22,14 @@
       <File FileName="Assets/Scripts/Audio/AudioRecorder.cs" />
       <File FileName="Assets/Scripts/Audio/SavWav.cs" />
       <File FileName="Assets/Scripts/Logging/AudioLogTrack.cs" />
-      <File FileName="Assets/Scripts/GUI/UIController.cs" Line="70" Column="33" />
-      <File FileName="Assets/Scripts/Audio/AudioController.cs" />
+      <File FileName="Assets/Scripts/GUI/UIController.cs" />
+      <File FileName="Assets/Scripts/Audio/AudioController.cs" Line="65" Column="48" />
       <File FileName="Assets/Scripts/Audio/InputMic.cs" />
       <File FileName="Assets/Scripts/Environment/SpawnableObject.cs" />
       <File FileName="Assets/Scripts/Logging/Logger_Threading.cs" />
       <File FileName="Assets/Scripts/CommandExecution.cs" />
       <File FileName="Assets/Scripts/ThreadedJob.cs" />
-      <File FileName="Assets/MathDistractor.cs" Line="84" Column="36" />
-      <File FileName="Assets/WordListGenerator.cs" Line="46" Column="30" />
+      <File FileName="Assets/MathDistractor.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -56,7 +55,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="364d571e-10a7-4932-9029-44e0d7da211d" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="ae06815d-f5fc-4716-9697-b548cf6420e9" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
