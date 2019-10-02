@@ -372,6 +372,11 @@ public class PlayerControls : MonoBehaviour{
 
 	}
 
+    public bool IsMoving()
+    {
+        return !wasNotMoving;
+    }
+
 
 	
 }

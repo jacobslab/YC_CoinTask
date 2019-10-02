@@ -74,6 +74,9 @@ public class Experiment_CoinTask : MonoBehaviour {
     //math distractor
     public MathDistractor mathDistractor;
 
+    //pocketsphinx handler
+    public SphinxTest sphinxTest;
+
 	//avatar
 	public Player player;
 
@@ -170,7 +173,10 @@ public class Experiment_CoinTask : MonoBehaviour {
         subjectLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "Log" + ".txt";
 		eegLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "EEGLog" + ".txt";
 
-		ExperimentSettings_CoinTask.isLogging = true;
+        string audioPath = sessionDirectory + "audio/";
+        sphinxTest.SetPath(audioPath);
+
+        ExperimentSettings_CoinTask.isLogging = true;
 	}
 
 	//In order to increment the session, this file must be present. Otherwise, the session has not actually started.

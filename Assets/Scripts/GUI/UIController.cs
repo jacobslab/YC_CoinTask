@@ -66,6 +66,9 @@ public class UIController : MonoBehaviour {
     public CanvasGroup freeRecallInstructionGroup;
     public CanvasGroup freeRecallFixationGroup;
 
+    public CanvasGroup microphoneIndicatorGroup;
+    public Image microphoneUseImage;
+
     public CanvasGroup verbalFRGroup;
     public CanvasGroup mathDistractorGroup;
     public Text verbalFRWordText;
@@ -160,5 +163,29 @@ public class UIController : MonoBehaviour {
 
 		return output;
 	}
+
+
+    public void EnableMicAvailability(bool shouldEnable)
+    {
+        if(shouldEnable)
+        {
+            microphoneIndicatorGroup.alpha = 1f;
+        }
+        else
+        {
+            microphoneIndicatorGroup.alpha = 0f;
+        }
+    }
+    public void ShowMicUsage(bool canUse)
+    {
+        if (canUse)
+        {
+            microphoneUseImage.color = Color.green;
+        }
+        else
+        {
+            microphoneUseImage.color = Color.red;
+        }
+    }
 
 }

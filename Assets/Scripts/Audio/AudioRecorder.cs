@@ -18,6 +18,7 @@ public class AudioRecorder : MonoBehaviour
     }
 
     public float sensitivity = 100;
+    public int samplerate = 44100;
     public float ramFlushSpeed = 5;//The smaller the number the faster it flush's the ram, but there might be performance issues...
     [Range(0, 100)]
     public float sourceVolume = 100;//Between 0 and 100
@@ -86,14 +87,17 @@ public class AudioRecorder : MonoBehaviour
     {
         if (Microphone.devices.Length > 0)
         {
+            Debug.Log("about to record");
             //Color origTextColor = recordText.color;
             //recordText.color = Color.red;
-            audioLogger.LogRecording(fileName, true);
+            if(Experiment_CoinTask.Instance != null)
+                audioLogger.LogRecording(fileName, true);
             StartMicrophone(duration);
             yield return new WaitForSeconds(duration);
 
             StopMicrophone();
-            audioLogger.LogRecording(fileName, false);
+            if (Experiment_CoinTask.Instance != null)
+                audioLogger.LogRecording(fileName, false);
             //recordText.color = origTextColor;
            
             SavWav.Save(filePath, fileName, audio.clip);
@@ -103,6 +107,53 @@ public class AudioRecorder : MonoBehaviour
             Debug.Log("No mic to record with!");
             yield return new WaitForSeconds(duration);
         }
+    }
+
+    public IEnumerator RecordContinuous(string filePath,string fileName)
+    {
+        if (Microphone.devices.Length > 0)
+        {
+            //Color origTextColor = recordText.color;
+            //recordText.color = Color.red;
+            //audioLogger.LogRecording(fileName, true);
+            int arbitraryDuration = 100;
+            StartMicrophone(arbitraryDuration); //arbitrarily large value
+            Debug.Log("beginning record");
+
+            while (Input.GetKey(KeyCode.S))
+            {
+                yield return 0;
+            }
+            //WaitForSeconds(duration);
+
+            int position = StopMicrophoneAndGetPosition();
+            Debug.Log("ending record at " + position.ToString());
+            //audioLogger.LogRecording(fileName, false);
+
+
+            float[] samples = new float[audio.clip.samples * audio.clip.channels];
+            Debug.Log("total clip samples " + (audio.clip.samples).ToString());
+            audio.clip.GetData(samples, 0);
+            float[] newSamples = new float[position];
+
+            AudioClip newClip = AudioClip.Create("newClip", samplerate * 2, 1, samplerate, false);
+
+            for (int i=0;i<position;i++)
+            {
+                newSamples[i] = samples[i];
+            }
+
+            newClip.SetData(newSamples,0);
+            Debug.Log("adjusted clip size" + newSamples.Length.ToString() + " in real " + newClip.samples.ToString());
+            SavWav.Save(filePath, fileName, newClip);
+
+
+        }
+        else
+        {
+            Debug.Log("no mic to record with");
+        }
+        yield return 0;
     }
 
     public void StartMicrophone(int duration)
@@ -116,6 +167,14 @@ public class AudioRecorder : MonoBehaviour
     {
         audio.Stop();//Stops the audio
         Microphone.End(selectedDevice);//Stops the recording of the device	
+    }
+
+    public int StopMicrophoneAndGetPosition()
+    {
+        int position = Microphone.GetPosition(selectedDevice);
+        audio.Stop();
+        Microphone.End(selectedDevice);
+        return position;
     }
 
     private void RamFlush()

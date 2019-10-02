@@ -75,7 +75,9 @@ public class TrialController : MonoBehaviour {
 
 		trialLogger = GetComponent<TrialLogTrack> ();
 		Experiment_CoinTask.expReady = true;
-	}
+        exp.uiController.EnableMicAvailability(false);
+
+    }
 
 	void InitPracticeTrials(){
 		practiceTrials = new List<Trial>();
@@ -954,46 +956,8 @@ public class TrialController : MonoBehaviour {
                         TCPServer.Instance.SetState(TCP_Config.DefineStates.RECALLCUE_3, true);
                         break;
                 }
-
-                //show nice UI, log special object
-                //trialLogger.LogObjectToRecall(specialSpawnable);
-                //GameObject specialObjUICopy = Instantiate (specialObj, Vector3.zero, specialObj.transform.rotation) as GameObject;
-                //specialObjUICopy.name += "UICopy";
-
-                //specialObjUICopy.transform.parent = exp.cameraController.UICamera.transform; //make this copy follow camera/head movement. mainly for VR.
-
-                ////set layer of object & children to PlayerUI
-                //specialObjUICopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI");
-
-                //trialLogger.LogInstructionEvent();
-                //yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy, specialItemDisplayName));
-
-#if MRIVERSION
-			Config_CoinTask.MemoryState rememberResponse;
-			isMRITimeout = false;
-			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxAnswerTime));
-			if(isMRITimeout){
-				rememberResponse = Config_CoinTask.MemoryState.no;
-			}
-			else{
-				rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
-			}
-			rememberResponses.Add(rememberResponse);
-			trialLogger.LogRememberResponse(rememberResponse);
-#else
-                //yield return StartCoroutine (exp.WaitForActionButton());
-                //Config_CoinTask.MemoryState rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
-                //rememberResponses.Add(rememberResponse);
-                //trialLogger.LogRememberResponse(rememberResponse);
-#endif
-
                 //allow free player movement
                 exp.player.controls.ShouldLockControls = false;
-
-                //SELECT LOCATION
-                //enable position selection, turn off fancy selection UI
-                //         exp.environmentController.myPositionSelector.Reset();
-                //exp.environmentController.myPositionSelector.EnableSelection (true);
 
                 switch (randomOrderIndex)
                 {
@@ -1012,26 +976,10 @@ public class TrialController : MonoBehaviour {
                 }
                 trialLogger.LogRecallChoiceStarted(true);
 
-                //exp.uiController.doYouRememberUI.Stop();
-
                 //show single selection instruction and wait for selection button press
                 string selectObjectText = exp.currInstructions.selectTheLocationText;
 
                 Debug.Log("select text " + selectObjectText);
-                //if (ExperimentSettings_CoinTask.myLanguage == ExperimentSettings_CoinTask.LanguageSetting.Spanish) {
-                //	//check for masculine article
-                //	string[] splitName = specialItemDisplayName.Split(' ');
-                //	if (splitName [0] == "el") {
-                //		string displayNameNoEl = specialItemDisplayName.Remove (0, 3);
-                //		selectObjectText = selectObjectText + "l" + " " + displayNameNoEl + " (X)."; //add the 'l' to "de" to make "del"
-                //	}
-                //	else {
-                //		selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
-                //	}
-                //} 
-                //else { //english
-                //	selectObjectText = selectObjectText + " " + specialItemDisplayName + " (X).";
-                //}
 
 #if MRIVERSION
 			exp.currInstructions.SetInstructionsTransparentOverlay();
@@ -1039,14 +987,59 @@ public class TrialController : MonoBehaviour {
 			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
 			exp.currInstructions.SetInstructionsBlank();
 #else
-                yield return StartCoroutine(exp.ShowSmallInstructions(selectObjectText, true, Config_CoinTask.minDefaultInstructionTime));
+                //yield return StartCoroutine(exp.ShowSmallInstructions(selectObjectText, true, Config_CoinTask.minDefaultInstructionTime));
                 //yield return StartCoroutine(exp.ShowSingleInstruction(selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
+
+                //recallAnswers[randomOrderIndex] = exp.sphinxTest.CheckAudioResponse(sphinxNum, currentRecallNumber, currentRecallObject, kws_threshold);
 #endif
 
                 //exp.environmentController.myPositionSelector.logTrack.LogPositionChosen( exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position, specialSpawnable );
 
                 //wait for the position selector to choose the position, runs color changing of the selector
                 //yield return StartCoroutine (exp.environmentController.myPositionSelector.ChoosePosition());
+
+                exp.uiController.EnableMicAvailability(true);
+                exp.uiController.ShowMicUsage(false); // this will show that microphone input is not accepted until the player stops moving
+
+                bool audioCheck = false;
+                int result = -1;
+                //wait for the player to move from their starting position a little
+                while(!exp.player.controls.IsMoving())
+                {
+                    yield return 0;
+                }
+
+                while (result != 1)
+                {
+                    while (exp.player.controls.IsMoving())
+                    {
+                        //loop until the player stops
+                        exp.uiController.ShowMicUsage(false);
+                        Debug.Log("waiting till player stops");
+                        yield return 0;
+                    }
+
+
+                    Debug.Log("player stopped");
+                    exp.uiController.ShowMicUsage(true); //show microphone input can be accepted now
+
+                    Debug.Log("about to initiate sphinx response now");
+                    //if (!audioCheck)
+                    //{
+                        exp.sphinxTest.RunAudioCheck(0, 0, "here", "20"); //start sphinx via microphone check
+                        //audioCheck = true;
+                    //}
+                    //check sphinx response
+                    result = exp.sphinxTest.CheckAudioResponse();
+                    yield return 0;
+                }
+
+
+                //break the sphinx search out of its loop
+                //exp.sphinxTest.BreakSphinx();
+
+                exp.uiController.ShowMicUsage(false);
+                exp.uiController.EnableMicAvailability(false);
 
                 //yield return StartCoroutine(exp.WaitForActionButton());
                 //log the chosen position which is player's current position
