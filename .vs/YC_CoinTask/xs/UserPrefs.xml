@@ -1,7 +1,7 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Experiment/TrialController.cs">
     <Files>
-      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="1023" Column="48" />
+      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="1020" Column="22" />
       <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" />
       <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" />
       <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" />
@@ -9,7 +9,7 @@
       <File FileName="Assets/Scripts/Environment/ObjectController.cs" />
       <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" />
       <File FileName="Assets/CollectibleItem.cs" />
-      <File FileName="Assets/Scripts/Experiment/PlayerControls.cs" />
+      <File FileName="Assets/Scripts/Experiment/PlayerControls.cs" Line="375" Column="21" />
       <File FileName="Assets/Scripts/Logging/PositionSelectorLogTrack.cs" />
       <File FileName="Assets/Scripts/Experiment/ScoreController.cs" />
       <File FileName="Assets/Scripts/Experiment/InstructionsController.cs" />
@@ -22,10 +22,10 @@
       <File FileName="Assets/Scripts/Audio/AudioController.cs" />
       <File FileName="Assets/Scripts/Audio/InputMic.cs" />
       <File FileName="Assets/WordListGenerator.cs" />
-      <File FileName="Assets/Scripts/Pocketsphinx/SphinxTest.cs" />
+      <File FileName="Assets/Scripts/Pocketsphinx/SphinxTest.cs" Line="52" Column="17" />
       <File FileName="Assets/Scripts/Logging/LogTrack.cs" />
-      <File FileName="Assets/SphinxController.cs" />
-      <File FileName="Assets/Scripts/Experiment/Player.cs" />
+      <File FileName="Assets/SphinxController.cs" Line="31" Column="10" />
+      <File FileName="Assets/Scripts/Experiment/Player.cs" Line="27" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -53,7 +53,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="1dc44ed3-829b-4e32-986e-5964a2a8dacf" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="5e33f4b8-ce79-43ce-9f3a-4cca2430ca5f" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -1022,6 +1022,7 @@ public class TrialController : MonoBehaviour {
 
                     Debug.Log("player stopped");
                     exp.uiController.ShowMicUsage(true); //show microphone input can be accepted now
+                    yield return new WaitForSeconds(0.25f); //wait for a bit for the mic UI to change
 
                     Debug.Log("about to initiate sphinx response now");
                     //if (!audioCheck)

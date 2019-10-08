@@ -37,21 +37,10 @@ public class SphinxTest : MonoBehaviour
     void Start()
     {
 
-        //		string usbOpenFeedback = Marshal.PtrToStringAuto (SphinxRun(0,1));
-        //		UnityEngine.Debug.Log(usbOpenFeedback);
-
-
         UnityEngine.Debug.Log(PrintANumber());
         UnityEngine.Debug.Log(AddTwoIntegers(3, 5));
         UnityEngine.Debug.Log(AddTwoFloats(2f, 3f));
-        //		string path = Marshal.PtrToStringAuto (GetAudioPath ());
-        //		UnityEngine.Debug.Log (path);
-        //		//int number = Marshal.ReadInt32(new IntPtr(PrintANumber ()));
-        //string response = Marshal.PtrToStringAuto (Trying());
-        //UnityEngine.Debug.Log (response);
-        //run_sphinx ();
-        //float okay=AddTwoFloats(2f,3f);
-        //UnityEngine.Debug.Log (PrintANumber ());
+
     }
 
     // Update is called once per frame
