@@ -1025,13 +1025,13 @@ public class TrialController : MonoBehaviour {
                     yield return new WaitForSeconds(0.25f); //wait for a bit for the mic UI to change
 
                     Debug.Log("about to initiate sphinx response now");
-                    //if (!audioCheck)
-                    //{
+                    if (!audioCheck)
+                    {
                         exp.sphinxTest.RunAudioCheck(0, 0, "here", "20"); //start sphinx via microphone check
-                        //audioCheck = true;
-                    //}
-                    //check sphinx response
-                    result = exp.sphinxTest.CheckAudioResponse();
+                    audioCheck = true;
+                    }
+                //check sphinx response
+                result = exp.sphinxTest.CheckAudioResponse();
                     yield return 0;
                 }
 
@@ -1046,12 +1046,18 @@ public class TrialController : MonoBehaviour {
                 //log the chosen position which is player's current position
                 exp.environmentController.myPositionSelector.logTrack.LogCoinPositionChosen(exp.player.transform.position);
 
+
                 //add current chosen position to list of chosen positions
                 chosenPositions.Add(exp.player.transform.position);
 
-                //disable position selection
-                //exp.environmentController.myPositionSelector.EnableSelection (false);
-                trialLogger.LogRecallChoiceStarted(false);
+
+                //drop flag
+                yield return StartCoroutine(exp.objectController.SpawnFlagAtLocation(exp.player.transform.position));
+
+
+                    //disable position selection
+                    //exp.environmentController.myPositionSelector.EnableSelection (false);
+                    trialLogger.LogRecallChoiceStarted(false);
 
                 switch (randomOrderIndex)
                 {

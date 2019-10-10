@@ -13,6 +13,7 @@ public class ObjectController : MonoBehaviour {
 	public GameObject DefaultObject; //this will be used during spatial object free recall phase
     public GameObject CollectibleObject; //this will be used during spatial location free recall phase
     public GameObject ExplosiveObject;
+    public GameObject FlagMarkerObject;
 	public List<GameObject> CurrentTrialSpecialObjects;
 
 
@@ -406,7 +407,23 @@ public class ObjectController : MonoBehaviour {
 		return specialPositions;
 	}
 
-	public float GetMaxDefaultObjectColliderBoundXZ(){
+    public IEnumerator SpawnFlagAtLocation(Vector3 flagLocation)
+    {
+        GameObject flagObj = Instantiate(FlagMarkerObject, flagLocation, Quaternion.identity) as GameObject;
+
+        //wait until the player moves again
+        while (!exp.player.controls.IsMoving())
+        {
+            yield return 0;
+        }
+
+        Destroy(flagObj);
+
+        yield return null;
+    }
+
+
+    public float GetMaxDefaultObjectColliderBoundXZ(){
 
 		InGameDefaultObject.SetActive (true);
 

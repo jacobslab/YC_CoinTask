@@ -118,7 +118,11 @@ public class Config_CoinTask : MonoBehaviour {
     public static float verbalFRPresentationTime = 1.6f; //how long to show each word for
     public static float freeRecallJitterMin = 0.75f;
     public static float freeRecallJitterMax = 1f;
-    
+
+
+    //flag marker
+    public static float flagDisplayTime = 1.5f;
+
 
 
     //OBJECTS
