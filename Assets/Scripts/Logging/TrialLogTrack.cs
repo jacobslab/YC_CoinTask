@@ -330,6 +330,14 @@ public class TrialLogTrack : LogTrack {
         }
     }
 
+    //mic test logging
+    public void LogMicTestEvent(bool isStarting){
+		if (ExperimentSettings_CoinTask.isLogging) {
+				subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + (isStarting ? "MIC_TEST_STARTED" : "MIC_TEST_ENDED") );
+				Debug.Log("Logged mic test started event.");
+		}
+	}
+
     public void LogFeedback(bool isStarting){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			if(isStarting){

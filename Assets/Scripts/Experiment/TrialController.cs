@@ -14,6 +14,9 @@ public class TrialController : MonoBehaviour {
 	//paused?!
 	public static bool isPaused = false;
 
+    //mic test reference
+    public InputMic micTest;
+
 	//TIMER
 	public SimpleTimer trialTimer;
 	public SimpleTimer MRITimer;
@@ -390,8 +393,8 @@ public class TrialController : MonoBehaviour {
 	public IEnumerator RunExperiment(){
 		if (!ExperimentSettings_CoinTask.isReplay) {
 			exp.player.controls.ShouldLockControls = true;
-
-			if(Config_CoinTask.isSystem2 || Config_CoinTask.isSyncbox){
+            micTest.gameObject.SetActive(false);
+            if (Config_CoinTask.isSystem2 || Config_CoinTask.isSyncbox){
 				yield return StartCoroutine( WaitForEEGHardwareConnection() );
 			}
 			else{
@@ -407,8 +410,16 @@ public class TrialController : MonoBehaviour {
 #endif
 #if (!(MRIVERSION))
 #if (!UNITY_WEBPLAYER)
-	//		if(!ExperimentSettings_CoinTask.Instance.isWebBuild){
-				trialLogger.LogVideoEvent(true);
+            //		if(!ExperimentSettings_CoinTask.Instance.isWebBuild){
+
+            //perform mic test
+            trialLogger.LogMicTestEvent(true);
+            micTest.gameObject.SetActive(true);
+            yield return StartCoroutine(micTest.RunMicTest());
+            micTest.gameObject.SetActive(false);
+            trialLogger.LogMicTestEvent(false);
+
+            trialLogger.LogVideoEvent(true);
 				yield return StartCoroutine(exp.instrVideoPlayer.Play());
 				trialLogger.LogVideoEvent(false);
 			
@@ -1008,8 +1019,13 @@ public class TrialController : MonoBehaviour {
                 {
                     yield return 0;
                 }
+#if UNITY_EDITOR_OSX
+                while(!Input.GetKeyDown(KeyCode.Space)) //in editor, we will just press SpaceBar to skip
 
+                    //Debug.Log("waiting for space bar");
+#else
                 while (result != 1)
+#endif
                 {
                     while (exp.player.controls.IsMoving())
                     {
@@ -1025,6 +1041,7 @@ public class TrialController : MonoBehaviour {
                     yield return new WaitForSeconds(0.25f); //wait for a bit for the mic UI to change
 
                     Debug.Log("about to initiate sphinx response now");
+#if !UNITY_EDITOR_OSX
                     if (!audioCheck)
                     {
                         exp.sphinxTest.RunAudioCheck(0, 0, "here", "20"); //start sphinx via microphone check
@@ -1032,10 +1049,12 @@ public class TrialController : MonoBehaviour {
                     }
                 //check sphinx response
                 result = exp.sphinxTest.CheckAudioResponse();
+#endif
                     yield return 0;
                 }
 
 
+                Debug.Log("space bar pressed");
                 //break the sphinx search out of its loop
                 //exp.sphinxTest.BreakSphinx();
 
@@ -1052,7 +1071,7 @@ public class TrialController : MonoBehaviour {
 
 
                 //drop flag
-                yield return StartCoroutine(exp.objectController.SpawnFlagAtLocation(exp.player.transform.position));
+                yield return StartCoroutine(exp.objectController.SpawnFlagAtLocation(exp.player.transform));
 
 
                     //disable position selection

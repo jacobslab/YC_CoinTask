@@ -407,10 +407,12 @@ public class ObjectController : MonoBehaviour {
 		return specialPositions;
 	}
 
-    public IEnumerator SpawnFlagAtLocation(Vector3 flagLocation)
+    public IEnumerator SpawnFlagAtLocation(Transform playerTransform)
     {
-        GameObject flagObj = Instantiate(FlagMarkerObject, flagLocation, Quaternion.identity) as GameObject;
+        Vector3 flagLocation = playerTransform.position + playerTransform.forward * 5f;
+        GameObject flagObj = Instantiate(FlagMarkerObject, new Vector3(flagLocation.x, 0f, flagLocation.z), Quaternion.identity) as GameObject;
 
+        yield return new WaitForSeconds(Config_CoinTask.minFlagDisplayTime);
         //wait until the player moves again
         while (!exp.player.controls.IsMoving())
         {

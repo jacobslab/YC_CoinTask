@@ -121,7 +121,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 
     //flag marker
-    public static float flagDisplayTime = 1.5f;
+    public static float minFlagDisplayTime = 1.5f;
 
 
 
