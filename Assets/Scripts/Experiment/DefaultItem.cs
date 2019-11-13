@@ -10,6 +10,8 @@ public class DefaultItem : MonoBehaviour {
 	public Transform pivotB;
 	public Transform top;
 	public Transform specialObjectSpawnPoint;
+
+    public GameObject renderParent; //we will use this to turn on and off the rendered objects
 	
 	float angleToOpen = 150.0f; //degrees
 
@@ -25,8 +27,10 @@ public class DefaultItem : MonoBehaviour {
 
 	public TextMesh specialObjectText;
 
-	void Awake(){
-		InitTreasureState ();
+	void Awake()
+    {
+        GetComponent<VisibilityToggler>().TurnRendering(false);
+        InitTreasureState ();
 	}
 
 	void InitTreasureState(){

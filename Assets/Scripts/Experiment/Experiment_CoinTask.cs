@@ -256,6 +256,18 @@ public class Experiment_CoinTask : MonoBehaviour {
 #endif
 	}
 
+    public IEnumerator ShowStaticInstructions(string line)
+    {
+        currInstructions.SetSmallInstructionPanel(line);
+        yield return null;
+
+    }
+
+    public void TurnOffStaticInstructions()
+    {
+        currInstructions.TurnOffSmallInstructionPanel();
+    }
+
     public IEnumerator ShowSmallInstructions(string line, bool waitForButton, float minDisplayTimeSeconds)
     {
         currInstructions.SetSmallInstructionPanel(line);

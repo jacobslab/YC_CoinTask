@@ -6,12 +6,16 @@ public class CollectibleItem : MonoBehaviour {
 
     Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
+
+    public GameObject renderParent;
+
     private AudioSource collectibleCollisionSound;
 
     bool isExecutingPlayerCollision = false;
 
     void Awake()
     {
+        GetComponent<VisibilityToggler>().TurnRendering(false);
         collectibleCollisionSound = gameObject.GetComponent<AudioSource>();
         InitTreasureState();
     }

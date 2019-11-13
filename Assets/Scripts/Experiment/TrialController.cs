@@ -415,7 +415,7 @@ public class TrialController : MonoBehaviour {
             //perform mic test
             trialLogger.LogMicTestEvent(true);
             micTest.gameObject.SetActive(true);
-            yield return StartCoroutine(micTest.RunMicTest());
+            //yield return StartCoroutine(micTest.RunMicTest());
             micTest.gameObject.SetActive(false);
             trialLogger.LogMicTestEvent(false);
 
@@ -702,7 +702,7 @@ public class TrialController : MonoBehaviour {
 
             Quaternion desiredRot = UsefulFunctions.GetDesiredRotation(exp.player.transform, targetChestPos);
 
-            yield return StartCoroutine(exp.player.controls.SmoothMoveTo(targetChestPos, desiredRot, true));
+            yield return StartCoroutine(exp.player.controls.SmoothMoveTo(currentDefaultObject, targetChestPos, desiredRot, true));
             //yield return StartCoroutine(WaitForPlayerToLookAt(currentDefaultObject));
             //wait until we've actually collected the chest
             if (exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialObjectFreeRecall)
@@ -836,7 +836,7 @@ public class TrialController : MonoBehaviour {
 
 		//move player to home location & rotation
 		trialLogger.LogTransportationToHomeEvent (true);
-		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));
+		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (null, currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));
 		trialLogger.LogTransportationToHomeEvent (false);
 
 		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
@@ -918,7 +918,7 @@ public class TrialController : MonoBehaviour {
 		}
 		trialLogger.LogTransportationToTowerEvent (true);
 		currentDefaultObject = null; //set to null so that arrows stop showing up...
-		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));//PlayerControls.toTowerTime) );
+		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (null,currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));//PlayerControls.toTowerTime) );
 		trialLogger.LogTransportationToTowerEvent (false);
 
 		//RUN DISTRACTOR GAME
@@ -998,7 +998,8 @@ public class TrialController : MonoBehaviour {
 			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
 			exp.currInstructions.SetInstructionsBlank();
 #else
-                //yield return StartCoroutine(exp.ShowSmallInstructions(selectObjectText, true, Config_CoinTask.minDefaultInstructionTime));
+                yield return StartCoroutine(exp.ShowStaticInstructions(selectObjectText)); //we will show the instructions in a static box through
+                //yield return StartCoroutine(exp.ShowSmallInstructions(selectObjectText, false, Config_CoinTask.minDefaultInstructionTime));
                 //yield return StartCoroutine(exp.ShowSingleInstruction(selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 
                 //recallAnswers[randomOrderIndex] = exp.sphinxTest.CheckAudioResponse(sphinxNum, currentRecallNumber, currentRecallObject, kws_threshold);
@@ -1009,59 +1010,59 @@ public class TrialController : MonoBehaviour {
                 //wait for the position selector to choose the position, runs color changing of the selector
                 //yield return StartCoroutine (exp.environmentController.myPositionSelector.ChoosePosition());
 
-                exp.uiController.EnableMicAvailability(true);
-                exp.uiController.ShowMicUsage(false); // this will show that microphone input is not accepted until the player stops moving
+                //                exp.uiController.EnableMicAvailability(true);
+                //                exp.uiController.ShowMicUsage(false); // this will show that microphone input is not accepted until the player stops moving
 
-                bool audioCheck = false;
-                int result = -1;
-                //wait for the player to move from their starting position a little
-                while(!exp.player.controls.IsMoving())
-                {
-                    yield return 0;
-                }
-#if UNITY_EDITOR_OSX
-                while(!Input.GetKeyDown(KeyCode.Space)) //in editor, we will just press SpaceBar to skip
+                //                bool audioCheck = false;
+                //                int result = -1;
+                //                //wait for the player to move from their starting position a little
+                //                while(!exp.player.controls.IsMoving())
+                //                {
+                //                    yield return 0;
+                //                }
+                //#if UNITY_EDITOR_OSX
+                //                while(!Input.GetKeyDown(KeyCode.Space)) //in editor, we will just press SpaceBar to skip
 
-                    //Debug.Log("waiting for space bar");
-#else
-                while (result != 1)
-#endif
-                {
-                    while (exp.player.controls.IsMoving())
-                    {
-                        //loop until the player stops
-                        exp.uiController.ShowMicUsage(false);
-                        Debug.Log("waiting till player stops");
-                        yield return 0;
-                    }
-
-
-                    Debug.Log("player stopped");
-                    exp.uiController.ShowMicUsage(true); //show microphone input can be accepted now
-                    yield return new WaitForSeconds(0.25f); //wait for a bit for the mic UI to change
-
-                    Debug.Log("about to initiate sphinx response now");
-#if !UNITY_EDITOR_OSX
-                    if (!audioCheck)
-                    {
-                        exp.sphinxTest.RunAudioCheck(0, 0, "here", "20"); //start sphinx via microphone check
-                    audioCheck = true;
-                    }
-                //check sphinx response
-                result = exp.sphinxTest.CheckAudioResponse();
-#endif
-                    yield return 0;
-                }
+                //                    //Debug.Log("waiting for space bar");
+                //#else
+                //                while (result != 1)
+                //#endif
+                //                {
+                //                    while (exp.player.controls.IsMoving())
+                //                    {
+                //                        //loop until the player stops
+                //                        exp.uiController.ShowMicUsage(false);
+                //                        Debug.Log("waiting till player stops");
+                //                        yield return 0;
+                //                    }
 
 
-                Debug.Log("space bar pressed");
-                //break the sphinx search out of its loop
-                //exp.sphinxTest.BreakSphinx();
+                //                    Debug.Log("player stopped");
+                //                    exp.uiController.ShowMicUsage(true); //show microphone input can be accepted now
+                //                    yield return new WaitForSeconds(0.25f); //wait for a bit for the mic UI to change
 
-                exp.uiController.ShowMicUsage(false);
-                exp.uiController.EnableMicAvailability(false);
+                //                    Debug.Log("about to initiate sphinx response now");
+                //#if !UNITY_EDITOR_OSX
+                //                    if (!audioCheck)
+                //                    {
+                //                        exp.sphinxTest.RunAudioCheck(0, 0, "here", "20"); //start sphinx via microphone check
+                //                    audioCheck = true;
+                //                    }
+                //                //check sphinx response
+                //                result = exp.sphinxTest.CheckAudioResponse();
+                //#endif
+                //                    yield return 0;
+                //                }
 
-                //yield return StartCoroutine(exp.WaitForActionButton());
+
+                //                Debug.Log("space bar pressed");
+                //                //break the sphinx search out of its loop
+                //                //exp.sphinxTest.BreakSphinx();
+
+                //                exp.uiController.ShowMicUsage(false);
+                //                exp.uiController.EnableMicAvailability(false);
+
+                yield return StartCoroutine(exp.WaitForActionButton());
                 //log the chosen position which is player's current position
                 exp.environmentController.myPositionSelector.logTrack.LogCoinPositionChosen(exp.player.transform.position);
 
@@ -1069,6 +1070,8 @@ public class TrialController : MonoBehaviour {
                 //add current chosen position to list of chosen positions
                 chosenPositions.Add(exp.player.transform.position);
 
+
+                exp.TurnOffStaticInstructions(); //turn off the static instructions box
 
                 //drop flag
                 yield return StartCoroutine(exp.objectController.SpawnFlagAtLocation(exp.player.transform));
@@ -1101,7 +1104,7 @@ public class TrialController : MonoBehaviour {
                 }
 
             }
-
+            exp.TurnOffStaticInstructions(); //turn off the static instructions box
             trialLogger.LogRecallPhaseStarted(false);
 
             yield return StartCoroutine(ShowFeedback(randomSpecialObjectOrder, chosenPositions, rememberResponses));

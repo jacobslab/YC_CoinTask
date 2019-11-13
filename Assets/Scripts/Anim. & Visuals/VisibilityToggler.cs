@@ -21,8 +21,7 @@ public class VisibilityToggler : MonoBehaviour {
 	}
 
 	//function to turn off (or on) the object without setting it inactive -- because we want to keep logging on
-	public void TurnVisible(bool shouldBeVisible){ 
-
+	public void TurnVisible(bool shouldBeVisible){
 		if(GetComponent<Renderer>() != null){
 			GetComponent<Renderer>().enabled = shouldBeVisible;
 		}
@@ -47,7 +46,22 @@ public class VisibilityToggler : MonoBehaviour {
 		
 	}
 
-	public void SetAlpha(float newAlpha){
+    public void TurnRendering( bool shouldRender)
+    {
+        if (GetComponent<Renderer>() != null)
+        {
+            GetComponent<Renderer>().enabled = shouldRender;
+        }
+
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].enabled = shouldRender;
+        }
+
+    }
+
+    public void SetAlpha(float newAlpha){
 		currentAlpha = newAlpha;
 
 		Renderer myRenderer = GetComponent<Renderer> ();

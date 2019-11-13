@@ -176,9 +176,14 @@ public class PlayerControls : MonoBehaviour{
 		
 	}
 
-	public IEnumerator SmoothMoveTo(Vector3 targetPosition, Quaternion targetRotation, bool isChestAutoDrive){
+	public IEnumerator SmoothMoveTo(GameObject chestRef, Vector3 targetPosition, Quaternion targetRotation, bool isChestAutoDrive){
 
-		SetTilt (0.0f, 1.0f);
+        //if (chestRef != null)
+        //{
+        //    Debug.Log("chest ref " + chestRef.ToString());
+        //    chestRef.GetComponent<VisibilityToggler>().TurnRendering(false);
+        //}
+        SetTilt (0.0f, 1.0f);
 
 		//notify tilting that we're smoothly moving, and thus should not tilt
 		//isSmoothMoving = true;
@@ -192,15 +197,21 @@ public class PlayerControls : MonoBehaviour{
 
 		float travelDistance = (origPosition - targetPosition).magnitude;
 
-
-		float timeToTravel = GetTimeToTravel (travelDistance);//travelDistance / smoothMoveSpeed;
-		#if MRIVERSION
+        float timeToTravel = 0f;
+        if (!isChestAutoDrive)
+            timeToTravel = GetTimeToTravel(travelDistance);//travelDistance / smoothMoveSpeed;
+        else
+        {
+            //we will randomly select time to travel to a chest
+            timeToTravel = Random.Range(0.75f, 1.5f);
+        }
+#if MRIVERSION
 		if(isChestAutoDrive){
 			timeToTravel *= Config_CoinTask.MRIAutoDriveTimeMult;
 		}
-		#endif
+#endif
 
-		float tElapsed = 0.0f;
+        float tElapsed = 0.0f;
 		//float epsilon = 0.01f;
 
 		//DEBUG
@@ -211,8 +222,8 @@ public class PlayerControls : MonoBehaviour{
         //		bool arePositionsCloseEnough = UsefulFunctions.CheckVectorsCloseEnough(transform.position, targetPosition, epsilon);
         //while ( ( angleDiffY >= epsilon ) || ( angleDiffX >= epsilon ) || (!arePositionsCloseEnough) ){
 
-
-        //we will rotate first and drive after if it's "autodrive"
+        float percentageTime = 0f;
+        //we will rotate first and drive at the same time if it's "autodrive"
         if (isChestAutoDrive)
         {
             while (tElapsed < timeToTravel)
@@ -221,19 +232,30 @@ public class PlayerControls : MonoBehaviour{
 
                 tElapsed += Time.deltaTime;
 
-                float percentageTime = tElapsed / timeToTravel;
+
+                percentageTime = tElapsed / timeToTravel;
+
+                //make the chest visible when we are 3/4th the way there
+                if (percentageTime > 0.75f)
+                {
+                    if (chestRef != null)
+                    {
+                        Debug.Log("activated rendering again");
+                        chestRef.GetComponent<VisibilityToggler>().TurnRendering(true);
+                    }
+                }
                 //will spherically interpolate the rotation for config.spinTime seconds
                 transform.rotation = Quaternion.Slerp(origRotation, targetRotation, percentageTime); //SLERP ALWAYS TAKES THE SHORTEST PATH.
 
-                yield return 0;
-            }
+                //yield return 0;
+            //}
 
-            tElapsed = 0f;
+            //tElapsed = 0f;
 
-            while (tElapsed < timeToTravel)
-            {
-                tElapsed += Time.deltaTime;
-                float percentageTime = tElapsed / timeToTravel;
+            //while (tElapsed < timeToTravel)
+            //{
+            //    tElapsed += Time.deltaTime;
+            //    float percentageTime = tElapsed / timeToTravel;
                 transform.position = Vector3.Lerp(origPosition, targetPosition, percentageTime);
                 //Debug.Log("ORIG POS " + origPosition.ToString() + " target pos " + targetPosition.ToString() + " percentage time " + percentageTime.ToString());
 
@@ -246,7 +268,7 @@ public class PlayerControls : MonoBehaviour{
             {
                 totalTimeElapsed += Time.deltaTime;
                 tElapsed += Time.deltaTime;
-                float percentageTime = tElapsed / timeToTravel;
+                percentageTime = tElapsed / timeToTravel;
 
                 //will spherically interpolate the rotation for config.spinTime seconds
                 transform.rotation = Quaternion.Slerp(origRotation, targetRotation, percentageTime); //SLERP ALWAYS TAKES THE SHORTEST PATH.
