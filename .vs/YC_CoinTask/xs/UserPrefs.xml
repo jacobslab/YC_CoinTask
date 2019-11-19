@@ -1,27 +1,7 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GUI/UIController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Logging/CameraLogTrack.cs">
     <Files>
-      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="1093" Column="63" />
-      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" />
-      <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" />
-      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" />
-      <File FileName="Assets/Scripts/Logging/ParticleLogTrack.cs" />
-      <File FileName="Assets/Scripts/VideoRecording/Replay.cs" />
-      <File FileName="Assets/Scripts/Experiment/SceneController.cs" />
-      <File FileName="Assets/Scripts/Environment/ObjectController.cs" />
-      <File FileName="Assets/Scripts/Experiment/DefaultItem.cs" />
-      <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" />
-      <File FileName="Assets/Scripts/Experiment/PlayerControls.cs" />
-      <File FileName="Assets/Scripts/Logging/PositionSelectorLogTrack.cs" />
-      <File FileName="Assets/Scripts/Experiment/ScoreController.cs" />
-      <File FileName="Assets/Scripts/Experiment/InstructionsController.cs" Line="85" Column="70" />
-      <File FileName="Assets/Scripts/Environment/EnvironmentPositionSelector.cs" />
-      <File FileName="Assets/Scripts/Logging/TreasureChestLogTrack.cs" />
-      <File FileName="Assets/Scripts/GUI/ScoreRecapUI.cs" />
-      <File FileName="Assets/Scripts/Logging/AudioLogTrack.cs" />
-      <File FileName="Assets/Scripts/GUI/UIController.cs" Line="164" Column="1" />
-      <File FileName="Assets/Scripts/Audio/AudioController.cs" />
-      <File FileName="Assets/Scripts/Environment/SpawnableObject.cs" />
+      <File FileName="Assets/Scripts/Logging/CameraLogTrack.cs" Line="35" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -29,14 +9,9 @@
           <Node name="YC_CoinTask" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="Audio" expanded="True" />
-                <Node name="Environment" expanded="True" />
-                <Node name="Experiment" expanded="True" />
-                <Node name="GUI" expanded="True">
-                  <Node name="UIController.cs" selected="True" />
+                <Node name="Logging" expanded="True">
+                  <Node name="CameraLogTrack.cs" selected="True" />
                 </Node>
-                <Node name="Logging" expanded="True" />
-                <Node name="VideoRecording" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -46,7 +21,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="17b6e0d5-10bf-4fb7-8a59-81453e29c3bf" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="00dac5b4-16a5-4f08-a776-55925dbf74b4" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
