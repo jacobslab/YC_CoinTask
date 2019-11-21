@@ -41,7 +41,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 
 	//TOGGLES & SETTINGS
-	public static bool isOculus = false;
+	public static bool isOculus = true;
 	public static bool isReplay = false;
 	public static bool isLogging = true; //if not in replay mode, should log things! or can be toggled off in main menu.
 
@@ -257,9 +257,10 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	}
 
 	public void SetOculus(){
-		if (oculusToggle) {
-			isOculus = oculusToggle.isOn;
-		}
+        isOculus = true;
+		//if (oculusToggle) {
+		//	isOculus = oculusToggle.isOn;
+		//}
 	}
 
 	public void SetLanguage(){

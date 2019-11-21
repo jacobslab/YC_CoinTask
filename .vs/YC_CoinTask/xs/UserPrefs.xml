@@ -1,7 +1,11 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Logging/CameraLogTrack.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Experiment/PlayerControls.cs">
     <Files>
       <File FileName="Assets/Scripts/Logging/CameraLogTrack.cs" Line="35" Column="1" />
+      <File FileName="Assets/Scripts/Experiment/DefaultItem.cs" Line="63" Column="40" />
+      <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" Line="260" Column="25" />
+      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="652" Column="53" />
+      <File FileName="Assets/Scripts/Experiment/PlayerControls.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -9,9 +13,10 @@
           <Node name="YC_CoinTask" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="Logging" expanded="True">
-                  <Node name="CameraLogTrack.cs" selected="True" />
+                <Node name="Experiment" expanded="True">
+                  <Node name="PlayerControls.cs" selected="True" />
                 </Node>
+                <Node name="Logging" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -21,7 +26,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="00dac5b4-16a5-4f08-a776-55925dbf74b4" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="b08b392e-6815-476a-a53d-f9ca4ba0386c" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

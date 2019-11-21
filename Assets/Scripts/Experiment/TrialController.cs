@@ -649,9 +649,9 @@ public class TrialController : MonoBehaviour {
 		}
 
 		//move player to home location & rotation
-		trialLogger.LogTransportationToHomeEvent (true);
-		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));
-		trialLogger.LogTransportationToHomeEvent (false);
+		//trialLogger.LogTransportationToHomeEvent (true);
+		//yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));
+		//trialLogger.LogTransportationToHomeEvent (false);
 
 		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
 			//Spawn the first default object
