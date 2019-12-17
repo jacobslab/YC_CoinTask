@@ -167,6 +167,10 @@ public class Config_CoinTask : MonoBehaviour {
     public static bool isSyncing = false;
     public static bool neuralDeviceConnected = false;
 
+    //time sync varaibles
+    public static string directIPAddress = "0.0.0.0";
+    public static bool isTargetIPAddrValid = false;
+
     //object buffer variables
 
     void Awake(){
