@@ -72,8 +72,13 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 
 
-	//SINGLETON
-	private static ExperimentSettings_CoinTask _instance;
+    public NetworkManager networkManager;
+    public Toggle timeSyncToggle;
+    public SceneController sceneController;
+
+
+    //SINGLETON
+    private static ExperimentSettings_CoinTask _instance;
 	
 	public static ExperimentSettings_CoinTask Instance{
 		get{
@@ -263,7 +268,32 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		//}
 	}
 
-	public void SetLanguage(){
+
+    public void CheckIfSyncRequired()
+    {
+        if (timeSyncToggle.isOn)
+        {
+
+            StartCoroutine("PrepExperiment");
+        }
+        else
+        {
+            sceneController.LoadExperimentLevel();
+        }
+    }
+
+    IEnumerator PrepExperiment()
+    {
+        if (timeSyncToggle.isOn)
+        {
+            yield return StartCoroutine(networkManager.BeginDiscovery());
+        }
+        Debug.Log("loading experiment level");
+        sceneController.LoadExperimentLevel();
+        yield return null;
+    }
+
+    public void SetLanguage(){
 		Debug.Log ("SETTING LANGUAGE");
 		if (languageDropdown != null) {
 			switch (languageDropdown.options [languageDropdown.value].text) {

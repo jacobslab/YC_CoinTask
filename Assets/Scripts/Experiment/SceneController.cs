@@ -55,20 +55,23 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 		if (ExperimentSettings_CoinTask.Instance.isRelease){ //no subject, not replay, is pilot
 			ExperimentSettings_CoinTask.Instance.subjectSelectionController.SendMessage("AddNewSubject");
 			if(ExperimentSettings_CoinTask.currentSubject != null){
-				LoadExperimentLevel();
-			}
+                ExperimentSettings_CoinTask.Instance.CheckIfSyncRequired();
+                //LoadExperimentLevel();
+            }
 		}
 		
 		else if (ExperimentSettings_CoinTask.currentSubject != null && !ExperimentSettings_CoinTask.Instance.isRelease) {
-			LoadExperimentLevel();
-		} 
+            //LoadExperimentLevel();
+
+            ExperimentSettings_CoinTask.Instance.CheckIfSyncRequired();
+        } 
 		else if (ExperimentSettings_CoinTask.isReplay) {
 			Debug.Log ("loading experiment!");
 			Application.LoadLevel (1);
 		}
 	}
 
-	void LoadExperimentLevel(){
+	public void LoadExperimentLevel(){
 		if (ExperimentSettings_CoinTask.currentSubject.trials < Config_CoinTask.GetTotalNumTrials ()) {
 			Debug.Log ("loading experiment!");
 			Application.LoadLevel (1);

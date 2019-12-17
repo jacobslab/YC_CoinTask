@@ -154,9 +154,18 @@ public class Config_CoinTask : MonoBehaviour {
     //drive variables
     public static float driveSpeed = 22;
 
-	//object buffer variables
 
-	void Awake(){
+    //time sync variables
+    public static bool isSyncing = false;
+    public static float syncNTPInterval = 60f;
+    public static string directIPAddress = "0.0.0.0";
+    public static bool neuralDeviceConnected = false;
+    public static string subjectName= "test";
+    public static bool isTargetIPAddrValid = false;
+
+    //object buffer variables
+
+    void Awake(){
 		DontDestroyOnLoad(transform.gameObject);
 	}
 

@@ -1,22 +1,40 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Experiment/PlayerControls.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Experiment/Config_CoinTask.cs">
     <Files>
       <File FileName="Assets/Scripts/Logging/CameraLogTrack.cs" Line="35" Column="1" />
-      <File FileName="Assets/Scripts/Experiment/DefaultItem.cs" Line="63" Column="40" />
-      <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" Line="260" Column="25" />
-      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="652" Column="53" />
-      <File FileName="Assets/Scripts/Experiment/PlayerControls.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Experiment/DefaultItem.cs" />
+      <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" Line="282" Column="1" />
+      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="1186" Column="1" />
+      <File FileName="Assets/Scripts/Experiment/PlayerControls.cs" />
+      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="164" Column="17" />
+      <File FileName="Assets/Scripts/Old/EnvironmentMap.cs" />
+      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" />
+      <File FileName="Assets/Scripts/DistractorGame/RabbitCatcher.cs" />
+      <File FileName="Assets/Scripts/Logging/MouseLogTrack.cs" />
+      <File FileName="Assets/Scripts/Experiment/SceneController.cs" />
+      <File FileName="Assets/Scripts/VideoRecording/Replay.cs" />
+      <File FileName="Assets/Scripts/SubjectSelection&amp;Saving/SubjectSelectionController.cs" Line="189" Column="1" />
+      <File FileName="Assets/Scripts/Experiment/GameClock.cs" Line="81" Column="1" />
+      <File FileName="Assets/Scripts/Experiment/ClockSynchronization.cs" Line="51" Column="67" />
+      <File FileName="Assets/Scenes/DontDestroyOnLoad.cs" Line="19" Column="2" />
+      <File FileName="Assets/ClockSynchronization.cs" Line="26" Column="1" />
+      <File FileName="Assets/NetworkManager.cs" Line="152" Column="44" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="YC_CoinTask" expanded="True">
             <Node name="Assets" expanded="True">
+              <Node name="Scenes" expanded="True" />
               <Node name="Scripts" expanded="True">
+                <Node name="DistractorGame" expanded="True" />
                 <Node name="Experiment" expanded="True">
-                  <Node name="PlayerControls.cs" selected="True" />
+                  <Node name="Config_CoinTask.cs" selected="True" />
                 </Node>
                 <Node name="Logging" expanded="True" />
+                <Node name="Old" expanded="True" />
+                <Node name="SubjectSelection&amp;Saving" expanded="True" />
+                <Node name="VideoRecording" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -26,7 +44,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="b08b392e-6815-476a-a53d-f9ca4ba0386c" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="66abb2fb-def5-492c-b107-455d50b7c3f7" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
