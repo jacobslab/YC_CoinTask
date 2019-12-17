@@ -247,8 +247,8 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 		if (waitForButton) {
             //replaced by mouse click wait in this version
-            yield return StartCoroutine(WaitForMouseClick());
-            //yield return StartCoroutine (WaitForActionButton ());
+            //yield return StartCoroutine(WaitForMouseClick());
+            yield return StartCoroutine(WaitForActionButton());
         }
 
 		if (addRandomPostJitter) {

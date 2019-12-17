@@ -6,6 +6,8 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 
 	//SINGLETON
 	private static SceneController _instance;
+
+    public ExperimentSettings_CoinTask expSettings;
 	
 	public static SceneController Instance{
 		get{
@@ -54,13 +56,19 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 
 		if (ExperimentSettings_CoinTask.Instance.isRelease){ //no subject, not replay, is pilot
 			ExperimentSettings_CoinTask.Instance.subjectSelectionController.SendMessage("AddNewSubject");
-			if(ExperimentSettings_CoinTask.currentSubject != null){
-				LoadExperimentLevel();
+			if(ExperimentSettings_CoinTask.currentSubject != null)
+            {
+                Debug.Log("main if");
+                expSettings.CheckIfSyncRequired();
+                //LoadExperimentLevel();
 			}
 		}
 		
-		else if (ExperimentSettings_CoinTask.currentSubject != null && !ExperimentSettings_CoinTask.Instance.isRelease) {
-			LoadExperimentLevel();
+		else if (ExperimentSettings_CoinTask.currentSubject != null && !ExperimentSettings_CoinTask.Instance.isRelease)
+        {
+            Debug.Log("else if");
+            expSettings.CheckIfSyncRequired();
+            //LoadExperimentLevel();
 		} 
 		else if (ExperimentSettings_CoinTask.isReplay) {
 			Debug.Log ("loading experiment!");
@@ -68,7 +76,8 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 		}
 	}
 
-	void LoadExperimentLevel(){
+	public void LoadExperimentLevel(){
+
 		if (ExperimentSettings_CoinTask.currentSubject.trials < Config_CoinTask.GetTotalNumTrials ()) {
 			Debug.Log ("loading experiment!");
 			Application.LoadLevel (1);

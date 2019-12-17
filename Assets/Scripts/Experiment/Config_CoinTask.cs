@@ -160,9 +160,16 @@ public class Config_CoinTask : MonoBehaviour {
     //drive variables
     public static float driveSpeed = 22;
 
-	//object buffer variables
+    public static string subjectName = "test";
 
-	void Awake(){
+    //time sync variables
+    public static float syncNTPInterval = 60f;
+    public static bool isSyncing = false;
+    public static bool neuralDeviceConnected = false;
+
+    //object buffer variables
+
+    void Awake(){
 		DontDestroyOnLoad(transform.gameObject);
 	}
 
@@ -193,7 +200,7 @@ public class Config_CoinTask : MonoBehaviour {
 
 			buffer += Experiment_CoinTask.Instance.objectController.GetMaxDefaultObjectColliderBoundXZ ();
 
-			Debug.Log ("BUFFER: " + buffer);
+			//Debug.Log ("BUFFER: " + buffer);
 			if(buffer < Config_CoinTask.selectionDiameter){
 				buffer = Config_CoinTask.selectionDiameter;
 			}

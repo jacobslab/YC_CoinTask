@@ -34,6 +34,8 @@ public class TrialController : MonoBehaviour {
     public LayerMask layerMask;
     public LayerMask floorLayerMask;
 
+    public ClockSynchronization clockSync;
+
     [HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
 	
 	List<List<Trial>> ListOfTrialBlocks;
@@ -55,7 +57,12 @@ public class TrialController : MonoBehaviour {
 		#endif
 
 		trialLogger = GetComponent<TrialLogTrack> ();
-	}
+
+
+        //begin sync routine
+        if (Config_CoinTask.isSyncing)
+            StartCoroutine(clockSync.RunSyncInterval());
+    }
 
 	void InitPracticeTrials(){
 		practiceTrials = new List<Trial>();
@@ -509,8 +516,8 @@ public class TrialController : MonoBehaviour {
 			trialLogger.LogBlockScreenStarted(true);
 			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
 
-            //yield return StartCoroutine(exp.WaitForActionButton());
-            yield return StartCoroutine(exp.WaitForMouseClick());
+            yield return StartCoroutine(exp.WaitForActionButton());
+            //yield return StartCoroutine(exp.WaitForMouseClick());
 
             exp.uiController.blockCompletedUI.Stop();
 			trialLogger.LogBlockScreenStarted(false);
@@ -681,9 +688,9 @@ public class TrialController : MonoBehaviour {
 		}
         exp.player.controls.ShouldLockRotation = false;
 		//move player to home location & rotation
-		trialLogger.LogTransportationToHomeEvent (true);
-		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));
-		trialLogger.LogTransportationToHomeEvent (false);
+		//trialLogger.LogTransportationToHomeEvent (true);
+		//yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));
+		//trialLogger.LogTransportationToHomeEvent (false);
 
 		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
 			//Spawn the first default object
@@ -740,18 +747,21 @@ public class TrialController : MonoBehaviour {
 		}
 #else //if not MRI version, just wait until all chests are collected;
 		while (numDefaultObjectsCollected < numDefaultObjectsToCollect) {
-            #if STATIC
-        if (Input.GetMouseButtonDown(0))
-        {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+#if STATIC
+            //if (Input.GetMouseButtonDown(0))
+            //{
+            Ray ray = new Ray(Camera.main.transform.position,
+                         Camera.main.transform.forward);
+            // this var will tell us where and what it hit
+            RaycastHit hit = new RaycastHit();
+
             if (Physics.Raycast(ray, out hit, 100f,layerMask.value))
             {
                 //select.tag = "none";
                 Debug.Log("got hit");
                 yield return StartCoroutine(hit.collider.gameObject.GetComponent<DefaultItem>().OpenTreasureChest());
             }
-        }
+        //}
 #endif
 			yield return 0;
 		}
@@ -941,8 +951,8 @@ public class TrialController : MonoBehaviour {
           
             //wait for the position selector to choose the position, runs color changing of the selector
             yield return StartCoroutine(exp.environmentController.myPositionSelector.ChoosePosition());
-            yield return StartCoroutine(exp.WaitForMouseClick());
-            //yield return StartCoroutine(exp.WaitForActionButton());
+            //yield return StartCoroutine(exp.WaitForMouseClick());
+            yield return StartCoroutine(exp.WaitForActionButton());
             //exp.environmentController.myPositionSelector.logTrack.LogPositionChosen(exp.player.transform.position, specialObj.transform.position, specialSpawnable);
 
             //add current chosen position to list of chosen positions
@@ -1099,9 +1109,9 @@ public class TrialController : MonoBehaviour {
 #else
         //wait for selection button press
         exp.currInstructions.EnableHeaderInstruction(true,exp.currInstructions.pressToContinue);
-        yield return StartCoroutine(exp.WaitForMouseClick());
+        //yield return StartCoroutine(exp.WaitForMouseClick());
         exp.currInstructions.EnableHeaderInstruction(false, "");
-        //yield return StartCoroutine(exp.WaitForActionButton());
+        yield return StartCoroutine(exp.WaitForActionButton());
         //yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToContinue, false, true, false, Config_CoinTask.minDefaultInstructionTime));
 #endif
 
@@ -1116,8 +1126,8 @@ public class TrialController : MonoBehaviour {
 #if MRIVERSION
 		yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxScoreScreenTime));
 #else
-        //yield return StartCoroutine (exp.WaitForActionButton ());
-        yield return StartCoroutine(exp.WaitForMouseClick());
+        yield return StartCoroutine(exp.WaitForActionButton());
+        //yield return StartCoroutine(exp.WaitForMouseClick());
 #endif
 
         exp.uiController.scoreRecapUI.Stop ();

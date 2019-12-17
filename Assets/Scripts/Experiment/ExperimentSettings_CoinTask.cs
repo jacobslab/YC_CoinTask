@@ -41,7 +41,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 
 	//TOGGLES & SETTINGS
-	public static bool isOculus = false;
+	public static bool isOculus = true;
 	public static bool isReplay = false;
 	public static bool isLogging = true; //if not in replay mode, should log things! or can be toggled off in main menu.
 
@@ -70,7 +70,9 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public static string manualTrialFilePath; //if you want to define trials & objects manually
 	public InputField manualTrialPathInputField;
 
-
+    public NetworkManager networkManager;
+    public Toggle timeSyncToggle;
+    public SceneController sceneController;
 
 	//SINGLETON
 	private static ExperimentSettings_CoinTask _instance;
@@ -204,6 +206,8 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 		return true;
 	}
 
+
+
 	public void ChangeLoggingPath(){
 		if (Directory.Exists (loggingPathInputField.text)) {
 			defaultLoggingPath = loggingPathInputField.text;
@@ -257,10 +261,36 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	}
 
 	public void SetOculus(){
-		if (oculusToggle) {
-			isOculus = oculusToggle.isOn;
-		}
+        //if (oculusToggle) {
+        //	isOculus = oculusToggle.isOn;
+        //}
+        //isOculus = true;
 	}
+
+
+    public void CheckIfSyncRequired()
+    {
+        if(timeSyncToggle.isOn)
+        {
+
+            StartCoroutine("PrepExperiment");
+        }
+        else
+        {
+            sceneController.LoadExperimentLevel();
+        }
+    }
+
+    IEnumerator PrepExperiment()
+    {
+        if(timeSyncToggle.isOn)
+        {
+            yield return StartCoroutine(networkManager.BeginDiscovery());
+        }
+        Debug.Log("loading experiment level");
+        sceneController.LoadExperimentLevel();
+        yield return null;
+    }
 
 	public void SetLanguage(){
 		Debug.Log ("SETTING LANGUAGE");

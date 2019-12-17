@@ -155,17 +155,20 @@ public class RabbitCatcher : MonoBehaviour
         {
             Debug.Log("waiting for the rabbit to be caught");
             durationTimer += Time.deltaTime;
-            if (Input.GetMouseButtonDown(0))
-            {
-                RaycastHit hit;
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out hit, 100f, layerMask.value))
+            //if (Input.GetMouseButtonDown(0))
+            //{
+            Ray ray = new Ray(Camera.main.transform.position,
+                         Camera.main.transform.forward);
+            // this var will tell us where and what it hit
+
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 100f, layerMask.value))
                 {
                     //select.tag = "none";
                     caughtRabbit=true;
                     durationTimer = Config_CoinTask.maxRabbitCatchTime;
                 }
-            }
+            //}
             yield return 0;
         }
 #endif

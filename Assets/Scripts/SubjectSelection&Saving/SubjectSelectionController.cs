@@ -60,6 +60,8 @@ public class SubjectSelectionController : MonoBehaviour {
 
 			newSubjName = SubjectInputField.text.Replace("\n", "");
 			newSubjName = newSubjName.Replace("\r", "");
+
+            Config_CoinTask.subjectName = newSubjName;
 			
 			//don't want a duplicate subject
 			bool isDuplicateSubject = SubjectReaderWriter.subjectDict.ContainsKey( newSubjName );
