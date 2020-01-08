@@ -85,7 +85,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float MRIFixationTime = 30.0f;
 
 #else
-	public static int numTestTrials = 40; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
+	public static int numTestTrials = 16; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
 
 
 	//practice settings
@@ -151,7 +151,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float MRIAutoDriveTimeMult = 2.0f;
 #else
 	public static float rotateToSpecialObjectSpeed = 33.33f;
-	public static float pauseAtTreasureTime = 1.5f;
+	public static float pauseAtTreasureTime = 1.6f;
 #endif
 	
 	public static float minInitialInstructionsTime = 0.0f; //TODO: change back to 5.0f

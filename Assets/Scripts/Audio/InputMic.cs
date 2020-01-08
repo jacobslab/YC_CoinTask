@@ -23,18 +23,24 @@ public class InputMic : MonoBehaviour
     AudioSource recAudio;
     public AudioRecorder recorder;
     private bool samsonFound = false;
-    public CanvasGroup samsonWarningGroup;
+    public CanvasGroup micTestGroup;
     private string samsonDeviceName = "";
     AudioClip _clipRecord;
     private int samsonIndex = 0;
     public int samplerate = 44100;
+
+    public CanvasGroup micButtonGroup;
+    private bool micReady = false;
+
     void Awake()
     {
         recAudio = GetComponent<AudioSource>();
         micCanvasGroup.alpha = 0f;
+        micTestGroup.alpha = 0f;
     }
     void Start()
     {
+
         for (int i = 0; i < Microphone.devices.Length; i++)
         {
             Debug.Log("length of mics is" + Microphone.devices.Length + "  and  " + Microphone.devices[i].ToString());
@@ -49,13 +55,6 @@ public class InputMic : MonoBehaviour
             //}
 #endif
         }
-#if !DEMO
-        //if (!samsonFound)
-        //{
-        //    samsonWarningGroup.alpha = 1f;
-        //    UnityEngine.Debug.Log("Samson mic not found");
-        //}
-#endif
         beginExperimentText.enabled = false;
         micDrops.AddOptions(micList);
     }
@@ -65,16 +64,12 @@ public class InputMic : MonoBehaviour
         float timer = 0f;
         while (cannotHear)
         {
-
             _clipRecord = AudioClip.Create("clipRecord",samplerate * 2, 1,samplerate,true);
             //            	yield return StartCoroutine (Experiment.Instance.audioRecorder.Record(Experiment.Instance.SessionDirectory, "micTest.wav", 5));
             if (_device == null && Microphone.devices.Length > 0)
             {
-                UnityEngine.Debug.Log("samson index is: " + samsonIndex.ToString());
-                micDrops.value = samsonIndex;
-                UnityEngine.Debug.Log("setting micdrops value to:" + samsonIndex.ToString());
-                _device = Microphone.devices[samsonIndex];
-                UnityEngine.Debug.Log("setting as " + Microphone.devices[samsonIndex].ToString());
+                _device = Microphone.devices[micDrops.value];
+                UnityEngine.Debug.Log("setting as " + Microphone.devices[micDrops.value].ToString());
                 _clipRecord = Microphone.Start(_device, true, 5, 44100);
             }
             else
@@ -82,7 +77,6 @@ public class InputMic : MonoBehaviour
                 spokenWord.text = "No microphone detected!";
             }
             UnityEngine.Debug.Log("device is " + _device.ToString());
-            micCanvasGroup.alpha = 1f;
             spokenWord.color = Color.red;
             spokenWord.color = Color.white;
             timer = 0f;
@@ -119,10 +113,30 @@ public class InputMic : MonoBehaviour
         yield return null;
     }
 
+    public void SetMicReady()
+    {
+        micReady = true;
+    }
+
+    IEnumerator WaitForReadyMicTest()
+    {
+        micButtonGroup.alpha = 1f;
+        while(!micReady)
+        {
+            yield return 0;
+        }
+        micButtonGroup.alpha = 0f;
+        yield return null;
+    }
+
     public IEnumerator RunMicTest()
     {
         //        InitMic();
+
         micCanvasGroup.alpha = 1f;
+        yield return StartCoroutine(WaitForReadyMicTest());
+
+        micTestGroup.alpha = 1f;
         yield return StartCoroutine("RotateWords");
         yield return new WaitForSeconds(1.5f);
         micCanvasGroup.alpha = 0f;

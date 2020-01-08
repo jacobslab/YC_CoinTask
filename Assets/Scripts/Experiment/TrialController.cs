@@ -61,7 +61,10 @@ public class TrialController : MonoBehaviour {
 	List<List<Trial>> ListOfTrialBlocks;
 	List<Trial> practiceTrials;
 
-	void Start(){
+    private int currTrialNum = 0;
+    private int points = 0;
+
+    void Start(){
 		#if MRIVERSION
 		if(Config_CoinTask.isPractice){
 			InitPracticeTrials();
@@ -412,23 +415,28 @@ public class TrialController : MonoBehaviour {
 #if (!UNITY_WEBPLAYER)
             //		if(!ExperimentSettings_CoinTask.Instance.isWebBuild){
 
+            //disable ambient sound
+            exp.audioController.ToggleAmbientSound(false);
+
             //perform mic test
             trialLogger.LogMicTestEvent(true);
             micTest.gameObject.SetActive(true);
-            //yield return StartCoroutine(micTest.RunMicTest());
+            yield return StartCoroutine(micTest.RunMicTest());
             micTest.gameObject.SetActive(false);
             trialLogger.LogMicTestEvent(false);
 
             trialLogger.LogVideoEvent(true);
 				yield return StartCoroutine(exp.instrVideoPlayer.Play());
 				trialLogger.LogVideoEvent(false);
-			
-	//		}
+
+            //enable ambient sound now
+            exp.audioController.ToggleAmbientSound(true);
+            //		}
 #endif
 #endif
 
-			//CREATE SESSION STARTED FILE!
-			exp.CreateSessionStartedFile();
+            //CREATE SESSION STARTED FILE!
+            exp.CreateSessionStartedFile();
 
 			//show instructions for exploring, wait for the action button
 			trialLogger.LogInstructionEvent();
@@ -513,14 +521,17 @@ public class TrialController : MonoBehaviour {
 
             exp.currentBlockType = exp.blockTypeList[currentBlockIndex];
 
-            if(exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialLocationFreeRecall)
-            {
-
-            }
 
             while (exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialLocationFreeRecall || exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialObjectFreeRecall) {
 				Trial nextTrial = PickRandomTrial (currentTrialBlock);
-				yield return StartCoroutine (RunSpatialTrial( nextTrial ));
+                if (nextTrial != null)
+                {
+                    yield return StartCoroutine(RunSpatialTrial(nextTrial));
+                }
+                else
+                {
+                    exp.currentBlockType = Experiment_CoinTask.BlockType.Empty;
+                }
 			}
 
             if(exp.currentBlockType == Experiment_CoinTask.BlockType.VerbalObjectFreeRecall)
@@ -531,23 +542,25 @@ public class TrialController : MonoBehaviour {
                 {
                     yield return StartCoroutine(RunFRTrial());
                 }
+                //disable FR UI only after you've finished all the trials
+                exp.uiController.verbalFRGroup.alpha = 0f;
             }
 
             //enable ambient waves again
             exp.audioController.ToggleAmbientSound(true);
 
             //FINISHED A TRIAL BLOCK, SHOW UI
-            trialLogger.LogInstructionEvent();
-			StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
-			exp.uiController.blockCompletedUI.Play(i, exp.scoreController.score, ListOfTrialBlocks.Count);
-			trialLogger.LogBlockScreenStarted(true);
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
+   //         trialLogger.LogInstructionEvent();
+			//StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
+			//exp.uiController.blockCompletedUI.Play(i, exp.scoreController.score, ListOfTrialBlocks.Count);
+			//trialLogger.LogBlockScreenStarted(true);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
 
-			yield return StartCoroutine(exp.WaitForActionButton());
+			//yield return StartCoroutine(exp.WaitForActionButton());
 
-			exp.uiController.blockCompletedUI.Stop();
-			trialLogger.LogBlockScreenStarted(false);
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, false);
+			//exp.uiController.blockCompletedUI.Stop();
+			//trialLogger.LogBlockScreenStarted(false);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, false);
 
 			exp.scoreController.Reset();
 
@@ -784,6 +797,7 @@ public class TrialController : MonoBehaviour {
     IEnumerator RunFRTrial()
     {
         exp.uiController.verbalFRWordText.text = "";
+        exp.uiController.verbalFRGroup.transform.parent.gameObject.SetActive(true);
         exp.uiController.verbalFRGroup.alpha = 1f;
         for (int i = 0; i < Config_CoinTask.verbalFRListLength; i++)
         {
@@ -813,6 +827,9 @@ public class TrialController : MonoBehaviour {
 
         //free recall
         yield return StartCoroutine(StartFreeRecall());
+
+        //increment trial number
+        currTrialNum++;
 
         yield return null;
     }
@@ -1112,12 +1129,17 @@ public class TrialController : MonoBehaviour {
         //verbal/ spatial object free recall
         else
         {
+            exp.audioController.ToggleAmbientSound(false);
             exp.uiController.freeRecallInstructionGroup.alpha = 1f;
             yield return StartCoroutine(exp.WaitForActionButton());
             exp.uiController.freeRecallInstructionGroup.alpha = 0f;
 
             yield return StartCoroutine(StartFreeRecall());
-            
+
+            currTrialNum++;
+
+            exp.audioController.ToggleAmbientSound(true);
+
         }
         exp.player.controls.ShouldLockControls = true;
 
@@ -1127,8 +1149,6 @@ public class TrialController : MonoBehaviour {
 #endif
 	}
 
-	int currTrialNum = 0;
-    int points = 0;
     IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<Config_CoinTask.MemoryState> rememberResponses){
 		trialLogger.LogFeedback(true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
@@ -1340,11 +1360,21 @@ public class TrialController : MonoBehaviour {
         //exp.uiController.freeRecallFixationGroup.alpha = 1f;
         exp.uiController.verbalFRWordText.text = "******";
         exp.uiController.verbalFRWordText.color = Color.white;
+        exp.uiController.verbalFRGroup.transform.parent.gameObject.SetActive(true);
         exp.uiController.verbalFRGroup.alpha = 1f;
         int currentTrialNumber = currTrialNum;
 
-        string fileName = currentTrialNumber.ToString();
+        string fileName = "";
+        if (exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialObjectFreeRecall)
+        {
 
+            fileName= currentTrialNumber.ToString() + "_spatial";
+        }
+
+        else if(exp.currentBlockType  == Experiment_CoinTask.BlockType.VerbalObjectFreeRecall)
+        {
+            fileName = currentTrialNumber.ToString() + "_verbal";
+        }
 
 
         //DO AUDIO RECORDING
@@ -1354,17 +1384,28 @@ public class TrialController : MonoBehaviour {
 
 
         //start recording
-        yield return StartCoroutine(exp.audioController.audioRecorder.Record(exp.sessionDirectory + "audio", fileName, Config_CoinTask.recallTime));
-
-        //play off beep
-        exp.audioController.audioRecorder.beepLow.Play();
+        if (exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialObjectFreeRecall)
+        {
+            yield return StartCoroutine(exp.audioController.audioRecorder.Record(exp.sessionDirectory + "audio", fileName, Config_CoinTask.recallTime/2));
+        }
+        else if (exp.currentBlockType == Experiment_CoinTask.BlockType.VerbalObjectFreeRecall)
+        {
+            yield return StartCoroutine(exp.audioController.audioRecorder.Record(exp.sessionDirectory + "audio", fileName, Config_CoinTask.recallTime));
+        }
+            //play off beep
+            exp.audioController.audioRecorder.beepLow.Play();
+        yield return new WaitForSeconds(0.6f);
         //exp.uiController.freeRecallFixationGroup.alpha = 0f;
 
         exp.uiController.verbalFRWordText.text = "";
         exp.uiController.verbalFRWordText.color = Color.white;
-        exp.uiController.verbalFRGroup.alpha = 0f;
+        //only make UI invisible if it is spatial object FR
+        if (exp.currentBlockType == Experiment_CoinTask.BlockType.SpatialObjectFreeRecall)
+        {
+            exp.uiController.verbalFRGroup.alpha = 0f;
+        }
 
-        yield return null;
+            yield return null;
     }
 
 	public IEnumerator WaitForPlayerToLookAt(GameObject treasureChest)
@@ -1377,9 +1418,10 @@ public class TrialController : MonoBehaviour {
 
         //wait for player to look at the gameobject
         Debug.Log("waiting to look at chest");
-		//yield return StartCoroutine(Experiment_CoinTask.Instance.player.controls.PlayerLookingAt(treasureChest));
+        //yield return StartCoroutine(Experiment_CoinTask.Instance.player.controls.PlayerLookingAt(treasureChest));
 
-		Debug.Log ("the player has looked at");
+        exp.trialController.chestCollided = true;
+        Debug.Log ("the player has looked at");
 		//unlock the avatar controls
 		//Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;
 

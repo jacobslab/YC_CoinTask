@@ -203,7 +203,7 @@ public class PlayerControls : MonoBehaviour{
         else
         {
             //we will randomly select time to travel to a chest
-            timeToTravel = Random.Range(0.75f, 1.5f);
+            timeToTravel = Random.Range(0.75f, 1f);
         }
 #if MRIVERSION
 		if(isChestAutoDrive){

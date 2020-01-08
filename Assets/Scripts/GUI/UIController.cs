@@ -78,7 +78,12 @@ public class UIController : MonoBehaviour {
 	public CanvasGroup FixationRestUI;
 	public CanvasGroup MRITimerUI;
 
-	void Start(){
+    private void Awake()
+    {
+        verbalFRGroup.transform.parent.gameObject.SetActive(false);
+    }
+
+    void Start(){
 		#if MRIVERSION
 		//turn off pause instruction in main version, as the player cannot pause!
 		if(!Config_CoinTask.isPractice){

@@ -23,6 +23,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 
     public enum BlockType
     {
+        Empty,
         SpatialLocationFreeRecall, //just treasure chest collection during navigation; first-person retrieval
         SpatialObjectFreeRecall, // standard-TH navigation;  verbal recall during retrieval phase
         VerbalObjectFreeRecall // standard verbal free recall; no spatial component

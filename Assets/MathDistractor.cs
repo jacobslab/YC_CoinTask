@@ -166,14 +166,24 @@ public class MathDistractor : MonoBehaviour
     public IEnumerator RunMathDistractor()
     {
         distractorGroup.alpha = 1f;
-        GenerateNewMathProblem();
-        while(!mathAnswered)
+        //GenerateNewMathProblem();
+        float timer = 0f;
+        while(timer < 20f)
         {
+
+            GenerateNewMathProblem();
+            while(!mathAnswered && timer < 20f)
+            {
+                timer += Time.deltaTime;
+                yield return 0;
+            }
+            if (mathAnswered)
+            {
+                yield return StartCoroutine(GiveMathFeedback());
+                timer += 1f; //add a second lost during the feedback coroutine
+            }
             yield return 0;
         }
-
-        yield return StartCoroutine(GiveMathFeedback());
-
         Debug.Log("turning off distractor group");
         distractorGroup.alpha = 0f;
 
