@@ -370,14 +370,14 @@ public class TrialController : MonoBehaviour {
 			//exp.player.controls.Pause(true);
 			exp.uiController.PauseUI.alpha = 1.0f;
 			Time.timeScale = 0.0f;
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.PAUSED, true);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.PAUSED, true);
 		} 
 		else {
 			Time.timeScale = 1.0f;
 			//exp.player.controls.Pause(false);
 			//exp.player.controls.ShouldLockControls = false;
 			exp.uiController.PauseUI.alpha = 0.0f;
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.PAUSED, false);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.PAUSED, false);
 		}
 	}
 
@@ -395,11 +395,6 @@ public class TrialController : MonoBehaviour {
 				exp.uiController.ConnectionUI.alpha = 0.0f;
 			}
 
-
-			while(!EyetrackerManager.finishedCalibration)
-			{	
-				yield return 0;
-			}
 #if (!(MRIVERSION))
 	#if (!UNITY_WEBPLAYER)
 	//		if(!ExperimentSettings_CoinTask.Instance.isWebBuild){
@@ -503,13 +498,13 @@ public class TrialController : MonoBehaviour {
 			StartCoroutine(exp.uiController.pirateController.PlayEncouragingPirate());
 			exp.uiController.blockCompletedUI.Play(i, exp.scoreController.score, ListOfTrialBlocks.Count);
 			trialLogger.LogBlockScreenStarted(true);
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, true);
 
 			yield return StartCoroutine(exp.WaitForActionButton());
 
 			exp.uiController.blockCompletedUI.Stop();
 			trialLogger.LogBlockScreenStarted(false);
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, false);
+			//TCPServer.Instance.SetState (TCP_Config.DefineStates.BLOCKSCREEN, false);
 
 			exp.scoreController.Reset();
 
@@ -522,15 +517,15 @@ public class TrialController : MonoBehaviour {
 		Debug.Log ("waiting for eeg connection");
 		exp.uiController.ConnectionUI.alpha = 1.0f;
 		if(Config_CoinTask.isSystem2){
-			while(!TCPServer.Instance.isConnected){
-				Debug.Log("Waiting for system 2 connection...");
-				yield return 0;
-			}
+			//while(!TCPServer.Instance.isConnected){
+			//	Debug.Log("Waiting for system 2 connection...");
+			//	yield return 0;
+			//}
 			exp.uiController.ConnectionText.text = "Press START on host PC...";
-			while (!TCPServer.Instance.canStartGame) {
-				Debug.Log ("Waiting for system 2 start command...");
-				yield return 0;
-			}
+			//while (!TCPServer.Instance.canStartGame) {
+			//	Debug.Log ("Waiting for system 2 start command...");
+			//	yield return 0;
+			//}
 		}
 		if (Config_CoinTask.isSyncbox){
 			while(!SyncboxControl.Instance.isUSBOpen){
@@ -671,7 +666,6 @@ public class TrialController : MonoBehaviour {
 		else {
 			trialLogger.Log (numRealTrials, currentTrial.DefaultObjectLocationsXZ.Count, currentTrial.SpecialObjectLocationsXZ.Count, ExperimentSettings_CoinTask.isOneByOneReveal, currentTrial.isStim);
 			numRealTrials++;
-			TCPServer.Instance.SendTrialNum(numRealTrials);
 			Debug.Log("Logged trial #: " + numRealTrials);
 		}
 
@@ -707,12 +701,12 @@ public class TrialController : MonoBehaviour {
 
 		//START NAVIGATION --> TODO: make this its own function. or a delegate. ...clean it up.
 		trialLogger.LogTrialNavigation (true);
-		if (currentTrial.isStim) {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.STIM_NAVIGATION, true);
-		} 
-		else {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, true);
-		}
+		//if (currentTrial.isStim) {
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.STIM_NAVIGATION, true);
+		//} 
+		//else {
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, true);
+		//}
 
 		exp.uiController.goText.Play ();
 
@@ -749,12 +743,12 @@ public class TrialController : MonoBehaviour {
 		//bring player to tower
 		//exp.player.TurnOnVisuals (false);
 		trialLogger.LogTrialNavigation (false);
-		if (currentTrial.isStim) {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.STIM_NAVIGATION, false);
-		} 
-		else {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, false);
-		}
+		//if (currentTrial.isStim) {
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.STIM_NAVIGATION, false);
+		//} 
+		//else {
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, false);
+		//}
 		trialLogger.LogTransportationToTowerEvent (true);
 		currentDefaultObject = null; //set to null so that arrows stop showing up...
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, false));//PlayerControls.toTowerTime) );
@@ -762,10 +756,8 @@ public class TrialController : MonoBehaviour {
 
 		//RUN DISTRACTOR GAME
 		trialLogger.LogDistractorGame (true);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, true);
 		yield return StartCoroutine(exp.boxGameController.RunGame());
 		trialLogger.LogDistractorGame (false);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, false);
 
 		//jitter before the first object is shown
 		yield return StartCoroutine(exp.WaitForJitter(Config_CoinTask.randomJitterMin, Config_CoinTask.randomJitterMax));
@@ -788,17 +780,17 @@ public class TrialController : MonoBehaviour {
 			string specialItemDisplayName = specialSpawnable.GetDisplayName ();
 
 			//set TCP state true
-			switch(randomOrderIndex){
-			case 0:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_1, true);
-				break;
-			case 1:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_2, true);
-				break;
-			case 2:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, true);
-				break;
-			}
+			//switch(randomOrderIndex){
+			//case 0:
+			//	TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_1, true);
+			//	break;
+			//case 1:
+			//	TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_2, true);
+			//	break;
+			//case 2:
+			//	TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, true);
+			//	break;
+			//}
 
 			//show nice UI, log special object
 			trialLogger.LogObjectToRecall(specialSpawnable);
@@ -839,20 +831,20 @@ public class TrialController : MonoBehaviour {
 			exp.environmentController.myPositionSelector.Reset();
 			exp.environmentController.myPositionSelector.EnableSelection (true);
 
-			switch(randomOrderIndex){
-			case 0:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_1, false);
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, true);
-				break;
-			case 1:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_2, false);
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, true);
-				break;
-			case 2:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, false);
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, true);
-				break;
-			}
+			//switch(randomOrderIndex){
+			//case 0:
+			//	TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_1, false);
+			//	TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, true);
+			//	break;
+			//case 1:
+			//	TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_2, false);
+			//	TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, true);
+			//	break;
+			//case 2:
+			//	TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCUE_3, false);
+			//	TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, true);
+			//	break;
+			//}
 			trialLogger.LogRecallChoiceStarted(true);
 
 			exp.uiController.doYouRememberUI.Stop();
@@ -896,17 +888,17 @@ public class TrialController : MonoBehaviour {
 			exp.environmentController.myPositionSelector.EnableSelection (false);
 			trialLogger.LogRecallChoiceStarted(false);
 
-			switch(randomOrderIndex){
-			case 0:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, false);
-				break;
-			case 1:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, false);
-				break;
-			case 2:
-				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, false);
-				break;
-			}
+			//switch(randomOrderIndex){
+			//case 0:
+			//	TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, false);
+			//	break;
+			//case 1:
+			//	TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_2, false);
+			//	break;
+			//case 2:
+			//	TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_3, false);
+			//	break;
+			//}
 
 
 			trialLogger.LogInstructionEvent();
@@ -931,7 +923,7 @@ public class TrialController : MonoBehaviour {
 	int currTrialNum = 0;
 	IEnumerator ShowFeedback(List<int> specialObjectOrder, List<Vector3> chosenPositions, List<Config_CoinTask.MemoryState> rememberResponses){
 		trialLogger.LogFeedback(true);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
+		//TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, true);
 
 		memoryScore = 0;
 
@@ -1034,7 +1026,7 @@ public class TrialController : MonoBehaviour {
 
 		trialLogger.LogInstructionEvent();
 		trialLogger.LogScoreScreenStarted(true);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
+		//TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, true);
 		exp.uiController.scoreRecapUI.Play(currTrialNum, timeBonus + memoryScore, Config_CoinTask.GetTotalNumTrials(), objectScores, specialObjectListRecallOrder, timeBonus, trialTimer.GetSecondsFloat());
 
 #if MRIVERSION
@@ -1045,7 +1037,7 @@ public class TrialController : MonoBehaviour {
 
 		exp.uiController.scoreRecapUI.Stop ();
 		trialLogger.LogScoreScreenStarted(false);
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);
+		//TCPServer.Instance.SetState (TCP_Config.DefineStates.SCORESCREEN, false);
 
 
 		//delete all indicators & special objects
@@ -1058,7 +1050,7 @@ public class TrialController : MonoBehaviour {
 			Debug.Log ("initiating reconnection");
 			yield return StartCoroutine (InitiateEyetrackerReconnection ());
 		}
-		TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, false);
+		//TCPServer.Instance.SetState (TCP_Config.DefineStates.FEEDBACK, false);
 
 		yield return 0;
 	}

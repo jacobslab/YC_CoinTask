@@ -97,7 +97,7 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 
 	void OnApplicationQuit(){
 		Debug.Log("On Application Quit!");
-#if !UNITY_WEBPLAYER
+#if !DEMO
 		SubjectReaderWriter.Instance.RecordSubjects();
 #endif
 	}

@@ -96,7 +96,8 @@ public class ScoreController : MonoBehaviour {
 	void AddToScore(int amountToAdd){
 		amountLeftToAdd += amountToAdd;
 		score += amountToAdd;
-#if !UNITY_WEBPLAYER
+#if !DEMO
+
 		ExperimentSettings_CoinTask.currentSubject.score = score;
 #endif
 	}

@@ -95,8 +95,11 @@ public class Experiment_CoinTask : MonoBehaviour {
 		cameraController.SetInGame(); //don't use oculus for replay mode
 
 		InitInstructionsController ();
+#if !DEMO
 		ExperimentSettings_CoinTask.isLogging = false;
+
 			InitLogging();
+#endif
 //		else if(ExperimentSettings_CoinTask.isReplay) {
 //			currInstructions.TurnOffInstructions();
 //		}

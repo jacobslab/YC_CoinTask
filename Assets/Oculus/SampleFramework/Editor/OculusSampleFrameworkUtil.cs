@@ -23,9 +23,11 @@ public class OculusSampleFrameworkUtil
   static OculusSampleFrameworkUtil()
   {
 #if UNITY_2017_2_OR_NEWER
+#if !DEMO
     EditorApplication.playModeStateChanged += HandlePlayModeState;
+#endif
 #else
-    EditorApplication.playmodeStateChanged += () =>
+        EditorApplication.playmodeStateChanged += () =>
     {
       if (EditorApplication.isPlaying)
       {
@@ -36,13 +38,15 @@ public class OculusSampleFrameworkUtil
 	}
 
 #if UNITY_2017_2_OR_NEWER
-	private static void HandlePlayModeState(PlayModeStateChange state)
+#if !DEMO
+    private static void HandlePlayModeState(PlayModeStateChange state)
   {
     if (state == PlayModeStateChange.EnteredPlayMode)
     {
       OVRPlugin.SendEvent("load", OVRPlugin.wrapperVersion.ToString(), "sample_framework");
     }
   }
+#endif
 #endif
 }
 

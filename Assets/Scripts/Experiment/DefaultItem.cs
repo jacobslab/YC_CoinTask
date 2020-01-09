@@ -30,20 +30,20 @@ public class DefaultItem : MonoBehaviour {
 	}
 
 	void InitTreasureState(){
-		switch (exp.trialController.NumDefaultObjectsCollected) {
-		case 0:
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_1, true);
-			break;
-		case 1:
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_2, true);
-			break;
-		case 2:
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_3, true);
-			break;
-		case 3:
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_4, true);
-			break;
-		}
+		//switch (exp.trialController.NumDefaultObjectsCollected) {
+		//case 0:
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_1, true);
+		//	break;
+		//case 1:
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_2, true);
+		//	break;
+		//case 2:
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_3, true);
+		//	break;
+		//case 3:
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_4, true);
+		//	break;
+		//}
 	}
 
 	// Use this for initialization
@@ -166,11 +166,11 @@ public class DefaultItem : MonoBehaviour {
 	//open. most likely a treasure chest. could also be something like a giftbox.
 	public IEnumerator Open(GameObject opener){
 
-		if (GetIsSpecial ()) {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_SPECIAL, true);
-		} else {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_EMPTY, true);
-		}
+		//if (GetIsSpecial ()) {
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_SPECIAL, true);
+		//} else {
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_EMPTY, true);
+		//}
 
 		float distOpenerToPivotA = (pivotA.position - opener.transform.position).magnitude;
 		float distOpenerToPivotB = (pivotB.position - opener.transform.position).magnitude;
@@ -227,24 +227,24 @@ public class DefaultItem : MonoBehaviour {
 	}
 
 	void EndTreasureState(){
-		if (GetIsSpecial ()) {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_SPECIAL, false);
-		} else {
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_EMPTY, false);
-		}
-		switch (exp.trialController.NumDefaultObjectsCollected) {
-		case 1:
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_1, false);
-			break;
-		case 2:
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_2, false);
-			break;
-		case 3:
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_3, false);
-			break;
-		case 4:
-			TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_4, false);
-			break;
-		}
+		//if (GetIsSpecial ()) {
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_SPECIAL, false);
+		//} else {
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_OPEN_EMPTY, false);
+		//}
+		//switch (exp.trialController.NumDefaultObjectsCollected) {
+		//case 1:
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_1, false);
+		//	break;
+		//case 2:
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_2, false);
+		//	break;
+		//case 3:
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_3, false);
+		//	break;
+		//case 4:
+		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.TREASURE_4, false);
+		//	break;
+		//}
 	}
 }
