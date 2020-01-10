@@ -62,7 +62,12 @@ public class PlayerControls : MonoBehaviour{
 	void GetInput()
 	{
 		//VERTICAL
+#if !DEMO
 		float verticalAxisInput = Input.GetAxis ("Vertical");
+#else
+		float verticalAxisInput = Input.GetAxis("Axis2D.PrimaryTouchpad");
+#endif
+
 		if ( Mathf.Abs(verticalAxisInput) > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
 			Vector3 movementDir = movementTransform.forward;
 			float angleDifference = 0;
@@ -82,7 +87,11 @@ public class PlayerControls : MonoBehaviour{
 		}
 
 		//HORIZONTAL
+#if !DEMO
 		float horizontalAxisInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
+#else
+		float horizontalAxisInput = Input.GetAxis("Axis2D.PrimaryTouchpad");
+#endif
 		if (Mathf.Abs (horizontalAxisInput) > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
 
 			float percent = horizontalAxisInput / 1.0f;
@@ -190,11 +199,11 @@ public class PlayerControls : MonoBehaviour{
 
 
 		float timeToTravel = GetTimeToTravel (travelDistance);//travelDistance / smoothMoveSpeed;
-		#if MRIVERSION
+#if MRIVERSION
 		if(isChestAutoDrive){
 			timeToTravel *= Config_CoinTask.MRIAutoDriveTimeMult;
 		}
-		#endif
+#endif
 
 		float tElapsed = 0.0f;
 		//float epsilon = 0.01f;

@@ -430,21 +430,23 @@ public class TrialController : MonoBehaviour {
 				yield return StartCoroutine( WaitForMRIFixationRest());
 			}
 #else
+#if !DEMO
 			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions1, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 1.0f;
 			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions2, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 			scoreInstructionsGroup.alpha = 0.0f;
 			yield return StartCoroutine (exp.ShowSingleInstruction (initialInstructions3, true, true, false, Config_CoinTask.minInitialInstructionsTime));
 #endif
+#endif
 
-			#if MRIVERSION
+#if MRIVERSION
 			if(Config_CoinTask.isPractice){
 				yield return StartCoroutine(RunPracticeTrials()); //if MRI practice, ONLY run the practice trials
 			}
 			else{
 				yield return StartCoroutine(RunTrials());
 			}
-			#else
+#else
 			yield return StartCoroutine(RunPracticeTrials());
 			yield return StartCoroutine(RunTrials());
 			#endif	
@@ -694,7 +696,7 @@ public class TrialController : MonoBehaviour {
 		if(numRealTrials > 1 || trial.avatarStartPos != exp.player.controls.startPositionTransform1.position){ //note: if numRealTrials > 1, not a practice trial.
 			trialLogger.LogInstructionEvent ();
 
-			#if !(MRIVERSION)
+			#if !(DEMO)
 			yield return StartCoroutine (exp.ShowSingleInstruction (exp.currInstructions.pressToStart, true, true, false, Config_CoinTask.minDefaultInstructionTime));
 			#endif
 		}

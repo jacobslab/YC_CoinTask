@@ -267,11 +267,12 @@ public class Experiment_CoinTask : MonoBehaviour {
 	
 	public IEnumerator WaitForActionButton(){
 		bool hasPressedButton = false;
-		while(Input.GetAxis(Config_CoinTask.ActionButtonName) != 0f){
+		while(Input.GetAxis(Config_CoinTask.ActionButtonName) != 0f || Input.GetAxis("Oculus_CrossPlatform_PrimaryIndexTrigger")!=0f){
 			yield return 0;
 		}
 		while(!hasPressedButton){
-			if(Input.GetAxis(Config_CoinTask.ActionButtonName) == 1.0f){
+			if(Input.GetAxis(Config_CoinTask.ActionButtonName) == 1.0f || Input.GetAxis("Oculus_CrossPlatform_PrimaryIndexTrigger")==1.0f)
+			{
 				hasPressedButton = true;
 			}
 			yield return 0;
