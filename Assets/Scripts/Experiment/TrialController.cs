@@ -900,7 +900,6 @@ public class TrialController : MonoBehaviour {
 			//	break;
 			//}
 
-
 			trialLogger.LogInstructionEvent();
 
 			if(i <= exp.objectController.CurrentTrialSpecialObjects.Count - 1){
@@ -916,7 +915,9 @@ public class TrialController : MonoBehaviour {
 
 		//increment subject's trial count
 #if !UNITY_WEBPLAYER
+#if !DEMO
 		ExperimentSettings_CoinTask.currentSubject.IncrementTrial ();
+#endif
 #endif
 	}
 

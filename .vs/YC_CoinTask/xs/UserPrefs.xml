@@ -1,12 +1,12 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Oculus/SampleFramework/Editor/OculusSampleFrameworkUtil.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Experiment/TrialController.cs">
     <Files>
-      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="214" Column="3" />
-      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="29" Column="38" />
+      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="1021" Column="36" />
+      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" />
       <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" />
-      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" Line="98" Column="6" />
+      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" />
       <File FileName="Assets/Scripts/Logging/ParticleLogTrack.cs" />
-      <File FileName="Assets/Scripts/VideoRecording/Replay.cs" Line="788" Column="27" />
+      <File FileName="Assets/Scripts/VideoRecording/Replay.cs" />
       <File FileName="Assets/Scripts/Eyetracker/EyetrackerManager.cs" />
       <File FileName="Assets/Scripts/Experiment/SceneController.cs" />
       <File FileName="Assets/Scripts/Environment/ObjectController.cs" />
@@ -14,7 +14,7 @@
       <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" />
       <File FileName="Assets/Scripts/Experiment/PlayerControls.cs" />
       <File FileName="Assets/Scripts/Logging/PositionSelectorLogTrack.cs" />
-      <File FileName="Assets/Scripts/Experiment/ScoreController.cs" />
+      <File FileName="Assets/Scripts/Experiment/ScoreController.cs" Line="102" Column="7" />
       <File FileName="Assets/Scripts/Experiment/InstructionsController.cs" />
       <File FileName="Assets/Scripts/Environment/EnvironmentPositionSelector.cs" />
       <File FileName="Assets/Scripts/Logging/TreasureChestLogTrack.cs" />
@@ -26,7 +26,7 @@
       <File FileName="Assets/Scripts/Logging/Logger_Threading.cs" />
       <File FileName="Assets/Scripts/CommandExecution.cs" />
       <File FileName="Assets/Scripts/ThreadedJob.cs" />
-      <File FileName="Assets/Oculus/SampleFramework/Editor/OculusSampleFrameworkUtil.cs" Line="43" Column="1" />
+      <File FileName="Assets/Oculus/SampleFramework/Editor/OculusSampleFrameworkUtil.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -35,15 +35,15 @@
             <Node name="Assets" expanded="True">
               <Node name="Oculus" expanded="True">
                 <Node name="SampleFramework" expanded="True">
-                  <Node name="Editor" expanded="True">
-                    <Node name="OculusSampleFrameworkUtil.cs" selected="True" />
-                  </Node>
+                  <Node name="Editor" expanded="True" />
                 </Node>
               </Node>
               <Node name="Scripts" expanded="True">
                 <Node name="Audio" expanded="True" />
                 <Node name="Environment" expanded="True" />
-                <Node name="Experiment" expanded="True" />
+                <Node name="Experiment" expanded="True">
+                  <Node name="TrialController.cs" selected="True" />
+                </Node>
                 <Node name="GUI" expanded="True" />
                 <Node name="Logging" expanded="True" />
                 <Node name="VideoRecording" expanded="True" />
@@ -56,7 +56,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="d8e7fa06-ac21-4fe4-a96e-12cbd1e58c9b" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="b80c5990-089b-4dbd-8a25-f266007984e7" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
