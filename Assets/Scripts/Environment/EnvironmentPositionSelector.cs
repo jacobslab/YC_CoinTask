@@ -10,6 +10,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	public GameObject PositionSelector;
 	public GameObject PositionSelectorVisuals;
 	public GameObject CorrectPositionIndicator;
+	public GameObject ObjectRecallIndicator;
 
 	public PositionSelectorLogTrack logTrack;
 
@@ -52,6 +53,12 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		Vector3 newStartPos = new Vector3 (envCenter.x, PositionSelector.transform.position.y, envCenter.z);
 
 		return newStartPos;
+	}
+
+
+	public void MoveToPosition(Vector3 destinationPosition)
+	{
+		ObjectRecallIndicator.transform.position = new Vector3(destinationPosition.x, PositionSelectorVisuals.transform.position.y, destinationPosition.z);
 	}
 
 	void GetMovementInput(){
@@ -119,6 +126,20 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 
 
+	public bool GetRadiusOverlap(Vector3 correctPosition)
+	{
+		float distance = (correctPosition - PositionSelector.transform.position).magnitude;
+		float positionSelectorRadius = PositionSelectorVisuals.transform.localScale.x / 2.0f;
+		if (distance < positionSelectorRadius)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+
+
 	public bool GetRadiusOverlap(Vector3 correctPosition,List<Vector3> chosenPositions){
         for (int i = 0; i < chosenPositions.Count; i++)
         {
@@ -151,10 +172,21 @@ public class EnvironmentPositionSelector : MonoBehaviour {
         return false;
     }
 
-    public Vector3 GetSelectorPosition(){
+
+	public void EnableVisibility(bool shouldBeVisible)
+	{
+		EnableObjectRecallIndicator(shouldBeVisible);
+	}
+
+
+	public Vector3 GetSelectorPosition(){
 		return PositionSelector.transform.position;
 	}
-	
+
+	void EnableObjectRecallIndicator(bool shouldBeVisible)
+	{
+		ObjectRecallIndicator.GetComponent<VisibilityToggler>().TurnVisible(shouldBeVisible);
+	}
 	public void EnableSelection(bool shouldEnable){
 		shouldSelect = shouldEnable;
 		EnableSelectionIndicator (shouldEnable);

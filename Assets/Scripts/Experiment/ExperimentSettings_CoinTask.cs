@@ -77,6 +77,17 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	public InputField manualTrialPathInputField;
 
 
+    public enum RetrievalType
+    {
+        TH1,
+        THR,
+        FreeRecall,
+        DirectLocationRecall
+
+    }
+
+	public RetrievalType retrievalType = RetrievalType.TH1;
+
 
 	//SINGLETON
 	private static ExperimentSettings_CoinTask _instance;

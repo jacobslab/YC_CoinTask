@@ -78,7 +78,12 @@ public class UIController : MonoBehaviour {
 	public CanvasGroup FixationRestUI;
 	public CanvasGroup MRITimerUI;
 
-    private void Awake()
+	//retrieval type
+	public CanvasGroup retrievalTypePanel;
+	public Text retrievalTypeText;
+
+
+	private void Awake()
     {
         verbalFRGroup.transform.parent.gameObject.SetActive(false);
     }

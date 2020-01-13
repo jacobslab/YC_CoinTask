@@ -351,6 +351,20 @@ public class TrialLogTrack : LogTrack {
 		}
 	}
 
+
+
+	public void LogWaitForISIBegan(float interTime)
+	{
+		subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "ISI_STARTED" + separator + interTime);
+		Debug.Log("ISI LOGGED: " + interTime);
+	}
+
+	public void LogWaitForISIEnded(float interTime)
+	{
+		subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), gameObject.name + separator + "ISI_ENDED" + separator + interTime);
+		Debug.Log("ISI LOGGED: " + interTime);
+	}
+
 	public void LogScoreScreenStarted(bool isStarting){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			if(isStarting){

@@ -16,6 +16,9 @@ public class ObjectController : MonoBehaviour {
     public GameObject FlagMarkerObject;
 	public List<GameObject> CurrentTrialSpecialObjects;
 
+    //for THR
+	public List<GameObject> RecallObjectList;
+
 
 	//experiment singleton
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
@@ -177,7 +180,7 @@ public class ObjectController : MonoBehaviour {
 
 			float randomRot = GenerateRandomRotationY();
 			newObject.transform.RotateAround(newObject.transform.position, Vector3.up, randomRot);
-
+			Debug.Log("ADDING to special trial objects list " + newObject.ToString());
 			CurrentTrialSpecialObjects.Add(newObject);
 
 			//make object face the player -- MUST MAKE SURE OBJECT FACES Z-AXIS
