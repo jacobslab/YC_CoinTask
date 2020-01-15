@@ -1,33 +1,37 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Experiment/TrialController.cs">
     <Files>
-      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" Line="72" Column="38" IsPinned="True" />
-      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="844" Column="51" />
-      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="77" Column="1" />
+      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" Line="260" Column="24" IsPinned="True" />
+      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="998" Column="40" IsPinned="True" />
+      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="125" Column="7" />
       <File FileName="Assets/Scripts/Logging/ParticleLogTrack.cs" />
       <File FileName="Assets/Scripts/VideoRecording/Replay.cs" />
       <File FileName="Assets/Scripts/Eyetracker/EyetrackerManager.cs" />
       <File FileName="Assets/Scripts/Experiment/SceneController.cs" />
-      <File FileName="Assets/Scripts/Environment/ObjectController.cs" Line="340" Column="37" />
+      <File FileName="Assets/Scripts/Environment/ObjectController.cs" />
       <File FileName="Assets/Scripts/Experiment/DefaultItem.cs" />
-      <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" Line="366" Column="3" />
-      <File FileName="Assets/Scripts/Experiment/PlayerControls.cs" Line="35" Column="4" />
+      <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" />
+      <File FileName="Assets/Scripts/Experiment/PlayerControls.cs" Line="206" Column="54" />
       <File FileName="Assets/Scripts/Logging/PositionSelectorLogTrack.cs" />
-      <File FileName="Assets/Scripts/Experiment/ScoreController.cs" Line="169" Column="23" />
-      <File FileName="Assets/Scripts/Experiment/InstructionsController.cs" Line="9" Column="43" />
-      <File FileName="Assets/Scripts/Environment/EnvironmentPositionSelector.cs" Line="62" Column="3" />
+      <File FileName="Assets/Scripts/Experiment/ScoreController.cs" />
+      <File FileName="Assets/Scripts/Experiment/InstructionsController.cs" Line="72" Column="80" />
+      <File FileName="Assets/Scripts/Environment/EnvironmentPositionSelector.cs" Line="40" Column="21" />
       <File FileName="Assets/Scripts/Logging/TreasureChestLogTrack.cs" />
       <File FileName="Assets/Scripts/GUI/ScoreRecapUI.cs" />
       <File FileName="Assets/Scripts/Logging/AudioLogTrack.cs" />
-      <File FileName="Assets/Scripts/GUI/UIController.cs" Line="83" Column="32" />
+      <File FileName="Assets/Scripts/GUI/UIController.cs" />
       <File FileName="Assets/Scripts/Audio/AudioController.cs" />
       <File FileName="Assets/Scripts/Environment/SpawnableObject.cs" />
       <File FileName="Assets/Scripts/Logging/Logger_Threading.cs" />
-      <File FileName="Assets/Scripts/CommandExecution.cs" />
+      <File FileName="Assets/Scripts/CommandExecution.cs" Line="20" Column="4" />
       <File FileName="Assets/Scripts/ThreadedJob.cs" />
       <File FileName="Assets/Scripts/Experiment/UsefulFunctions.cs" />
-      <File FileName="Assets/Scripts/Environment/EnvironmentController.cs" Line="15" Column="20" />
-      <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" Line="80" Column="17" />
+      <File FileName="Assets/Scripts/Environment/EnvironmentController.cs" Line="15" Column="29" />
+      <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" Line="89" Column="8" />
+      <File FileName="Assets/WordListGenerator.cs" Line="5" Column="22" />
+      <File FileName="Assets/Scripts/Pocketsphinx/SphinxTest.cs" Line="61" Column="19" />
+      <File FileName="Assets/SphinxController.cs" Line="12" Column="29" />
+      <File FileName="Assets/Scripts/EEG Communication/TCP_Config.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -36,12 +40,14 @@
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
                 <Node name="Audio" expanded="True" />
+                <Node name="EEG Communication" expanded="True" />
                 <Node name="Environment" expanded="True" />
                 <Node name="Experiment" expanded="True">
-                  <Node name="ExperimentSettings_CoinTask.cs" selected="True" />
+                  <Node name="TrialController.cs" selected="True" />
                 </Node>
                 <Node name="GUI" expanded="True" />
                 <Node name="Logging" expanded="True" />
+                <Node name="Pocketsphinx" expanded="True" />
                 <Node name="VideoRecording" expanded="True" />
               </Node>
             </Node>
@@ -52,7 +58,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="c7d2afe3-29fc-4847-b72a-99adfa43660a" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="6f855c1f-21f3-4355-8379-d6b2f3aed91f" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

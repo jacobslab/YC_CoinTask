@@ -24,30 +24,30 @@ public class SphinxController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-     if(Input.GetKeyDown(KeyCode.R))
-        {
-            sphinxTest.RunAudioCheck(0, 0, "here", "20");
-        }
+     //if(Input.GetKeyDown(KeyCode.R))
+     //   {
+     //       sphinxTest.RunAudioCheck(0, 0, "here", "20");
+     //   }
 
-        counter++;
-        counterText.text = counter.ToString();
+     //   counter++;
+     //   counterText.text = counter.ToString();
 
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            result = sphinxTest.CheckAudioResponse();
-            UnityEngine.Debug.Log("result is  " + result.ToString());
-            if (result == 1)
-            {
-                resText.text = "SPHINX";
-                resText.color = Color.green;
-            }
-            else
-            {
-                resText.text = "NOT SPHINX";
-                resText.color = Color.red;
-            }
+     //   if (Input.GetKeyDown(KeyCode.C))
+     //   {
+     //       result = sphinxTest.CheckAudioResponse();
+     //       UnityEngine.Debug.Log("result is  " + result.ToString());
+     //       if (result == 1)
+     //       {
+     //           resText.text = "SPHINX";
+     //           resText.color = Color.green;
+     //       }
+     //       else
+     //       {
+     //           resText.text = "NOT SPHINX";
+     //           resText.color = Color.red;
+     //       }
 
-        }
+     //   }
         //if (Input.GetKeyDown(KeyCode.B))
         //{
         //    sphinxTest.BreakSphinx();
