@@ -41,7 +41,7 @@ public class EyetrackerManager : MonoBehaviour {
 	void Awake()
 	{
 		//filepath = Application.dataPath;
-		filepath = @"C:\Users\" + Environment.UserName + @"\AppData\Local\TobiiProEyeTrackerManager\app-1.6.0";
+		filepath = @"C:\Users\" + Environment.UserName + @"\AppData\Local\TobiiProEyeTrackerManager\app-1.11.0";
 		Debug.Log("APP DATA path is: " + filepath);
 		var trackers = EyeTrackingOperations.FindAllEyeTrackers();
 		eyeLogTrack = GetComponent<EyetrackerLogTrack>();

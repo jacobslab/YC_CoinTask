@@ -120,6 +120,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 	void InitLogging(){
         if (!ExperimentSettings_CoinTask.isReplay)
         {
+			Debug.Log("logging path " + ExperimentSettings_CoinTask.defaultLoggingPath);
             string subjectDirectory = ExperimentSettings_CoinTask.defaultLoggingPath + ExperimentSettings_CoinTask.currentSubject.name + "/";
             sessionDirectory = subjectDirectory + "session_0" + "/";
 
