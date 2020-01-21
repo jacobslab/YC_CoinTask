@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-
+using UnityEngine.XR;
 public class PlayerControls : MonoBehaviour{
 
 	Experiment_CoinTask exp  { get { return Experiment_CoinTask.Instance; } }
@@ -66,9 +66,11 @@ public class PlayerControls : MonoBehaviour{
 		float verticalAxisInput = Input.GetAxis ("Vertical");
 #else
 		float verticalAxisInput = Input.GetAxis("Axis2D.PrimaryTouchpad");
+		bool buttonInput = Input.GetButton("OculusTrigger");
 #endif
-
-		if ( Mathf.Abs(verticalAxisInput) > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
+        if(buttonInput)
+		{ 
+		//if ( Mathf.Abs(verticalAxisInput) > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
 			Vector3 movementDir = movementTransform.forward;
 			float angleDifference = 0;
 			if(wasNotMoving){
@@ -79,7 +81,8 @@ public class PlayerControls : MonoBehaviour{
 				movementDir = movementTransform.forward;
 			}
 			wasNotMoving = false;
-			GetComponent<Rigidbody>().velocity = movementDir*verticalAxisInput*Config_CoinTask.driveSpeed; //since we are setting velocity based on input, no need for time.delta time component
+			GetComponent<Rigidbody>().velocity = movementDir * 1f * Config_CoinTask.driveSpeed;
+			//GetComponent<Rigidbody>().velocity = movementDir*verticalAxisInput*Config_CoinTask.driveSpeed; //since we are setting velocity based on input, no need for time.delta time component
 		}
 		else{
 			wasNotMoving = true;
@@ -90,7 +93,8 @@ public class PlayerControls : MonoBehaviour{
 #if !DEMO
 		float horizontalAxisInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
 #else
-		float horizontalAxisInput = Input.GetAxis("Axis2D.PrimaryTouchpad");
+		//float horizontalAxisInput = Input.GetAxis("Axis2D.PrimaryTouchpad");
+		float horizontalAxisInput = 0f;
 #endif
 		if (Mathf.Abs (horizontalAxisInput) > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
 
