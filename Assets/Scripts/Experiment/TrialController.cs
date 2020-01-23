@@ -139,11 +139,12 @@ public class TrialController : MonoBehaviour {
 			}
 
 			//generate all trials, two & three object, including counter-balanced trials
-			List<Trial> ListOfTwoItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numTwoItemTrials, 2, false, false);
-			List<Trial> ListOfThreeItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numThreeItemTrials, 3, false, false);
+			List<Trial> ListOfTwoItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numTwoItemTrials, 4, false, false);
+			List<Trial> ListOfThreeItemTrials = GenerateTrialsWithCounterTrials (Config_CoinTask.numThreeItemTrials, 4, false, false);
 
 			//generate blocks from trials
 			int numTrialBlocks = numTestTrials / Config_CoinTask.numTrialsPerBlock;
+			Debug.Log("num trial blocks " + numTrialBlocks.ToString());
 			GenerateTrialBlocks (ListOfTwoItemTrials, ListOfThreeItemTrials, numTrialBlocks, Config_CoinTask.numTrialsPerBlock);
 		}
 	}
@@ -434,11 +435,11 @@ public class TrialController : MonoBehaviour {
             exp.audioController.ToggleAmbientSound(false);
 
             //perform mic test
-            trialLogger.LogMicTestEvent(true);
-            micTest.gameObject.SetActive(true);
-            yield return StartCoroutine(micTest.RunMicTest());
-            micTest.gameObject.SetActive(false);
-            trialLogger.LogMicTestEvent(false);
+            //trialLogger.LogMicTestEvent(true);
+            //micTest.gameObject.SetActive(true);
+            //yield return StartCoroutine(micTest.RunMicTest());
+            //micTest.gameObject.SetActive(false);
+            //trialLogger.LogMicTestEvent(false);
 
             trialLogger.LogVideoEvent(true);
 				yield return StartCoroutine(exp.instrVideoPlayer.Play());

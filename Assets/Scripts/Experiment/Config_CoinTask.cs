@@ -101,8 +101,8 @@ public class Config_CoinTask : MonoBehaviour {
 	public static int numTrialsPract = 1;
 	public static bool isPractice = false;
 	public static int numSpecialObjectsPract = 2;
-	public static int numTwoItemTrials = 20;
-	public static int numThreeItemTrials = 20;
+	public static int numTwoItemTrials = 8;
+	public static int numThreeItemTrials = 8;
 	public static int numTrialsPerBlock = 8;
 
 
