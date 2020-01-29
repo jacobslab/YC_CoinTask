@@ -999,16 +999,16 @@ public class TrialController : MonoBehaviour {
         switch(ExperimentSettings_CoinTask.Instance.retrievalType)
         {
 			case ExperimentSettings_CoinTask.RetrievalType.TH1:
-				retrievalInstructionText = "Cued Spatial Recall (TH1) will follow." + "\n Press(X) to Continue.";
+				retrievalInstructionText = "You will now be asked to remember the location of an object \n you encountered." + "\n Press(X) to Continue.";
 				break;
 			case ExperimentSettings_CoinTask.RetrievalType.THR:
-				retrievalInstructionText = "Cued Verbal Recall (THR) will follow "  + "\n Press(X) to Continue.";
+				retrievalInstructionText = "You will now be shown a location.\n Try to remember the object you encountered in that location \n and speak the object name into the microphone."  + "\n Press(X) to Continue.";
 				break;
 			case ExperimentSettings_CoinTask.RetrievalType.FreeRecall:
-				retrievalInstructionText = "Uncued Verbal Free Recall will follow." + " \n Press(X) to Continue.";
+				retrievalInstructionText = "You will now be asked to recall the names of objects you encountered." + " \n Press(X) to Continue.";
 				break;
 			case ExperimentSettings_CoinTask.RetrievalType.DirectLocationRecall:
-				retrievalInstructionText = "Uncued Spatial Free Recall will follow. " + " \n Press(X) to Continue.";
+				retrievalInstructionText = "You will now be asked to remember all the locations where you encountered an object. " + " \n Press(X) to Continue.";
 				break;
 		}
 
@@ -1345,7 +1345,7 @@ public class TrialController : MonoBehaviour {
 			//drop flag
 			yield return StartCoroutine(exp.objectController.SpawnFlagAtLocation(exp.player.transform));
 
-
+			trialLogger.LogSpatialResponse(exp.player.transform);
 			//disable position selection
 			//exp.environmentController.myPositionSelector.EnableSelection (false);
 			trialLogger.LogRecallChoiceStarted(false);

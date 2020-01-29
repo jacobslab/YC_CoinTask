@@ -292,6 +292,17 @@ public class TrialLogTrack : LogTrack {
 		}
 	}
 
+    //spatial location recall
+
+    public void LogSpatialResponse(Transform playerTransform)
+    {
+        if(ExperimentSettings_CoinTask.isLogging)
+        {
+			Vector3 position = playerTransform.position;
+			subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "Trial Event" + separator + "SPATIAL_RESPONSE" + separator + position.x.ToString() + separator + position.y.ToString() + separator + position.z.ToString());
+        }
+    }
+
 	public void LogRecallChoiceStarted(bool isStarting){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			if(isStarting){
