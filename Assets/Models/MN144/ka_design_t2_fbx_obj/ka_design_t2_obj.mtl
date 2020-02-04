@@ -1,0 +1,25 @@
+# Max2Mtl Version 4.0 Mar 10th, 2001
+#
+# Multi/Sub ka_design_t2 (2) to come 
+#
+newmtl ka_design_t2_mtl_1
+Ka  0.5 0.5 0.5
+Kd  0.5 0.5 0.5
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+map_Kd dcmap_ka_design_t2_1.jpg
+bump dcmap_ka_design_t2_2.jpg
+#
+newmtl ka_design_t2_mtl_2
+Ka  0.5 0.5 0.5
+Kd  0.5 0.5 0.5
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+#
+# Multi/Sub ka_design_t2 done 
+#
+# EOF

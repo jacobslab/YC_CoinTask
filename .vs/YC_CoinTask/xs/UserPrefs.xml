@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/SocketControl.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Environment/EnvironmentController.cs">
     <Files>
       <File FileName="Assets/Scripts/Logging/CameraLogTrack.cs" Line="35" Column="1" />
       <File FileName="Assets/Scripts/Experiment/DefaultItem.cs" />
@@ -18,8 +18,11 @@
       <File FileName="Assets/ClockSynchronization.cs" />
       <File FileName="Assets/NetworkManager.cs" />
       <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" />
-      <File FileName="Assets/DontDestroyOnLoad.cs" Line="1" Column="1" />
+      <File FileName="Assets/DontDestroyOnLoad.cs" />
       <File FileName="Assets/SocketControl.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Experiment/Trial.cs" Line="64" Column="69" />
+      <File FileName="Assets/Scripts/Environment/ObjectController.cs" Line="225" Column="71" />
+      <File FileName="Assets/Scripts/Environment/EnvironmentController.cs" Line="32" Column="29" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -29,13 +32,15 @@
               <Node name="Scenes" expanded="True" />
               <Node name="Scripts" expanded="True">
                 <Node name="DistractorGame" expanded="True" />
+                <Node name="Environment" expanded="True">
+                  <Node name="EnvironmentController.cs" selected="True" />
+                </Node>
                 <Node name="Experiment" expanded="True" />
                 <Node name="Logging" expanded="True" />
                 <Node name="Old" expanded="True" />
                 <Node name="SubjectSelection&amp;Saving" expanded="True" />
                 <Node name="VideoRecording" expanded="True" />
               </Node>
-              <Node name="SocketControl.cs" selected="True" />
             </Node>
           </Node>
         </State>
@@ -44,7 +49,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="3a79b5f1-132b-49d1-985e-6b3b87ab6196" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="de8a8443-f514-4899-ace1-02c979dfc46c" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
