@@ -1133,10 +1133,10 @@ public class TrialController : MonoBehaviour {
 		exp.player.controls.ShouldLockControls = true;
 		exp.player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 
-		//wait for player to look at the gameobject
-		yield return StartCoroutine(Experiment_CoinTask.Instance.player.controls.PlayerLookingAt(treasureChest));
+        //wait for player to look at the gameobject
+        yield return StartCoroutine(Experiment_CoinTask.Instance.player.controls.PlayerLookingAt(treasureChest));
 
-		Debug.Log ("the player has looked at");
+        Debug.Log ("the player has looked at");
 		//unlock the avatar controls
 		Experiment_CoinTask.Instance.player.controls.ShouldLockControls = false;
 
