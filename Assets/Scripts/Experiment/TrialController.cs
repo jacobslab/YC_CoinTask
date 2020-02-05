@@ -401,17 +401,18 @@ public class TrialController : MonoBehaviour {
 				trialLogger.LogVideoEvent(true);
 				yield return StartCoroutine(exp.instrVideoPlayer.Play());
 				trialLogger.LogVideoEvent(false);
-			
-	//		}
-	#endif
+
+			//		}
+#endif
 #endif
 
 			//CREATE SESSION STARTED FILE!
-			exp.CreateSessionStartedFile();
-
+			//exp.CreateSessionStartedFile();
+			UnityEngine.Debug.Log("About to log something");
 			//show instructions for exploring, wait for the action button
 			trialLogger.LogInstructionEvent();
-			yield return StartCoroutine(exp.uiController.pirateController.PlayWelcomingPirate());
+			UnityEngine.Debug.Log("SKIPPING WELCOMING PIRATE");
+			//yield return StartCoroutine(exp.uiController.pirateController.PlayWelcomingPirate());
 
 #if MRIVERSION
 			if(Config_CoinTask.isPractice){
@@ -658,7 +659,7 @@ public class TrialController : MonoBehaviour {
 	//INDIVIDUAL TRIALS -- implement for repeating the same thing over and over again
 	//could also create other IEnumerators for other types of trials
 	IEnumerator RunTrial(Trial trial){
-
+		UnityEngine.Debug.Log("RUNNING A TRIAL");
 		currentTrial = trial;
 
 		if (isPracticeTrial) {

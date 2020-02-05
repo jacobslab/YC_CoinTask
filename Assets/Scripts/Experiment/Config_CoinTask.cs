@@ -36,9 +36,9 @@ public class Config_CoinTask : MonoBehaviour {
 	//public static string ActionButtonName = "MRI Action Button";
 	//#else
 	//INPUT
-	public static string HorizontalAxisName = "Horizontal";
-	public static string VerticalAxisName = "Vertical";
-	public static string ActionButtonName = "Action Button";
+	public static string HorizontalAxisName = "TouchpadHorizontal";
+	public static string VerticalAxisName = "TouchpadVertical";
+	public static string ActionButtonName = "OculusTrigger";
 //	#endif
 
 	//REPLAY

@@ -65,7 +65,8 @@ public class PlayerControls : MonoBehaviour{
 #if !DEMO
 		float verticalAxisInput = Input.GetAxis ("Vertical");
 #else
-		float verticalAxisInput = Input.GetAxis("Axis2D.PrimaryTouchpad");
+		//float verticalAxisInput = Input.GetAxis("Axis2D.PrimaryTouchpad");
+		float verticalAxisInput = 0f;
 		bool buttonInput = Input.GetButton("OculusTrigger");
 #endif
         if(buttonInput)
