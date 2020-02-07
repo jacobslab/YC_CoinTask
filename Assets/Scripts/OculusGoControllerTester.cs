@@ -57,8 +57,10 @@ public class OculusGoControllerTester : MonoBehaviour
     void Update()
     {
 
-
-        Debug.Log("ACTIVE CONTROLLER: " + OVRInput.GetActiveController().ToString());
+       // Debug.Log("velocity " + OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).ToString());
+        //Debug.Log("accceleration " + OVRInput.GetLocalControllerAcceleration(OVRInput.Controller.RTouch).ToString());
+        //Debug.Log("position " + OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).ToString());
+        //Debug.Log("ACTIVE CONTROLLER: " + OVRInput.GetActiveController().ToString());
 
         //Debug.Log("TOUCHPAD HORIZONTAL " + Input.GetAxis("TouchpadHorizontal").ToString());
         //  Debug.Log("TOUCHPAD VERTICAL " + Input.GetAxis("TouchpadVertical").ToString());

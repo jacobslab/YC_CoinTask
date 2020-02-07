@@ -175,7 +175,7 @@ public class SubjectSelectionController : MonoBehaviour {
 		
 		SetSubjectStatText(ExperimentSettings_CoinTask.currentSubject.name, ExperimentSettings_CoinTask.currentSubject.score.ToString(), ExperimentSettings_CoinTask.currentSubject.trials.ToString());
 		
-		Debug.Log("chose subject! " + ExperimentSettings_CoinTask.currentSubject.name);
+		//Debug.Log("chose subject! " + ExperimentSettings_CoinTask.currentSubject.name);
 	}
 
 	void SetSubjectStatText(string name, string scoreString, string sessionString){

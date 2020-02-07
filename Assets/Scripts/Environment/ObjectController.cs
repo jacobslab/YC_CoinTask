@@ -182,9 +182,9 @@ public class ObjectController : MonoBehaviour {
 		}
 	}
 
-	public List<Vector2> GenerateOrderedDefaultObjectPositions (int numDefaultObjects, Vector3 distancePos){ //ORDERED BY DISTANCE TO PLAYER START POS
-		List<Vector2> defaultPositions = new List<Vector2> ();
-
+	public List<Vector2> GenerateOrderedDefaultObjectPositions(int numDefaultObjects, Vector3 distancePos) { //ORDERED BY DISTANCE TO PLAYER START POS
+		List<Vector2> defaultPositions = new List<Vector2>();
+		Debug.Log("NEW TRIAL");
 		for (int i = 0; i < numDefaultObjects; i++) {
 			bool objectsAreFarEnough = false;
 
@@ -198,43 +198,47 @@ public class ObjectController : MonoBehaviour {
 			float currentBiggestSmallestDistance = 0; //if we fail at positioning in the allotted number of tries, we want to position the treasure chest with the maximal distance to the closest neighbor chest.
 			Vector2 smallestDistancePosition = Vector2.zero;
 
-			while( !objectsAreFarEnough && numTries < maxNumTries){
+			while (!objectsAreFarEnough && numTries < maxNumTries) {
 				// generate a random position
-				randomEnvPosition = exp.environmentController.GetRandomPositionWithinWallsXZ( Config_CoinTask.objectToWallBuffer );
+				randomEnvPosition = exp.environmentController.GetRandomPositionWithinWallsXZ(Config_CoinTask.objectToWallBuffer);
 				randomEnvPositionVec2 = new Vector2(randomEnvPosition.x, randomEnvPosition.z);
 
 				//increment numTries
 				numTries++;
-			
+
 				//check if the generated position is far enough from all other positions
-				objectsAreFarEnough = CheckObjectsFarEnoughXZ( randomEnvPositionVec2, defaultPositions, out smallestDistance);
-			
+				objectsAreFarEnough = CheckObjectsFarEnoughXZ(randomEnvPositionVec2, defaultPositions, out smallestDistance);
+
 				//if not, and the smallest distance is larger than the currents largest small distance...
-				if( !objectsAreFarEnough && smallestDistance > currentBiggestSmallestDistance ){
+				if (!objectsAreFarEnough && smallestDistance > currentBiggestSmallestDistance) {
 					currentBiggestSmallestDistance = smallestDistance;
 					smallestDistancePosition = randomEnvPositionVec2;
 				}
 			}
 
-			if(numTries == maxNumTries){
+			if (numTries == maxNumTries) {
 				Debug.Log("Tried " + maxNumTries + " times to place default objects!");
 				Debug.Log("DISTANCE: " + currentBiggestSmallestDistance + " POSITION: " + smallestDistancePosition);
 				defaultPositions.Add(smallestDistancePosition);
 			}
-			else{
+			else {
 				defaultPositions.Add(randomEnvPositionVec2);
 			}
 
 		}
 
 		//insertion sort by distance
-		Vector2 distancePosXZ = new Vector2 (distancePos.x, distancePos.z);
+		Vector2 distancePosXZ = new Vector2(distancePos.x, distancePos.z);
 		defaultPositions = SortByNextClosest(defaultPositions, distancePosXZ);
+		for (int i = 0; i < defaultPositions.Count; i++)
+		{
+			Debug.Log("DEFAULT POSITION " + Vector2.Distance(defaultPositions[i],distancePos).ToString());
+		}
 
 		return defaultPositions;
 	}
 
-	List<Vector2> SortByNextClosest(List<Vector2> positions, Vector2 distancePos){
+	public List<Vector2> SortByNextClosest(List<Vector2> positions, Vector2 distancePos){
 
 		List<Vector2> sortedPositions = new List<Vector2>();
 		int numPositions = positions.Count;
@@ -286,6 +290,14 @@ public class ObjectController : MonoBehaviour {
 				}
 				isFarEnough = false;
 			}
+
+			Vector2 playerFacingDir = Vector2.Perpendicular(newObjectPos);
+			
+			if(Vector2.Angle(playerFacingDir,previousDefaultObjectLocation) > 60f)
+			{
+				isFarEnough = false;
+			}
+			
 		}
 		
 		return isFarEnough;

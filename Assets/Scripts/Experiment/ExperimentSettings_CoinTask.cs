@@ -9,6 +9,8 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
 
+	public static string subjFolder = "";
+
 
 	private static Subject _currentSubject;
 
@@ -43,7 +45,7 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	//TOGGLES & SETTINGS
 	public static bool isOculus = true;
 	public static bool isReplay = false;
-	public static bool isLogging = false; //if not in replay mode, should log things! or can be toggled off in main menu.
+	public static bool isLogging = true; //if not in replay mode, should log things! or can be toggled off in main menu.
 
 	public Toggle oculusToggle; //only exists in main menu -- make sure to null check
 	public Toggle loggingToggle; //only exists in main menu -- make sure to null check
@@ -119,7 +121,8 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 
 	void InitLoggingPath(){
 		ResetDefaultLoggingPath ();
-		
+
+		Debug.Log("DEFAULT LOGGING PATH IS " + defaultLoggingPath);
 		if(!Directory.Exists(defaultLoggingPath)) {
 			Directory.CreateDirectory(defaultLoggingPath);
 		}

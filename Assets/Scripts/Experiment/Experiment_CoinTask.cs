@@ -95,11 +95,10 @@ public class Experiment_CoinTask : MonoBehaviour {
 		cameraController.SetInGame(); //don't use oculus for replay mode
 
 		InitInstructionsController ();
-#if !DEMO
-		ExperimentSettings_CoinTask.isLogging = false;
+
+//		ExperimentSettings_CoinTask.isLogging = false;
 
 			InitLogging();
-#endif
 //		else if(ExperimentSettings_CoinTask.isReplay) {
 //			currInstructions.TurnOffInstructions();
 //		}
@@ -123,9 +122,12 @@ public class Experiment_CoinTask : MonoBehaviour {
 	void InitLogging(){
         if (!ExperimentSettings_CoinTask.isReplay)
         {
-            string subjectDirectory = ExperimentSettings_CoinTask.defaultLoggingPath + ExperimentSettings_CoinTask.currentSubject.name + "/";
+			ExperimentSettings_CoinTask.subjFolder = "VR_" + GameClock.SystemTime_MillisecondsString;
+			ExperimentSettings_CoinTask.defaultLoggingPath = Application.persistentDataPath + "/TextFiles/";
+			//	"VR_" + GameClock.SystemTime_MillisecondsString;
+			string subjectDirectory = ExperimentSettings_CoinTask.defaultLoggingPath + ExperimentSettings_CoinTask.subjFolder + "/";
             sessionDirectory = subjectDirectory + "session_0" + "/";
-
+			Debug.Log("SESSION DIRECTORY IS " + sessionDirectory);
             sessionID = 0;
             string sessionIDString = "_0";
 
@@ -157,8 +159,8 @@ public class Experiment_CoinTask : MonoBehaviour {
                 Directory.CreateDirectory(sessionDirectory);
             }
 
-            subjectLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "Log" + ".txt";
-            eegLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.currentSubject.name + "EEGLog" + ".txt";
+            subjectLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.subjFolder+ "Log" + ".txt";
+            eegLog.fileName = sessionDirectory + ExperimentSettings_CoinTask.subjFolder + "EEGLog" + ".txt";
 
             ExperimentSettings_CoinTask.isLogging = true;
         }

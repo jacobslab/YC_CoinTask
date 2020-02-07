@@ -242,6 +242,7 @@ public class OVRCameraRig : MonoBehaviour
 				if (OVRNodeStateProperties.GetNodeStatePropertyQuaternion(Node.RightHand, NodeStatePropertyType.Orientation, OVRPlugin.Node.HandRight, OVRPlugin.Step.Render, out rightQuat))
 					rightHandAnchor.localRotation = rightQuat;
 
+				Debug.Log("RIGHT HAND OPEN VR " + rightHandAnchor.localPosition.ToString());
 			}
 			else
 			{
@@ -249,6 +250,8 @@ public class OVRCameraRig : MonoBehaviour
 				rightHandAnchor.localPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
 				leftHandAnchor.localRotation = OVRInput.GetLocalControllerRotation(OVRInput.Controller.LTouch);
 				rightHandAnchor.localRotation = OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch);
+
+				//Debug.Log("RIGHT HAND OVR " + rightHandAnchor.localPosition.ToString());
 			}
 
 			trackerAnchor.localPosition = tracker.position;

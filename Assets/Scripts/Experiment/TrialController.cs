@@ -10,6 +10,7 @@ public class TrialController : MonoBehaviour {
 	//hardware connection
 	bool isConnectingToHardware = false;
 
+	public OVRScreenFade screenFade;
 
 	//paused?!
 	public static bool isPaused = false;
@@ -349,7 +350,7 @@ public class TrialController : MonoBehaviour {
 
 	bool isPauseButtonPressed = false;
 	void GetPauseInput(){
-		if(Input.GetButtonDown ("Pause Button")){//.GetAxis(Input.GetKeyDown(KeyCode.B) || Input.GetKey(KeyCode.JoystickButton2)){ //B JOYSTICK BUTTON TODO: move to input manager.
+		if(Input.GetButtonDown ("TouchpadButton")){//.GetAxis(Input.GetKeyDown(KeyCode.B) || Input.GetKey(KeyCode.JoystickButton2)){ //B JOYSTICK BUTTON TODO: move to input manager.
 			Debug.Log("PAUSE BUTTON PRESSED");
 			if(!isPauseButtonPressed){
 				isPauseButtonPressed = true;
@@ -649,7 +650,12 @@ public class TrialController : MonoBehaviour {
 			if (currentIndex < currentTrial.DefaultObjectLocationsXZ.Count) {
 
 				Vector2 positionXZ = currentTrial.DefaultObjectLocationsXZ [currentIndex];
+				Debug.Log("current trial avatar start pos " + currentTrial.avatarStartPos.ToString());
+				Debug.Log("DISTANCE FROM START " + Vector2.Distance(positionXZ, new Vector2(currentTrial.avatarStartPos.x,currentTrial.avatarStartPos.z)));
+				Debug.Log("distance from player " + Vector2.Distance(new Vector2(exp.player.transform.position.x,exp.player.transform.position.z), positionXZ));
+				Debug.Log("chosen pos " + positionXZ.ToString());
 				currentDefaultObject = exp.objectController.SpawnDefaultObject (positionXZ, currentTrial.SpecialObjectLocationsXZ, currentIndex);
+				Debug.Log("chest spawned at " + currentDefaultObject.transform.position.ToString());
 			} else {
 				Debug.Log ("Can't create a default object at that index. Index is too big.");
 			}
@@ -662,6 +668,50 @@ public class TrialController : MonoBehaviour {
 		UnityEngine.Debug.Log("RUNNING A TRIAL");
 		currentTrial = trial;
 
+		currentTrial.DefaultObjectLocationsXZ= exp.objectController.SortByNextClosest(currentTrial.DefaultObjectLocationsXZ, currentTrial.avatarStartPos);
+		List<Vector2> tempPos = new List<Vector2>();
+		List<float> distance = new List<float>();
+
+		Vector2 playerVec = new Vector2(currentTrial.avatarStartPos.x, currentTrial.avatarStartPos.z);
+		for (int i = 0; i < currentTrial.DefaultObjectLocationsXZ.Count; i++)
+		{
+			tempPos.Add(currentTrial.DefaultObjectLocationsXZ[i]);
+			distance.Add(Vector2.Distance(currentTrial.DefaultObjectLocationsXZ[i], playerVec));
+		}
+		List<Vector2> sortedDistance = new List<Vector2>();
+
+
+		for(int i=0;i<currentTrial.DefaultObjectLocationsXZ.Count;i++)
+		{
+			float minDistance = 1000f;
+			int minIndex = -1;
+			Debug.Log("i " + i.ToString());
+			Debug.Log("temp pos count " + tempPos.Count.ToString());
+			for(int j=0;j<tempPos.Count;j++)
+			{
+				Debug.Log("index  " + j.ToString());
+				Vector2 currVec = tempPos[j];
+				float currDist = Vector2.Distance(currVec, playerVec);
+				if ( currDist < minDistance)
+				{
+					minDistance = currDist;
+					minIndex = j;
+				}
+			}
+			if (minIndex != -1)
+			{
+				sortedDistance.Add(tempPos[minIndex]);
+				tempPos.RemoveAt(minIndex);
+			}
+		}
+		currentTrial.DefaultObjectLocationsXZ = sortedDistance;
+
+
+		for(int i=0;i<currentTrial.DefaultObjectLocationsXZ.Count;i++)
+		{
+			Debug.Log("sorted distance from start " + Vector2.Distance(currentTrial.DefaultObjectLocationsXZ[i], new Vector2(currentTrial.avatarStartPos.x,currentTrial.avatarStartPos.z)).ToString());
+		}
+		
 		if (isPracticeTrial) {
 			trialLogger.Log (-1, currentTrial.DefaultObjectLocationsXZ.Count, currentTrial.SpecialObjectLocationsXZ.Count, ExperimentSettings_CoinTask.isOneByOneReveal, false);
 			Debug.Log("Logged practice trial.");
@@ -671,12 +721,14 @@ public class TrialController : MonoBehaviour {
 			numRealTrials++;
 			Debug.Log("Logged trial #: " + numRealTrials);
 		}
-
+		yield return StartCoroutine(screenFade.Fade(0f, 1f));
 		//move player to home location & rotation
 		trialLogger.LogTransportationToHomeEvent (true);
+		Debug.Log("moved to start pos " + currentTrial.avatarStartPos.ToString());
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarStartPos, currentTrial.avatarStartRot, false));
 		trialLogger.LogTransportationToHomeEvent (false);
 
+		yield return StartCoroutine(screenFade.Fade(1f,0f));
 		if (ExperimentSettings_CoinTask.isOneByOneReveal) {
 			//Spawn the first default object
 			CreateNextDefaultObject (0);
@@ -752,11 +804,15 @@ public class TrialController : MonoBehaviour {
 		//else {
 		//	TCPServer.Instance.SetState (TCP_Config.DefineStates.NAVIGATION, false);
 		//}
+
+		yield return StartCoroutine(screenFade.Fade(0f, 1f));
 		trialLogger.LogTransportationToTowerEvent (true);
 		currentDefaultObject = null; //set to null so that arrows stop showing up...
 		yield return StartCoroutine (exp.player.controls.SmoothMoveTo (currentTrial.avatarTowerPos, currentTrial.avatarTowerRot, false));//PlayerControls.toTowerTime) );
 		trialLogger.LogTransportationToTowerEvent (false);
 
+		
+		yield return StartCoroutine(screenFade.Fade(1f,0f));
 		//RUN DISTRACTOR GAME
 		trialLogger.LogDistractorGame (true);
 		yield return StartCoroutine(exp.boxGameController.RunGame());

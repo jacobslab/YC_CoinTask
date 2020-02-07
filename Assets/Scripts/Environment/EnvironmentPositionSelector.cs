@@ -15,9 +15,12 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 
 	public Color VisualsDefaultColor;
 	public Color VisualsSelectColor;
-	
+
+
+	float prevPositionVert = 0f;
+	float prevPositionHorz = 0f;
 	bool shouldSelect;
-	float selectionMovementSpeed = 80.0f;
+	float selectionMovementSpeed = 250.0f;
 
 	void Awake(){
 		PositionSelectorVisuals.transform.localScale = new Vector3 (Config_CoinTask.selectionDiameter, PositionSelectorVisuals.transform.localScale.y, Config_CoinTask.selectionDiameter);
@@ -54,8 +57,11 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	}
 
 	void GetMovementInput(){
-		float verticalAxisInput = Input.GetAxis (Config_CoinTask.VerticalAxisName);
-		float horizontalAxisInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
+		//float verticalAxisInput = Input.GetAxis (Config_CoinTask.VerticalAxisName);
+		//	float horizontalAxisInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
+		float verticalAxisInput = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).y - prevPositionVert;
+		float horizontalAxisInput = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x - prevPositionHorz;
+
 
 		float epsilon = 0.1f;
 		bool positionCloseToTower1 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.towerPositionTransform1.position);
@@ -133,6 +139,11 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	}
 	
 	public void EnableSelection(bool shouldEnable){
+		if(shouldEnable)
+		{
+			prevPositionHorz = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x;
+			prevPositionVert = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).y;
+		}
 		shouldSelect = shouldEnable;
 		EnableSelectionIndicator (shouldEnable);
 	}

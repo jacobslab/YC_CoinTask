@@ -55,7 +55,7 @@ public class DefaultItem : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		//Debug.Log("distance from chest " + Vector3.Distance(exp.player.transform.position, transform.position));
 	}
 
 	void OnCollisionEnter(Collision collision){

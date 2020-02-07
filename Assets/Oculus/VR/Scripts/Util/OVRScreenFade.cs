@@ -121,7 +121,10 @@ public class OVRScreenFade : MonoBehaviour
     {
         StartCoroutine(Fade(0,1));
     }
-
+	public void FadeIn()
+	{
+		StartCoroutine(Fade(1,0));
+	}
 
 	/// <summary>
 	/// Starts a fade in when a new level is loaded
@@ -175,7 +178,7 @@ public class OVRScreenFade : MonoBehaviour
 	/// <summary>
 	/// Fades alpha from 1.0 to 0.0
 	/// </summary>
-	IEnumerator Fade(float startAlpha, float endAlpha)
+	public IEnumerator Fade(float startAlpha, float endAlpha)
 	{
 		float elapsedTime = 0.0f;
 		while (elapsedTime < fadeTime)

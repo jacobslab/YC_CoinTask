@@ -85,6 +85,7 @@ public class OVRDebugInfo : MonoBehaviour
     /// </summary>
     void Awake()
     {
+        /*
         // Create canvas for using new GUI
         debugUIManager = new GameObject();
         debugUIManager.name = "DebugUIManager";
@@ -99,6 +100,7 @@ public class OVRDebugInfo : MonoBehaviour
         Canvas canvas = debugUIManager.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.WorldSpace;
         canvas.pixelPerfect = false;
+        */
     }
 
     /// <summary>

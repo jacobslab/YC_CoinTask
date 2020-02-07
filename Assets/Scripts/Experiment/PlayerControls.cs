@@ -23,6 +23,7 @@ public class PlayerControls : MonoBehaviour{
 	float furthestTravelDist; //distance between far start pos and close start tower; set in start
 	float closestTravelDist; //distance between close start pos and close start tower; set in start
 
+	public LayerMask layerMask;
 
 	// Use this for initialization
 	void Start () {
@@ -70,18 +71,21 @@ public class PlayerControls : MonoBehaviour{
 		bool buttonInput = Input.GetButton("OculusTrigger");
 #endif
         if(buttonInput)
-		{ 
+		{
+			//Debug.Log("got button input");
 		//if ( Mathf.Abs(verticalAxisInput) > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
 			Vector3 movementDir = movementTransform.forward;
 			float angleDifference = 0;
 			if(wasNotMoving){
 				//align forward direction with main camera forward direction!
 				Quaternion cameraRot = myCamera.transform.rotation;
+				//Quaternion cameraRot = OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch);
 				angleDifference = movementTransform.rotation.eulerAngles.y - cameraRot.eulerAngles.y;
 				movementTransform.RotateAround(movementTransform.position, Vector3.up, -angleDifference);
 				movementDir = movementTransform.forward;
 			}
 			wasNotMoving = false;
+			//Debug.Log("should be moving");
 			GetComponent<Rigidbody>().velocity = movementDir * 1f * Config_CoinTask.driveSpeed;
 			//GetComponent<Rigidbody>().velocity = movementDir*verticalAxisInput*Config_CoinTask.driveSpeed; //since we are setting velocity based on input, no need for time.delta time component
 		}
@@ -165,11 +169,12 @@ public class PlayerControls : MonoBehaviour{
 				         Camera.main.transform.forward);
 			// this var will tell us where and what it hit
 			RaycastHit rayHitInfo = new RaycastHit ();
-
-			Debug.DrawRay (ray.origin, ray.direction * 1000f, Color.yellow);
+			RaycastHit sphereHitInfo = new RaycastHit();
+			//Debug.DrawRay (ray.origin, ray.direction * 1000f, Color.red);
 
 			// actually shooting the raycast now
-			if (Physics.Raycast (ray, out rayHitInfo, 1000f)
+			//if(Physics.SphereCast(ray.origin,10f,ray.direction,out rayHitInfo)
+			if (Physics.Raycast (ray,out rayHitInfo,1000f,layerMask.value)
 			   && rayHitInfo.transform == specialItem.transform) {
 				// is the raycast hitting the thing we put this script on?
 				if (wasLooking == false) {
@@ -180,6 +185,15 @@ public class PlayerControls : MonoBehaviour{
 					wasLooking = false;
 				}
 			}
+			
+				Debug.Log("rayhit info " + rayHitInfo.collider.gameObject.name);
+			
+			
+			if(Physics.SphereCast(ray.origin,10f,ray.direction,out sphereHitInfo))
+			{
+				Debug.Log("sphere hit info " + sphereHitInfo.collider.gameObject.name);
+			}
+			
 			yield return null;
 		}
 		yield return null;

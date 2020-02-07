@@ -71,10 +71,24 @@ public class AnswerSelector : MonoBehaviour {
 		float delayTime = 0.3f;
 		float currDelayTime = 0.0f;
 
+		float refreshTimer = 0f;
+		float maxRefreshTime = 1f;
+
+		float prevPosX = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x;
 		while (true) {
 
+			if(refreshTimer < maxRefreshTime)
+			{
+				refreshTimer += Time.deltaTime;
+			}
+			else
+			{
+				refreshTimer = 0f;
+				prevPosX = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x;
+			}
 			if (!isInput) {
-				float horizAxisInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
+				//float horizAxisInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
+				float horizAxisInput = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x - prevPosX;
 				if (horizAxisInput > 0) {
 					Move (1);
 					isInput = true;

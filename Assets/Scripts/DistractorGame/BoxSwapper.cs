@@ -96,14 +96,18 @@ public class BoxSwapper : MonoBehaviour {
 		bool isInput = false;
 		float delayTime = 0.3f;
 		float currDelayTime = 0.0f;
+		float prevPosX = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x;
 
 		while (shouldSelect) {
 
 			if (!isInput) {
-				if (Input.GetAxis (Config_CoinTask.HorizontalAxisName) > 0) {
+				//if (Input.GetAxis (Config_CoinTask.HorizontalAxisName) > 0) {
+				if(OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x - prevPosX> 0.1f) { 
 					MoveSelector (1);
 					isInput = true;
-				} else if (Input.GetAxis (Config_CoinTask.HorizontalAxisName) < 0) {
+				} 
+			//else if (Input.GetAxis (Config_CoinTask.HorizontalAxisName) < 0) {
+			else if(OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x -prevPosX < -0.1f) { 
 					MoveSelector (-1);
 					isInput = true;
 				} else if (Input.GetAxis (Config_CoinTask.HorizontalAxisName) == 0) {
