@@ -83,20 +83,20 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float MRIFixationTime = 30.0f;
 
 #else
-	public static int numTestTrials = 12; //100% 3-OBJ trial
+	public static int numTestTrials = 20; //100% 3-OBJ trial
 
 
 	//practice settings
 	public static int numTrialsPract = 1;
 	public static bool isPractice = false;
 	public static int numSpecialObjectsPract = 2;
-	public static int numTwoItemTrials = 0;
-    public static int numThreeItemTrials = 12;
-	public static int numTrialsPerBlock = 12;
+	//public static int numTwoItemTrials = 0;
+	public static int numThreeItemTrials = 20;
+    public static int numTrialsPerBlock = 20;
 
 
-	//FEEDBACK SETTINGS:
-	public static float feedbackTimeBetweenObjects = 0.5f;
+    //FEEDBACK SETTINGS:
+    public static float feedbackTimeBetweenObjects = 0.5f;
 
 #endif
 
@@ -110,7 +110,7 @@ public class Config_CoinTask : MonoBehaviour {
 	//OBJECTS
 	public static int numDefaultObjects = 4;
 
-	public static float selectionDiameter = 13.0f;
+	public static float selectionDiameter = 26.0f;
 
 	public static float objectToWallBuffer = 13.0f; //half of the selection diameter.
 	public static float objectToObjectBuffer { get { return CalculateObjectToObjectBuffer(); } } //calculated base on min time to drive between objects!

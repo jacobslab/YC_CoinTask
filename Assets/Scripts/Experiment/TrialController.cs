@@ -31,6 +31,8 @@ public class TrialController : MonoBehaviour {
 
 	public Trial currentTrial;
 
+	public ClockSynchronization clockSync;
+
 	[HideInInspector] public GameObject currentDefaultObject; //current treasure chest we're looking for. assuming a one-by-one reveal.
 	
 	List<List<Trial>> ListOfTrialBlocks;
@@ -52,6 +54,11 @@ public class TrialController : MonoBehaviour {
 		#endif
 
 		trialLogger = GetComponent<TrialLogTrack> ();
+
+        if(Config_CoinTask.isSyncing)
+        {
+			StartCoroutine(clockSync.RunSyncInterval());
+        }
 	}
 
 	void InitPracticeTrials(){

@@ -9,7 +9,7 @@ using UnityEngine;
 public class ClockSynchronization : MonoBehaviour
 {
     public GameClock gameClock;
-
+    private int syncCount = 0;
     // Use this for initialization
     void Start()
     {
@@ -48,7 +48,13 @@ public class ClockSynchronization : MonoBehaviour
             string message = ntpTime.ToString() + "\t" + localTime.ToString();
             //Debug.Log("sending message to EPAD");
             NetworkManager.Instance.SendMessageToEPAD(message);
-            //TreasureHuntController_ARKit.Instance.trialLog.LogTimeSyncEvent(ntpTime, localTime, difference);
+            Experiment_CoinTask.Instance.trialController.trialLogger.LogTimeSyncEvent(ntpTime, localTime, difference);
+            syncCount++;
+
+            if(syncCount>3)
+            {
+                Config_CoinTask.isSyncing = false;
+            }
             yield return 0;
         }
         yield return null;
