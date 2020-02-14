@@ -3,8 +3,8 @@ using System.Collections;
 using System;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
-using LabJack.LabJackUD;
-using LabJack;
+//using LabJack.LabJackUD;
+//using LabJack;
 using UnityEngine.UI;
 public class SyncboxControl : MonoBehaviour
 {
@@ -33,10 +33,10 @@ public class SyncboxControl : MonoBehaviour
     public bool isUSBOpen = false;
 
     //u3 specific
-    private U3 u3;
-    double dblDriverVersion;
-    LJUD.IO ioType = 0;
-    LJUD.CHANNEL channel = 0;
+    //private U3 u3;
+    //double dblDriverVersion;
+    //LJUD.IO ioType = 0;
+  //  LJUD.CHANNEL channel = 0;
 
 	//public RawImage syncStatusBox;
 
@@ -78,8 +78,9 @@ public class SyncboxControl : MonoBehaviour
     }
 
 
-
+    /*
 	#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+   
     IEnumerator TurnOnOff()
     {
         LJUD.eDO(u3.ljhandle, 0, 1);
@@ -96,9 +97,10 @@ public class SyncboxControl : MonoBehaviour
     }
 
 
+        */
     IEnumerator ConnectSyncbox()
     {
-
+        /*
         string connectionError = "";
         while (!isUSBOpen)
         {
@@ -123,6 +125,7 @@ public class SyncboxControl : MonoBehaviour
                 connectionError = e.ToString();
                 ShowErrorMessage(e);
             }
+            
             //   StartCoroutine("TurnOnOff");
             UnityEngine.Debug.Log("connectionerror " + connectionError);
             if (connectionError == "")
@@ -134,11 +137,12 @@ public class SyncboxControl : MonoBehaviour
 				exp.trialController.ConnectionText.text = "Please connect Syncbox and Restart";
             }
 			#endif
-
+            
             yield return 0;
         }
-
-        StartCoroutine(RunSyncPulseManual());
+        */
+     //   yield return StartCoroutine(RunSyncPulseManual());
+        yield return null;
     }
 
     // Update is called once per frame
@@ -157,8 +161,8 @@ public class SyncboxControl : MonoBehaviour
         //use this for debugging if you'd like
     }
 
-    float syncPulseDuration = 0.05f;
-    float syncPulseInterval = 1.0f;
+    float syncPulseDuration = 1f;
+    float syncPulseInterval = 5f;
     /*	IEnumerator RunSyncPulse(){
             Stopwatch executionStopwatch = new Stopwatch ();
             while (ShouldSyncPulse) {
@@ -190,8 +194,8 @@ public class SyncboxControl : MonoBehaviour
             yield return StartCoroutine(WaitForShortTime(jitter));
 
             ToggleLEDOn();
-            yield return StartCoroutine(WaitForShortTime(syncPulseDuration));
-            ToggleLEDOff();
+          //  yield return StartCoroutine(WaitForShortTime(syncPulseDuration));
+           // ToggleLEDOff();
 
             float timeToWait = (syncPulseInterval - syncPulseDuration) - jitter;
             if (timeToWait < 0)
@@ -205,27 +209,40 @@ public class SyncboxControl : MonoBehaviour
         }
     }
 
+    public IEnumerator SyncImmediately()
+    {
+        ToggleLEDOn();
+
+        yield return null;
+    }
+
     //return microseconds it took to turn on LED
     void ToggleLEDOn()
     {
-
+        //string msg = 
+        NetworkManager.Instance.SendMessageToEPAD("ON");
+        /*
 		//syncStatusBox.color = Color.white;
 		#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 		TurnLEDOn();
 		#else
         LJUD.eDO(u3.ljhandle, 0, 1);
 		#endif
+        */
         LogSYNCOn(GameClock.SystemTime_Milliseconds);
     }
 
     void ToggleLEDOff()
     {
+        NetworkManager.Instance.SendMessageToEPAD("OFF");
+        /*
 		//syncStatusBox.color = Color.black;
 		#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 		TurnLEDOff();
 		#else
         LJUD.eDO(u3.ljhandle, 0, 0);
 		#endif
+        */
         LogSYNCOff(GameClock.SystemTime_Milliseconds);
 
     }
@@ -251,7 +268,7 @@ public class SyncboxControl : MonoBehaviour
     {
         if (ExperimentSettings_CoinTask.isLogging)
         {
-            exp.eegLog.Log(time, exp.eegLog.GetFrameCount(), "ON"); //NOTE: NOT USING FRAME IN THE FRAME SLOT
+            exp.eegLog.Log(time, exp.eegLog.GetFrameCount(), "SYNC"); //NOTE: NOT USING FRAME IN THE FRAME SLOT
         }
     }
 
@@ -286,11 +303,13 @@ public class SyncboxControl : MonoBehaviour
 
     void OnApplicationQuit()
     {
+        /*
 		#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
         UnityEngine.Debug.Log(Marshal.PtrToStringAuto (CloseUSB()));
 		#else
         LJUD.Close();
 		#endif
+        */
     }
 
 }

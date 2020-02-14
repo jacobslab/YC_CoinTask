@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 using UnityEngine.XR;
 public class PlayerControls : MonoBehaviour{
 
@@ -9,6 +10,8 @@ public class PlayerControls : MonoBehaviour{
 	public bool ShouldLockControls = false;
 
 	//bool isSmoothMoving = false;
+
+	public GameObject raycastCube;
 
 	public Transform TiltableTransform;
 	public Transform towerPositionTransform1;
@@ -25,6 +28,9 @@ public class PlayerControls : MonoBehaviour{
 
 	public LayerMask layerMask;
 
+	private float midWidth = 0f;
+	private float midHeight = 0f;
+
 	// Use this for initialization
 	void Start () {
 		//when in replay, we don't want physics collision interfering with anything
@@ -35,6 +41,11 @@ public class PlayerControls : MonoBehaviour{
 			GetComponent<Collider>().enabled = true;
 		}
 
+		Debug.Log("screen max " + Screen.width.ToString());
+		Debug.Log("screen height " + Screen.height.ToString());
+
+		midWidth = Screen.width / 2f;
+		midHeight = Screen.height / 2f;
 		furthestTravelDist = (startPositionTransform1.position - towerPositionTransform2.position).magnitude; //close start, far tower
 		closestTravelDist = (startPositionTransform1.position - towerPositionTransform1.position).magnitude; //close start, close tower
 
@@ -63,17 +74,15 @@ public class PlayerControls : MonoBehaviour{
 	void GetInput()
 	{
 		//VERTICAL
-#if !DEMO
-		float verticalAxisInput = Input.GetAxis ("Vertical");
-#else
+
+		//float verticalAxisInput = Input.GetAxis (Config_CoinTask.VerticalAxisName);
 		//float verticalAxisInput = Input.GetAxis("Axis2D.PrimaryTouchpad");
-		float verticalAxisInput = 0f;
+//		float verticalAxisInput = 0f;
 		bool buttonInput = Input.GetButton("OculusTrigger");
-#endif
         if(buttonInput)
 		{
-			//Debug.Log("got button input");
-		//if ( Mathf.Abs(verticalAxisInput) > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
+			Debug.Log("got button input");
+			//if ( Mathf.Abs(verticalAxisInput) > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
 			Vector3 movementDir = movementTransform.forward;
 			float angleDifference = 0;
 			if(wasNotMoving){
@@ -87,7 +96,7 @@ public class PlayerControls : MonoBehaviour{
 			wasNotMoving = false;
 			//Debug.Log("should be moving");
 			GetComponent<Rigidbody>().velocity = movementDir * 1f * Config_CoinTask.driveSpeed;
-			//GetComponent<Rigidbody>().velocity = movementDir*verticalAxisInput*Config_CoinTask.driveSpeed; //since we are setting velocity based on input, no need for time.delta time component
+	//		GetComponent<Rigidbody>().velocity = movementDir*verticalAxisInput*Config_CoinTask.driveSpeed; //since we are setting velocity based on input, no need for time.delta time component
 		}
 		else{
 			wasNotMoving = true;
@@ -95,12 +104,11 @@ public class PlayerControls : MonoBehaviour{
 		}
 
 		//HORIZONTAL
-#if !DEMO
 		float horizontalAxisInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
-#else
+
 		//float horizontalAxisInput = Input.GetAxis("Axis2D.PrimaryTouchpad");
-		float horizontalAxisInput = 0f;
-#endif
+//		float horizontalAxisInput = 0f;
+
 		if (Mathf.Abs (horizontalAxisInput) > 0.0f) { //EPSILON should be accounted for in Input Settings "dead zone" parameter
 
 			float percent = horizontalAxisInput / 1.0f;
@@ -165,35 +173,65 @@ public class PlayerControls : MonoBehaviour{
 		bool wasLooking = false; // used for OnStartLook and OnEndLook
 		// generate the ray before we raycast it
 		while (!wasLooking) {
-			Ray ray = new Ray (Camera.main.transform.position,
-				         Camera.main.transform.forward);
+		//	Ray ray = new Ray (Camera.main.transform.position,
+			//	         Camera.main.transform.forward);
 			// this var will tell us where and what it hit
-			RaycastHit rayHitInfo = new RaycastHit ();
-			RaycastHit sphereHitInfo = new RaycastHit();
+		//	RaycastHit rayHitInfo = new RaycastHit ();
 			//Debug.DrawRay (ray.origin, ray.direction * 1000f, Color.red);
 
 			// actually shooting the raycast now
 			//if(Physics.SphereCast(ray.origin,10f,ray.direction,out rayHitInfo)
-			if (Physics.Raycast (ray,out rayHitInfo,1000f,layerMask.value)
-			   && rayHitInfo.transform == specialItem.transform) {
-				// is the raycast hitting the thing we put this script on?
-				if (wasLooking == false) {
-					wasLooking = true;
+			Vector3 screenPosition= Camera.main.WorldToScreenPoint(specialItem.transform.position);
+			Debug.Log("screen position is " + screenPosition.ToString());
+			float xDiff = Mathf.Abs(screenPosition.x - midWidth);
+			float yDiff = Mathf.Abs(screenPosition.y - midHeight);
+			Debug.Log("x diff " + xDiff.ToString() + " y diff " + yDiff.ToString());
+
+		//	if (Physics.Raycast(ray, out rayHitInfo, 300f, layerMask.value))
+			//{
+				//Debug.Log(rayHitInfo.collider.gameObject.name);
+				//if (rayHitInfo.transform == specialItem.transform)
+				if(xDiff < 800f && yDiff < 700f)
+				{
+					// is the raycast hitting the thing we put this script on?
+					if (wasLooking == false)
+					{
+						wasLooking = true;
+					}
 				}
-			} else {
-				if (wasLooking == true) {
-					wasLooking = false;
+				else
+				{
+					if (wasLooking == true)
+					{
+						wasLooking = false;
+					}
+					/*try
+					{
+						Debug.Log("rayhit info " + rayHitInfo.collider.gameObject.name);
+					}
+					catch (NullReferenceException e)
+					{
+						Debug.Log("caught nullreference " + e.ToString());
+					}
+					*/
+				}
+	//		}
+		/*
+			else
+			{
+				if (Physics.Raycast(ray, out rayHitInfo, 1000f))
+				{
+					Debug.Log("alt raycast " + rayHitInfo.collider.gameObject.name);
 				}
 			}
+
 			
-				Debug.Log("rayhit info " + rayHitInfo.collider.gameObject.name);
-			
-			
-			if(Physics.SphereCast(ray.origin,10f,ray.direction,out sphereHitInfo))
+			RaycastHit sphereHitInfo = new RaycastHit();
+			if (Physics.SphereCast(ray.origin,10f,ray.direction,out sphereHitInfo,1000f,layerMask.value))
 			{
 				Debug.Log("sphere hit info " + sphereHitInfo.collider.gameObject.name);
 			}
-			
+	*/
 			yield return null;
 		}
 		yield return null;

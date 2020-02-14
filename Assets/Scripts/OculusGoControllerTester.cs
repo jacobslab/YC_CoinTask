@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.XR;
+using Oculus.Avatar;
 using UnityEngine;
 
 
@@ -26,20 +27,8 @@ public class OculusGoControllerTester : MonoBehaviour
             targetDevice = device;
             UnityEngine.Debug.Log(string.Format("Device Name '{0}' has role '{1}'", device.name, device.role.ToString()));
         }
+        *
         */
-        activeController = OVRInput.GetActiveController();
-
-
-        if (OVRInput.IsControllerConnected(OVRInput.Controller.RTrackedRemote))
-        {
-            Debug.Log("NOT RIGHT REMOTE");
-        }
-
-
-        if (OVRInput.IsControllerConnected(OVRInput.Controller.LTrackedRemote))
-        {
-            Debug.Log("NOT LEFT REMOTE");
-        }
 
                 
     }
@@ -56,6 +45,9 @@ public class OculusGoControllerTester : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        //Debug.Log("rotation " + OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch).eulerAngles.ToString());
+
 
        // Debug.Log("velocity " + OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).ToString());
         //Debug.Log("accceleration " + OVRInput.GetLocalControllerAcceleration(OVRInput.Controller.RTouch).ToString());

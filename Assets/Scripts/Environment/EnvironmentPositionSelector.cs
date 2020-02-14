@@ -10,12 +10,19 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	public GameObject PositionSelectorVisuals;
 	public GameObject CorrectPositionIndicator;
 
+	public GameObject raycastCube;
+	public GameObject ground;
+	public LayerMask layerMask;
+	public GameObject markerSphere;
+
 	public PositionSelectorLogTrack logTrack;
 
 
 	public Color VisualsDefaultColor;
 	public Color VisualsSelectColor;
 
+	float currDelayTime = 0f;
+	float delayTime = 0.3f;
 
 	float prevPositionVert = 0f;
 	float prevPositionHorz = 0f;
@@ -57,12 +64,24 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 	}
 
 	void GetMovementInput(){
-		//float verticalAxisInput = Input.GetAxis (Config_CoinTask.VerticalAxisName);
-		//	float horizontalAxisInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
-		float verticalAxisInput = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).y - prevPositionVert;
+		
+			//float verticalAxisInput = Input.GetAxis (Config_CoinTask.VerticalAxisName);
+			//	float horizontalAxisInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
+			float verticalAxisInput = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).y - prevPositionVert;
 		float horizontalAxisInput = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x - prevPositionHorz;
-
-
+		/*
+		if (currDelayTime < delayTime)
+		{
+			currDelayTime += Time.deltaTime;
+		}
+		else
+		{
+			currDelayTime = 0.0f;
+			prevPositionVert = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).y;
+			prevPositionHorz = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x;
+			
+		}
+		*/
 		float epsilon = 0.1f;
 		bool positionCloseToTower1 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.towerPositionTransform1.position);
 		bool positionCloseToTower2 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.towerPositionTransform2.position);
@@ -89,12 +108,26 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		Vector3 vertAmountVec = PositionSelector.transform.forward * amountVertical;
 		Vector3 horizAmountVec = PositionSelector.transform.right * amountHorizontal;
 
-		bool wouldBeInWallsVert = exp.environmentController.CheckWithinWallsVert (PositionSelector.transform.position + (vertAmountVec), Config_CoinTask.objectToWallBuffer);
-		bool wouldBeInWallsHoriz = exp.environmentController.CheckWithinWallsHoriz (PositionSelector.transform.position + (horizAmountVec), Config_CoinTask.objectToWallBuffer); 
+		Ray ray = new Ray(raycastCube.transform.position,
+						raycastCube.transform.forward);
+
+		RaycastHit rayHitInfo = new RaycastHit();
+		Vector3 pos = Vector3.zero;
+		if (Physics.Raycast(ray, out rayHitInfo, 1000f, layerMask.value))
+		{
+			pos = new Vector3(rayHitInfo.point.x, rayHitInfo.point.y,rayHitInfo.point.z);
+		}
+		bool wouldBeInWallsVert = exp.environmentController.CheckWithinWallsVert(pos, Config_CoinTask.objectToWallBuffer);
+		bool wouldBeInWallsHoriz = exp.environmentController.CheckWithinWallsHoriz (pos, Config_CoinTask.objectToWallBuffer); 
+		Debug.Log("pos is " + pos.ToString());
+		markerSphere.transform.position = pos;
+
+		//bool wouldBeInWallsVert = exp.environmentController.CheckWithinWallsVert (PositionSelector.transform.position + (vertAmountVec), Config_CoinTask.objectToWallBuffer);
+		//bool wouldBeInWallsHoriz = exp.environmentController.CheckWithinWallsHoriz (PositionSelector.transform.position + (horizAmountVec), Config_CoinTask.objectToWallBuffer); 
 
 
 		if (wouldBeInWallsVert) {
-			PositionSelector.transform.position += vertAmountVec;
+			PositionSelector.transform.position = new Vector3(PositionSelector.transform.position.x,PositionSelector.transform.position.y,pos.z);
 		} else {
 			//move to edge
 			if( amountVertical < -epsilon ){
@@ -108,7 +141,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 			}
 		}
 		if (wouldBeInWallsHoriz) {
-			PositionSelector.transform.position += horizAmountVec;
+			PositionSelector.transform.position= new Vector3(pos.x, PositionSelector.transform.position.y, PositionSelector.transform.position.z);
 		} else {
 			//move to edge
 			if( amountHorizontal < -epsilon ){
@@ -143,6 +176,7 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		{
 			prevPositionHorz = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x;
 			prevPositionVert = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).y;
+			Debug.Log("reset HORZ and VERT position");
 		}
 		shouldSelect = shouldEnable;
 		EnableSelectionIndicator (shouldEnable);

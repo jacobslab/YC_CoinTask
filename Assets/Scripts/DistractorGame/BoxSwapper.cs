@@ -12,6 +12,9 @@ public class BoxSwapper : MonoBehaviour {
 	public AudioSource wrongAnswerSound;
 
 
+	public GameObject raycastCube;
+	public LayerMask layerMask;
+
 	public GameObject boxSelector;
 	public GameObject boxSelectorVisuals;
 	public TextMesh boxSelectorText;
@@ -97,35 +100,58 @@ public class BoxSwapper : MonoBehaviour {
 		float delayTime = 0.3f;
 		float currDelayTime = 0.0f;
 		float prevPosX = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x;
+		float startAngle = OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch).eulerAngles.y;
+		Debug.Log("start angle is " + startAngle.ToString());
+
+
+		Ray ray = new Ray(raycastCube.transform.position,
+						raycastCube.transform.forward);
+
+		RaycastHit rayHitInfo = new RaycastHit();
+		Vector3 pos = Vector3.zero;
+		if (Physics.Raycast(ray, out rayHitInfo, 1000f, layerMask.value))
+		{
+			pos = new Vector3(rayHitInfo.point.x, rayHitInfo.point.y, rayHitInfo.point.z);
+		}
+		Debug.Log("pos " + pos.ToString());
 
 		while (shouldSelect) {
 
 			if (!isInput) {
-				//if (Input.GetAxis (Config_CoinTask.HorizontalAxisName) > 0) {
-				if(OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x - prevPosX> 0.1f) { 
+				if (Input.GetAxis (Config_CoinTask.HorizontalAxisName) > 0) {
+				//float horizAxisInput = OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch).eulerAngles.y - startAngle;
+				//Debug.Log("rot diff " + horizAxisInput.ToString());
+
+
+			//	if (horizAxisInput> 2.5f) { 
 					MoveSelector (1);
 					isInput = true;
 				} 
-			//else if (Input.GetAxis (Config_CoinTask.HorizontalAxisName) < 0) {
-			else if(OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x -prevPosX < -0.1f) { 
+			else if (Input.GetAxis (Config_CoinTask.HorizontalAxisName) < 0) {
+			//else if(horizAxisInput< -2.5f) { 
 					MoveSelector (-1);
 					isInput = true;
-				} else if (Input.GetAxis (Config_CoinTask.HorizontalAxisName) == 0) {
+				} 
+				else if(Input.GetAxis(Config_CoinTask.HorizontalAxisName) == 0) { 
+				//else if (horizAxisInput == 0f) {
 					isInput = false;
 				}
 
 			}
 
-			else{
-				if(currDelayTime < delayTime){
+			else
+			{
+				if (currDelayTime < delayTime)
+				{
 					currDelayTime += Time.deltaTime;
 				}
-				else{
-					currDelayTime = 0.0f;
+				else
+				{
+					currDelayTime = 0f;
 					isInput = false;
 				}
-
 			}
+
 
 			yield return 0;
 		}

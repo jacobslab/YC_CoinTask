@@ -19,7 +19,7 @@ public class TrialController : MonoBehaviour {
 	public SimpleTimer trialTimer;
 	public SimpleTimer MRITimer;
 
-	TrialLogTrack trialLogger;
+	public TrialLogTrack trialLogger;
 
 	bool isPracticeTrial = false;
 	int numRealTrials = 0; //used for logging trial ID's
@@ -517,6 +517,7 @@ public class TrialController : MonoBehaviour {
 	}
 
 	IEnumerator WaitForEEGHardwareConnection(){
+		/*
 		isConnectingToHardware = true;
 		Debug.Log ("waiting for eeg connection");
 		exp.uiController.ConnectionUI.alpha = 1.0f;
@@ -531,14 +532,19 @@ public class TrialController : MonoBehaviour {
 			//	yield return 0;
 			//}
 		}
+		
 		if (Config_CoinTask.isSyncbox){
 			while(!SyncboxControl.Instance.isUSBOpen){
 				Debug.Log("Waiting for sync box to open...");
 				yield return 0;
 			}
-		}
+		
+	}
+		*/
+		
 		exp.uiController.ConnectionUI.alpha = 0.0f;
 		isConnectingToHardware = false;
+		yield return null;
 	}
 
 #if MRIVERSION
@@ -1145,7 +1151,7 @@ public class TrialController : MonoBehaviour {
 		//lock the avatar controls
 		exp.player.controls.ShouldLockControls = true;
 		exp.player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
-
+		Debug.Log("waiting for player to look at ");
 		//wait for player to look at the gameobject
 		yield return StartCoroutine(Experiment_CoinTask.Instance.player.controls.PlayerLookingAt(treasureChest));
 

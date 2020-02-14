@@ -26,7 +26,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
 #else
-	public static bool isSyncbox = false;
+	public static bool isSyncbox = true;
 	public static bool isSystem2 = false;
 #endif
 
@@ -62,7 +62,13 @@ public class Config_CoinTask : MonoBehaviour {
 	//SPECIFIC COIN TASK VARIABLES:
 	public static float randomJitterMin = 0.0f;
 	public static float randomJitterMax = 0.2f;
-	
+
+
+	public static bool isSyncing = false;
+	public static bool syncboxConnected = false;
+
+	public static float syncNTPInterval = 10f;
+
 #if MRIVERSION
 	public static int numTestTrials = 8; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
 	

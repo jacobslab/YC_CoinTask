@@ -15,6 +15,9 @@ public class AnswerSelector : MonoBehaviour {
 	public ColorChanger maybeExplanationColorChanger;
 	public ColorChanger noExplanationColorChanger;
 
+	public GameObject raycastCube;
+	public LayerMask layerMask;
+
 	public Color selectedColor;
 	public Color deselectedColor;
 
@@ -74,44 +77,40 @@ public class AnswerSelector : MonoBehaviour {
 		float refreshTimer = 0f;
 		float maxRefreshTime = 1f;
 
-		float prevPosX = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x;
+
 		while (true) {
 
-			if(refreshTimer < maxRefreshTime)
+			if (!isInput)
 			{
-				refreshTimer += Time.deltaTime;
+				float horizAxisInput = Input.GetAxis(Config_CoinTask.HorizontalAxisName);
+				Debug.Log("horiz anxis input " + horizAxisInput.ToString());
+				if (horizAxisInput > 0f)
+				{
+					Move(1);
+					isInput = true;
+				}
+				else if (horizAxisInput < 0f)
+				{
+					Move(-1);
+					isInput = true;
+				}
+				else if (horizAxisInput == 0f)
+				{
+					isInput = false;
+				}
+
 			}
 			else
 			{
-				refreshTimer = 0f;
-				prevPosX = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x;
-			}
-			if (!isInput) {
-				//float horizAxisInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
-				float horizAxisInput = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch).x - prevPosX;
-				if (horizAxisInput > 0) {
-					Move (1);
-					isInput = true;
-				} 
-				else if (horizAxisInput < 0) {
-					Move (-1);
-					isInput = true;
-				} 
-				else if (horizAxisInput == 0) {
-					isInput = false;
-				}
-				
-			}
-			
-			else{
-				if(currDelayTime < delayTime){
+				if (currDelayTime < delayTime)
+				{
 					currDelayTime += Time.deltaTime;
 				}
-				else{
-					currDelayTime = 0.0f;
+			else
+				{
+					currDelayTime = 0f;
 					isInput = false;
 				}
-				
 			}
 			
 			yield return 0;

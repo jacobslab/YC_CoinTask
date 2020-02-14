@@ -1,6 +1,6 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class ObjectController : MonoBehaviour {
 
@@ -207,7 +207,7 @@ public class ObjectController : MonoBehaviour {
 				numTries++;
 
 				//check if the generated position is far enough from all other positions
-				objectsAreFarEnough = CheckObjectsFarEnoughXZ(randomEnvPositionVec2, defaultPositions, out smallestDistance);
+				objectsAreFarEnough = CheckObjectsFarEnoughXZ(distancePos,randomEnvPositionVec2, defaultPositions, out smallestDistance);
 
 				//if not, and the smallest distance is larger than the currents largest small distance...
 				if (!objectsAreFarEnough && smallestDistance > currentBiggestSmallestDistance) {
@@ -234,7 +234,7 @@ public class ObjectController : MonoBehaviour {
 		{
 			Debug.Log("DEFAULT POSITION " + Vector2.Distance(defaultPositions[i],distancePos).ToString());
 		}
-
+		
 		return defaultPositions;
 	}
 
@@ -242,7 +242,7 @@ public class ObjectController : MonoBehaviour {
 
 		List<Vector2> sortedPositions = new List<Vector2>();
 		int numPositions = positions.Count;
-
+	
 		Vector2 closestPos = GetClosest (distancePos, positions);
 		sortedPositions.Add (closestPos);
 		positions.Remove (closestPos);
@@ -274,32 +274,82 @@ public class ObjectController : MonoBehaviour {
 	}
 
 	//also fills the out float smallestDistance for informing how close the object is to overlap.
-	public bool CheckObjectsFarEnoughXZ(Vector2 newObjectPos, List<Vector2> otherObjectPositions, out float smallestDistance){
+	public bool CheckObjectsFarEnoughXZ(Vector2 startPos, Vector2 newObjectPos, List<Vector2> otherObjectPositions, out float smallestDistance){
 		bool isFarEnough = true;
 		smallestDistance = 0;
+		int smallestIndex = 0;
+	
+		List<Vector2> sortedPos = new List<Vector2>();
+		List<Vector2> tempPos = new List<Vector2>();
+		float minDist = 1000f;
+		for(int i=0;i<otherObjectPositions.Count;i++)
+		{
+			tempPos.Add(otherObjectPositions[i]);
+		}
+		for(int i=0;i<otherObjectPositions.Count;i++)
+		{
+			for (int j = 0; j < tempPos.Count; j++)
+			{
+				float dist = Vector2.Distance(tempPos[j], startPos);
+				if (dist < minDist)
+				{
+					dist = minDist;
+					sortedPos.Add(tempPos[j]);
+					tempPos.RemoveAt(j);
+				}
+			}
+		}
+		
 		for(int i = 0; i < otherObjectPositions.Count; i++){
 			Vector2 previousDefaultObjectLocation = otherObjectPositions[i];
 			float positionDistance = (newObjectPos - previousDefaultObjectLocation).magnitude;
 			if (i == 0){
 				//set smallest distance for the first time
 				smallestDistance = positionDistance;
+				smallestIndex = i;
 			}
-			if( positionDistance < Config_CoinTask.objectToObjectBuffer ){
-				if(smallestDistance > positionDistance) {
+			if (positionDistance < Config_CoinTask.objectToObjectBuffer)
+			{
+				if (smallestDistance > positionDistance)
+				{
 					smallestDistance = positionDistance;
 				}
 				isFarEnough = false;
-			}
 
-			Vector2 playerFacingDir = Vector2.Perpendicular(newObjectPos);
+
+				if (positionDistance < smallestDistance)
+				{
+					smallestIndex = i;
+					Debug.Log("smallest index " + i.ToString());
+				}
+			}
 			
-			if(Vector2.Angle(playerFacingDir,previousDefaultObjectLocation) > 60f)
+			if (otherObjectPositions.Count > smallestIndex)
 			{
-				isFarEnough = false;
+				Vector2 nearestPos = otherObjectPositions[smallestIndex];
+				Vector2 prevChestPos = startPos;
+				for (int k=0;k<sortedPos.Count;k++)
+				{
+					//find the nearestPos first in the sorted array
+					if(sortedPos[k]==nearestPos)
+					{
+						//
+						if(k>0)
+						{
+							prevChestPos = sortedPos[k - 1];
+						}
+					}
+				}
+				float angle = Vector2.Angle(newObjectPos - nearestPos , nearestPos - prevChestPos);
+				if (angle < 60f && angle > 135f)
+				{
+					isFarEnough = false;
+				}
 			}
 			
 		}
 		
+
 		return isFarEnough;
 	}
 
@@ -311,7 +361,8 @@ public class ObjectController : MonoBehaviour {
 
 		List<Vector2> orderedDefaultPositionsCopy = new List<Vector2> ();
 		int numDefault = orderedDefaultObjectLocationsXZ.Count;
-		
+
+		Debug.Log("num default " + numDefault.ToString());
 		//copy the list (ONLY THE POSITIONS WE WANT TO FILL) so we can delete from it...
 		for (int i = 0; i < numDefault; i++) {
 			Vector2 currPosition = orderedDefaultObjectLocationsXZ[i];
@@ -400,6 +451,7 @@ public class ObjectController : MonoBehaviour {
 
 
 			specialPositions.Add (currPosition);
+			
 			
 			//remove it from the parameter list so that no two special objects are in the same spot.
 			//this will not change the original list, as the list was passed by copy.
