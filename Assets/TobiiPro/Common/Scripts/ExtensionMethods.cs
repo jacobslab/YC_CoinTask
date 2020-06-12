@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// Copyright © 2018 Tobii AB. All rights reserved.
+// Copyright © 2019 Tobii Pro AB. All rights reserved.
 //-----------------------------------------------------------------------
 
 using System.Xml;
@@ -206,12 +206,12 @@ namespace Tobii.Research.Unity
         internal static void WriteEye(this XmlWriter file, IGazeDataEye eye, string name)
         {
             file.WriteStartElement(name);
-            file.WriteWithValid("GazeOriginInTrackBoxCoordinates", eye.GazeOriginInTrackBoxCoordinates.ToString(TobiiExtensionMethods.FORMAT_FLOAT), eye.GazeOriginValid);
-            file.WriteWithValid("GazeOriginInUserCoordinates", eye.GazeOriginInUserCoordinates.ToString(TobiiExtensionMethods.FORMAT_FLOAT), eye.GazeOriginValid);
-            file.WriteWithValid("GazePointInUserCoordinates", eye.GazePointInUserCoordinates.ToString(TobiiExtensionMethods.FORMAT_FLOAT), eye.GazePointValid);
-            file.WriteWithValid("GazePointOnDisplayArea", eye.GazePointOnDisplayArea.ToString(TobiiExtensionMethods.FORMAT_FLOAT), eye.GazePointValid);
+            file.WriteWithValid("GazeOriginInTrackBoxCoordinates", eye.GazeOriginInTrackBoxCoordinates.ToString(FORMAT_FLOAT), eye.GazeOriginValid);
+            file.WriteWithValid("GazeOriginInUserCoordinates", eye.GazeOriginInUserCoordinates.ToString(FORMAT_FLOAT), eye.GazeOriginValid);
+            file.WriteWithValid("GazePointInUserCoordinates", eye.GazePointInUserCoordinates.ToString(FORMAT_FLOAT), eye.GazePointValid);
+            file.WriteWithValid("GazePointOnDisplayArea", eye.GazePointOnDisplayArea.ToString(FORMAT_FLOAT), eye.GazePointValid);
             file.WriteRay(eye.GazeRayScreen, eye.GazePointValid, "GazeRayScreen");
-            file.WriteWithValid("PupilDiameter", eye.PupilDiameter.ToString(TobiiExtensionMethods.FORMAT_FLOAT), eye.PupilDiameterValid);
+            file.WriteWithValid("PupilDiameter", eye.PupilDiameter.ToString(FORMAT_FLOAT), eye.PupilDiameterValid);
             file.WriteEndElement();
         }
 

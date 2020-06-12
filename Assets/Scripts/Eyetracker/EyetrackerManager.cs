@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Tobii.Research;
-using Tobii.Research.CodeExamples;
 using UnityEngine;
 using System;
 using UnityEngine.UI;

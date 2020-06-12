@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// Copyright © 2017 Tobii AB. All rights reserved.
+// Copyright © 2019 Tobii Pro AB. All rights reserved.
 //-----------------------------------------------------------------------
 
 using UnityEngine;
@@ -53,11 +53,6 @@ namespace Tobii.Research.Unity.Examples
         // The Unity EyeTracker helper object.
         private VREyeTracker _eyeTracker;
 
-        private bool _leftPadPressed;
-        private bool _leftTriggerPressed;
-        private bool _rightPadPressed;
-        private bool _rightTriggerPressed;
-
         private bool ShowText
         {
             get
@@ -87,9 +82,11 @@ namespace Tobii.Research.Unity.Examples
             _highlightInfo = new ActiveObject();
             var textRenderer = _textCalibration.GetComponent<Renderer>();
             textRenderer.sortingOrder -= 1;
+
+            StartCoroutine(VRUtility.LoadOpenVR());
         }
 
-        private void HandleTriggerClicked()
+        private void HandleF1Pressed()
         {
             if (_eyeTracker.Connected)
             {
@@ -122,49 +119,14 @@ namespace Tobii.Research.Unity.Examples
             Debug.Log("Calibration " + (calibrationStartResult ? "" : "not ") + "started");
         }
 
-        private void HandleLeftTriggerClicked()
+        private void HandleF2Pressed()
         {
             _gazeTrail.ParticleCount = _gazeTrail.ParticleCount > 0 ? 0 : 1;
         }
 
-        private void HandlePadClicked()
+        private void HandleQuit()
         {
             _quitTime = true;
-        }
-
-        private static void CheckController(uint side, ref bool padPressedLast, ref bool triggerPressedLast, System.Action onPadClicked, System.Action onTriggerClicked)
-        {
-            var padPressed = false;
-            var triggerPressed = false;
-
-            if (!VRWrap.GetControllerPressed(side, out padPressed, out triggerPressed))
-            {
-                return;
-            }
-
-            if (!padPressedLast && padPressed)
-            {
-                // Pad clicked
-                padPressedLast = true;
-                onPadClicked();
-            }
-            else if (padPressedLast && !padPressed)
-            {
-                // Pad released
-                padPressedLast = false;
-            }
-
-            if (!triggerPressedLast && triggerPressed)
-            {
-                // Trigger clicked
-                triggerPressedLast = true;
-                onTriggerClicked();
-            }
-            else if (triggerPressedLast && !triggerPressed)
-            {
-                // Trigger released
-                triggerPressedLast = false;
-            }
         }
 
         private void Update()
@@ -183,24 +145,21 @@ namespace Tobii.Research.Unity.Examples
                 return;
             }
 
-            CheckController(VRWrap.ControllerIndexLeft, ref _leftPadPressed, ref _leftTriggerPressed, HandlePadClicked, HandleLeftTriggerClicked);
-            CheckController(VRWrap.ControllerIndexRight, ref _rightPadPressed, ref _rightTriggerPressed, HandlePadClicked, HandleTriggerClicked);
-
             if (_eyeTracker.Connected)
             {
                 if (Input.GetKeyDown(KeyCode.F1))
                 {
-                    HandleTriggerClicked();
+                    HandleF1Pressed();
                 }
 
                 if (Input.GetKeyDown(KeyCode.F2))
                 {
-                    HandleLeftTriggerClicked();
+                    HandleF2Pressed();
                 }
 
-                if (Input.GetKeyDown(KeyCode.F3))
+                if (Input.GetKeyDown(KeyCode.F3) || Input.GetKeyDown(KeyCode.Escape))
                 {
-                    HandlePadClicked();
+                    HandleQuit();
                 }
 
                 // Check if the calibration already finish.

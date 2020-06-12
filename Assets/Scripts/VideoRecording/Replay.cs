@@ -664,6 +664,7 @@ public class Replay : MonoBehaviour {
 									
 								}
 
+								/*
 								//PARTICLE EMITTERS
 								else if (loggedProperty == "PARTICLE_EMITTER_PLAYING"){
 									string particleSystemName = splitLine [i+2];
@@ -686,6 +687,8 @@ public class Replay : MonoBehaviour {
 									particles.emit = false;
 									
 								}
+								*/
+
 
 								//AUDIO
 								else if (loggedProperty == "AUDIO_PLAYING"){

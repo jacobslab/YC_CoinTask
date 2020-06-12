@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// Copyright © 2018 Tobii AB. All rights reserved.
+// Copyright © 2019 Tobii Pro AB. All rights reserved.
 //-----------------------------------------------------------------------
 
 using UnityEngine;
@@ -23,7 +23,8 @@ namespace Tobii.Research.Unity
 
         /// <summary>
         /// The combined <see cref="Ray"/> from the screen point into the scene.
-        /// Based on the combined gaze points of the eyes.
+        /// Based on the combined gaze points of the eyes. If one or both of the
+        /// gaze points are invalid, default(Ray) will be returned.
         /// </summary>
         Ray CombinedGazeRayScreen { get; }
 

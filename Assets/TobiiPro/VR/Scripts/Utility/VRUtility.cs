@@ -1,11 +1,19 @@
 ﻿//-----------------------------------------------------------------------
-// Copyright © 2017 Tobii AB. All rights reserved.
+// Copyright © 2019 Tobii Pro AB. All rights reserved.
 //-----------------------------------------------------------------------
 
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+
+#if UNITY_2017_2_OR_NEWER
+using UnityEngine.XR;
+#else
+using InputTracking = UnityEngine.VR.InputTracking;
+using XRNode = UnityEngine.VR.VRNode;
+using XRSettings = UnityEngine.VR.VRSettings;
+#endif
 
 [assembly: InternalsVisibleTo("Assembly-CSharp-Editor")]
 
@@ -18,11 +26,16 @@ namespace Tobii.Research.Unity
         /// <summary>
         /// A transform to manipulate for the historical eye tracker origin.
         /// Use <see cref="TemporaryTransformWithAppliedPose(EyeTrackerOriginPose)"/>
-        /// to get this transfomr with a provided pose applied. It is
+        /// to get this transform with a provided pose applied. It is
         /// temporary since the object will change to the next supplied pose
         /// on the next call.
         /// </summary>
         private static Transform _historicalEyeTrackerOrigin;
+
+        /// <summary>
+        /// Cached version of the main camera.
+        /// </summary>
+        private static Camera _mainCamera;
 
         #endregion Private
 
@@ -30,25 +43,30 @@ namespace Tobii.Research.Unity
 
         /// <summary>
         /// Get lens cup separation from HMD. A negative number indicates an error.
+        /// To get this value from the OpenVR API, use Prop_UserIpdMeters_Float.
         /// </summary>
         internal static float LensCupSeparation
         {
             get
             {
-                if (!VRWrap.SteamVRActive)
-                {
-                    return -1;
-                }
+                var dist = Vector3.Distance(InputTracking.GetLocalPosition(XRNode.LeftEye), InputTracking.GetLocalPosition(XRNode.RightEye));
+                return dist == 0f ? -1f : dist;
+            }
+        }
 
-                var error = 0;
-                var result = VRWrap.GetFloatProperty("Prop_UserIpdMeters_Float", ref error);
-
-                if (error != 0) // ETrackedPropertyError.TrackedProp_Success = 0
-                {
-                    return -1;
-                }
-
-                return result;
+        /// <summary>
+        /// Make sure OpenVR is loaded.
+        /// </summary>
+        /// <returns>The coroutine enumerator</returns>
+        internal static IEnumerator LoadOpenVR()
+        {
+            var newVRDevice = "OpenVR";
+            if (string.Compare(XRSettings.loadedDeviceName, newVRDevice, true) != 0)
+            {
+                XRSettings.LoadDeviceByName(newVRDevice);
+                yield return null;
+                XRSettings.enabled = true;
+                Debug.Log("Enabled XR settings for " + newVRDevice);
             }
         }
 
@@ -65,39 +83,64 @@ namespace Tobii.Research.Unity
         }
 
         /// <summary>
-        /// Get the eye tracker origin when using a Vive with SteamVR in Unity3D. Slow, only use for first lookup.
+        /// Helper to find main camera. Slow first lookup. If camera is changed, set it to null before next lookup.
+        /// </summary>
+        internal static Camera MainCamera
+        {
+            get
+            {
+                if (_mainCamera == null)
+                {
+                    var cam = GameObject.Find("Camera (eye)");
+
+                    if (!cam)
+                    {
+                        cam = GameObject.Find("Main Camera (eye)");
+                        if (!cam)
+                        {
+                            // Here we can suspect that we do not have SteamVR in the project.
+                            cam = GameObject.Find("Main Camera");
+                            if (!cam)
+                            {
+                                cam = GameObject.Find("Camera");
+                                if (!cam)
+                                {
+                                    Debug.LogError("Failed to find either \"Camera (eye)\", \"Main Camera (eye)\", \"Main Camera\", or even \"Camera\". Perhaps use GetEyeTrackerOrigin(GameObject cam) instead?");
+                                    return null;
+                                }
+                            }
+                        }
+                    }
+
+                    _mainCamera = cam ? cam.GetComponent<Camera>() : null;
+                }
+
+                return _mainCamera;
+            }
+
+            set
+            {
+                _mainCamera = value;
+            }
+        }
+
+        /// <summary>
+        /// Get the eye tracker origin when using a Vive in Unity3D. Slow, only use for first lookup.
         /// </summary>
         internal static Transform EyeTrackerOriginVive
         {
             get
             {
-                var cam = GameObject.Find("Camera (eye)");
-
-                if (!cam)
-                {
-                    cam = GameObject.Find("Main Camera (eye)");
-                    if (!cam)
-                    {
-                        // Here we can suspect that we do not have SteamVR in the project.
-                        cam = GameObject.Find("Main Camera");
-                        if (!cam)
-                        {
-                            cam = GameObject.Find("Camera");
-                            if (!cam)
-                            {
-                                Debug.LogError("Failed to find either \"Camera (eye)\", \"Main Camera (eye)\", \"Main Camera\", or even \"Camera\". Perhaps use GetEyeTrackerOrigin(GameObject cam) instead?");
-                                return null;
-                            }
-                        }
-                    }
-                }
-
-                return GetEyeTrackerOrigin(cam);
+                return GetEyeTrackerOrigin(MainCamera.gameObject);
             }
         }
 
         /// <summary>
-        /// Get the eyetracker origin when using a Vive with SteamVR in Unity3, but provide the eye camera as an argument.
+        /// Get the eyetracker origin when using a Vive in Unity, but provide the eye camera as an argument.
+        /// Slow. Only use for first lookup.
+        ///
+        /// The best guess of the z offset from the eyetracker origin to the representation of the HMD in Unity
+        /// is 15 mm. To get a hint of this value from the OpenVR API, use Prop_UserHeadToEyeDepthMeters_Float
         /// </summary>
         /// <param name="cam">The eye camera game object.</param>
         /// <returns>The eyetracker origin.</returns>
@@ -119,25 +162,8 @@ namespace Tobii.Research.Unity
             historicalEyeTrackerOriginObject.hideFlags = HideFlags.HideInHierarchy;
             _historicalEyeTrackerOrigin = historicalEyeTrackerOriginObject.transform;
 
+            // 15 mm z offset.
             var zOffs = 0.015f;
-
-            if (VRWrap.SteamVRActive)
-            {
-                var error = 0;
-                var h2eDepth = VRWrap.GetFloatProperty("Prop_UserHeadToEyeDepthMeters_Float", ref error);
-
-                if (error == 0) // ETrackedPropertyError.TrackedProp_Success = 0
-                {
-                    zOffs = h2eDepth;
-                    Debug.Log("Got head to eye z depth from HMD: " + zOffs);
-                }
-            }
-            else
-            {
-                zOffs = 0.0f;
-                Debug.Log("We seem to not be using SteamVR. Do not assume any offset: " + zOffs);
-            }
-
             eyetrackerOrigin.localPosition = new Vector3(0, 0, zOffs);
             eyetrackerOrigin.localRotation = Quaternion.identity;
             return eyetrackerOrigin;
@@ -356,342 +382,4 @@ namespace Tobii.Research.Unity
     }
 
     #endregion Queues and Lists
-
-    /// <summary>
-    /// Reflection wrapper to avoid SteamVR dependency.
-    /// </summary>
-    internal static class VRWrap
-    {
-        private static Type _steamVRType;
-        private static Type _openVRType;
-        private static Type _cVRSystemType;
-        private static object _steamVRInstance;
-        private static object _openVRSystem;
-        private static object _steamVRHMD;
-        private static System.Reflection.MethodInfo _steamGetFloatTrackedDevicePropertyMethod;
-        private static System.Reflection.MethodInfo _getDeviceIndexMethod;
-        private static System.Reflection.MethodInfo _getControllerStateMethod;
-        private static System.Reflection.FieldInfo _buttonPressedField;
-        private static object _controllerStateObject;
-        private static uint _controllerIndexLeft = uint.MaxValue;
-        private static uint _controllerIndexRight = uint.MaxValue;
-        private static object[] _argumentList;
-
-        /// <summary>
-        /// Simpler get float property from Vive.
-        /// </summary>
-        /// <param name="prop">The property to get</param>
-        /// <param name="error">An error reference</param>
-        /// <returns>The float value</returns>
-        internal static float GetFloatProperty(string property, ref int error)
-        {
-            var hmd = SteamVRHMD;
-            if (hmd == null)
-            {
-                error = 5; // TrackedProp_InvalidDevice = 5
-                return 0;
-            }
-
-            if (_steamGetFloatTrackedDevicePropertyMethod == null)
-            {
-                _steamGetFloatTrackedDevicePropertyMethod = hmd.GetType().GetMethod("GetFloatTrackedDeviceProperty");
-
-                if (_steamGetFloatTrackedDevicePropertyMethod == null)
-                {
-                    error = 5; // TrackedProp_InvalidDevice = 5
-                    return 0;
-                }
-            }
-
-            var propertyType = _steamGetFloatTrackedDevicePropertyMethod.GetParameters()[1].ParameterType;
-            var arguments = new object[] { (uint)0, Enum.Parse(propertyType, property), error };
-            var result = (float)_steamGetFloatTrackedDevicePropertyMethod.Invoke(hmd, arguments);
-
-            if (error != 0)
-            {
-                return 0;
-            }
-
-            return result;
-        }
-
-        internal static Type SteamVRType
-        {
-            get
-            {
-                if (_steamVRType == null)
-                {
-                    _steamVRType = Type.GetType("SteamVR", throwOnError: false);
-                }
-
-                return _steamVRType;
-            }
-        }
-
-        internal static Type OpenVRType
-        {
-            get
-            {
-                if (_openVRType == null)
-                {
-                    _openVRType = Type.GetType("Valve.VR.OpenVR", throwOnError: false);
-                }
-
-                return _openVRType;
-            }
-        }
-
-        internal static Type CVRSystemType
-        {
-            get
-            {
-                if (_cVRSystemType == null)
-                {
-                    _cVRSystemType = Type.GetType("Valve.VR.CVRSystem", throwOnError: false);
-                }
-
-                return _cVRSystemType;
-            }
-        }
-
-        internal static object SteamVRInstance
-        {
-            get
-            {
-                if (_steamVRInstance == null)
-                {
-                    var steamVRType = SteamVRType;
-
-                    if (steamVRType == null)
-                    {
-                        return null;
-                    }
-
-                    var property = steamVRType.GetProperty("instance");
-
-                    if (property == null)
-                    {
-                        return null;
-                    }
-
-                    _steamVRInstance = property.GetValue(null, null);
-                }
-
-                return _steamVRInstance;
-            }
-        }
-
-        internal static object OpenVRSystem
-        {
-            get
-            {
-                if (_openVRSystem == null)
-                {
-                    var openVRType = OpenVRType;
-
-                    if (openVRType == null)
-                    {
-                        return null;
-                    }
-
-                    var property = openVRType.GetProperty("System");
-
-                    if (property == null)
-                    {
-                        return null;
-                    }
-
-                    _openVRSystem = property.GetValue(null, null);
-                }
-
-                return _openVRSystem;
-            }
-        }
-
-        internal static bool SteamVRActive
-        {
-            get
-            {
-                var steamVRType = SteamVRType;
-
-                if (steamVRType == null)
-                {
-                    return false;
-                }
-
-                var steamVRActive = steamVRType.GetProperty("active").GetValue(null, null);
-
-                if (steamVRActive == null)
-                {
-                    return false;
-                }
-
-                return (bool)steamVRActive;
-            }
-        }
-
-        internal static object SteamVRHMD
-        {
-            get
-            {
-                if (_steamVRHMD == null)
-                {
-                    var steamVRType = SteamVRType;
-
-                    if (steamVRType == null)
-                    {
-                        return null;
-                    }
-
-                    var steamVRInstance = SteamVRInstance;
-
-                    if (steamVRInstance == null)
-                    {
-                        return null;
-                    }
-
-                    _steamVRHMD = steamVRType.GetProperty("hmd").GetValue(steamVRInstance, null);
-                }
-
-                return _steamVRHMD;
-            }
-        }
-
-        private static uint GetControllerIndex(bool leftHand)
-        {
-            var cVRSystemType = CVRSystemType;
-
-            if (cVRSystemType == null)
-            {
-                return uint.MaxValue;
-            }
-
-            var openVRSystem = OpenVRSystem;
-
-            if (openVRSystem == null)
-            {
-                return uint.MaxValue;
-            }
-
-            if (_getDeviceIndexMethod == null)
-            {
-                _getDeviceIndexMethod = cVRSystemType.GetMethod("GetTrackedDeviceIndexForControllerRole");
-
-                if (_getDeviceIndexMethod == null)
-                {
-                    return uint.MaxValue;
-                }
-            }
-
-            // Left hand = 1, right hand = 2
-            return (uint)_getDeviceIndexMethod.Invoke(openVRSystem, new object[] { leftHand ? 1 : 2 });
-        }
-
-        internal static bool GetControllerPressed(uint controllerIndex, out bool padPressed, out bool triggerPressed)
-        {
-            padPressed = false;
-            triggerPressed = false;
-
-            var cVRSystemType = CVRSystemType;
-
-            if (cVRSystemType == null)
-            {
-                return false;
-            }
-
-            if (_getControllerStateMethod == null)
-            {
-                _getControllerStateMethod = cVRSystemType.GetMethod("GetControllerState");
-
-                if (_getControllerStateMethod == null)
-                {
-                    return false;
-                }
-            }
-
-            var openVRSystem = OpenVRSystem;
-
-            if (openVRSystem == null)
-            {
-                return false;
-            }
-
-            var controllerStateType = Type.GetType("Valve.VR.VRControllerState_t");
-
-            if (controllerStateType == null)
-            {
-                return false;
-            }
-
-            if (_controllerStateObject == null)
-            {
-                _controllerStateObject = Activator.CreateInstance(controllerStateType);
-
-                if (_controllerStateObject == null)
-                {
-                    return false;
-                }
-            }
-
-            var controllerStateTypeSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(controllerStateType);
-
-            if (_argumentList == null)
-            {
-                _argumentList = new object[] { controllerIndex, _controllerStateObject, controllerStateTypeSize };
-            }
-
-            _argumentList[0] = controllerIndex;
-
-            if (!(bool)_getControllerStateMethod.Invoke(openVRSystem, _argumentList))
-            {
-                return false;
-            }
-
-            if (_buttonPressedField == null)
-            {
-                _buttonPressedField = controllerStateType.GetField("ulButtonPressed");
-
-                if (_buttonPressedField == null)
-                {
-                    return false;
-                }
-            }
-
-            var buttonPressed = (ulong)_buttonPressedField.GetValue(_argumentList[1]);
-
-            // Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad == 32
-            padPressed = (buttonPressed & (1UL << 32)) > 0L;
-
-            // Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger == 33
-            triggerPressed = (buttonPressed & (1UL << 33)) > 0L;
-
-            return true;
-        }
-
-        internal static uint ControllerIndexLeft
-        {
-            get
-            {
-                if (_controllerIndexLeft == uint.MaxValue)
-                {
-                    _controllerIndexLeft = GetControllerIndex(leftHand: true);
-                }
-
-                return _controllerIndexLeft;
-            }
-        }
-
-        internal static uint ControllerIndexRight
-        {
-            get
-            {
-                if (_controllerIndexRight == uint.MaxValue)
-                {
-                    _controllerIndexRight = GetControllerIndex(leftHand: false);
-                }
-
-                return _controllerIndexRight;
-            }
-        }
-    }
 }
