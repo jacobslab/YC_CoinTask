@@ -38,6 +38,7 @@ public class ParticleLogTrack : LogTrack {
 			
 		}
 
+<<<<<<< HEAD
 		/*
 	if (particleEmitter != null) {
 		if (!isEmitterPlaying && particleEmitter.emit) {
@@ -48,6 +49,17 @@ public class ParticleLogTrack : LogTrack {
 		else if (isEmitterPlaying && !particleEmitter.emit) {
 			isEmitterPlaying = false;
 			LogParticleEmitterOver (particleEmitter.transform.position);
+=======
+		if (particleEmitter != null) {
+			if (!isEmitterPlaying) {
+				isEmitterPlaying = true;
+				LogParticleEmitterPlaying (particleEmitter.transform.position);
+			} 
+			else if (isEmitterPlaying) {
+				isEmitterPlaying = false;
+				LogParticleEmitterOver (particleEmitter.transform.position);
+			}
+>>>>>>> 93dd41134ef73c9966b6b606b13edb9a4cc7edc0
 		}
 	}
 		*/
@@ -104,7 +116,7 @@ public class ParticleLogTrack : LogTrack {
 		/*
 		if (isEmitterPlaying) {
 			isEmitterPlaying = false;
-			particleEmitter.emit = false;
+			//particleEmitter.emit = false;
 			LogParticleEmitterOver(particleEmitter.transform.position);
 		}
 		*/

@@ -1,0 +1,38 @@
+# 
+# Wavefront material file
+# Converted by the DEEP Exploration  Deep Exploration 5 5.0.6.1889 Release
+# Right Hemisphere, LTD
+# http://www.righthemisphere.com/
+# 
+
+newmtl soap
+Ka 0 0 0
+Kd 0.00784314 0.831373 0.792157
+Ks 0.0196078 0.0196078 0.0196078
+illum 2
+Ns 362.039
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl steel
+Ka 0 0 0
+Kd 0.470588 0.470588 0.470588
+Ks 0.505882 0.505882 0.505882
+illum 2
+Ns 512
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 

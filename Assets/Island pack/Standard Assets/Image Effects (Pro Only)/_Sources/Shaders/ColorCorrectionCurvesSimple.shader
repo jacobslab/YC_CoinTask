@@ -9,8 +9,6 @@ Shader "Hidden/ColorCorrectionCurvesSimple" {
 	// Shader code pasted into all further CGPROGRAM blocks
 	CGINCLUDE
 
-	#pragma fragmentoption ARB_precision_hint_fastest
-	
 	#include "UnityCG.cginc"
 	
 	struct v2f {
@@ -50,7 +48,6 @@ Shader "Hidden/ColorCorrectionCurvesSimple" {
 Subshader {
  Pass {
 	  ZTest Always Cull Off ZWrite Off
-	  Fog { Mode off }      
 
       CGPROGRAM
       #pragma vertex vert

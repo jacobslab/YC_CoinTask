@@ -18,6 +18,8 @@ public class EnvironmentController : MonoBehaviour {
 	public GameObject HomeBaseIndicatorB;
 
 	public Vector3 center{ get { return GetEnvironmentCenter(); } }
+
+    public float envRadius { get { return sphereWalls.radius; }}
 	public EnvironmentPositionSelector myPositionSelector;
 
 
