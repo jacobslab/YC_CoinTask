@@ -14,8 +14,8 @@ public class GoText : MonoBehaviour {
 	public Color endColor;
 
 	Vector3 startScale;
-	float animationTime = 0.8f;
-	float fadeOutTime = 0.3f;
+	public float animationTime = 0.8f;
+	public float fadeOutTime = 0.3f;
 
 	// Use this for initialization
 	void Start () {
@@ -29,9 +29,10 @@ public class GoText : MonoBehaviour {
 	
 	}
 
-	public void Play(){
+
+	public void Play(string newText){
 		if (Config_CoinTask.isJuice) {
-			text.text = exp.currInstructions.GoText;
+            text.text = newText;
 			StartCoroutine (ScaleUp ());
 			ChangeColor ();
 		}

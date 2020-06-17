@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// Copyright © 2018 Tobii AB. All rights reserved.
+// Copyright © 2019 Tobii Pro AB. All rights reserved.
 //-----------------------------------------------------------------------
 
 using System.Threading;
@@ -126,7 +126,10 @@ namespace Tobii.Research.Unity
             private static Point _currentPoint;
             private CommandType _command;
             private CalibrationStatus _status;
+<<<<<<< HEAD
             private CalibrationResult _result;
+=======
+>>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
             private int _elapsedMilliseconds;
             private bool _ready;
 
@@ -215,6 +218,7 @@ namespace Tobii.Research.Unity
                 }
             }
 
+<<<<<<< HEAD
             public CalibrationResult Result
             {
                 get
@@ -226,6 +230,8 @@ namespace Tobii.Research.Unity
                 }
             }
 
+=======
+>>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
             public MethodResult(CommandType command)
             {
                 lock (Lock)
@@ -277,6 +283,7 @@ namespace Tobii.Research.Unity
                     _currentResult = null;
                 }
             }
+<<<<<<< HEAD
             public void Finished(CalibrationResult result, int elapsed)
             {
                 lock (Lock)
@@ -287,6 +294,8 @@ namespace Tobii.Research.Unity
                     _currentResult = null;
                 }
             }
+=======
+>>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
 
             public override string ToString()
             {
@@ -373,6 +382,8 @@ namespace Tobii.Research.Unity
         {
             var eyeTracker = EyeTrackerIF;
 
+            CalibrationStatus status;
+
             if (eyeTracker == null)
             {
                 return;
@@ -434,10 +445,10 @@ namespace Tobii.Research.Unity
                             break;
 
                         case MethodResult.CommandType.Compute:
-                            CalibrationStatus status = screenBasedCalibration != null ?
+                             status = screenBasedCalibration != null ?
                                 screenBasedCalibration.ComputeAndApply().Status :
                                 hmdBasedCalibration.ComputeAndApply().Status;
-
+                            
                             stopWatch.Stop();
                             currentResult.Finished(status, (int)stopWatch.ElapsedMilliseconds);
                             break;
@@ -445,11 +456,18 @@ namespace Tobii.Research.Unity
                         case MethodResult.CommandType.Result:
                             CalibrationResult result = screenBasedCalibration.ComputeAndApply();
                             status = screenBasedCalibration.ComputeAndApply().Status;
+<<<<<<< HEAD
                             stopWatch.Stop();
                             Calibration.Instance.calibPointCollection = result.CalibrationPoints;
                             currentResult.Finished(status, (int)stopWatch.ElapsedMilliseconds);
                             break;
 
+=======
+                           stopWatch.Stop();
+                            Calibration.Instance.calibPointCollection = result.CalibrationPoints;
+                            currentResult.Finished(status, (int)stopWatch.ElapsedMilliseconds);
+                            break;
+>>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
                         case MethodResult.CommandType.Leave:
                             if (screenBasedCalibration != null)
                                 screenBasedCalibration.LeaveCalibrationMode();

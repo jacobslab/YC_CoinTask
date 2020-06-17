@@ -75,8 +75,8 @@ Shader "Hidden/FastBloom" {
 		{	
         	#if UNITY_UV_STARTS_AT_TOP
 			
-			fixed4 color = tex2D(_MainTex, i.uv);
-			return color + tex2D(_Bloom, i.uv2);
+			fixed4 color = tex2D(_MainTex, i.uv2);
+			return color + tex2D(_Bloom, i.uv);
 			
 			#else
 
@@ -212,7 +212,6 @@ Shader "Hidden/FastBloom" {
 	
 	SubShader {
 	  ZTest Off Cull Off ZWrite Off Blend Off
-	  Fog { Mode off }  
 	  
 	// 0
 	Pass {
@@ -220,7 +219,6 @@ Shader "Hidden/FastBloom" {
 		CGPROGRAM
 		#pragma vertex vertBloom
 		#pragma fragment fragBloom
-		#pragma fragmentoption ARB_precision_hint_fastest 
 		
 		ENDCG
 		 
@@ -233,7 +231,6 @@ Shader "Hidden/FastBloom" {
 		
 		#pragma vertex vert4Tap
 		#pragma fragment fragDownsample
-		#pragma fragmentoption ARB_precision_hint_fastest 
 		
 		ENDCG
 		 
@@ -248,7 +245,6 @@ Shader "Hidden/FastBloom" {
 		
 		#pragma vertex vertBlurVertical
 		#pragma fragment fragBlur8
-		#pragma fragmentoption ARB_precision_hint_fastest 
 		
 		ENDCG 
 		}	
@@ -262,7 +258,6 @@ Shader "Hidden/FastBloom" {
 		
 		#pragma vertex vertBlurHorizontal
 		#pragma fragment fragBlur8
-		#pragma fragmentoption ARB_precision_hint_fastest 
 		
 		ENDCG
 		}	
@@ -277,7 +272,6 @@ Shader "Hidden/FastBloom" {
 		
 		#pragma vertex vertBlurVerticalSGX
 		#pragma fragment fragBlurSGX
-		#pragma fragmentoption ARB_precision_hint_fastest 
 		
 		ENDCG
 		}	
@@ -291,7 +285,6 @@ Shader "Hidden/FastBloom" {
 		
 		#pragma vertex vertBlurHorizontalSGX
 		#pragma fragment fragBlurSGX
-		#pragma fragmentoption ARB_precision_hint_fastest 
 		
 		ENDCG
 		}	

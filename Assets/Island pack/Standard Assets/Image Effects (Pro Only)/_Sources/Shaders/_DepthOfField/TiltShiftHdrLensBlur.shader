@@ -227,15 +227,11 @@
 	
 Subshader {
 	  ZTest Always Cull Off ZWrite Off
-	  Fog { Mode off }	
   
    Pass { // 0 
 
       CGPROGRAM
       
-      #pragma fragmentoption ARB_precision_hint_fastest
-      #pragma exclude_renderers flash d3d11_9x
-      #pragma glsl
       #pragma target 3.0
       #pragma vertex vert
       #pragma fragment fragFieldPreview
@@ -247,9 +243,6 @@ Subshader {
 
       CGPROGRAM
       
-      #pragma fragmentoption ARB_precision_hint_fastest
-      #pragma exclude_renderers flash d3d11_9x
-      #pragma glsl
       #pragma target 3.0
       #pragma vertex vert
       #pragma fragment fragIrisPreview
@@ -261,9 +254,6 @@ Subshader {
 
       CGPROGRAM
       
-      #pragma fragmentoption ARB_precision_hint_fastest
-      #pragma exclude_renderers flash d3d11_9x
-      #pragma glsl
       #pragma target 3.0
       #pragma vertex vert
       #pragma fragment fragField
@@ -275,9 +265,6 @@ Subshader {
 
       CGPROGRAM
       
-      #pragma fragmentoption ARB_precision_hint_fastest
-      #pragma exclude_renderers flash d3d11_9x
-      #pragma glsl
       #pragma target 3.0
       #pragma vertex vert
       #pragma fragment fragIris
@@ -289,9 +276,6 @@ Subshader {
 
       CGPROGRAM
       
-      #pragma fragmentoption ARB_precision_hint_fastest
-      #pragma exclude_renderers flash d3d11_9x
-      #pragma glsl
       #pragma target 3.0
       #pragma vertex vert
       #pragma fragment fragFieldHQ
@@ -303,9 +287,6 @@ Subshader {
 
       CGPROGRAM
       
-      #pragma fragmentoption ARB_precision_hint_fastest
-      #pragma exclude_renderers flash d3d11_9x
-      #pragma glsl
       #pragma target 3.0
       #pragma vertex vert
       #pragma fragment fragIrisHQ
@@ -317,9 +298,6 @@ Subshader {
 
       CGPROGRAM
       
-      #pragma fragmentoption ARB_precision_hint_fastest
-      #pragma exclude_renderers flash d3d11_9x
-      #pragma glsl
       #pragma target 3.0
       #pragma vertex vert
       #pragma fragment fragUpsample

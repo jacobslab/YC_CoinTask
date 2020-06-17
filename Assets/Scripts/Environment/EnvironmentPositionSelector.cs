@@ -73,15 +73,11 @@ public class EnvironmentPositionSelector : MonoBehaviour {
 		float horizontalAxisInput = Input.GetAxis (Config_CoinTask.HorizontalAxisName);
 
 		float epsilon = 0.1f;
-		bool positionCloseToTower1 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.towerPositionTransform1.position);
-		bool positionCloseToTower2 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.towerPositionTransform2.position);
+		//bool positionCloseToTower1 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.towerPositionTransform1.position);
+		//bool positionCloseToTower2 = CheckPositionsClose (epsilon, exp.player.transform.position, exp.player.controls.towerPositionTransform2.position);
 
-		if (positionCloseToTower1) {
-			Move (verticalAxisInput * selectionMovementSpeed * Time.deltaTime, horizontalAxisInput * selectionMovementSpeed * Time.deltaTime);
-		} 
-		else if (positionCloseToTower2) {
-			Move (-verticalAxisInput * selectionMovementSpeed * Time.deltaTime, -horizontalAxisInput * selectionMovementSpeed * Time.deltaTime);
-		}
+	    Move (verticalAxisInput * selectionMovementSpeed * Time.deltaTime, horizontalAxisInput * selectionMovementSpeed * Time.deltaTime);
+		
 	}
 
 	bool CheckPositionsClose(float epsilon, Vector3 pos1, Vector3 pos2){
