@@ -32,6 +32,7 @@ public class EyetrackerManager : MonoBehaviour {
 	public LayerMask layerMask;
 	public static bool shouldCheckHead = false;
 
+
     public static bool waitForCalibration = false;
 	public static bool isCalibrating=false;
     public static bool finishedCalibration = false;
@@ -111,11 +112,13 @@ public class EyetrackerManager : MonoBehaviour {
         Debug.Log("waiting for calibration");
         calibrationGroup.alpha = 1f;
         calibration.gameObject.SetActive(true);
+        
         while (!Experiment_CoinTask.expReady)
         {
             Debug.Log("waiting for exp to be ready");
             yield return 0;
         }
+
         Debug.Log("exp is ready");
        // Experiment_CoinTask.Instance.trialController.TogglePause();
         waitForCalibration = true;

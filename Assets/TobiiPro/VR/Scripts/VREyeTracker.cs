@@ -1,9 +1,23 @@
 ﻿//-----------------------------------------------------------------------
-// Copyright © 2017 Tobii AB. All rights reserved.
+// Copyright © 2019 Tobii Pro AB. All rights reserved.
 //-----------------------------------------------------------------------
+
+//-----------------------------------------------------------------------
+// Un-comment USE_OPENVR_BINDINGS to use OpenVR bindings if they are
+// available and the camera is not moved from its original position. That
+// will give more accurate world gaze data than the prediction offset.
+// See readme_hmd_pose_prediction.txt for more information.
+//-----------------------------------------------------------------------
+//#define USE_OPENVR_BINDINGS
 
 using System.Threading;
 using UnityEngine;
+
+#if USE_OPENVR_BINDINGS
+
+using Valve.VR;
+
+#endif
 
 namespace Tobii.Research.Unity
 {
@@ -80,6 +94,21 @@ namespace Tobii.Research.Unity
 
         #endregion Public Properties
 
+        #region Inspector Properties
+
+#if !USE_OPENVR_BINDINGS
+        /// <summary>
+        /// Estimated HMD prediction offset in milliseconds. Some testing has shown about 34 milliseconds to give an OK approximation in some cases,
+        /// See readme_hmd_pose_prediction.txt for more information.
+        /// </summary>
+        [Tooltip("Estimated HMD prediction offset in milliseconds.")]
+        [Range(0f, 70f)]
+        [SerializeField]
+        private float _hmdPosePredictionOffset = 34;
+#endif
+
+        #endregion Inspector Properties
+
         #region Private Fields
 
         ///// <summary>
@@ -118,6 +147,10 @@ namespace Tobii.Research.Unity
         /// </summary>
         private IVRGazeData _latestGazeData = new VRGazeData();
 
+#if USE_OPENVR_BINDINGS
+        private TrackedDevicePose_t[] poseArray = new TrackedDevicePose_t[OpenVR.k_unMaxTrackedDeviceCount];
+#endif
+
         #endregion Private Fields
 
         #region Override Methods
@@ -130,7 +163,7 @@ namespace Tobii.Research.Unity
 
         protected override void OnStart()
         {
-            // The eye tracker origin is not exactly in the camera position when using the SteamVR plugin in Unity.
+            // The eye tracker origin is not exactly in the camera position when using Vive in Unity.
             _eyeTrackerOrigin = VRUtility.EyeTrackerOriginVive;
 
             base.OnStart();
@@ -138,9 +171,10 @@ namespace Tobii.Research.Unity
 
         protected override void OnUpdate()
         {
-            // Save the current pose for the current time.
-            _eyeTrackerOriginPoses.Add(_eyeTrackerOrigin.GetPose(EyeTrackingOperations.GetSystemTimeStamp()));
-
+#if !USE_OPENVR_BINDINGS
+            // Save the current pose for the current time adding estimated pose prediction time offset.
+            _eyeTrackerOriginPoses.Add(_eyeTrackerOrigin.GetPose(EyeTrackingOperations.GetSystemTimeStamp() + Mathf.RoundToInt(_hmdPosePredictionOffset * 1000f)));
+#endif
             base.OnUpdate();
         }
 
@@ -164,12 +198,27 @@ namespace Tobii.Research.Unity
                     break;
                 }
 
+#if USE_OPENVR_BINDINGS
+                var now = EyeTrackingOperations.GetSystemTimeStamp();
+                var backInTime = (originalGaze.SystemTimeStamp - now) / 1000000.0f;
+
+                // Look up OpenVR pose back when the eyetracker looked at the eyes.
+                OpenVR.System.GetDeviceToAbsoluteTrackingPose(OpenVR.Compositor.GetTrackingSpace(), backInTime, poseArray);
+                if (!poseArray[OpenVR.k_unTrackedDeviceIndex_Hmd].bPoseIsValid)
+                {
+                    Debug.Log("Failed to get historical pose");
+                    continue;
+                }
+
+                var bestMatchingPose = HMDPoseToETPose(poseArray[OpenVR.k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking, now);
+#else
                 var bestMatchingPose = _eyeTrackerOriginPoses.GetBestMatchingPose(originalGaze.SystemTimeStamp);
                 if (!bestMatchingPose.Valid)
                 {
                     Debug.Log("Did not find a matching pose");
                     continue;
                 }
+#endif
 
                 gazeData = new VRGazeData(originalGaze, bestMatchingPose);
                 _gazeDataQueue.Next = gazeData;
@@ -239,6 +288,34 @@ namespace Tobii.Research.Unity
         private void HMDGazeDataReceivedCallback(object sender, HMDGazeDataEventArgs eventArgs)
         {
             _originalGazeData.Next = eventArgs;
+        }
+
+#if USE_OPENVR_BINDINGS
+
+        public EyeTrackerOriginPose HMDPoseToETPose(HmdMatrix34_t pose, long timeStamp)
+        {
+            var rw = Mathf.Sqrt(Mathf.Max(0, 1 + pose.m0 + pose.m5 + pose.m10)) / 2;
+            var rx = Mathf.Sqrt(Mathf.Max(0, 1 + pose.m0 - pose.m5 - pose.m10)) / 2;
+            var ry = Mathf.Sqrt(Mathf.Max(0, 1 - pose.m0 + pose.m5 - pose.m10)) / 2;
+            var rz = Mathf.Sqrt(Mathf.Max(0, 1 - pose.m0 - pose.m5 + pose.m10)) / 2;
+            rx = Mathf.Abs(rx) * Mathf.Sign(pose.m6 - pose.m9);
+            ry = Mathf.Abs(ry) * Mathf.Sign(pose.m8 - pose.m2);
+            rz = Mathf.Abs(rz) * Mathf.Sign(pose.m4 - pose.m1);
+            return new EyeTrackerOriginPose(timeStamp, new Vector3(pose.m3, pose.m7, -pose.m11), new Quaternion(rx, ry, rz, rw));
+        }
+
+#endif
+
+        internal bool UsingOpenVR
+        {
+            get
+            {
+#if USE_OPENVR_BINDINGS
+                return true;
+#else
+                return false;
+#endif
+            }
         }
 
         #endregion Private Eye Tracking Methods

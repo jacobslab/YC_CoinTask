@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// Copyright © 2018 Tobii AB. All rights reserved.
+// Copyright © 2019 Tobii Pro AB. All rights reserved.
 //-----------------------------------------------------------------------
 
 using System.Collections;
@@ -33,6 +33,20 @@ namespace Tobii.Research.Unity
         public bool Connected { get { return _eyeTracker != null; } }
 
         /// <summary>
+        /// Get the latest user position guide data.
+        /// </summary>
+        public IUserPositionGuideData LatestUserPositionGuideData
+        {
+            get
+            {
+                lock (_userPositionGuideLock)
+                {
+                    return _latestUserPositionGuideData;
+                }
+            }
+        }
+
+        /// <summary>
         /// Connect or disconnect the gaze stream.
         /// </summary>
         public virtual bool SubscribeToGazeData
@@ -45,6 +59,37 @@ namespace Tobii.Research.Unity
             set
             {
                 UpdateSubscriptions();
+            }
+        }
+
+        /// <summary>
+        /// Connect or disconnect the user position guide stream. Requires that the eyetracker is connected.
+        /// </summary>
+        public bool SubscribeToUserPositionGuide
+        {
+            get
+            {
+                return _subscribingToUserPositionGuide;
+            }
+
+            set
+            {
+                if (Connected)
+                {
+                    if (value)
+                    {
+                        if (!_subscribingToUserPositionGuide)
+                        {
+                            _eyeTracker.UserPositionGuideReceived += OnUserPositionGuideReceived;
+                            _subscribingToUserPositionGuide = true;
+                        }
+                    }
+                    else
+                    {
+                        _eyeTracker.UserPositionGuideReceived -= OnUserPositionGuideReceived;
+                        _subscribingToUserPositionGuide = false;
+                    }
+                }
             }
         }
 
@@ -77,6 +122,11 @@ namespace Tobii.Research.Unity
         /// Lock for communication with the thread.
         /// </summary>
         protected object _autoConnectLock = new object();
+
+        /// <summary>
+        /// Lock for the user position data.
+        /// </summary>
+        protected object _userPositionGuideLock = new object();
 
         /// <summary>
         /// The thread-running flag.
@@ -126,7 +176,14 @@ namespace Tobii.Research.Unity
             }
         }
 
-        protected bool _tooManyEyeTrackerInstances;
+        private bool _tooManyEyeTrackerInstances;
+
+        private bool _subscribingToUserPositionGuide;
+
+        /// <summary>
+        /// Hold the latest user position guide data. Initialized to an invalid object.
+        /// </summary>
+        private IUserPositionGuideData _latestUserPositionGuideData = new UserPositionGuideData();
 
         #endregion Protected Fields
 
@@ -203,12 +260,14 @@ namespace Tobii.Research.Unity
                 return;
             }
 
+            SubscribeToUserPositionGuide = false;
+
             EyeTrackingOperations.Terminate();
         }
 
         #endregion Unity Methods
 
-        #region Private Eye Tracking Methods
+        #region Protected and private Eye Tracking Methods
 
         protected virtual void ProcessGazeEvents()
         {
@@ -252,6 +311,14 @@ namespace Tobii.Research.Unity
         {
         }
 
-        #endregion Private Eye Tracking Methods
+        private void OnUserPositionGuideReceived(object sender, UserPositionGuideEventArgs e)
+        {
+            lock (_userPositionGuideLock)
+            {
+                _latestUserPositionGuideData = new UserPositionGuideData(e);
+            }
+        }
+
+        #endregion Protected and private Eye Tracking Methods
     }
 }

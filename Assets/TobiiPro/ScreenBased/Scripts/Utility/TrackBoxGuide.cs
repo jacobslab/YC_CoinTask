@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// Copyright © 2018 Tobii AB. All rights reserved.
+// Copyright © 2019 Tobii Pro AB. All rights reserved.
 //-----------------------------------------------------------------------
 
 using UnityEngine;
@@ -56,6 +56,7 @@ namespace Tobii.Research.Unity
             set
             {
                 _trackBoxGuideActive = value;
+                _eyeTracker.SubscribeToUserPositionGuide = value;
                 _CanvasTrackBox.SetActive(_trackBoxGuideActive);
             }
         }
@@ -105,11 +106,16 @@ namespace Tobii.Research.Unity
                 return;
             }
 
-            var data = _eyeTracker.LatestGazeData;
-            var goLeft = data.Left.GazeOriginInTrackBoxCoordinates;
-            var goRight = data.Right.GazeOriginInTrackBoxCoordinates;
-            var goLeftValid = data.Left.GazeOriginValid;
-            var goRightValid = data.Right.GazeOriginValid;
+            if (!_eyeTracker.SubscribeToUserPositionGuide)
+            {
+                _eyeTracker.SubscribeToUserPositionGuide = true;
+            }
+
+            var data = _eyeTracker.LatestUserPositionGuideData;
+            var goLeft = data.LeftEye;
+            var goRight = data.RightEye;
+            var goLeftValid = data.LeftEyeValid;
+            var goRightValid = data.RightEyeValid;
 
             PositionMover(goLeft.z, goRight.z, goLeftValid, goRightValid);
             PositionEye(goLeft, goLeftValid, _eyeLeft, _eyeScaleLeft);
