@@ -27,7 +27,7 @@ public class TimeBonusUIController : MonoBehaviour {
 	
 	float colorLerpTime = 0.5f;
 
-	SimpleTimer trialTimer { get { return Experiment_CoinTask.Instance.trialController.trialTimer; } }
+	//SimpleTimer trialTimer { get { return Experiment_CoinTask.Instance.trialController.trialTimer; } }
 
 	int minTimeBonusTime { get { return ScoreController.TimeBonusTimeMin; } }
 	int medTimeBonusTime { get { return ScoreController.TimeBonusTimeMed; } }
@@ -54,14 +54,14 @@ public class TimeBonusUIController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (!ExperimentSettings_CoinTask.isReplay) {
-			UpdateTimeState();
-		}
+		//if (!ExperimentSettings_CoinTask.isReplay) {
+		//	UpdateTimeState();
+		//}
 	}
 
 	void UpdateTimeState(){
-		int seconds = trialTimer.GetSecondsInt ();
-		
+		//int seconds = trialTimer.GetSecondsInt ();
+        int seconds = 1;
 		if (seconds == 0) {
 			ResetBonusText();
 		}

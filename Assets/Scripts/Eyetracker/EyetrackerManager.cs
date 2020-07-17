@@ -2,43 +2,44 @@
 using System.Collections.Generic;
 using System.Linq;
 using Tobii.Research;
-using Tobii.Research.CodeExamples;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
 using Tobii.Research.Unity;
-public class EyetrackerManager : MonoBehaviour {
+public class EyetrackerManager : MonoBehaviour
+{
     private IEyeTracker _eyeTracker;
     private EyetrackerLogTrack eyeLogTrack;
     public CommandExecution commExec;
-	public Canvas myCanvas;
-	public RawImage leftEye;
-	public RawImage rightEye;
+    public Canvas myCanvas;
+    public RawImage leftEye;
+    public RawImage rightEye;
     public Vector2 leftEditPos;
     public Vector2 rightEditPos;
     private Queue<GazeDataEventArgs> _queue = new Queue<GazeDataEventArgs>();
     private bool canPumpData = false;
 
-	public bl_ProgressBar reconnectionProgress;
+    public bl_ProgressBar reconnectionProgress;
 
-	float invalidOriginTimer=0f;
+    float invalidOriginTimer = 0f;
     float validOriginTimer = 0f;
-	private bool shouldReconnect=false;
-	public CanvasGroup reconnectionGroup;
-	public CanvasGroup calibrationGroup;
+    private bool shouldReconnect = false;
+    public CanvasGroup reconnectionGroup;
+    public CanvasGroup calibrationGroup;
 
-	private bool viewLeft=false;
-	private bool viewRight=false;
-	public LayerMask layerMask;
-	public static bool shouldCheckHead = false;
+    private bool viewLeft = false;
+    private bool viewRight = false;
+    public LayerMask layerMask;
+    public static bool shouldCheckHead = false;
 
 
     public static bool waitForCalibration = false;
-	public static bool isCalibrating=false;
+    public static bool isCalibrating = false;
     public static bool finishedCalibration = false;
-	public Calibration calibration;
+    public Calibration calibration;
 
     public string filepath = "";
+#if EYETRACKER
     void Awake()
     {
         //filepath = Application.dataPath;
@@ -327,5 +328,10 @@ private void HandleGazeData(GazeDataEventArgs e)
         
       
     }
-
+#else
+    private void Awake()
+    {
+        finishedCalibration = true;
+    }
+#endif
 }

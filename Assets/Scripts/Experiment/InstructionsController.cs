@@ -82,8 +82,15 @@ public class InstructionsController : MonoBehaviour {
 	public string maybeExplanationInstruction = "win 100 points / lose 50 points";
 	public string noExplanationInstruction = "win 50 points / lose 0 points";
 
-	//go & hurry up
-	public string GoText = "GO!";
+
+    //go back to goal location 
+    public string goalLocationInstruction = "Go to the flag location and press (X) button";
+
+    //free recall instruction
+    public string freeRecallInstruction = "Try to recall the names of all objects you encountered";
+
+    //go & hurry up
+    public string GoText = "GO!";
 	public string hurryUpText = "hurry up!";
 
 	//box swap
@@ -128,6 +135,8 @@ public class InstructionsController : MonoBehaviour {
 	//for block 1/40 completed
 	public string blockLower = "block";
 
+    public CanvasGroup instructionsGroup;
+
 
 	//finished
 	public string youHaveFinishedText = "You have finished your trials! \nPress (X) to proceed.";
@@ -148,19 +157,29 @@ public class InstructionsController : MonoBehaviour {
 		SetText ("");
 	}
 
-	public void TurnOffInstructions(){
-		SetInstructionsTransparentOverlay();
+    public void TurnOnInstructions()
+    {
+
+        instructionsGroup.alpha = 1f;
+    }
+
+	public void TurnOffInstructions()
+    {
+        instructionsGroup.alpha = 0f;
+        SetInstructionsTransparentOverlay();
 		SetInstructionsBlank();
 	}
 	public void SetTextPanelOff()
-	{
-		textPanel.gameObject.SetActive (false);
+    {
+        instructionsGroup.alpha = 0f;
+        textPanel.gameObject.SetActive (false);
 		//textPanel.color=new Color(1f,1f,1f,0f);
 	}
 
+
 	public void SetTextPanelOn()
 	{
-
+        instructionsGroup.alpha = 1f;
 		textPanel.gameObject.SetActive (true);
 	//	textPanel.color=new Color(1f,1f,1f,0.5f);
 	}

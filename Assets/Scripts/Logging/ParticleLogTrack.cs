@@ -5,7 +5,11 @@ public class ParticleLogTrack : LogTrack {
 
 	//should be able to log either or both of these.
 	public ParticleSystem particleSystem;
+<<<<<<< HEAD
 //	public EllipsoidParticleEmitter particleEmitter;
+=======
+///	public EllipsoidParticleEmitter particleEmitter;
+>>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
 
 	SpawnableObject spawnableObject;
 
@@ -35,18 +39,38 @@ public class ParticleLogTrack : LogTrack {
 				isSystemPlaying = false;
 				LogParticleSystemOver (particleSystem.transform.position);
 			}
+			
 		}
+<<<<<<< HEAD
 		/*
+=======
+
+<<<<<<< HEAD
+		/*
+	if (particleEmitter != null) {
+		if (!isEmitterPlaying && particleEmitter.emit) {
+			isEmitterPlaying = true;
+			LogParticleEmitterPlaying (particleEmitter.transform.position);
+		} 
+		
+		else if (isEmitterPlaying && !particleEmitter.emit) {
+			isEmitterPlaying = false;
+			LogParticleEmitterOver (particleEmitter.transform.position);
+=======
+>>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
 		if (particleEmitter != null) {
-			if (!isEmitterPlaying && particleEmitter.emit) {
+			if (!isEmitterPlaying) {
 				isEmitterPlaying = true;
 				LogParticleEmitterPlaying (particleEmitter.transform.position);
 			} 
-			else if (isEmitterPlaying && !particleEmitter.emit) {
+			else if (isEmitterPlaying) {
 				isEmitterPlaying = false;
 				LogParticleEmitterOver (particleEmitter.transform.position);
 			}
+>>>>>>> 93dd41134ef73c9966b6b606b13edb9a4cc7edc0
 		}
+		*/
+	}
 		*/
 	}
 
@@ -62,6 +86,7 @@ public class ParticleLogTrack : LogTrack {
 
 	//for logging the particle emitter
 	//note: emitters do not have a looping property
+	/*
 	void LogParticleEmitterPlaying(Vector3 emitterLocation){
 		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_EMITTER_PLAYING" + separator + particleEmitter.name + separator + emitterLocation.x + separator + emitterLocation.y + separator + emitterLocation.z);
 	}
@@ -71,6 +96,7 @@ public class ParticleLogTrack : LogTrack {
 	}
 	*/
 
+	*/
 	string GetNameToLog(){
 		string name = gameObject.name;
 		if (spawnableObject) {
@@ -101,9 +127,13 @@ public class ParticleLogTrack : LogTrack {
 		/*
 		if (isEmitterPlaying) {
 			isEmitterPlaying = false;
-			particleEmitter.emit = false;
+			//particleEmitter.emit = false;
 			LogParticleEmitterOver(particleEmitter.transform.position);
 		}
 		*/
+<<<<<<< HEAD
+=======
+
+>>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
 	}
 }

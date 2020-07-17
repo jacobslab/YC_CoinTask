@@ -131,7 +131,7 @@ public class DefaultItem : MonoBehaviour {
 		if (Config_CoinTask.isJuice) {
 			if(isSpecial){
 				JuiceController.PlayParticles (SpecialParticles);
-				AudioController.PlayAudio(specialCollisionSound);
+                AudioController.PlayAudio(defaultCollisionSound);
 			}
 			else{
 				JuiceController.PlayParticles (DefaultParticles);

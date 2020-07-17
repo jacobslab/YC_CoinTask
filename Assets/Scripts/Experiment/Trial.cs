@@ -16,6 +16,8 @@ public class Trial {
 	public List<Vector2> DefaultObjectLocationsXZ;
 	public List<Vector2> SpecialObjectLocationsXZ;
 
+    public Vector2 FlagLocationXZ;
+
 	public ExperimentSettings_CoinTask.RecallType trialRecallType;
 	private static int fourNum = 0;
 	private static int fiveNum=0;
@@ -30,44 +32,49 @@ public class Trial {
 		SpecialObjectLocationsXZ = new List<Vector2> ();
 	}
 
-	public Trial(int numSpecial,int numFoils, bool shouldStim){
+	public Trial(int numSpecial,int numFoils, bool shouldStim, bool isRightAngle){
 
 		numSpecialObjects = numSpecial;
 
 		manualSpecialObjectNames = new List<string> (); //may or may not be filled in manually.
 
-		//Debug.Log("NUM SPECIAL: " + numSpecialObjects);
+        //Debug.Log("NUM SPECIAL: " + numSpecialObjects);
 
 
-		//setting up random start position
-		avatarStartPos = exp.environmentController.GetRandomStartPosition (Config_CoinTask.radiusBuffer);
-		avatarStartPos = new Vector3 (avatarStartPos.x, exp.player.controls.startPositionTransform1.position.y, avatarStartPos.z);
+        //have a fixed start and tower position for all trials
+        avatarStartPos = exp.player.controls.startPositionTransform1.position;
+        avatarStartRot = exp.player.controls.startPositionTransform1.rotation;
+
+        avatarTowerPos = exp.player.controls.towerPositionTransform1.position;
+        avatarTowerRot = exp.player.controls.towerPositionTransform1.rotation;
+        //avatarStartPos = exp.environmentController.GetRandomStartPosition (Config_CoinTask.radiusBuffer);
+        //avatarStartPos = new Vector3 (avatarStartPos.x, exp.player.controls.startPositionTransform1.position.y, avatarStartPos.z);
 
 
-		//we're still using the same old two random rotation for starting perspectives
-		int fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
-		if (fiftyFiftyChance == 0) {
-//			trialRecallType = ExperimentSettings_CoinTask.RecallType.Location;
-//			totalTH++;
-			avatarStartRot = exp.player.controls.startPositionTransform1.rotation;//Quaternion.Euler (0, exp.player.controls.startPositionTransform1.rotation, 0);
-		}
-		else {
-//			trialRecallType = ExperimentSettings_CoinTask.RecallType.Object;
-		//	totalTHR++;
-			avatarStartRot = exp.player.controls.startPositionTransform2.rotation;
-		}
+        //we're still using the same old two random rotation for starting perspectives
+//        int fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
+//		if (fiftyFiftyChance == 0) {
+////			trialRecallType = ExperimentSettings_CoinTask.RecallType.Location;
+////			totalTH++;
+//			avatarStartRot = exp.player.controls.startPositionTransform1.rotation;//Quaternion.Euler (0, exp.player.controls.startPositionTransform1.rotation, 0);
+//		}
+//		else {
+////			trialRecallType = ExperimentSettings_CoinTask.RecallType.Object;
+		////	totalTHR++;
+		//	avatarStartRot = exp.player.controls.startPositionTransform2.rotation;
+		//}
 
 
 
-		fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
-		if (fiftyFiftyChance == 0) {
-			avatarTowerPos = exp.player.controls.towerPositionTransform1.position;
-			avatarTowerRot = exp.player.controls.towerPositionTransform1.rotation;
-		}
-		else {
-			avatarTowerPos = exp.player.controls.towerPositionTransform2.position;
-			avatarTowerRot = exp.player.controls.towerPositionTransform2.rotation;
-		}
+		//fiftyFiftyChance = Random.Range (0, 2); //will pick 1 or 0
+		//if (fiftyFiftyChance == 0) {
+		//	avatarTowerPos = exp.player.controls.towerPositionTransform1.position;
+		//	avatarTowerRot = exp.player.controls.towerPositionTransform1.rotation;
+		//}
+		//else {
+		//	avatarTowerPos = exp.player.controls.towerPositionTransform2.position;
+		//	avatarTowerRot = exp.player.controls.towerPositionTransform2.rotation;
+		//}
 
 
 		int numDefaultObjects = 0;
@@ -93,15 +100,19 @@ public class Trial {
 		*/
 		Debug.Log ("total: " + totalTrials);
 
-		//Debug.Log ("number of special objects is: " + numSpecial);
-		//Debug.Log ("number of foil objects is: " + numFoils);
+        //Debug.Log ("number of special objects is: " + numSpecial);
+        //Debug.Log ("number of foil objects is: " + numFoils);
 
-		//init default and special locations
-		DefaultObjectLocationsXZ = exp.objectController.GenerateOrderedDefaultObjectPositions (numDefaultObjects, avatarStartPos);
-		//FoilObjectLocationsXZ = exp.objectController.GenerateFoilPositions (numFoils, DefaultObjectLocationsXZ, avatarStartPos);
-		//Debug.Log ("number of default positions is: " + DefaultObjectLocationsXZ.Count+"/"+numDefaultObjects);
-		//Debug.Log ("number of foil positions is: " + FoilObjectLocationsXZ.Count);
-		SpecialObjectLocationsXZ = exp.objectController.GenerateSpecialObjectPositions (DefaultObjectLocationsXZ, numSpecialObjects);
+        //init default and special locations
+        Vector2 startPosition = Vector2.zero;
+        DefaultObjectLocationsXZ = exp.objectController.GenerateTriangularDefaultObjectPositions(numDefaultObjects, avatarStartPos, isRightAngle, out startPosition);
+        //DefaultObjectLocationsXZ = exp.objectController.GenerateOrderedDefaultObjectPositions (numDefaultObjects, avatarStartPos);
+        //FlagLocationXZ = exp.objectController.GenerateFlagPosition(DefaultObjectLocationsXZ,avatarStartPos);
+        FlagLocationXZ = startPosition;
+        //FoilObjectLocationsXZ = exp.objectController.GenerateFoilPositions (numFoils, DefaultObjectLocationsXZ, avatarStartPos);
+        //Debug.Log ("number of default positions is: " + DefaultObjectLocationsXZ.Count+"/"+numDefaultObjects);
+        //Debug.Log ("number of foil positions is: " + FoilObjectLocationsXZ.Count);
+        SpecialObjectLocationsXZ = exp.objectController.GenerateSpecialObjectPositions (DefaultObjectLocationsXZ, numSpecialObjects);
 	}
 
 	public void AddToManualSpecialObjectNames(string specialObjectName){
@@ -148,20 +159,12 @@ public class Trial {
 		counterTrial.avatarStartPos = newAvatarStartPos;
 
 		//we're still using the same old two random rotation for starting perspectives
-		if (avatarStartRot == exp.player.controls.startPositionTransform1.rotation)
-			counterTrial.avatarStartRot = exp.player.controls.startPositionTransform2.rotation;
-		else
 			counterTrial.avatarStartRot = exp.player.controls.startPositionTransform1.rotation;
 		
 		//flip the tower positions
-		if (avatarTowerPos == exp.player.controls.towerPositionTransform1.position) {
-			counterTrial.avatarTowerPos = exp.player.controls.towerPositionTransform2.position;
-			counterTrial.avatarTowerRot = exp.player.controls.towerPositionTransform2.rotation;
-		}
-		else {
 			counterTrial.avatarTowerPos = exp.player.controls.towerPositionTransform1.position;
 			counterTrial.avatarTowerRot = exp.player.controls.towerPositionTransform1.rotation;
-		}
+	
 
 
 		counterTrial.DefaultObjectLocationsXZ = new List<Vector2> ();

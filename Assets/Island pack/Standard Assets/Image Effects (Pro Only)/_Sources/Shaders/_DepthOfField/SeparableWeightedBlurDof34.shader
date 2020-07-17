@@ -189,13 +189,11 @@ Shader "Hidden/SeparableWeightedBlurDof34" {
 	
 Subshader {
 	ZTest Always Cull Off ZWrite Off
-	Fog { Mode off }  
 	  	
   Pass {     
       
       CGPROGRAM
       
-      #pragma fragmentoption ARB_precision_hint_fastest
       #pragma vertex vert
       #pragma fragment fragBlurWeighted
       
@@ -204,7 +202,6 @@ Subshader {
   Pass {   
       CGPROGRAM
       
-      #pragma fragmentoption ARB_precision_hint_fastest
       #pragma vertex vert
       #pragma fragment fragBlurUnweighted
       
@@ -216,7 +213,6 @@ Subshader {
   Pass {    
       CGPROGRAM
       
-      #pragma fragmentoption ARB_precision_hint_fastest
       #pragma vertex vert
       #pragma fragment fragBlurUnweightedDark
       
@@ -225,7 +221,6 @@ Subshader {
   Pass {    
       CGPROGRAM
       
-      #pragma fragmentoption ARB_precision_hint_fastest
       #pragma vertex vertSingleTex
       #pragma fragment fragMixMediumAndLowTap
       
@@ -237,7 +232,6 @@ Subshader {
   Pass {    
       CGPROGRAM
       
-      #pragma fragmentoption ARB_precision_hint_fastest
       #pragma vertex vert
       #pragma fragment fragBlurDark
       

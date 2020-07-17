@@ -311,8 +311,7 @@ Shader "Hidden/ScreenSpaceAmbientObscurance"
 				float value  = temp.r;
 
 				// spatial domain: offset gaussian tap
-				int index = r; if (index<0) index = -index;
-				float weight = 0.3 + gaussian[index];
+				float weight = 0.3 + gaussian[abs(r)];
 
 				// range domain (the "bilateral" weight). As depth difference increases, decrease weight.
 				weight *= max(0.0, 1.0 - (2000.0 * EDGE_SHARPNESS) * abs(tapKey - key));
@@ -337,16 +336,12 @@ SubShader {
 	// 0: get ao
 	Pass {
 		ZTest Always Cull Off ZWrite Off
-		Fog { Mode off }
 
 		CGPROGRAM
 
-		#pragma fragmentoption ARB_precision_hint_fastest
 		#pragma vertex vert
 		#pragma fragment fragAO
 		#pragma target 3.0
-		#pragma glsl	
-		#pragma exclude_renderers d3d11_9x flash
 		
 		ENDCG
 	}
@@ -354,16 +349,12 @@ SubShader {
 	// 1: bilateral blur
 	Pass {
 		ZTest Always Cull Off ZWrite Off
-		Fog { Mode off }
 
 		CGPROGRAM
 
-		#pragma fragmentoption ARB_precision_hint_fastest
 		#pragma vertex vert
 		#pragma fragment fragBlurBL
 		#pragma target 3.0 
-		#pragma glsl
-		#pragma exclude_renderers d3d11_9x flash
 		
 		ENDCG
 	}
@@ -371,16 +362,12 @@ SubShader {
 	// 2: apply ao
 	Pass {
 		ZTest Always Cull Off ZWrite Off
-		Fog { Mode off }
 
 		CGPROGRAM
 
-		#pragma fragmentoption ARB_precision_hint_fastest
 		#pragma vertex vert
 		#pragma fragment fragApply
 		#pragma target 3.0 
-		#pragma glsl
-		#pragma exclude_renderers d3d11_9x flash
 		
 		ENDCG
 	}
@@ -388,16 +375,12 @@ SubShader {
 	// 3: apply with a slight box filter
 	Pass {
 		ZTest Always Cull Off ZWrite Off
-		Fog { Mode off }
 
 		CGPROGRAM
 
-		#pragma fragmentoption ARB_precision_hint_fastest
 		#pragma vertex vert
 		#pragma fragment fragApplySoft
 		#pragma target 3.0 
-		#pragma glsl
-		#pragma exclude_renderers d3d11_9x flash
 		
 		ENDCG
 	}
@@ -405,16 +388,12 @@ SubShader {
 	// 4: in case you want to blur in high rez for nicer z borders
 	Pass {
 		ZTest Always Cull Off ZWrite Off
-		Fog { Mode off }
 
 		CGPROGRAM
 
-		#pragma fragmentoption ARB_precision_hint_fastest
 		#pragma vertex vert
 		#pragma fragment fragUpsample
 		#pragma target 3.0 
-		#pragma glsl
-		#pragma exclude_renderers d3d11_9x flash
 		
 		ENDCG
 	}
