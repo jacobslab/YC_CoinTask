@@ -267,10 +267,20 @@ namespace Tobii.Research.Unity
             }
 
             _calibrationInProgress = false;
+            UnityEngine.Debug.Log("the latest calibration attempt was successful? " + LatestCalibrationSuccessful.ToString());
+
+            LatestCalibrationSuccessful = true;
+            UnityEngine.Debug.Log("forcing calibration to be successful");
             if (LatestCalibrationSuccessful)
             {
                 UnityEngine.Debug.Log("calib successful; performing validation now");
-                StartCoroutine(PerformValidation());
+
+
+                     StartCoroutine(PerformValidation());
+
+          //      UnityEngine.Debug.Log("skipping validation; ending calibration now");
+           //     EyetrackerManager.isCalibrating = false;
+            //    ShowCalibrationPanel = false;
             }
             else
             {
@@ -293,7 +303,9 @@ namespace Tobii.Research.Unity
         IEnumerator PerformValidation()
         {
             calibResultPanel.alpha = 1f;
-         //   validationInstructionPanel.alpha = 1f;
+            //   validationInstructionPanel.alpha = 1f;
+            validationPointGroup.gameObject.SetActive(true);
+            validationPointGroup.GetComponent<CanvasGroup>().alpha = 1f;
 
             float totalVarianceLeftX = 0f;
             float totalVarianceLeftY = 0f;
@@ -389,7 +401,8 @@ namespace Tobii.Research.Unity
 
             //validationInstructionPanel.alpha = 0f;
             calibResultPanel.alpha = 0f;
-
+            validationPointGroup.GetComponent<CanvasGroup>().alpha = 0f;
+            validationPointGroup.gameObject.SetActive(false);
             if (response == 0)
             {
                 InitiateCalibration();

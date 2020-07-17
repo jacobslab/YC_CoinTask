@@ -68,10 +68,12 @@ public class VideoPlay : MonoBehaviour {
 
 			if (shouldPlay) {
 				group.alpha = 1.0f;
-			
-				vid.Stop ();
+				
+				//vid.Stop ();
 				movieAudio.Play ();
+
 				vid.Play ();
+				UnityEngine.Debug.Log("playing video");
 				yield return new WaitForSeconds (1f);
 				while (vid.isPlaying || isMoviePaused) {
 					yield return 0;
