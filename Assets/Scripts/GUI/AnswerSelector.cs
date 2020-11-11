@@ -152,19 +152,19 @@ public class AnswerSelector : MonoBehaviour {
 		switch(currPositionIndex){
 		case 0:
 			StartCoroutine(yesExplanationColorChanger.LerpChangeColor(selectedColor, lerpTime));
-			StartCoroutine(maybeExplanationColorChanger.LerpChangeColor(deselectedColor, lerpTime));
+		//	StartCoroutine(maybeExplanationColorChanger.LerpChangeColor(deselectedColor, lerpTime));
+			StartCoroutine(noExplanationColorChanger.LerpChangeColor(deselectedColor, lerpTime));
+			break;
+			
+		case 4:
+			StartCoroutine(yesExplanationColorChanger.LerpChangeColor(deselectedColor, lerpTime));
+		//	StartCoroutine(maybeExplanationColorChanger.LerpChangeColor(selectedColor, lerpTime));
 			StartCoroutine(noExplanationColorChanger.LerpChangeColor(deselectedColor, lerpTime));
 			break;
 			
 		case 1:
 			StartCoroutine(yesExplanationColorChanger.LerpChangeColor(deselectedColor, lerpTime));
-			StartCoroutine(maybeExplanationColorChanger.LerpChangeColor(selectedColor, lerpTime));
-			StartCoroutine(noExplanationColorChanger.LerpChangeColor(deselectedColor, lerpTime));
-			break;
-			
-		case 2:
-			StartCoroutine(yesExplanationColorChanger.LerpChangeColor(deselectedColor, lerpTime));
-			StartCoroutine(maybeExplanationColorChanger.LerpChangeColor(deselectedColor, lerpTime));
+		//	StartCoroutine(maybeExplanationColorChanger.LerpChangeColor(deselectedColor, lerpTime));
 			StartCoroutine(noExplanationColorChanger.LerpChangeColor(selectedColor, lerpTime));
 			break;
 		}

@@ -411,7 +411,7 @@ public class TrialController : MonoBehaviour {
 	//FILL THIS IN DEPENDING ON EXPERIMENT SPECIFICATIONS
 	public IEnumerator RunExperiment(){
 		if (!ExperimentSettings_CoinTask.isReplay) {
-			exp.player.controls.ShouldLockControls = true;
+			//exp.player.controls.ShouldLockControls = true;
             micTest.gameObject.SetActive(false);
             if (Config_CoinTask.isSystem2 || Config_CoinTask.isSyncbox){
 				yield return StartCoroutine( WaitForEEGHardwareConnection() );
@@ -713,7 +713,7 @@ public class TrialController : MonoBehaviour {
         trialLogger.LogPlayerAutodrive(true);
 
         //lock movement
-        exp.player.controls.ShouldLockControls = true;
+      //  exp.player.controls.ShouldLockControls = true;
 
         int numDefaultObjectsToCollect = currentTrial.DefaultObjectLocationsXZ.Count;
 
@@ -914,7 +914,7 @@ public class TrialController : MonoBehaviour {
 		//disable selection
 		exp.environmentController.myPositionSelector.EnableSelection(false);
 
-		exp.player.controls.ShouldLockControls = true;
+//		exp.player.controls.ShouldLockControls = true;
 
 		//reset game timer
 		trialTimer.ResetTimer(0);
@@ -968,7 +968,7 @@ public class TrialController : MonoBehaviour {
 		numDefaultObjectsCollected = 0;
 
 		//lock player movement
-		exp.player.controls.ShouldLockControls = true;
+	//	exp.player.controls.ShouldLockControls = true;
 
 		//bring player to tower
 		//exp.player.TurnOnVisuals (false);
@@ -1053,7 +1053,7 @@ public class TrialController : MonoBehaviour {
 				break;
 
 		}
-        exp.player.controls.ShouldLockControls = true;
+     //   exp.player.controls.ShouldLockControls = true;
 
         //increment subject's trial count
 #if !UNITY_WEBPLAYER
@@ -1377,7 +1377,7 @@ public class TrialController : MonoBehaviour {
 		trialLogger.LogRecallPhaseStarted(false);
 
 		//lock controls before moving player to the tower position for feedback
-		exp.player.controls.ShouldLockControls = true;
+	//	exp.player.controls.ShouldLockControls = true;
 
 		//transport the player back to tower location before feedback
 		trialLogger.LogTransportationToTowerEvent(true);
@@ -2167,7 +2167,7 @@ public class TrialController : MonoBehaviour {
 		//LOG waiting for player to look at the object
 
 		//lock the avatar controls
-		exp.player.controls.ShouldLockControls = true;
+	//	exp.player.controls.ShouldLockControls = true;
 		exp.player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 
         //wait for player to look at the gameobject
@@ -2188,7 +2188,7 @@ public class TrialController : MonoBehaviour {
 		trialLogger.LogPlayerChestRotation (true);
 
 		//lock the avatar controls
-		exp.player.controls.ShouldLockControls = true;
+		//exp.player.controls.ShouldLockControls = true;
 		exp.player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 		
 		yield return StartCoroutine (exp.player.controls.RotateTowardSpecialObject (treasureChest));
@@ -2203,7 +2203,7 @@ public class TrialController : MonoBehaviour {
 	public IEnumerator WaitForTreasurePause( GameObject specialObject){
 
 		//lock the avatar controls
-		exp.player.controls.ShouldLockControls = true;
+		//exp.player.controls.ShouldLockControls = true;
 		exp.player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 
 		yield return new WaitForSeconds (Config_CoinTask.pauseAtTreasureTime);

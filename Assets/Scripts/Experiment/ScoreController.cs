@@ -98,7 +98,7 @@ public class ScoreController : MonoBehaviour {
 		amountLeftToAdd += amountToAdd;
 		score += amountToAdd;
 #if !UNITY_WEBPLAYER
-		ExperimentSettings_CoinTask.currentSubject.score = score;
+		//ExperimentSettings_CoinTask.currentSubject.score = score;
 #endif
 	}
 

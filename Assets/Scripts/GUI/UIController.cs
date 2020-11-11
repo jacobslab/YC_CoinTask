@@ -73,8 +73,21 @@ public class UIController : MonoBehaviour {
     public CanvasGroup mathDistractorGroup;
     public Text verbalFRWordText;
 
-    //MRI VERSION
-    public CanvasGroup WaitingForMRIUI;
+	//recency retrieval
+
+	public GameObject recencyRetrievalPanel;
+	public TextMesh itemAText;
+	public TextMesh itemBText;
+	public Transform itemAPosition;
+	public Transform itemBPosition;
+
+	public CanvasGroup recencyCanvasGroup;
+
+	//door instruction panel
+	public CanvasGroup doorInstructionPanel;
+
+	//MRI VERSION
+	public CanvasGroup WaitingForMRIUI;
 	public CanvasGroup FixationRestUI;
 	public CanvasGroup MRITimerUI;
 
@@ -118,12 +131,12 @@ public class UIController : MonoBehaviour {
 
 		//instructions
 		yesText.text = "[" + exp.currInstructions.yesAnswerText + "]";
-		maybeText.text = "[" + exp.currInstructions.maybeAnswerText + "]";
+	//	maybeText.text = "[" + exp.currInstructions.maybeAnswerText + "]";
 		noText.text = "[" + exp.currInstructions.noAnswerText + "]";
 
 		//answer selector
 		yesAnswerText.text = exp.currInstructions.yesAnswerText;
-		maybeAnswerText.text = exp.currInstructions.maybeAnswerText;
+	//	maybeAnswerText.text = exp.currInstructions.maybeAnswerText;
 		noAnswerText.text = exp.currInstructions.noAnswerText;
 		if(ExperimentSettings_CoinTask.myLanguage == ExperimentSettings_CoinTask.LanguageSetting.Spanish){
 			yesAnswerText.fontSize = 250;
@@ -132,7 +145,7 @@ public class UIController : MonoBehaviour {
 		}
 
 		yesExplanationText.text = splitUpLongText (exp.currInstructions.yesPointsText, 28, '/');
-		maybeExplanationText.text = splitUpLongText (exp.currInstructions.maybePointsText, 28, '/');
+	//	maybeExplanationText.text = splitUpLongText (exp.currInstructions.maybePointsText, 28, '/');
 		noExplanationText.text = splitUpLongText (exp.currInstructions.noPointsText, 28, '/');
 
 		//do you remember
@@ -196,6 +209,72 @@ public class UIController : MonoBehaviour {
         {
             microphoneUseImage.color = Color.red;
         }
+    }
+
+	public IEnumerator ShowRecencyRetrieval(GameObject objA, GameObject objB)
+    {
+		recencyRetrievalPanel.gameObject.SetActive(true);
+		yield return StartCoroutine(recencyRetrievalPanel.gameObject.GetComponent<QuestionUI>().Play());
+
+		bool isFlipped = false;
+		GameObject leftObj = null;
+		GameObject rightObj = null;
+		if(Random.value > 0.5f)
+        {
+			isFlipped = true;
+			leftObj = objB;
+			rightObj = objA;
+        }
+        else
+        {
+			isFlipped = false;
+			leftObj = objA;
+			rightObj = objB;
+        }
+
+		itemAText.text = leftObj.gameObject.GetComponent<SpawnableObject>().GetDisplayName();
+		itemBText.text = rightObj.gameObject.GetComponent<SpawnableObject>().GetDisplayName();
+
+		GameObject itemA = Instantiate(leftObj, itemAPosition.transform.position, itemAPosition.transform.rotation) as GameObject;
+		itemA.transform.parent = itemAPosition.transform;
+		if (itemA.gameObject.name.Contains("pineapple") || itemA.gameObject.name.Contains("lamp"))
+		{
+			itemA.transform.localScale = new Vector3(30f, 30f, 30f);
+		}
+		else
+
+        {
+			itemA.transform.localScale = new Vector3(8f, 8f, 8f);
+        }
+		GameObject itemB = Instantiate(rightObj, itemBPosition.transform.position, itemBPosition.transform.rotation) as GameObject;
+		itemB.transform.parent = itemBPosition.transform;
+		if (itemB.gameObject.name.Contains("pineapple") || itemB.gameObject.name.Contains("lamp"))
+		{
+			itemB.transform.localScale = new Vector3(30f, 30f, 30f);
+		}
+		else
+
+		{
+			itemB.transform.localScale = new Vector3(8f,8f,8f);
+		}
+
+		itemA.GetComponent<VisibilityToggler>().TurnVisible(true);
+		itemB.GetComponent<VisibilityToggler>().TurnVisible(true);
+		while (!Input.GetKeyDown(KeyCode.X))
+        {
+			yield return 0;
+        }
+
+		recencyRetrievalPanel.gameObject.SetActive(false);
+		Destroy(itemA);
+		Destroy(itemB);
+		yield return null;
+    }
+
+	public void ShowDoorInstruction(bool shouldEnable)
+    {
+		
+		doorInstructionPanel.alpha = (shouldEnable)? 1f : 0f;
     }
 
 }

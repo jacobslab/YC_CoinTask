@@ -120,7 +120,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 		InitInstructionsController ();
 		ExperimentSettings_CoinTask.isLogging = false;
-			InitLogging();
+		//	InitLogging();
 //		else if(ExperimentSettings_CoinTask.isReplay) {
 //			currInstructions.TurnOffInstructions();
 //		}
@@ -205,8 +205,8 @@ public class Experiment_CoinTask : MonoBehaviour {
 
 			}
 			else*/ if (currentState == ExperimentState.inExperiment && !isRunningExperiment) {
-				Debug.Log("running experiment");
-				StartCoroutine(BeginExperiment());
+				//Debug.Log("running experiment");
+				//StartCoroutine(BeginExperiment());
 			}
 
 		}

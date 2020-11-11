@@ -42,18 +42,19 @@ public class PlayerControls : MonoBehaviour{
 	// Update is called once per frame
 	void Update () {
 
-		if (exp.currentState == Experiment_CoinTask.ExperimentState.inExperiment) {
+	//	if (exp.currentState == Experiment_CoinTask.ExperimentState.inExperiment) {
 			if(!ShouldLockControls){
 				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationY; // TODO: on collision, don't allow a change in angular velocity?
-
+		//	UnityEngine.Debug.Log("can walk");
 				//sets velocities
 				GetInput ();
 			}
 			else{
-				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+			//UnityEngine.Debug.Log("frozen");
+			GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
 				SetTilt(0.0f, 1.0f);
 			}
-		}
+		//}
 	}
 
 	public Camera myCamera;
@@ -197,6 +198,8 @@ public class PlayerControls : MonoBehaviour{
 
 		float travelDistance = (origPosition - targetPosition).magnitude;
 
+		UnityEngine.Debug.Log("travel distance " + travelDistance.ToString());
+
         float timeToTravel = 0f;
         if (!isChestAutoDrive)
             timeToTravel = GetTimeToTravel(travelDistance);//travelDistance / smoothMoveSpeed;
@@ -205,6 +208,7 @@ public class PlayerControls : MonoBehaviour{
             //we will randomly select time to travel to a chest
             timeToTravel = Random.Range(1.5f, 1.75f);
         }
+		UnityEngine.Debug.Log("time to travel " + timeToTravel.ToString());
 #if MRIVERSION
 		if(isChestAutoDrive){
 			timeToTravel *= Config_CoinTask.MRIAutoDriveTimeMult;
@@ -266,9 +270,11 @@ public class PlayerControls : MonoBehaviour{
         {
             while (tElapsed < timeToTravel)
             {
+				UnityEngine.Debug.Log("tElapsed " + tElapsed.ToString());
                 totalTimeElapsed += Time.deltaTime;
                 tElapsed += Time.deltaTime;
                 percentageTime = tElapsed / timeToTravel;
+				UnityEngine.Debug.Log("percentage time " + percentageTime.ToString());
 
                 //will spherically interpolate the rotation for config.spinTime seconds
                 transform.rotation = Quaternion.Slerp(origRotation, targetRotation, percentageTime); //SLERP ALWAYS TAKES THE SHORTEST PATH.

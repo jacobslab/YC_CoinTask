@@ -131,7 +131,7 @@ public class DefaultItem : MonoBehaviour {
 		Destroy(gameObject); //once audio & particles have finished playing, destroy the item!
 	}
 
-	void PlayJuice(bool isSpecial){
+	public void PlayJuice(bool isSpecial){
 		if (Config_CoinTask.isJuice) {
 			if(isSpecial){
 				JuiceController.PlayParticles (SpecialParticles);

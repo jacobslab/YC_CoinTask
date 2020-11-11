@@ -60,7 +60,7 @@ public class GoText : MonoBehaviour {
 	}
 
 	void ChangeColor(){
-		myColorChanger.ChangeColor (startColor);
+		//myColorChanger.ChangeColor (startColor);
 		StartCoroutine (myColorChanger.LerpChangeColor (endColor, animationTime - fadeOutTime) );
 	}
 	
