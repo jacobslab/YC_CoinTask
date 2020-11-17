@@ -71,11 +71,14 @@ public class GrantTaskRunner : MonoBehaviour
         GameObject objA = null;
         GameObject objB = null;
 
-        GameObject specialObject_A = Instantiate(applePrefab, spawnA_1.position, Quaternion.identity) as GameObject;
+           GameObject specialObject_A = Instantiate(applePrefab, spawnA_1.position, Quaternion.identity) as GameObject;
+        //GameObject specialObject_A = Instantiate(basketballPrefab, spawnA_1.position, Quaternion.identity) as GameObject;
 
-        specialObject_A.transform.localScale = new Vector3(30f, 30f, 30f);
+        specialObject_A.transform.localScale = new Vector3(5f, 5f, 5f);
 
-        GameObject specialObject_B = Instantiate(crownPrefab, spawnA_2.position, Quaternion.identity) as GameObject;
+        //   specialObject_A.transform.localScale = new Vector3(30f, 30f, 30f);
+
+        GameObject specialObject_B = Instantiate(basketballPrefab, spawnA_2.position, Quaternion.identity) as GameObject;
 
         specialObject_B.transform.localScale = new Vector3(5f, 5f, 5f);
         exp.uiController.recencyCanvasGroup.alpha = 1f;
@@ -207,7 +210,7 @@ public class GrantTaskRunner : MonoBehaviour
         exp.player.controls.ShouldLockControls = false;
         UnityEngine.Debug.Log("unlocked controls");
 
-
+        
         specialObject_A = Instantiate(barrelPrefab, spawnA_4.position, Quaternion.identity) as GameObject;
 
         specialObject_A.transform.localScale = new Vector3(60f, 60f, 60f);
