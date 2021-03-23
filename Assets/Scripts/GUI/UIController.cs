@@ -95,6 +95,9 @@ public class UIController : MonoBehaviour {
 	public CanvasGroup retrievalTypePanel;
 	public Text retrievalTypeText;
 
+    public CanvasGroup travellingBetween;
+    public CanvasGroup feedbackRecencyPanel;
+
 
 	private void Awake()
     {

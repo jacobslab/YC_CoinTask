@@ -42,6 +42,10 @@ public class GrantTaskRunner : MonoBehaviour
     public GameObject fenceToDoorA;
     public GameObject fenceToDoorB;
 
+    //coin shower
+    public GameObject coinShowerPrefab;
+
+
     public GameObject doorA;
     public GameObject doorB;
 
@@ -74,20 +78,25 @@ public class GrantTaskRunner : MonoBehaviour
            GameObject specialObject_A = Instantiate(applePrefab, spawnA_1.position, Quaternion.identity) as GameObject;
         //GameObject specialObject_A = Instantiate(basketballPrefab, spawnA_1.position, Quaternion.identity) as GameObject;
 
-        specialObject_A.transform.localScale = new Vector3(5f, 5f, 5f);
+        specialObject_A.transform.localScale = new Vector3(30f, 30f, 30f);
 
         //   specialObject_A.transform.localScale = new Vector3(30f, 30f, 30f);
 
-        GameObject specialObject_B = Instantiate(basketballPrefab, spawnA_2.position, Quaternion.identity) as GameObject;
+        GameObject specialObject_B = Instantiate(crownPrefab, spawnA_2.position, Quaternion.identity) as GameObject;
 
         specialObject_B.transform.localScale = new Vector3(5f, 5f, 5f);
         exp.uiController.recencyCanvasGroup.alpha = 1f;
         while (!Input.GetKeyDown(KeyCode.X))
         {
                 yield return 0;
-         }
-
+        }
         exp.uiController.recencyCanvasGroup.alpha = 0f;
+
+       // GameObject coinShower = Instantiate(coinShowerPrefab, player.transform.position + (player.transform.forward * 5f), Quaternion.identity) as GameObject;
+        exp.uiController.feedbackRecencyPanel.alpha = 1f;
+        yield return new WaitForSeconds(1f);
+        exp.uiController.feedbackRecencyPanel.alpha = 0f;
+       // Destroy(coinShower);
         Destroy(specialObject_A);
         Destroy(specialObject_B);
 
@@ -109,10 +118,12 @@ public class GrantTaskRunner : MonoBehaviour
         doorA.GetComponent<Animation>().clip = doorA.GetComponent<Animation>().GetClip("Opening");
         doorA.GetComponent<Animation>().Play();
         exp.uiController.ShowDoorInstruction(false);
+        exp.uiController.travellingBetween.alpha = 1f;
         yield return new WaitForSeconds(0.5f);
         //open the door via animation and move them towards the next door
         yield return StartCoroutine(player.controls.SmoothMoveTo(null, tunnelDoorB.position, tunnelDoorB.rotation, true));
         // stop there and wait for them to open door
+        exp.uiController.travellingBetween.alpha = 0f;
         exp.uiController.ShowDoorInstruction(true);
         //wait for X to open the door
         while (!Input.GetKeyDown(KeyCode.X))
@@ -149,9 +160,14 @@ public class GrantTaskRunner : MonoBehaviour
         {
             yield return 0;
         }
+        exp.uiController.recencyCanvasGroup.alpha = 0f;
+       // coinShower = Instantiate(coinShowerPrefab, player.transform.position + (player.transform.forward * 5f), Quaternion.identity) as GameObject;
+        exp.uiController.feedbackRecencyPanel.alpha = 1f;
+        yield return new WaitForSeconds(1f);
+        exp.uiController.feedbackRecencyPanel.alpha = 0f;
+      //  Destroy(coinShower);
         Destroy(specialObject_A);
         Destroy(specialObject_B);
-        exp.uiController.recencyCanvasGroup.alpha = 0f;
 
         //MOVING from B to A
         yield return StartCoroutine(player.controls.SmoothMoveTo(null,transitionDoorB.position, transitionDoorB.rotation, true));
@@ -170,10 +186,14 @@ public class GrantTaskRunner : MonoBehaviour
         doorB.GetComponent<Animation>().clip = doorB.GetComponent<Animation>().GetClip("Opening");
         doorB.GetComponent<Animation>().Play();
         exp.uiController.ShowDoorInstruction(false);
+
+        exp.uiController.travellingBetween.alpha = 1f;
         yield return new WaitForSeconds(0.5f);
         //open the door via animation and move them towards the next door
         yield return StartCoroutine(player.controls.SmoothMoveTo(null, tunnelDoorA.position, tunnelDoorA.rotation, true));
         // stop there and wait for them to open door
+
+        exp.uiController.travellingBetween.alpha = 0f;
         exp.uiController.ShowDoorInstruction(true);
         //wait for X to open the door
         while (!Input.GetKeyDown(KeyCode.X))
@@ -211,12 +231,12 @@ public class GrantTaskRunner : MonoBehaviour
         UnityEngine.Debug.Log("unlocked controls");
 
         
-        specialObject_A = Instantiate(barrelPrefab, spawnA_4.position, Quaternion.identity) as GameObject;
+        specialObject_A = Instantiate(applePrefab, spawnA_4.position, Quaternion.identity) as GameObject;
 
-        specialObject_A.transform.localScale = new Vector3(60f, 60f, 60f);
+        specialObject_A.transform.localScale = new Vector3(30f, 30f, 30f);
 
 
-        specialObject_B = Instantiate(crownPrefab, spawnA_3.position, Quaternion.identity) as GameObject;
+        specialObject_B = Instantiate(basketballPrefab, spawnA_3.position, Quaternion.identity) as GameObject;
 
         specialObject_B.transform.localScale = new Vector3(5f, 5f, 5f);
         exp.uiController.recencyCanvasGroup.alpha = 1f;
@@ -224,11 +244,16 @@ public class GrantTaskRunner : MonoBehaviour
         {
             yield return 0;
         }
-
         exp.uiController.recencyCanvasGroup.alpha = 0f;
+     //   coinShower = Instantiate(coinShowerPrefab, player.transform.position + (player.transform.forward * 5f), Quaternion.identity) as GameObject;
+        exp.uiController.feedbackRecencyPanel.alpha = 1f;
+        yield return new WaitForSeconds(1f);
+        exp.uiController.feedbackRecencyPanel.alpha = 0f;
+       // Destroy(coinShower);
+
         Destroy(specialObject_A);
         Destroy(specialObject_B);
-
+        
         yield return StartCoroutine(player.controls.SmoothMoveTo(null, transitionDoorA.position, transitionDoorA.rotation, true));
 
 
@@ -245,11 +270,18 @@ public class GrantTaskRunner : MonoBehaviour
         doorA.GetComponent<Animation>().clip = doorA.GetComponent<Animation>().GetClip("Opening");
         doorA.GetComponent<Animation>().Play();
         exp.uiController.ShowDoorInstruction(false);
+
+        exp.uiController.travellingBetween.alpha = 1f;
         yield return new WaitForSeconds(0.5f);
         //open the door via animation and move them towards the next door
         yield return StartCoroutine(player.controls.SmoothMoveTo(null, tunnelDoorB.position, tunnelDoorB.rotation, true));
         // stop there and wait for them to open door
+
+        exp.uiController.travellingBetween.alpha = 0f;
+
         exp.uiController.ShowDoorInstruction(true);
+
+
         //wait for X to open the door
         while (!Input.GetKeyDown(KeyCode.X))
         {
@@ -269,8 +301,6 @@ public class GrantTaskRunner : MonoBehaviour
 
         doorA.GetComponent<Animation>().clip = doorA.GetComponent<Animation>().GetClip("Closed");
         doorA.GetComponent<Animation>().Play();
-
-
 
         //SECOND trial in Env B
         exp.player.controls.ShouldLockControls = true;
@@ -296,4 +326,5 @@ public class GrantTaskRunner : MonoBehaviour
 
         yield return null;
     }
+
 }
