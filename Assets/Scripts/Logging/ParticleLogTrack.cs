@@ -5,11 +5,6 @@ public class ParticleLogTrack : LogTrack {
 
 	//should be able to log either or both of these.
 	public ParticleSystem particleSystem;
-<<<<<<< HEAD
-//	public EllipsoidParticleEmitter particleEmitter;
-=======
-///	public EllipsoidParticleEmitter particleEmitter;
->>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
 
 	SpawnableObject spawnableObject;
 
@@ -41,11 +36,6 @@ public class ParticleLogTrack : LogTrack {
 			}
 			
 		}
-<<<<<<< HEAD
-		/*
-=======
-
-<<<<<<< HEAD
 		/*
 	if (particleEmitter != null) {
 		if (!isEmitterPlaying && particleEmitter.emit) {
@@ -56,8 +46,6 @@ public class ParticleLogTrack : LogTrack {
 		else if (isEmitterPlaying && !particleEmitter.emit) {
 			isEmitterPlaying = false;
 			LogParticleEmitterOver (particleEmitter.transform.position);
-=======
->>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
 		if (particleEmitter != null) {
 			if (!isEmitterPlaying) {
 				isEmitterPlaying = true;
@@ -67,12 +55,11 @@ public class ParticleLogTrack : LogTrack {
 				isEmitterPlaying = false;
 				LogParticleEmitterOver (particleEmitter.transform.position);
 			}
->>>>>>> 93dd41134ef73c9966b6b606b13edb9a4cc7edc0
 		}
 		*/
 	}
-		*/
-	}
+		
+	
 
 	//for logging the particle system
 	void LogParticleSystemPlaying(Vector3 systemLocation){
@@ -94,8 +81,6 @@ public class ParticleLogTrack : LogTrack {
 	void LogParticleEmitterOver(Vector3 emitterLocation){
 		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_EMITTER_STOPPED" + separator + particleEmitter.name + separator + emitterLocation.x + separator + emitterLocation.y + separator + emitterLocation.z);
 	}
-	*/
-
 	*/
 	string GetNameToLog(){
 		string name = gameObject.name;
@@ -131,9 +116,5 @@ public class ParticleLogTrack : LogTrack {
 			LogParticleEmitterOver(particleEmitter.transform.position);
 		}
 		*/
-<<<<<<< HEAD
-=======
-
->>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
 	}
 }

@@ -49,12 +49,7 @@ namespace Tobii.Research.Unity
 
         [SerializeField]
         private Image _calibrationPoint;
-
-<<<<<<< HEAD
-        public Text varianceText;
-
-=======
->>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
+        
         [SerializeField]
         private Canvas _canvas;
 
@@ -64,37 +59,27 @@ namespace Tobii.Research.Unity
         private CalibrationPoint _pointScript;
 
         public CalibrationPointCollection calibPointCollection;
-<<<<<<< HEAD
 
         public GameObject validationPointGroup;
         public CanvasGroup calibrationFailedPanel;
 
      //   public CanvasGroup validationInstructionPanel;
         public CanvasGroup calibResultPanel;
-=======
-
-        public GameObject validationPointGroup;
-        public CanvasGroup calibrationFailedPanel;
+        
 
         public CanvasGroup validationInstructionPanel;
-        public CanvasGroup calibResultPanel;
 
         private bool validationOngoing = false;
-
-        public int maxSamples = 30;
->>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
+        
 
         // Handle blocking calls to calibration in a separate thread.
         private CalibrationThread _calibrationThread;
         private bool _calibrationInProgress;
-
-<<<<<<< HEAD
+        
         public int maxSamples = 30;
 
 
-
-=======
->>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
+        
         private bool ShowCalibrationPanel
         {
             get
@@ -121,12 +106,9 @@ namespace Tobii.Research.Unity
         private void Start()
         {
             _pointScript = _calibrationPoint.GetComponent<CalibrationPoint>();
-<<<<<<< HEAD
             calibResultPanel.alpha = 0f;
             calibrationFailedPanel.alpha = 0f;
           //  validationInstructionPanel.alpha = 0f;
-=======
->>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
             ShowCalibrationPanel = false;
         }
 
@@ -175,10 +157,7 @@ namespace Tobii.Research.Unity
         /// <returns>An enumerator</returns>
         private IEnumerator PerformCalibration(Vector2[] points, System.Action<bool> resultCallback)
         {
-<<<<<<< HEAD
             calibrationFailedPanel.alpha = 0f;
-=======
->>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
             if (points != null)
             {
                 _points = points;
@@ -234,10 +213,7 @@ namespace Tobii.Research.Unity
                 // As of this writing, adding a point takes about 175 ms. A failing add can take up to 3000 ms.
                 var collectResult = _calibrationThread.CollectData(new CalibrationThread.Point(pointPosition));
 
-<<<<<<< HEAD
                 UnityEngine.Debug.Log("waiting for collect result");
-=======
->>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
                 // Wait for the call to finish
                 yield return StartCoroutine(WaitForResult(collectResult));
 
@@ -257,8 +233,6 @@ namespace Tobii.Research.Unity
             UnityEngine.Debug.Log("waiting for computer result");
             // Wait for the call to finish
             yield return StartCoroutine(WaitForResult(computeResult));
-
-<<<<<<< HEAD
             UnityEngine.Debug.Log("getting result");
             //doing after compute and apply
             var calibResult = _calibrationThread.GetResult();
@@ -266,20 +240,12 @@ namespace Tobii.Research.Unity
             yield return StartCoroutine(WaitForResult(calibResult));
 
             // calibPointCollection = calibResult.Result.CalibrationPoints;
-=======
             UnityEngine.Debug.Log("finished computing");
 
-            UnityEngine.Debug.Log("about to get result");
-            //doing after compute and apply
-            var calibResult = _calibrationThread.GetResult();
-
-            yield return StartCoroutine(WaitForResult(calibResult));
 
             UnityEngine.Debug.Log("obtained result");
 
 
-
->>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
 
             UnityEngine.Debug.Log("leaving calibration");
             // Leave calibration mode.
@@ -295,192 +261,68 @@ namespace Tobii.Research.Unity
             // Finish up or restart if failure.
             LatestCalibrationSuccessful = computeResult.Status == CalibrationStatus.Success;
 
-<<<<<<< HEAD
             //            ShowCalibrationPanel = false;
 
             if (resultCallback != null)
             {
                 Debug.Log("calibration success? " + LatestCalibrationSuccessful.ToString());
-=======
-            ShowCalibrationPanel = false;
-
-            if (resultCallback != null)
-            {
->>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
-                resultCallback(LatestCalibrationSuccessful);
-            }
-
-            _calibrationInProgress = false;
-            UnityEngine.Debug.Log("the latest calibration attempt was successful? " + LatestCalibrationSuccessful.ToString());
-
-            LatestCalibrationSuccessful = true;
-            UnityEngine.Debug.Log("forcing calibration to be successful");
-            if (LatestCalibrationSuccessful)
-            {
-<<<<<<< HEAD
-                UnityEngine.Debug.Log("calib successful; performing validation now");
-
-
-                     StartCoroutine(PerformValidation());
-
-          //      UnityEngine.Debug.Log("skipping validation; ending calibration now");
-           //     EyetrackerManager.isCalibrating = false;
-            //    ShowCalibrationPanel = false;
-            }
-            else
-            {
-                UnityEngine.Debug.Log("calib failed showing failure UI");
-                calibrationFailedPanel.alpha = 1f;
-                bool waitForRestart = true;
-                while (waitForRestart)
-                {
-                    if (Input.GetKeyDown(KeyCode.C))
-                    {
-=======
-                UnityEngine.Debug.Log("about to start validation");
-                StartCoroutine(PerformValidation());
-            }
-            
-            else
-            {
-                calibrationFailedPanel.alpha = 1f;
-                bool waitForRestart = true;
-                while (waitForRestart && !validationOngoing)
-                {
-                    if (Input.GetKeyDown(KeyCode.C))
-                    {
-                        UnityEngine.Debug.Log("restarting calibration via RESTART module");
->>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
-                        InitiateCalibration();
-                        waitForRestart = false;
-                        calibrationFailedPanel.alpha = 0f;
-                    }
-                    yield return 0;
-                }
-<<<<<<< HEAD
-            }
-        }
-
-        IEnumerator PerformValidation()
-        {
-            calibResultPanel.alpha = 1f;
-            //   validationInstructionPanel.alpha = 1f;
-            validationPointGroup.gameObject.SetActive(true);
-            validationPointGroup.GetComponent<CanvasGroup>().alpha = 1f;
-
-            float totalVarianceLeftX = 0f;
-            float totalVarianceLeftY = 0f;
-            float totalVarianceRightX = 0f;
-            float totalVarianceRightY = 0f;
-
-            float totalMeanLeftX = 0f;
-            float totalMeanLeftY = 0f;
-            float totalMeanRightX = 0f;
-            float totalMeanRightY = 0f;
-
-            Debug.Log("total calib points : " + calibPointCollection.Count.ToString());
-            for (int i = 0; i < calibPointCollection.Count; i++)
-            {
-                List<float> leftSamplesX = new List<float>();
-                List<float> leftSamplesY = new List<float>();
-                List<float> rightSamplesX = new List<float>();
-                List<float> rightSamplesY = new List<float>();
-                Debug.Log("calib samples in point " + i.ToString() + " is: " + calibPointCollection[i].CalibrationSamples.Count.ToString());
-                for (int j = 0; j < calibPointCollection[i].CalibrationSamples.Count; j++)
-                {
-                    Debug.Log("calib point " + i.ToString() + " sample: " + j.ToString());
-                    CalibrationSample calibSample = calibPointCollection[i].CalibrationSamples[j];
-                    //left
-                    //							calibResultPanel.transform.GetChild (5).gameObject.GetComponent<CanvasGroup>().alpha=1f;
-                    int start = (i * 5) + j;
-                    int end = (i * 5) + j + 1;
-                    Debug.Log("child count is: " + validationPointGroup.transform.childCount.ToString());
-                    if (end < 28)
-                    {
-
-                        validationPointGroup.transform.GetChild(start).gameObject.SetActive(true);
-
-                        //left
-                        Debug.Log("calibsample left: " + calibSample.LeftEye.PositionOnDisplayArea.X.ToString() + " , " + calibSample.LeftEye.PositionOnDisplayArea.Y.ToString());
-                        validationPointGroup.transform.GetChild(start).GetComponent<RectTransform>().anchoredPosition = new Vector2(Screen.width * calibSample.LeftEye.PositionOnDisplayArea.X, Screen.height * (1f - calibSample.LeftEye.PositionOnDisplayArea.Y));
-                        validationPointGroup.transform.GetChild(start).GetComponent<Image>().color = (calibSample.LeftEye.Validity == CalibrationEyeValidity.ValidAndUsed) ? Color.green : Color.white;
-                        leftSamplesX.Add(Mathf.Abs(calibSample.LeftEye.PositionOnDisplayArea.X - calibPointCollection[i].PositionOnDisplayArea.X));
-                        leftSamplesY.Add(Mathf.Abs(calibSample.LeftEye.PositionOnDisplayArea.Y - calibPointCollection[i].PositionOnDisplayArea.Y));
-
-                        //right
-                        validationPointGroup.transform.GetChild(end).gameObject.SetActive(true);
-                        Debug.Log("calibsample right: " + calibSample.RightEye.PositionOnDisplayArea.X.ToString() + " , " + calibSample.RightEye.PositionOnDisplayArea.Y.ToString());
-                        validationPointGroup.transform.GetChild(end).GetComponent<RectTransform>().anchoredPosition = new Vector2(Screen.width * calibSample.RightEye.PositionOnDisplayArea.X, Screen.height * (1f - calibSample.RightEye.PositionOnDisplayArea.Y));
-                        validationPointGroup.transform.GetChild(end).GetComponent<Image>().color = (calibSample.RightEye.Validity == CalibrationEyeValidity.ValidAndUsed) ? Color.green : Color.white;
-                        rightSamplesX.Add(Mathf.Abs(calibSample.RightEye.PositionOnDisplayArea.X - calibPointCollection[i].PositionOnDisplayArea.X));
-                        rightSamplesY.Add(Mathf.Abs(calibSample.RightEye.PositionOnDisplayArea.Y - calibPointCollection[i].PositionOnDisplayArea.Y));
-
-                        Debug.Log("updated points from " + start.ToString() + " to " + end.ToString());
-
-                    }
-                    //						Debug.Log ("calib sample LEFT EYE: " + calibPointCollection [i].CalibrationSamples [j].LeftEye.PositionOnDisplayArea.ToString () + " with validity " + calibPointCollection [i].CalibrationSamples [j].LeftEye.Validity.ToString ());
-                    //						Debug.Log ("calib sample RIGHT EYE: " + calibPointCollection [i].CalibrationSamples [j].RightEye.PositionOnDisplayArea.ToString () + " with validity " + calibPointCollection [i].CalibrationSamples [j].RightEye.Validity.ToString ());
-                }
-                Debug.Log("about to calculate mean and variance");
-                totalMeanLeftX += Experiment_CoinTask.Instance.mathOperations.Mean(leftSamplesX, 0, leftSamplesX.Count);
-                //				totalVarianceLeftX += Experiment_CoinTask.Instance.mathOperations.Variance (leftSamplesX, meanLeftX, 0, leftSamplesX.Count);
-
-                totalMeanLeftY += Experiment_CoinTask.Instance.mathOperations.Mean(leftSamplesY, 0, leftSamplesY.Count);
-                //				totalVarianceLeftY += Experiment_CoinTask.Instance.mathOperations.Variance (leftSamplesY, meanLeftY, 0, leftSamplesY.Count);
-
-                totalMeanRightX += Experiment_CoinTask.Instance.mathOperations.Mean(rightSamplesX, 0, rightSamplesX.Count);
-                //				totalVarianceRightX += Experiment_CoinTask.Instance.mathOperations.Variance (rightSamplesX, meanRightX, 0, rightSamplesX.Count);
-
-                totalMeanRightY += Experiment_CoinTask.Instance.mathOperations.Mean(rightSamplesY, 0, rightSamplesY.Count);
-                //				totalVarianceRightY += Experiment_CoinTask.Instance.mathOperations.Variance (rightSamplesY, meanRightY, 0, rightSamplesY.Count);
-
-            }
-
-            float avgVarLeftX = totalMeanLeftX / calibPointCollection.Count;
-            float avgVarLeftY = totalMeanLeftY / calibPointCollection.Count;
-            float avgVarRightX = totalMeanRightX / calibPointCollection.Count;
-            float avgVarRightY = totalMeanRightY / calibPointCollection.Count;
-
-            varianceText.text = "Avg Mean Left: (" + avgVarLeftX.ToString("F2") + "," + avgVarLeftY.ToString("F2") + ") \nAvg Mean Right: (" + avgVarRightX.ToString("F2") + "," + avgVarRightY.ToString("F2") + ")";
-
-            bool waitForResponse = true;
-            int response = -1;
-            while (waitForResponse)
-            {
-                if (Input.GetKeyDown(KeyCode.C))
-                {
-                    response = 0; //redo calibration
-                    waitForResponse = false;
-                }
-                if (Input.GetKeyDown(KeyCode.A))
-                {
-                    response = 1; //accept validated points and move on
-                    waitForResponse = false;
-                }
-                yield return 0;
-            }
-
-            //validationInstructionPanel.alpha = 0f;
-            calibResultPanel.alpha = 0f;
-            validationPointGroup.GetComponent<CanvasGroup>().alpha = 0f;
-            validationPointGroup.gameObject.SetActive(false);
-            if (response == 0)
-            {
-                InitiateCalibration();
-            }
-            else
-            {
-                EyetrackerManager.isCalibrating = false;
                 ShowCalibrationPanel = false;
-            }
-            yield return null;
-        }
-=======
 
-                UnityEngine.Debug.Log("no longer waiting for restart");
+                if (resultCallback != null)
+                {
+                    resultCallback(LatestCalibrationSuccessful);
+                }
+
+                _calibrationInProgress = false;
+                UnityEngine.Debug.Log("the latest calibration attempt was successful? " + LatestCalibrationSuccessful.ToString());
+
+                LatestCalibrationSuccessful = true;
+                UnityEngine.Debug.Log("forcing calibration to be successful");
+                if (LatestCalibrationSuccessful)
+                {
+                    UnityEngine.Debug.Log("calib successful; performing validation now");
+
+
+                    StartCoroutine(PerformValidation());
+
+                    //      UnityEngine.Debug.Log("skipping validation; ending calibration now");
+                    //     EyetrackerManager.isCalibrating = false;
+                    //    ShowCalibrationPanel = false;
+                }
+                else
+                {
+                    UnityEngine.Debug.Log("calib failed showing failure UI");
+                    calibrationFailedPanel.alpha = 1f;
+                    bool waitForRestart = true;
+                    while (waitForRestart)
+                    {
+                        if (Input.GetKeyDown(KeyCode.C))
+                        {
+                            UnityEngine.Debug.Log("about to start validation");
+                            StartCoroutine(PerformValidation());
+                        }
+
+                        else
+                        {
+                            calibrationFailedPanel.alpha = 1f;
+                            waitForRestart = true;
+                            while (waitForRestart && !validationOngoing)
+                            {
+                                if (Input.GetKeyDown(KeyCode.C))
+                                {
+                                    UnityEngine.Debug.Log("restarting calibration via RESTART module");
+                                    InitiateCalibration();
+                                    waitForRestart = false;
+                                    calibrationFailedPanel.alpha = 0f;
+                                }
+                                yield return 0;
+                            }
+                        }
+                    }
+                }
             }
-            
         }
+                
 
         IEnumerator PerformValidation()
         {
@@ -614,8 +456,7 @@ namespace Tobii.Research.Unity
             }
             yield return null;
         }
-
->>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
+            
 
         /// <summary>
         /// This function is called when the behaviour becomes disabled() or inactive.
@@ -630,11 +471,7 @@ namespace Tobii.Research.Unity
                 Debug.Log("Calibration thread stopped: " + (result ? "YES" : "NO"));
             }
         }
-
-<<<<<<< HEAD
-=======
-
->>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
+            
         void InitiateCalibration()
         {
             var calibrationStartResult = StartCalibration(
@@ -643,28 +480,21 @@ namespace Tobii.Research.Unity
             );
             Debug.Log("Calibration " + (calibrationStartResult ? "" : "not ") + "started");
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
 
         private void Update()
         {
             if (Input.GetKeyDown(_startKey))
             {
-<<<<<<< HEAD
                 EyetrackerManager.isCalibrating = true;
 
                 EyetrackerManager.waitForCalibration = false;
                 InitiateCalibration();
-=======
                 var calibrationStartResult = StartCalibration(
                     resultCallback: (calibrationResult) =>
                         Debug.Log("Calibration was " + (calibrationResult ? "successful" : "unsuccessful"))
                     );
 
                 Debug.Log("Calibration " + (calibrationStartResult ? "" : "not ") + "started");
->>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
             }
         }
     }
