@@ -331,6 +331,7 @@ private void HandleGazeData(GazeDataEventArgs e)
 #else
     private void Awake()
     {
+        calibrationGroup.alpha = 0f;
         finishedCalibration = true;
     }
 #endif

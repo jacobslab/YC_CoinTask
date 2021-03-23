@@ -284,7 +284,8 @@ public class SyncboxControl : MonoBehaviour
 
     void Start()
     {
-        BeginFreiburgSyncSession();
+        if(Config_CoinTask.isSyncbox)
+            BeginFreiburgSyncSession();
     }
 
     private void BeginFreiburgSyncSession()
