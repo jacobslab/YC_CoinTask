@@ -1,0 +1,2381 @@
+Using pre-set license
+Built from '2020.3/staging' branch; Version is '2020.3.4f1 (0abb6314276a) revision 703331'; Using compiler version '192528614'; Build Type 'Release'
+OS: 'Windows 10 Home; OS build 18363.1198; Version 1909; 64bit' Language: 'en' Physical Memory: 32699 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
+
+ COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2020.3.4f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker0
+-projectPath
+C:/Users/Ansh/Desktop/JacobsLab/YC_CoinTask
+-logFile
+Logs/AssetImportWorker0.log
+-srvPort
+52398
+Successfully changed project path to: C:/Users/Ansh/Desktop/JacobsLab/YC_CoinTask
+C:/Users/Ansh/Desktop/JacobsLab/YC_CoinTask
+Using Asset Import Pipeline V2.
+Refreshing native plugins compatible for Editor in 201.17 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2020.3.4f1 (0abb6314276a)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.4f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/Ansh/Desktop/JacobsLab/YC_CoinTask/Assets
+GfxDevice: creating device client; threaded=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 1060 3GB (ID=0x1c02)
+    Vendor:   
+    VRAM:     2988 MB
+    Driver:   27.21.14.6627
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.4f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.4f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.4f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56992
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.4f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.4f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.4f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.003671 seconds.
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 143.67 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unable to find bridge dll in registry for Microsoft Visual Studio Tools for Unity for C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe
+Mono: successfully reloaded assembly
+- Completed reload, in  1.718 seconds
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.009358 seconds.
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 145.90 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.803 seconds
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+Refreshing native plugins compatible for Editor in 2.95 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4151 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 217.7 MB.
+System memory in use after: 217.9 MB.
+
+Unloading 49 unused Assets to reduce memory usage. Loaded Objects now: 4615.
+Total: 7.062500 ms (FindLiveObjects: 0.963400 ms CreateObjectMapping: 0.411500 ms MarkObjects: 5.491200 ms  DeleteObjects: 0.193600 ms)
+
+========================================================================
+Received Import Request.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '24e9863dfa7b76822d9b673c90465b2e') in 0.020315 seconds
+  Import took 0.030923 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 80.440390 seconds.
+  path: Assets/MN132
+  artifactKey: Guid(5306d61594ff87447b3a9d9cfbf7a519) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MN132 using Guid(5306d61594ff87447b3a9d9cfbf7a519) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '573feb67697bb1a74da9041ebddb668b') in 0.003591 seconds
+  Import took 0.010361 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004881 seconds.
+  path: Assets/MN132
+  artifactKey: Guid(5306d61594ff87447b3a9d9cfbf7a519) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MN132 using Guid(5306d61594ff87447b3a9d9cfbf7a519) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '573feb67697bb1a74da9041ebddb668b') in 0.002672 seconds
+  Import took 0.008905 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 67.337572 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '201d8b6fa55649049de4fe222d2e338f') in 0.003492 seconds
+  Import took 0.010450 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.003492 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '201d8b6fa55649049de4fe222d2e338f') in 0.002987 seconds
+  Import took 0.009236 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.009092 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.31 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.445 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.63 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 194.5 MB.
+System memory in use after: 194.7 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 4618.
+Total: 2.999200 ms (FindLiveObjects: 0.419800 ms CreateObjectMapping: 0.111100 ms MarkObjects: 2.383200 ms  DeleteObjects: 0.084100 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.010853 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.36 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.430 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.28 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 194.5 MB.
+System memory in use after: 194.7 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 4621.
+Total: 2.915200 ms (FindLiveObjects: 0.408500 ms CreateObjectMapping: 0.108200 ms MarkObjects: 2.310900 ms  DeleteObjects: 0.086500 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 40.764445 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4175084b1308431ef7698f8e14118ca6') in 0.014331 seconds
+  Import took 0.020861 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 82.854148 seconds.
+  path: Assets/Scenes/Main_Oculus.unity
+  artifactKey: Guid(7855215db37ea4daaac2cc992f7eaa12) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/Main_Oculus.unity using Guid(7855215db37ea4daaac2cc992f7eaa12) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'eec1238d44ec5fdfe873482f14a659a5') in 0.003969 seconds
+  Import took 0.010780 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002259 seconds.
+  path: Assets/Scenes/Main_Oculus.unity
+  artifactKey: Guid(7855215db37ea4daaac2cc992f7eaa12) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/Main_Oculus.unity using Guid(7855215db37ea4daaac2cc992f7eaa12) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'eec1238d44ec5fdfe873482f14a659a5') in 0.003177 seconds
+  Import took 0.009443 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.353398 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'eaae37cadf32539822e241ef6b3b4faf') in 0.003143 seconds
+  Import took 0.009501 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.010619 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.35 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.407 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.37 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 194.6 MB.
+System memory in use after: 194.8 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 4624.
+Total: 3.398100 ms (FindLiveObjects: 0.526900 ms CreateObjectMapping: 0.141000 ms MarkObjects: 2.636300 ms  DeleteObjects: 0.092600 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.009253 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.28 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.310 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.26 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 194.6 MB.
+System memory in use after: 194.8 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 4627.
+Total: 2.863000 ms (FindLiveObjects: 0.391300 ms CreateObjectMapping: 0.107400 ms MarkObjects: 2.279200 ms  DeleteObjects: 0.084200 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 356.402558 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9b02dafa76d11f4d70d2ef9d96d8fc14') in 0.015130 seconds
+  Import took 0.021968 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.009531 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.30 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.327 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.47 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 194.7 MB.
+System memory in use after: 194.8 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 4630.
+Total: 2.924600 ms (FindLiveObjects: 0.430000 ms CreateObjectMapping: 0.107400 ms MarkObjects: 2.300600 ms  DeleteObjects: 0.085500 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 325.052970 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/TreasureChest.prefab
+  artifactKey: Guid(64943ae05573a43b09bc7265e48dd0c3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/TreasureChest.prefab using Guid(64943ae05573a43b09bc7265e48dd0c3) Importer(815301076,1909f56bfc062723c751e8b465ee728b) Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.07 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+ -> (artifact id: '908284a31cc108f7ae0a4d0c7c51814a') in 1.381019 seconds
+  Import took 1.390571 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 3.948918 seconds.
+  path: Assets/Models/Coin.obj
+  artifactKey: Guid(35d776594f58b43889c93810cb37bedb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Models/Coin.obj using Guid(35d776594f58b43889c93810cb37bedb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ce833921e5c0e1e7d3b898c889df0e6d') in 0.324683 seconds
+  Import took 0.332563 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 42.622454 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '21337dd302ca7dc17a63bd5c52f40b8e') in 0.004020 seconds
+  Import took 0.011586 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001563 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '21337dd302ca7dc17a63bd5c52f40b8e') in 0.003189 seconds
+  Import took 0.009519 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.008753 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.33 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.485 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.64 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3802 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 205.8 MB.
+System memory in use after: 206.0 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 4772.
+Total: 5.430700 ms (FindLiveObjects: 0.511200 ms CreateObjectMapping: 0.119300 ms MarkObjects: 4.679300 ms  DeleteObjects: 0.119200 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 508.231586 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '08c1aa47652fba3299a6137806e1c85b') in 0.020539 seconds
+  Import took 0.029057 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.010262 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.24 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.357 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.34 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 205.3 MB.
+System memory in use after: 205.5 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 4775.
+Total: 3.300200 ms (FindLiveObjects: 0.417800 ms CreateObjectMapping: 0.110100 ms MarkObjects: 2.682500 ms  DeleteObjects: 0.088800 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 120.970502 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9148c4519163746c55861ddd37a895f8') in 0.016569 seconds
+  Import took 0.024285 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.010877 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.32 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.417 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.29 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 205.3 MB.
+System memory in use after: 205.5 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 4778.
+Total: 3.590900 ms (FindLiveObjects: 0.490200 ms CreateObjectMapping: 0.126900 ms MarkObjects: 2.876600 ms  DeleteObjects: 0.094700 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 49.495564 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b8ea6bf2be8ab14fad87d5bda1c04799') in 0.014965 seconds
+  Import took 0.022013 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.009709 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.25 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.361 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.34 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 205.4 MB.
+System memory in use after: 205.6 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 4781.
+Total: 4.138000 ms (FindLiveObjects: 0.423300 ms CreateObjectMapping: 0.109400 ms MarkObjects: 3.507000 ms  DeleteObjects: 0.097000 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 92.221328 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/TreasureChestPedestal.prefab
+  artifactKey: Guid(6d462115487fe422ba47340b38c073d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/TreasureChestPedestal.prefab using Guid(6d462115487fe422ba47340b38c073d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b73b77d39fd36c947d2b41423bc3f7d5') in 0.633347 seconds
+  Import took 0.642242 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 3.531158 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/TreasureChestPedestal.prefab
+  artifactKey: Guid(6d462115487fe422ba47340b38c073d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/TreasureChestPedestal.prefab using Guid(6d462115487fe422ba47340b38c073d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5a06a8c0d9d18d66e9176d9b09cadd06') in 0.043693 seconds
+  Import took 0.051175 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.226339 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/TreasureChestPedestal.prefab
+  artifactKey: Guid(6d462115487fe422ba47340b38c073d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/TreasureChestPedestal.prefab using Guid(6d462115487fe422ba47340b38c073d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9a0768be96d9fd7d90ebdc8b6651de74') in 0.035670 seconds
+  Import took 0.043302 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.255812 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/TreasureChestPedestal.prefab
+  artifactKey: Guid(6d462115487fe422ba47340b38c073d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/TreasureChestPedestal.prefab using Guid(6d462115487fe422ba47340b38c073d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fa87fdbd978e4ae0a1f5192ff954e414') in 0.036525 seconds
+  Import took 0.045482 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.017787 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/TreasureChestPedestal.prefab
+  artifactKey: Guid(6d462115487fe422ba47340b38c073d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/TreasureChestPedestal.prefab using Guid(6d462115487fe422ba47340b38c073d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fa87fdbd978e4ae0a1f5192ff954e414') in 0.037769 seconds
+  Import took 0.045540 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011246 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.60 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.401 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.94 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 205.9 MB.
+System memory in use after: 206.1 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 4884.
+Total: 4.408300 ms (FindLiveObjects: 0.666800 ms CreateObjectMapping: 0.218600 ms MarkObjects: 3.421700 ms  DeleteObjects: 0.099800 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 110.585165 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '85c4c57587ff05493db6ab560a940f00') in 0.019206 seconds
+  Import took 0.026436 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 49.332408 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/ExplosionParticles.prefab
+  artifactKey: Guid(25960e08076974135ba17e455b2ecaf7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/ExplosionParticles.prefab using Guid(25960e08076974135ba17e455b2ecaf7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '14219e647ee2821d5563c6fe631d4605') in 0.018387 seconds
+  Import took 0.025631 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.007875 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/ExplosionParticles.prefab
+  artifactKey: Guid(25960e08076974135ba17e455b2ecaf7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/ExplosionParticles.prefab using Guid(25960e08076974135ba17e455b2ecaf7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '14219e647ee2821d5563c6fe631d4605') in 0.005035 seconds
+  Import took 0.011372 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 390.093024 seconds.
+  path: Assets/Plugins
+  artifactKey: Guid(8619015675705434a8d74b228676b99c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Plugins using Guid(8619015675705434a8d74b228676b99c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '36535161e323d5bbe1af902227faeb5c') in 0.003809 seconds
+  Import took 0.010701 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005493 seconds.
+  path: Assets/Plugins
+  artifactKey: Guid(8619015675705434a8d74b228676b99c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Plugins using Guid(8619015675705434a8d74b228676b99c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '36535161e323d5bbe1af902227faeb5c') in 0.002879 seconds
+  Import took 0.009066 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 60.542236 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7958f4fab04f14b5a14d7e9ba0dc2160') in 0.003193 seconds
+  Import took 0.009662 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.003630 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7958f4fab04f14b5a14d7e9ba0dc2160') in 0.002994 seconds
+  Import took 0.009398 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.008756 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.29 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.445 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.30 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 205.9 MB.
+System memory in use after: 206.1 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 4887.
+Total: 3.411900 ms (FindLiveObjects: 0.432600 ms CreateObjectMapping: 0.120500 ms MarkObjects: 2.768700 ms  DeleteObjects: 0.088500 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 31.130152 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c3d12654c866717bbe6183e7abdba641') in 0.015311 seconds
+  Import took 0.022440 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.008761 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.28 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.393 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.50 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 205.9 MB.
+System memory in use after: 206.1 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 4890.
+Total: 3.843000 ms (FindLiveObjects: 0.548300 ms CreateObjectMapping: 0.129400 ms MarkObjects: 3.059000 ms  DeleteObjects: 0.104500 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 60.091195 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/TreasureChestPedestal.prefab
+  artifactKey: Guid(6d462115487fe422ba47340b38c073d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/TreasureChestPedestal.prefab using Guid(6d462115487fe422ba47340b38c073d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c1836bbc38d712e43d561e2c05644257') in 0.651450 seconds
+  Import took 0.659905 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 78.832750 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fe64af2f6aeadff46cd6137ddda29b3a') in 0.003430 seconds
+  Import took 0.010454 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002950 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fe64af2f6aeadff46cd6137ddda29b3a') in 0.003129 seconds
+  Import took 0.009761 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.009455 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.30 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.450 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.29 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 206.3 MB.
+System memory in use after: 206.5 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 4993.
+Total: 3.323500 ms (FindLiveObjects: 0.437600 ms CreateObjectMapping: 0.110400 ms MarkObjects: 2.689200 ms  DeleteObjects: 0.084700 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 15.110803 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/CorrectObjectIndicator.prefab
+  artifactKey: Guid(1b96b9ddb9f5f46e4857d7a8263dc8bc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/CorrectObjectIndicator.prefab using Guid(1b96b9ddb9f5f46e4857d7a8263dc8bc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '326ae2498b2627084a26d8d1de00efff') in 0.658679 seconds
+  Import took 0.667317 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 12.295635 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/CoconutSplash.prefab
+  artifactKey: Guid(b5b812a84680a4a8798f93c9f78de348) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/CoconutSplash.prefab using Guid(b5b812a84680a4a8798f93c9f78de348) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5f9095d8729e8b2c44f648c8aca2d04a') in 0.011486 seconds
+  Import took 0.018205 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.003457 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/CoconutSplash.prefab
+  artifactKey: Guid(b5b812a84680a4a8798f93c9f78de348) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/CoconutSplash.prefab using Guid(b5b812a84680a4a8798f93c9f78de348) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5f9095d8729e8b2c44f648c8aca2d04a') in 0.005823 seconds
+  Import took 0.012058 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001276 seconds.
+  path: Assets/Models/Raindrop/RainDrop_001.obj
+  artifactKey: Guid(9446e750a4007439da6f0712fa321126) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Models/Raindrop/RainDrop_001.obj using Guid(9446e750a4007439da6f0712fa321126) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '484c50840c842a0a37dba51e286fcab3') in 0.064705 seconds
+  Import took 0.071488 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 12.438268 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/PositionSelectorVisuals.prefab
+  artifactKey: Guid(e2d9d1b5a73ee46f290ffc509ccf391a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/PositionSelectorVisuals.prefab using Guid(e2d9d1b5a73ee46f290ffc509ccf391a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '04f4de15010591fc67233abf710a022a') in 0.033001 seconds
+  Import took 0.040468 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002907 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/PositionSelectorVisuals.prefab
+  artifactKey: Guid(e2d9d1b5a73ee46f290ffc509ccf391a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/PositionSelectorVisuals.prefab using Guid(e2d9d1b5a73ee46f290ffc509ccf391a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '04f4de15010591fc67233abf710a022a') in 0.026686 seconds
+  Import took 0.033545 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 49.660339 seconds.
+  path: Assets/Scripts/Anim. & Visuals/CorrectPositionIndicatorController.cs
+  artifactKey: Guid(9f810048fa6e54277ad8585218f5621d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/Anim. & Visuals/CorrectPositionIndicatorController.cs using Guid(9f810048fa6e54277ad8585218f5621d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '831af01150f336406edc6452ffc446db') in 0.081578 seconds
+  Import took 0.088418 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.942879 seconds.
+  path: Assets/Scripts/Anim. & Visuals/ChosenIndicatorController.cs
+  artifactKey: Guid(5d85670c1507341c78ca9a1da077640f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/Anim. & Visuals/ChosenIndicatorController.cs using Guid(5d85670c1507341c78ca9a1da077640f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9c7d193c4b0114142e65abfb061f94e9') in 0.003139 seconds
+  Import took 0.010179 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.008940 seconds.
+  path: Assets/Scripts/Anim. & Visuals/ChosenIndicatorController.cs
+  artifactKey: Guid(5d85670c1507341c78ca9a1da077640f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/Anim. & Visuals/ChosenIndicatorController.cs using Guid(5d85670c1507341c78ca9a1da077640f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9c7d193c4b0114142e65abfb061f94e9') in 0.002706 seconds
+  Import took 0.009032 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 19.365965 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/CorrectObjectIndicator.prefab
+  artifactKey: Guid(1b96b9ddb9f5f46e4857d7a8263dc8bc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/CorrectObjectIndicator.prefab using Guid(1b96b9ddb9f5f46e4857d7a8263dc8bc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a603b92c4ec53c112323d64f33043807') in 0.028552 seconds
+  Import took 0.035795 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.003624 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/CorrectObjectIndicator.prefab
+  artifactKey: Guid(1b96b9ddb9f5f46e4857d7a8263dc8bc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/CorrectObjectIndicator.prefab using Guid(1b96b9ddb9f5f46e4857d7a8263dc8bc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a603b92c4ec53c112323d64f33043807') in 0.027358 seconds
+  Import took 0.034530 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 2.049317 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/PositionSelectorVisuals.prefab
+  artifactKey: Guid(e2d9d1b5a73ee46f290ffc509ccf391a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/PositionSelectorVisuals.prefab using Guid(e2d9d1b5a73ee46f290ffc509ccf391a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2d5fda1dc90947f01b13c08860db5d58') in 0.027895 seconds
+  Import took 0.035596 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004474 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/PositionSelectorVisuals.prefab
+  artifactKey: Guid(e2d9d1b5a73ee46f290ffc509ccf391a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/PositionSelectorVisuals.prefab using Guid(e2d9d1b5a73ee46f290ffc509ccf391a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2d5fda1dc90947f01b13c08860db5d58') in 0.026622 seconds
+  Import took 0.033953 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.009176 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.38 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.487 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.28 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.4 MB.
+System memory in use after: 207.6 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5098.
+Total: 3.519300 ms (FindLiveObjects: 0.513000 ms CreateObjectMapping: 0.117700 ms MarkObjects: 2.802700 ms  DeleteObjects: 0.084900 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 153.130064 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '840a0829179d18648cbaf8946bae0a7e') in 0.018628 seconds
+  Import took 0.025583 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 210.052837 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b8f386d9fe45ae195ce24078e316e4e2') in 0.003509 seconds
+  Import took 0.010800 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004272 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b8f386d9fe45ae195ce24078e316e4e2') in 0.003171 seconds
+  Import took 0.009509 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.009887 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.27 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.484 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.28 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.3 MB.
+System memory in use after: 207.5 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5101.
+Total: 4.020700 ms (FindLiveObjects: 0.607000 ms CreateObjectMapping: 0.146900 ms MarkObjects: 3.162200 ms  DeleteObjects: 0.103600 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 247.802748 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd72d51b73e6a2aef6142b84debdccc22') in 0.014749 seconds
+  Import took 0.022119 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.009421 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.27 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.421 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.28 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.3 MB.
+System memory in use after: 207.5 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5104.
+Total: 3.419300 ms (FindLiveObjects: 0.451600 ms CreateObjectMapping: 0.113100 ms MarkObjects: 2.761200 ms  DeleteObjects: 0.092300 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 50.011872 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'afb3c9d075ac6f6176fbf5d1a3a4fdd0') in 0.013629 seconds
+  Import took 0.020015 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.009886 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.29 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.438 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.36 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.3 MB.
+System memory in use after: 207.5 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5107.
+Total: 3.545800 ms (FindLiveObjects: 0.511400 ms CreateObjectMapping: 0.115600 ms MarkObjects: 2.827700 ms  DeleteObjects: 0.090000 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.013417 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.47 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  2.355 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 2.32 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.4 MB.
+System memory in use after: 207.5 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5110.
+Total: 13.241600 ms (FindLiveObjects: 0.819000 ms CreateObjectMapping: 0.178500 ms MarkObjects: 12.106600 ms  DeleteObjects: 0.135900 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 245.653687 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '29ddc5cddc5492a2ef6ede658fb8e494') in 0.016049 seconds
+  Import took 0.023550 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011693 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.40 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.431 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.30 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.4 MB.
+System memory in use after: 207.6 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5113.
+Total: 3.559300 ms (FindLiveObjects: 0.456000 ms CreateObjectMapping: 0.113700 ms MarkObjects: 2.896900 ms  DeleteObjects: 0.091900 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 60.606414 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '02546d653a2e10cd7f87c9adebffb7c4') in 0.014936 seconds
+  Import took 0.021841 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.010175 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.29 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.451 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.29 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.4 MB.
+System memory in use after: 207.6 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5116.
+Total: 3.944000 ms (FindLiveObjects: 0.459500 ms CreateObjectMapping: 0.111900 ms MarkObjects: 3.274700 ms  DeleteObjects: 0.096300 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.008870 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.27 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.333 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.65 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.4 MB.
+System memory in use after: 207.6 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5119.
+Total: 4.077800 ms (FindLiveObjects: 0.586200 ms CreateObjectMapping: 0.143800 ms MarkObjects: 3.226500 ms  DeleteObjects: 0.120100 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 173.931322 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b61c02b22bac1e821b77c28a44cfddaf') in 0.015876 seconds
+  Import took 0.023449 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.009723 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.63 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.433 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.27 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.4 MB.
+System memory in use after: 207.6 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5122.
+Total: 3.643400 ms (FindLiveObjects: 0.452500 ms CreateObjectMapping: 0.111000 ms MarkObjects: 2.985900 ms  DeleteObjects: 0.092900 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 23.840854 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c6fe44558b94db575605ae936e69bbf1') in 0.014651 seconds
+  Import took 0.021342 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.008646 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.35 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.385 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.89 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.4 MB.
+System memory in use after: 207.6 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5125.
+Total: 4.399300 ms (FindLiveObjects: 0.633900 ms CreateObjectMapping: 0.165200 ms MarkObjects: 3.505300 ms  DeleteObjects: 0.093100 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 120.390856 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '50b0348b9b6b91ab045194f0647f5a29') in 0.015797 seconds
+  Import took 0.023220 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.009606 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.27 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.405 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.30 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.4 MB.
+System memory in use after: 207.6 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5128.
+Total: 3.519800 ms (FindLiveObjects: 0.499500 ms CreateObjectMapping: 0.149000 ms MarkObjects: 2.777700 ms  DeleteObjects: 0.092500 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.010885 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.48 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.446 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.29 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.5 MB.
+System memory in use after: 207.6 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5131.
+Total: 3.421600 ms (FindLiveObjects: 0.458100 ms CreateObjectMapping: 0.114500 ms MarkObjects: 2.760500 ms  DeleteObjects: 0.087800 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 156.962171 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7e67299c2911835e3d4dc05672a55bba') in 0.014506 seconds
+  Import took 0.021511 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.009968 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.29 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.397 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.27 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.5 MB.
+System memory in use after: 207.7 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5134.
+Total: 3.582600 ms (FindLiveObjects: 0.511100 ms CreateObjectMapping: 0.154200 ms MarkObjects: 2.826100 ms  DeleteObjects: 0.090100 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 56.149961 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2cb15866dee3893c72fbb71c6e1a5d08') in 0.014699 seconds
+  Import took 0.022618 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 67.443678 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0606d4b46990e95a38673daab962dedc') in 0.003298 seconds
+  Import took 0.010303 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002572 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0606d4b46990e95a38673daab962dedc') in 0.003040 seconds
+  Import took 0.009261 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.009411 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.24 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.396 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.28 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.5 MB.
+System memory in use after: 207.7 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5137.
+Total: 3.734400 ms (FindLiveObjects: 0.514900 ms CreateObjectMapping: 0.124600 ms MarkObjects: 2.996800 ms  DeleteObjects: 0.096700 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 60.593105 seconds.
+  path: Assets/Scenes/EndMenu.unity
+  artifactKey: Guid(87386238aa80c4f349ced3a742d137b4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/EndMenu.unity using Guid(87386238aa80c4f349ced3a742d137b4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fa1b99bd6b208d70fa0cc39597d23dde') in 0.018134 seconds
+  Import took 0.025244 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 5.325871 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '360d548c8499a3bdc7c41366cf250b6a') in 0.003450 seconds
+  Import took 0.010375 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001040 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '360d548c8499a3bdc7c41366cf250b6a') in 0.003234 seconds
+  Import took 0.009399 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.014306 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.88 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  2.322 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 2.56 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.5 MB.
+System memory in use after: 207.7 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5140.
+Total: 8.459500 ms (FindLiveObjects: 0.750100 ms CreateObjectMapping: 0.200900 ms MarkObjects: 7.361300 ms  DeleteObjects: 0.145100 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.008598 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.29 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.443 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.29 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.5 MB.
+System memory in use after: 207.7 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5143.
+Total: 4.001500 ms (FindLiveObjects: 0.598400 ms CreateObjectMapping: 0.147500 ms MarkObjects: 3.153100 ms  DeleteObjects: 0.101200 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 314.107465 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b065776f44a1ed9f2b95689006114e35') in 0.015816 seconds
+  Import took 0.026586 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.009435 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.28 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.439 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.35 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.5 MB.
+System memory in use after: 207.7 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5146.
+Total: 3.865100 ms (FindLiveObjects: 0.451200 ms CreateObjectMapping: 0.114300 ms MarkObjects: 3.196900 ms  DeleteObjects: 0.101600 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 28.952288 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd200a847f737a716b6293cb7031f70fc') in 0.016153 seconds
+  Import took 0.022544 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 14.263833 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c0b84b37bec6b2605125aa64bb89aafe') in 0.003355 seconds
+  Import took 0.010469 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.007140 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c0b84b37bec6b2605125aa64bb89aafe') in 0.003295 seconds
+  Import took 0.011156 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.010508 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.36 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.403 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.33 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 207.6 MB.
+System memory in use after: 207.7 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5149.
+Total: 3.780800 ms (FindLiveObjects: 0.627400 ms CreateObjectMapping: 0.118800 ms MarkObjects: 2.932800 ms  DeleteObjects: 0.099700 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 122.240157 seconds.
+  path: Assets/Models/Objects/chair.blend
+  artifactKey: Guid(d12bf20439653433884b0e84398814e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Models/Objects/chair.blend using Guid(d12bf20439653433884b0e84398814e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'be9a652be99ed0c622d282a8a046be1f') in 0.702458 seconds
+  Import took 0.710330 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.372795 seconds.
+  path: Assets/Resources/Prefabs/MRIPracticeObjects/chair.prefab
+  artifactKey: Guid(09448e6db17524d00a3fcb732b7a95c7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/MRIPracticeObjects/chair.prefab using Guid(09448e6db17524d00a3fcb732b7a95c7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a514d86d2887d4e7423afa87d3f82d0e') in 0.029278 seconds
+  Import took 0.036451 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.010496 seconds.
+  path: Assets/Resources/Prefabs/MRIPracticeObjects/chair.prefab
+  artifactKey: Guid(09448e6db17524d00a3fcb732b7a95c7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/MRIPracticeObjects/chair.prefab using Guid(09448e6db17524d00a3fcb732b7a95c7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a514d86d2887d4e7423afa87d3f82d0e') in 0.026935 seconds
+  Import took 0.035080 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 4.569560 seconds.
+  path: Assets/ArchVizPRO Interior Vol.5/3D PREFAB/Musa_Chair.prefab
+  artifactKey: Guid(25819d4c96678bc45afc705977fe2325) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ArchVizPRO Interior Vol.5/3D PREFAB/Musa_Chair.prefab using Guid(25819d4c96678bc45afc705977fe2325) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1cc7536be5be7553d8e3e0e642f196bc') in 0.051771 seconds
+  Import took 0.060309 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 137.726913 seconds.
+  path: Assets/QA_Office/Models/CeilingLight.FBX
+  artifactKey: Guid(225fd122f3b3d384b9bc0b6f8102be3f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/QA_Office/Models/CeilingLight.FBX using Guid(225fd122f3b3d384b9bc0b6f8102be3f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'afe7bb0d3f3ee6b9a12ea9497e90b506') in 0.076282 seconds
+  Import took 0.086228 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 387.459289 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b748ecda92d54d0e1f64d0637417feb8') in 0.004029 seconds
+  Import took 0.011300 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002177 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b748ecda92d54d0e1f64d0637417feb8') in 0.003410 seconds
+  Import took 0.009926 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011093 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.29 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.479 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.29 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 208.2 MB.
+System memory in use after: 208.4 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5252.
+Total: 4.248300 ms (FindLiveObjects: 0.666100 ms CreateObjectMapping: 0.150800 ms MarkObjects: 3.329100 ms  DeleteObjects: 0.101100 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 16.963331 seconds.
+  path: Assets/Resources/Prefabs/OtherSpawnables/TreasureChestPedestal.prefab
+  artifactKey: Guid(6d462115487fe422ba47340b38c073d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/OtherSpawnables/TreasureChestPedestal.prefab using Guid(6d462115487fe422ba47340b38c073d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1000481fe1214e5c4adcad5c441c2a18') in 0.628924 seconds
+  Import took 0.636804 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 169.413569 seconds.
+  path: Assets/Scripts
+  artifactKey: Guid(2d6824788600b4db4915d8883e196660) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts using Guid(2d6824788600b4db4915d8883e196660) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd883b590cf863b90ae47bfd34621c206') in 0.003351 seconds
+  Import took 0.010762 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.007058 seconds.
+  path: Assets/Scripts
+  artifactKey: Guid(2d6824788600b4db4915d8883e196660) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts using Guid(2d6824788600b4db4915d8883e196660) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd883b590cf863b90ae47bfd34621c206') in 0.003076 seconds
+  Import took 0.009495 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.388390 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5b31f54d905d7958538909b895527f49') in 0.003590 seconds
+  Import took 0.010102 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.006389 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5b31f54d905d7958538909b895527f49') in 0.003093 seconds
+  Import took 0.009658 seconds .
+
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 17.36 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 39 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 139.8 MB.
+System memory in use after: 140.2 MB.
+
+Unloading 38 unused Assets to reduce memory usage. Loaded Objects now: 5561.
+Total: 6.405600 ms (FindLiveObjects: 0.527700 ms CreateObjectMapping: 0.124600 ms MarkObjects: 5.654100 ms  DeleteObjects: 0.098100 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.009590 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.29 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.489 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.29 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 208.6 MB.
+System memory in use after: 208.8 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5355.
+Total: 3.933600 ms (FindLiveObjects: 0.530200 ms CreateObjectMapping: 0.115500 ms MarkObjects: 3.180000 ms  DeleteObjects: 0.106100 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 1350.696052 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '25d340a2dd29f8969626624df5c887d3') in 0.020601 seconds
+  Import took 0.028602 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 11.150695 seconds.
+  path: Assets/QA_Office/Textures/CeilingLight/New Lighting Settings.lighting
+  artifactKey: Guid(9eaebe60acc45eb428c6b51d1c8dac6f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/QA_Office/Textures/CeilingLight/New Lighting Settings.lighting using Guid(9eaebe60acc45eb428c6b51d1c8dac6f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f28bdd671281dbf8ac325713d248e873') in 0.006613 seconds
+  Import took 0.013378 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.010097 seconds.
+  path: Assets/QA_Office/Textures/CeilingLight/New Lighting Settings.lighting
+  artifactKey: Guid(9eaebe60acc45eb428c6b51d1c8dac6f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/QA_Office/Textures/CeilingLight/New Lighting Settings.lighting using Guid(9eaebe60acc45eb428c6b51d1c8dac6f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f28bdd671281dbf8ac325713d248e873') in 0.003511 seconds
+  Import took 0.010040 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 13.228315 seconds.
+  path: Assets/MN132/Sky and Fog Settings Profile.asset
+  artifactKey: Guid(5bcf7bdc02ec4fa459be7a1cbb7861a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MN132/Sky and Fog Settings Profile.asset using Guid(5bcf7bdc02ec4fa459be7a1cbb7861a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1e294bba87bb8ad47591c656432199d9') in 0.023460 seconds
+  Import took 0.031972 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.003521 seconds.
+  path: Assets/MN132/Sky and Fog Settings Profile.asset
+  artifactKey: Guid(5bcf7bdc02ec4fa459be7a1cbb7861a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MN132/Sky and Fog Settings Profile.asset using Guid(5bcf7bdc02ec4fa459be7a1cbb7861a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1e294bba87bb8ad47591c656432199d9') in 0.010516 seconds
+  Import took 0.017936 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 71.832177 seconds.
+  path: Assets/MN132/Sky and Fog Settings Profile.asset
+  artifactKey: Guid(5bcf7bdc02ec4fa459be7a1cbb7861a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MN132/Sky and Fog Settings Profile.asset using Guid(5bcf7bdc02ec4fa459be7a1cbb7861a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5e11514f05e3a67570d60506b536893d') in 0.011237 seconds
+  Import took 0.019376 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.031780 seconds.
+  path: Assets/MN132/Sky and Fog Settings Profile.asset
+  artifactKey: Guid(5bcf7bdc02ec4fa459be7a1cbb7861a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MN132/Sky and Fog Settings Profile.asset using Guid(5bcf7bdc02ec4fa459be7a1cbb7861a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5e11514f05e3a67570d60506b536893d') in 0.010643 seconds
+  Import took 0.018728 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 92.590580 seconds.
+  path: Assets/Models
+  artifactKey: Guid(8323664d451c74273b01e1f5f717d0ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Models using Guid(8323664d451c74273b01e1f5f717d0ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3fa0dc71aae12a3c7ed116a8e9a87461') in 0.003291 seconds
+  Import took 0.010337 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005169 seconds.
+  path: Assets/Models
+  artifactKey: Guid(8323664d451c74273b01e1f5f717d0ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Models using Guid(8323664d451c74273b01e1f5f717d0ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3fa0dc71aae12a3c7ed116a8e9a87461') in 0.002835 seconds
+  Import took 0.009215 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 12.093894 seconds.
+  path: Assets/Scenes/MainIsland BrokenReplay.unity
+  artifactKey: Guid(cf7a2af271b9940499ee791ddb223121) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MainIsland BrokenReplay.unity using Guid(cf7a2af271b9940499ee791ddb223121) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f7485ec4c668f39e2cc7387e4d0f290b') in 0.004130 seconds
+  Import took 0.010812 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004345 seconds.
+  path: Assets/Scenes/MainIsland BrokenReplay.unity
+  artifactKey: Guid(cf7a2af271b9940499ee791ddb223121) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MainIsland BrokenReplay.unity using Guid(cf7a2af271b9940499ee791ddb223121) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f7485ec4c668f39e2cc7387e4d0f290b') in 0.003176 seconds
+  Import took 0.009674 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 108.904638 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '28523459821b5227a14bfd503653487b') in 0.003927 seconds
+  Import took 0.011343 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002489 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '28523459821b5227a14bfd503653487b') in 0.003095 seconds
+  Import took 0.009604 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.010006 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.27 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.371 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.30 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 208.5 MB.
+System memory in use after: 208.7 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5358.
+Total: 4.317400 ms (FindLiveObjects: 0.680700 ms CreateObjectMapping: 0.161900 ms MarkObjects: 3.378400 ms  DeleteObjects: 0.095100 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 206.267437 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2fb7d8adb317e89614567e72eda8b585') in 0.015789 seconds
+  Import took 0.023362 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.008679 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.35 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.423 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.30 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 208.5 MB.
+System memory in use after: 208.7 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5361.
+Total: 4.011900 ms (FindLiveObjects: 0.496000 ms CreateObjectMapping: 0.119700 ms MarkObjects: 3.300000 ms  DeleteObjects: 0.095000 ms)
+
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 14.25 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 39 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 134.6 MB.
+System memory in use after: 134.8 MB.
+
+Unloading 38 unused Assets to reduce memory usage. Loaded Objects now: 5361.
+Total: 4.215400 ms (FindLiveObjects: 0.489300 ms CreateObjectMapping: 0.128100 ms MarkObjects: 3.499900 ms  DeleteObjects: 0.097100 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 2193.061850 seconds.
+  path: Assets/Scenes/MN132.unity
+  artifactKey: Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132.unity using Guid(6feebf4e52a63704a95a7d482eb996f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8ffcd91503ee265713175dba00fbe15c') in 0.016809 seconds
+  Import took 0.024278 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 52.631434 seconds.
+  path: Assets/Scenes/MN132
+  artifactKey: Guid(11d29fe321d735847a50ec274040aa52) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MN132 using Guid(11d29fe321d735847a50ec274040aa52) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd21a808d9155e3b69924580d9fbf211a') in 0.003114 seconds
+  Import took 0.009810 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.009573 seconds.
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Begin MonoManager ReloadAssembly
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.73 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Tobii Unity SDK can only provide eye-gaze data on the Windows platform. Change platform in build settings to make the Eye Tracking features work.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+EyeTrackingClientLibraryDeployer:.cctor () (at Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs:46)
+System.Runtime.CompilerServices.RuntimeHelpers:RunClassConstructor (System.RuntimeTypeHandle)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
+
+(Filename: Assets/Tobii/Framework/Editor/EyeTrackingClientLibraryDeployer.cs Line: 46)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  1.578 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.28 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3789 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 208.5 MB.
+System memory in use after: 208.7 MB.
+
+Unloading 40 unused Assets to reduce memory usage. Loaded Objects now: 5364.
+Total: 4.347500 ms (FindLiveObjects: 0.504700 ms CreateObjectMapping: 0.153700 ms MarkObjects: 3.589800 ms  DeleteObjects: 0.097600 ms)
+
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 16.32 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 39 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 134.7 MB.
+System memory in use after: 134.8 MB.
+
+Unloading 38 unused Assets to reduce memory usage. Loaded Objects now: 5364.
+Total: 4.645400 ms (FindLiveObjects: 0.727800 ms CreateObjectMapping: 0.160200 ms MarkObjects: 3.658500 ms  DeleteObjects: 0.098000 ms)
+
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 14.04 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 39 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 134.7 MB.
+System memory in use after: 134.9 MB.
+
+Unloading 38 unused Assets to reduce memory usage. Loaded Objects now: 5364.
+Total: 4.427900 ms (FindLiveObjects: 0.554900 ms CreateObjectMapping: 0.139200 ms MarkObjects: 3.636100 ms  DeleteObjects: 0.096700 ms)
+

@@ -49,7 +49,7 @@ public class JuiceController : MonoBehaviour {
 	}
 
 	void SetEnvironmentJuice(bool isJuice){
-		juicyEnvironment.SetActive (isJuice);
+		//juicyEnvironment.SetActive (isJuice);
 		defaultEnvironment.SetActive (!isJuice);
 	}
 

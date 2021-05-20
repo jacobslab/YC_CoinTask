@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.VR;
 //this oculus switching is mainly for MAC
 //for Oculus in Windows, just use the VR checkbox in player settings.
 public class CameraController : MonoBehaviour {

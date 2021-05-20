@@ -691,7 +691,7 @@ public class Replay : MonoBehaviour {
 
                                 float posX = float.Parse(splitLine[3]);
                                 float posZ = float.Parse(splitLine[4]);
-                                exp.uiController.displayEyeImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(posX, posZ);
+                        //        exp.uiController.displayEyeImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(posX, posZ);
                             }
 
                             if(objName == "EYETRACKER_VIRTUAL_POINT")
@@ -699,7 +699,7 @@ public class Replay : MonoBehaviour {
                                 float posX = float.Parse(splitLine[3]);
                                 float posY = float.Parse(splitLine[4]);
                                 float posZ = float.Parse(splitLine[5]);
-                                exp.uiController.virtualSphereMarker.transform.position = new Vector3(posX, posY, posZ);
+                          //      exp.uiController.virtualSphereMarker.transform.position = new Vector3(posX, posY, posZ);
                             }
                         }
 					}

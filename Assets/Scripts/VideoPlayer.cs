@@ -6,7 +6,8 @@ public class VideoPlayer : MonoBehaviour {
 	
 	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 	
-	MovieTexture movie;
+	//MovieTexture movie;
+    
 	AudioSource movieAudio;
 	
 	public CanvasGroup group;
@@ -20,7 +21,7 @@ public class VideoPlayer : MonoBehaviour {
 		RawImage rim = GetComponent<RawImage>();
 		if(rim != null){
 			if(rim.texture != null){
-				movie = (MovieTexture)rim.mainTexture;
+				//movie = (MovieTexture)rim.mainTexture;
 			}
 		}
 		movieAudio = GetComponent<AudioSource> ();
@@ -28,6 +29,7 @@ public class VideoPlayer : MonoBehaviour {
 	
 	bool isMoviePaused = false;
 	void Update () {
+        /*
 		if (movie != null) {
 			if (movie.isPlaying) {
 				if (Input.GetAxis (Config_CoinTask.ActionButtonName) > 0.2f) { //skip movie!
@@ -44,6 +46,7 @@ public class VideoPlayer : MonoBehaviour {
 				}
 			}
 		} 
+        */
 		//else {
 			//Debug.Log("No movie attached! Can't update.");
 		//}
@@ -51,6 +54,7 @@ public class VideoPlayer : MonoBehaviour {
 
 	bool shouldPlay = false;
 	public IEnumerator Play(){
+        /*
 		if (movie != null) {
 			Debug.Log("playing instruction video");
 			yield return StartCoroutine (AskIfShouldPlay());
@@ -75,6 +79,8 @@ public class VideoPlayer : MonoBehaviour {
 		else {
 			Debug.Log("No movie attached! Can't play.");
 		}
+        */
+        yield return null;
 	}
 
 	IEnumerator AskIfShouldPlay(){
@@ -99,6 +105,7 @@ public class VideoPlayer : MonoBehaviour {
 	}
 	
 	void Pause(){
+        /*
 		if(movie != null){
 			movie.Pause();
 			movieAudio.Pause ();
@@ -107,9 +114,11 @@ public class VideoPlayer : MonoBehaviour {
 		else {
 			Debug.Log("No movie attached! Can't pause.");
 		}
+        */
 	}
 	
 	void UnPause(){
+        /*
 		if(movie != null){
 			movie.Play ();
 			movieAudio.UnPause ();
@@ -118,9 +127,11 @@ public class VideoPlayer : MonoBehaviour {
 		else {
 			Debug.Log("No movie attached! Can't unpause.");
 		}
+        */
 	}
 	
 	void Stop(){
+        /*
 		if(movie != null){
 			isMoviePaused = false;
 			movie.Stop ();
@@ -128,6 +139,7 @@ public class VideoPlayer : MonoBehaviour {
 		else {
 			Debug.Log("No movie attached! Can't stop.");
 		}
+        */
 	}
 	
 }
