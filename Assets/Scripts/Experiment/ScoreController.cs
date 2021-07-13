@@ -167,6 +167,12 @@ public class ScoreController : MonoBehaviour {
 
 	public int CalculateMemoryPoints (Vector3 correctPosition, Config_CoinTask.MemoryState memoryState){//, bool doubledDown){
 		int memoryPoints = 0;
+        if(Config_CoinTask.isFaceImage)
+        {
+            //we adjusted the image, so for calculation we adjust it back before calculating overlap
+            correctPosition -= new Vector3(0f, 20f, 0f);
+        }
+
 		if (exp.environmentController.myPositionSelector.GetRadiusOverlap (correctPosition)) {
 			switch(memoryState){
 				case Config_CoinTask.MemoryState.yes:

@@ -14,27 +14,79 @@ public class ObjectController : MonoBehaviour {
 	public GameObject ExplosiveObject;
 	public List<GameObject> CurrentTrialSpecialObjects;
 
+    public List<Texture> CurrentTrialFaceImages;
 
-	//experiment singleton
-	Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
+    //this is the plane prefab we'll use to show all the face stimuli on
+    public GameObject defaultFacePlane;
+
+    public Vector3 imageViewingOffset = new Vector3(0f,1f,0f);
+
+    //experiment singleton
+    Experiment_CoinTask exp { get { return Experiment_CoinTask.Instance; } }
 
 	//object array & list
 	List<GameObject> gameObjectList_Spawnable;
-	//List<GameObject> gameObjectList_Spawned; //a list to keep track of the objects currently in the scene
+
+    List<Texture> faceImageList_Spawnable;
+
+    List<Texture> variantFaceImageList_Spawnable;
+
+    private List<Texture> activeList;
+
+    //List<GameObject> gameObjectList_Spawned; //a list to keep track of the objects currently in the scene
 
 
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		gameObjectList_Spawnable = new List<GameObject> ();
 		CurrentTrialSpecialObjects = new List<GameObject> ();
-		CreateSpecialObjectList (gameObjectList_Spawnable);
-	}
+
+        faceImageList_Spawnable = new List<Texture>();
+        variantFaceImageList_Spawnable = new List<Texture>();
+        CurrentTrialFaceImages = new List<Texture>();
+
+        activeList = new List<Texture>();
+
+        if(Config_CoinTask.isFaceImage)
+            CreateImageList(faceImageList_Spawnable, variantFaceImageList_Spawnable);
+        else
+            CreateSpecialObjectList (gameObjectList_Spawnable);
+
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+
+    void CreateImageList(List<Texture> faceListToFill, List<Texture> variantListToFill)
+    {
+        UnityEngine.Debug.Log("creating image list");
+        faceListToFill.Clear();
+        variantListToFill.Clear();
+
+        Object[] original_images;
+        Object[] variant_images;
+        original_images = Resources.LoadAll("Originals", typeof(Texture));
+        variant_images = Resources.LoadAll("Variants", typeof(Texture));
+        UnityEngine.Debug.Log("found " + original_images.Length.ToString() + " original images");
+        UnityEngine.Debug.Log("found " + variant_images.Length.ToString() + " variant images");
+        for (int i = 0; i < original_images.Length; i++)
+        {
+            faceListToFill.Add((Texture)original_images[i]);
+        }
+        for (int i = 0; i < variant_images.Length; i++)
+        {
+            variantListToFill.Add((Texture)variant_images[i]);
+        }
+
+        //by default, originals will be the first block
+
+        activeList = faceListToFill;
+
+    }
 
 	void CreateSpecialObjectList(List<GameObject> gameObjectListToFill){
 		gameObjectListToFill.Clear();
@@ -91,8 +143,36 @@ public class ObjectController : MonoBehaviour {
 		yield return StartCoroutine( newExplosive.GetComponent<Explosive>().ThrowSelf(from, to) );
 	}
 
+    Texture ChooseRandomImage()
+    {
+        if (activeList.Count == 0)
+        {
+            Debug.Log("No MORE images to pick! Recreating images list.");
+           // CreateImageList(faceImageList_Spawnable); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
+           /*
+            if (activ.Count == 0)
+            {
+                Debug.Log("No objects to pick at all!"); //if there are still no objects in the list, then there weren't any to begin with...
+                return null;
+            }
+            */
+            //if active list is empty, switch to variants
+            activeList = variantFaceImageList_Spawnable;
+
+            
+        }
+
+
+        int randomObjectIndex = Random.Range(0, activeList.Count);
+        Texture chosenImage = activeList[randomObjectIndex];
+        activeList.RemoveAt(randomObjectIndex);
+
+        return chosenImage;
+    }
+
 
 	GameObject ChooseRandomObject(){
+
 		if (gameObjectList_Spawnable.Count == 0) {
 			Debug.Log ("No MORE objects to pick! Recreating object list.");
 			CreateSpecialObjectList(gameObjectList_Spawnable); //IN ORDER TO REFILL THE LIST ONCE ALL OBJECTS HAVE BEEN USED
@@ -146,6 +226,43 @@ public class ObjectController : MonoBehaviour {
 
 		return spawnedObj;
 	}
+
+    public GameObject SpawnSpecialImage(Vector3 spawnPos)
+    {
+        Texture imgToSpawn;
+        imgToSpawn = ChooseRandomImage();
+        if (imgToSpawn != null)
+        {
+
+            GameObject newObject = Instantiate(defaultFacePlane, spawnPos + imageViewingOffset, defaultFacePlane.transform.rotation) as GameObject;
+            
+            //set the image on the plane
+            Renderer rend = newObject.GetComponent<Renderer>();
+
+            rend.material = new Material(Shader.Find("Unlit/Texture"));
+            exp.trialController.LogImageSpawn(imgToSpawn.name, spawnPos);
+            rend.material.mainTexture = imgToSpawn;
+            //    =sharedMaterial.mainTexture = imgToSpawn;
+
+
+            //   float randomRot = GenerateRandomRotationY();
+            // newObject.transform.RotateAround(newObject.transform.position, Vector3.up, randomRot);
+
+            CurrentTrialSpecialObjects.Add(newObject);
+
+            //make object face the player -- MUST MAKE SURE OBJECT FACES Z-AXIS
+            //don't want object to tilt downward at the player -- use object's current y position
+            UsefulFunctions.FaceObject(newObject, exp.player.gameObject, false);
+            //we want to make sure it is facing towards the player
+            newObject.transform.localEulerAngles = new Vector3(90f, newObject.transform.localEulerAngles.y, newObject.transform.localEulerAngles.z);
+
+            return newObject;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
 	//spawn random object at a specified location
 	public GameObject SpawnSpecialObject (Vector3 spawnPos){

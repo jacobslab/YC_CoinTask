@@ -141,13 +141,20 @@ public class DefaultItem : MonoBehaviour {
 
 	IEnumerator SpawnSpecialObject(Vector3 specialSpawnPos){
 		Experiment_CoinTask.Instance.scoreController.AddSpecialPoints();
+        GameObject specialObject = null;
+
+        //determine which kind of stimuli we are presenting and spawn them appropriately
+        if (Config_CoinTask.isFaceImage)
+        {
+            specialObject = Experiment_CoinTask.Instance.objectController.SpawnSpecialImage(specialSpawnPos);
+        }
+        else
+        {
+            specialObject = Experiment_CoinTask.Instance.objectController.SpawnSpecialObject(specialSpawnPos);
+            //set special object text
+            SetSpecialObjectText(specialObject.GetComponent<SpawnableObject>().GetDisplayName());
+        }
 		
-		//TODO: spawn with default objects, show on collision???
-		
-		GameObject specialObject = Experiment_CoinTask.Instance.objectController.SpawnSpecialObject(specialSpawnPos);
-		
-		//set special object text
-		SetSpecialObjectText (specialObject.GetComponent<SpawnableObject> ().GetDisplayName ());
 
 		PlayJuice (true);
 

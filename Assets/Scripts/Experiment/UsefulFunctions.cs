@@ -54,6 +54,7 @@ public class UsefulFunctions {
 			lookAtPos = new Vector3 (target.transform.position.x, obj.transform.position.y, target.transform.position.z);
 		}
 		obj.transform.LookAt(lookAtPos);
+
 	}
 
 

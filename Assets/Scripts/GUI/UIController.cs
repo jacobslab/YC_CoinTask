@@ -16,7 +16,7 @@ public class UIController : MonoBehaviour {
 	public Text ConnectionText; //changed in TrialController from "connecting..." to "press start..." etc.
 	public GoText goText;
 
-	public Transform InSceneUIParent;
+    public Transform InSceneUIParent;
 	public Transform OculusInSceneUIPos;
 
 	public CanvasGroup exitPanel;
@@ -67,8 +67,10 @@ public class UIController : MonoBehaviour {
     public GameObject virtualSphereMarker;
 
 
-	//MRI VERSION
-	public CanvasGroup WaitingForMRIUI;
+    //UI instruction background panel
+    public CanvasGroup smallerInstructionBackgroundPanel;
+    //MRI VERSION
+    public CanvasGroup WaitingForMRIUI;
 	public CanvasGroup FixationRestUI;
 	public CanvasGroup MRITimerUI;
 

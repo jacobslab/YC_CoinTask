@@ -777,15 +777,21 @@ public class TrialController : MonoBehaviour {
 		List<int> randomSpecialObjectOrder = UsefulFunctions.GetRandomIndexOrder( exp.objectController.CurrentTrialSpecialObjects.Count );
 		List<Vector3> chosenPositions = new List<Vector3> (); //chosen positions will be in the same order as the random special object order
 		List<Config_CoinTask.MemoryState> rememberResponses = new List<Config_CoinTask.MemoryState> (); //keep track of whether or not the player remembered each object
-		//List<bool> areYouSureResponses = new List<bool> (); //keep track of whether or not the player wanted to double down on each object
+                                                                                                        //List<bool> areYouSureResponses = new List<bool> (); //keep track of whether or not the player wanted to double down on each object
+
+        UnityEngine.Debug.Log("special object count " + exp.objectController.CurrentTrialSpecialObjects.Count.ToString());
 
 		for (int i = 0; i < exp.objectController.CurrentTrialSpecialObjects.Count; i++) {
 
 			//show instructions for location selection
 			int randomOrderIndex = randomSpecialObjectOrder[i];
-			GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects [randomOrderIndex];
-			SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
-			string specialItemDisplayName = specialSpawnable.GetDisplayName ();
+            GameObject specialObj = exp.objectController.CurrentTrialSpecialObjects[randomOrderIndex];
+
+            UnityEngine.Debug.Log("special obj is " + specialObj.name);
+            SpawnableObject specialSpawnable = specialObj.GetComponent<SpawnableObject>();
+            string specialItemDisplayName="";
+            if (!Config_CoinTask.isFaceImage)
+                specialItemDisplayName = specialSpawnable.GetDisplayName ();
 
 			//set TCP state true
 			switch(randomOrderIndex){
@@ -802,15 +808,19 @@ public class TrialController : MonoBehaviour {
 
 			//show nice UI, log special object
 			trialLogger.LogObjectToRecall(specialSpawnable);
-			GameObject specialObjUICopy = Instantiate (specialObj, Vector3.zero, specialObj.transform.rotation) as GameObject;
-			specialObjUICopy.name += "UICopy";
+            GameObject specialObjUICopy = Instantiate(specialObj, Vector3.zero, specialObj.transform.rotation) as GameObject;
+
+           
+          
+            specialObjUICopy.name += "UICopy";
 
 			specialObjUICopy.transform.parent = exp.cameraController.UICamera.transform; //make this copy follow camera/head movement. mainly for VR.
 
 			//set layer of object & children to PlayerUI
 			specialObjUICopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI");
 
-			trialLogger.LogInstructionEvent();
+
+            trialLogger.LogInstructionEvent();
 			yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy, specialItemDisplayName) );
 
 #if MRIVERSION
@@ -857,8 +867,17 @@ public class TrialController : MonoBehaviour {
 
 			exp.uiController.doYouRememberUI.Stop();
 
-			//show single selection instruction and wait for selection button press
-			string selectObjectText = exp.currInstructions.selectTheLocationText;
+            //show single selection instruction and wait for selection button press
+
+            string selectObjectText = exp.currInstructions.selectTheLocationText;
+
+            //we will only turn this on IF the face image is active
+            if (Config_CoinTask.isFaceImage)
+            {
+                exp.currInstructions.faceImage.texture = specialObjUICopy.GetComponent<Renderer>().material.mainTexture;
+                exp.currInstructions.faceImage.enabled = true;
+            }
+
 			if (ExperimentSettings_CoinTask.myLanguage == ExperimentSettings_CoinTask.LanguageSetting.Spanish) {
 				//check for masculine article
 				string[] splitName = specialItemDisplayName.Split(' ');
@@ -962,17 +981,27 @@ public class TrialController : MonoBehaviour {
 			specialSpawnable.TurnVisible(true);
 			specialSpawnable.Scale(2.0f);
 			UsefulFunctions.FaceObject( specialObj, exp.player.gameObject, false);
-			
-			//create an indicator for each special object
-			float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;
+
+          
+
+            //create an indicator for each special object
+            float indicatorHeight = exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.position.y;
 			Vector3 correctPosition = new Vector3 (specialObj.transform.position.x, indicatorHeight, specialObj.transform.position.z);
 			GameObject correctPositionIndicator = Instantiate( exp.environmentController.myPositionSelector.CorrectPositionIndicator, correctPosition, exp.environmentController.myPositionSelector.CorrectPositionIndicator.transform.rotation) as GameObject;
 			correctPositionIndicator.GetComponent<SpawnableObject>().SetNameID(correctPositionIndicator.transform, i);
-			CorrectPositionIndicators.Add(correctPositionIndicator); 
+			CorrectPositionIndicators.Add(correctPositionIndicator);
 
-			//create an indicator for each chosen position
-			//spawn the indicator at the height of the original indicator
-			exp.environmentController.myPositionSelector.EnableSelection (true); //turn on selector for spawning indicator
+            //adjust the image for feedback so it is proper
+            if (Config_CoinTask.isFaceImage)
+            {
+                UnityEngine.Debug.Log("adjusted face image copy");
+                specialObj.transform.position = new Vector3(specialObj.transform.position.x, 20f, specialObj.transform.position.z);
+                specialObj.transform.localEulerAngles = new Vector3(90f, specialObj.transform.localEulerAngles.y, specialObj.transform.localEulerAngles.z);
+            }
+
+            //create an indicator for each chosen position
+            //spawn the indicator at the height of the original indicator
+            exp.environmentController.myPositionSelector.EnableSelection (true); //turn on selector for spawning indicator
 			float chosenIndicatorHeight = exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.position.y;
 			Vector3 chosenIndicatorPosition = new Vector3(chosenPosition.x, chosenIndicatorHeight, chosenPosition.z);
 			GameObject chosenPositionIndicator = Instantiate (exp.environmentController.myPositionSelector.PositionSelectorVisuals, chosenIndicatorPosition, exp.environmentController.myPositionSelector.PositionSelectorVisuals.transform.rotation) as GameObject;
@@ -1120,8 +1149,13 @@ public class TrialController : MonoBehaviour {
 		trialLogger.LogPlayerChestRotation (false);
 	}
 
-	//GETS CALLED FROM DEFAULTITEM.CS WHEN CHEST OPENS ON COLLISION WITH PLAYER.
-	public IEnumerator WaitForTreasurePause( GameObject specialObject){
+    public void LogImageSpawn(string imgName, Vector3 spawnPos)
+    {
+        trialLogger.LogImageSpawn(imgName, spawnPos);
+    }
+
+    //GETS CALLED FROM DEFAULTITEM.CS WHEN CHEST OPENS ON COLLISION WITH PLAYER.
+    public IEnumerator WaitForTreasurePause( GameObject specialObject){
 
 		//lock the avatar controls
 		exp.player.controls.ShouldLockControls = true;

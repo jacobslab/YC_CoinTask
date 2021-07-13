@@ -63,7 +63,13 @@ public class InstructionsController : MonoBehaviour {
 	public string noPointsText = "win a little / lose a little";
 
 	public string pressToSelect = "press (X) to select";
-	public string selectTheLocationText = "Select the location of the ";
+#if FACE_VERSION
+    public string selectTheLocationText = "Select the location of the image ";
+#else
+    public string selectTheLocationText = "Select the location of the ";
+#endif
+
+    public RawImage faceImage;
 
 	public string pressToContinue = "press (X) to continue";
 	public string pressToStart = "Press (X) to start!";
@@ -99,7 +105,10 @@ public class InstructionsController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		TurnOffInstructions ();
+        //turned off by default
+        faceImage.enabled = false;
+
+        TurnOffInstructions ();
 	}
 	
 	// Update is called once per frame
@@ -111,10 +120,13 @@ public class InstructionsController : MonoBehaviour {
 		SetText ("");
 	}
 
-	public void TurnOffInstructions(){
-		SetInstructionsTransparentOverlay();
+	public void TurnOffInstructions()
+    {
+        faceImage.enabled = false;
+        SetInstructionsTransparentOverlay();
 		SetInstructionsBlank();
-	}
+        Experiment_CoinTask.Instance.uiController.smallerInstructionBackgroundPanel.alpha = 0f;
+    }
 
 	void SetText(string newText){
 			text.text = newText;
@@ -130,7 +142,10 @@ public class InstructionsController : MonoBehaviour {
 		//Debug.Log("set instructions transparent overlay");
 			background.color = new Color(0,0,0,0);
 			text.color = textColorOverlay;
-	}
+
+
+        Experiment_CoinTask.Instance.uiController.smallerInstructionBackgroundPanel.alpha = 1f;
+    }
 
 	public void DisplayText(string line){
 		Debug.Log ("setting line " + line);

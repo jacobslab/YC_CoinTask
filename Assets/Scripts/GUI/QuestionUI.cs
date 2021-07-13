@@ -10,8 +10,16 @@ public class QuestionUI : MonoBehaviour {
 	public ParticleSystem ObjectParticles;
 	public AudioSource ObjectSound;
 	public Transform ObjectPositionTransform;
+    public TextMesh questionInstructionText;
 
-	public bool isPlaying = false;
+#if FACE_VERSION
+    string questionText = "Do you remember where you found this image...";
+#else
+    string questionText = "Do you remember where to find the....";
+#endif
+
+
+    public bool isPlaying = false;
 
 	public AnswerSelector myAnswerSelector;
 
@@ -52,16 +60,35 @@ public class QuestionUI : MonoBehaviour {
 
 		selectedObject = objectToSelect;
 		selectedObject.transform.position = ObjectPositionTransform.position;
-		SpawnableObject selectedObjectSpawnable = selectedObject.GetComponent<SpawnableObject> ();
+
+
+      
+
+        SpawnableObject selectedObjectSpawnable = selectedObject.GetComponent<SpawnableObject> ();
+
+
 		selectedObjectSpawnable.TurnVisible (true);
 		selectedObjectSpawnable.SetShadowCasting (false); //turn off shadows, they look weird in this case.
 		selectedObjectSpawnable.Scale (objectScaleMult);
 
-		SetObjectNameText(objectName);
+        if (!Config_CoinTask.isFaceImage)
+        {
+            SetObjectNameText(objectName);
+        }
+        else
+            ToggleObjectNameVisibility(false);
 
 		UsefulFunctions.FaceObject (objectToSelect, exp.player.gameObject, false); //make UI copy face the player
-
-		Answers.gameObject.SetActive (true);
+                                                                                   
+        //adjust the viewing angle so it faces the player
+        if (Config_CoinTask.isFaceImage)
+        {
+            UnityEngine.Debug.Log("adjusted face image copy");
+            selectedObject.transform.position += exp.objectController.imageViewingOffset;
+            selectedObject.transform.localEulerAngles = new Vector3(90f, selectedObject.transform.localEulerAngles.y, selectedObject.transform.localEulerAngles.z);
+        }
+        questionInstructionText.text = questionText;
+        Answers.gameObject.SetActive (true);
 		myAnswerSelector.SetShouldCheckForInput (true);
 
 		yield return 0;
@@ -72,8 +99,16 @@ public class QuestionUI : MonoBehaviour {
 		AudioController.PlayAudio (ObjectSound);
 	}
 
-	void SetObjectNameText(string name){
-		ObjectNameTextMesh.text = name;
+    void ToggleObjectNameVisibility(bool isVisible)
+    {
+        ObjectNameTextMesh.gameObject.SetActive(isVisible);
+    }
+
+
+    void SetObjectNameText(string name)
+    {
+        ToggleObjectNameVisibility(true);
+        ObjectNameTextMesh.text = name;
 		int nameLength = name.Length;
 		int maxLengthBeforeResize = 13;//15 = max num chars counted in editor... a rough length estimate.
 		int fontSizeDecreasePerChar = 50;

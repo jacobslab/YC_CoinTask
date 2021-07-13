@@ -183,7 +183,18 @@ public class TrialLogTrack : LogTrack {
 		}
 	}
 
-	public void LogInstructionEvent(){
+    public void LogImageSpawn(string imgName, Vector3 spawnPosition)
+    {
+
+        if (ExperimentSettings_CoinTask.isLogging)
+        {
+            UnityEngine.Debug.Log("logging " + imgName + " at " + spawnPosition.ToString());
+            subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "IMAGE_ITEM" + separator + imgName + separator + spawnPosition.x.ToString() + separator + spawnPosition.y.ToString() + separator + spawnPosition.z.ToString());
+        }
+    }
+
+
+    public void LogInstructionEvent(){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount (), "Trial Event" + separator + "SHOWING_INSTRUCTIONS");
 			Debug.Log ("Logged instruction event.");
