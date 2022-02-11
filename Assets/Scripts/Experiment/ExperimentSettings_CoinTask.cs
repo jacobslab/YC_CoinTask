@@ -160,9 +160,14 @@ public class ExperimentSettings_CoinTask : MonoBehaviour { //should be in main m
 	void InitMainMenuLabels(){
 		if (Application.loadedLevel == 0) {
 			ExpNameVersion.text = Config_CoinTask.BuildVersion.ToString () + "/" + Config_CoinTask.VersionNumber;
-			if (Config_CoinTask.isSyncbox) {
+			if (Config_CoinTask.isSyncbox && !Config_CoinTask.isPhotodiode) {
 				BuildType.text = "Sync Box";
-			} else if (Config_CoinTask.isSystem2) {
+			}
+			else if(Config_CoinTask.isPhotodiode)
+            {
+				BuildType.text = "Photodiode";
+            }
+				else if (Config_CoinTask.isSystem2) {
 				BuildType.text = "System 2";
 			} else {
 				BuildType.text = "Demo";

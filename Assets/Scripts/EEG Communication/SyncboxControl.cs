@@ -38,7 +38,7 @@ public class SyncboxControl : MonoBehaviour
     LJUD.IO ioType = 0;
     LJUD.CHANNEL channel = 0;
 
-	//public RawImage syncStatusBox;
+	public RawImage syncStatusBox;
 
     //SINGLETON
     private static SyncboxControl _instance;
@@ -71,9 +71,13 @@ public class SyncboxControl : MonoBehaviour
         //Read and display the UD version.
         //dblDriverVersion = LJUD.GetDriverVersion();
         //UnityEngine.Debug.Log(dblDriverVersion);
-        if (Config_CoinTask.isSyncbox)
+        if (Config_CoinTask.isSyncbox && !Config_CoinTask.isPhotodiode)
         {
             StartCoroutine(ConnectSyncbox());
+        }
+        else if(Config_CoinTask.isSyncbox && Config_CoinTask.isPhotodiode)
+        {
+            StartCoroutine(RunSyncPulseManual()); //skip connection and directly run the sync pulsing coroutine if it is the photodiode version
         }
     }
 
@@ -209,23 +213,29 @@ public class SyncboxControl : MonoBehaviour
     void ToggleLEDOn()
     {
 
-		//syncStatusBox.color = Color.white;
-		#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-		TurnLEDOn();
-		#else
+		syncStatusBox.color = Color.white;
+        if (!Config_CoinTask.isPhotodiode)
+        {
+#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+            TurnLEDOn();
+#else
         LJUD.eDO(u3.ljhandle, 0, 1);
-		#endif
+#endif
+        }
         LogSYNCOn(GameClock.SystemTime_Milliseconds);
     }
 
     void ToggleLEDOff()
     {
-		//syncStatusBox.color = Color.black;
-		#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-		TurnLEDOff();
-		#else
+		syncStatusBox.color = Color.black;
+        if (!Config_CoinTask.isPhotodiode)
+        {
+#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+            TurnLEDOff();
+#else
         LJUD.eDO(u3.ljhandle, 0, 0);
-		#endif
+#endif
+        }
         LogSYNCOff(GameClock.SystemTime_Milliseconds);
 
     }
@@ -251,6 +261,7 @@ public class SyncboxControl : MonoBehaviour
     {
         if (ExperimentSettings_CoinTask.isLogging)
         {
+            exp.trialController.trialLogger.LogSyncEvent(true);
             exp.eegLog.Log(time, exp.eegLog.GetFrameCount(), "ON"); //NOTE: NOT USING FRAME IN THE FRAME SLOT
         }
     }
@@ -259,6 +270,7 @@ public class SyncboxControl : MonoBehaviour
     {
         if (ExperimentSettings_CoinTask.isLogging)
         {
+            exp.trialController.trialLogger.LogSyncEvent(false);
             exp.eegLog.Log(time, exp.eegLog.GetFrameCount(), "OFF"); //NOTE: NOT USING FRAME IN THE FRAME SLOT
         }
     }
@@ -286,11 +298,14 @@ public class SyncboxControl : MonoBehaviour
 
     void OnApplicationQuit()
     {
-		#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        UnityEngine.Debug.Log(Marshal.PtrToStringAuto (CloseUSB()));
-		#else
+        if (Config_CoinTask.isSyncbox && !Config_CoinTask.isPhotodiode)
+        {
+#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+            UnityEngine.Debug.Log(Marshal.PtrToStringAuto(CloseUSB()));
+#else
         LJUD.Close();
-		#endif
+#endif
+        }
     }
 
 }

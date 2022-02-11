@@ -203,6 +203,8 @@ public class TrialLogTrack : LogTrack {
 		}
 	}
 
+
+
 	public void LogPlayerChestRotation(bool isStarting){
 		if (ExperimentSettings_CoinTask.isLogging) {
 			if(isStarting){
@@ -340,4 +342,14 @@ public class TrialLogTrack : LogTrack {
 		}
 	}
 
+	//syncbox event
+	public void LogSyncEvent(bool isSyncOn)
+	{
+		if (ExperimentSettings_CoinTask.isLogging)
+		{
+
+			subjectLog.Log(GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), "SYNC_EVENT" + separator + ((isSyncOn) ? "ON" : "OFF"));
+		}
+
+	}
 }

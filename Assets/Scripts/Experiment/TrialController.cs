@@ -18,7 +18,7 @@ public class TrialController : MonoBehaviour {
 	public SimpleTimer trialTimer;
 	public SimpleTimer MRITimer;
 
-	TrialLogTrack trialLogger;
+	public TrialLogTrack trialLogger;
 
 	bool isPracticeTrial = false;
 	int numRealTrials = 0; //used for logging trial ID's
@@ -395,15 +395,16 @@ public class TrialController : MonoBehaviour {
 				exp.uiController.ConnectionUI.alpha = 0.0f;
 			}
 
-
+			UnityEngine.Debug.Log("waiting to run calib");
 			while(!EyetrackerManager.finishedCalibration)
 			{	
 				yield return 0;
 			}
+			UnityEngine.Debug.Log("finished running calib");
 #if (!(MRIVERSION))
-	#if (!UNITY_WEBPLAYER)
-	//		if(!ExperimentSettings_CoinTask.Instance.isWebBuild){
-				trialLogger.LogVideoEvent(true);
+#if (!UNITY_WEBPLAYER)
+			//		if(!ExperimentSettings_CoinTask.Instance.isWebBuild){
+			trialLogger.LogVideoEvent(true);
 				yield return StartCoroutine(exp.instrVideoPlayer.Play());
 				trialLogger.LogVideoEvent(false);
 			
@@ -416,6 +417,7 @@ public class TrialController : MonoBehaviour {
 
 			//show instructions for exploring, wait for the action button
 			trialLogger.LogInstructionEvent();
+			UnityEngine.Debug.Log("playing welcoming pirate");
 			yield return StartCoroutine(exp.uiController.pirateController.PlayWelcomingPirate());
 
 #if MRIVERSION
@@ -532,11 +534,14 @@ public class TrialController : MonoBehaviour {
 				yield return 0;
 			}
 		}
-		if (Config_CoinTask.isSyncbox){
-			while(!SyncboxControl.Instance.isUSBOpen){
-				Debug.Log("Waiting for sync box to open...");
-				yield return 0;
-			}
+		if (Config_CoinTask.isSyncbox && !Config_CoinTask.isPhotodiode){
+
+				while (!SyncboxControl.Instance.isUSBOpen)
+				{
+					Debug.Log("Waiting for sync box to open...");
+					yield return 0;
+				}
+			
 		}
 		exp.uiController.ConnectionUI.alpha = 0.0f;
 		isConnectingToHardware = false;

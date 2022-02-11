@@ -9,7 +9,7 @@ namespace Tobii.Research.Unity
 {
     public class EyeTracker : EyeTrackerBase
     {
-        #region Public Properties
+#region Public Properties
 
         /// <summary>
         /// Get <see cref="EyeTracker"/> instance. This is assigned
@@ -75,9 +75,9 @@ namespace Tobii.Research.Unity
 
         public override int UnprocessedGazeDataCount { get { return _originalGazeData.Count; } }
 
-        #endregion Public Properties
+#endregion Public Properties
 
-        #region Inspector Properties
+#region Inspector Properties
 
         [SerializeField]
         [Tooltip("Connect to the first found eye tracker. Otherwise use provided serial number.")]
@@ -87,9 +87,9 @@ namespace Tobii.Research.Unity
         [Tooltip("Check for this specific eyetracker serial number. Matches start of string so a partial start of a serial number can be used.")]
         private string _eyeTrackerSerialStart = "IS";
 
-        #endregion Inspector Properties
+#endregion Inspector Properties
 
-        #region Private Fields
+#region Private Fields
 
         /// <summary>
         /// Locked access and size management.
@@ -106,9 +106,9 @@ namespace Tobii.Research.Unity
         /// </summary>
         private IGazeData _latestGazeData = new GazeData();
 
-        #endregion Private Fields
+#endregion Private Fields
 
-        #region Unity Methods
+#region Unity Methods
 
         protected override void OnAwake()
         {
@@ -126,9 +126,9 @@ namespace Tobii.Research.Unity
             base.OnUpdate();
         }
 
-        #endregion Unity Methods
+#endregion Unity Methods
 
-        #region Private Eye Tracking Methods
+#region Private Eye Tracking Methods
 
         protected override void ProcessGazeEvents()
         {
@@ -215,7 +215,7 @@ namespace Tobii.Research.Unity
         {
             _originalGazeData.Next = eventArgs;
         }
-
-        #endregion Private Eye Tracking Methods
+        
+#endregion Private Eye Tracking Methods
     }
 }

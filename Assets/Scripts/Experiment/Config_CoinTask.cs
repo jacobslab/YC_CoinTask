@@ -25,13 +25,35 @@ public class Config_CoinTask : MonoBehaviour {
 #if MRIVERSION
 	public static bool isSyncbox = false;
 	public static bool isSystem2 = false;
-#else
+#endif
+
+	//system 2 -- blackrock/ripple
+#if SYS_2
+	public static bool isSyncbox = false;
+	public static bool isSystem2 = true;
+	public static bool isPhotodiode = false;
+#elif SYNCBOX //syncbox only
 	public static bool isSyncbox = true;
 	public static bool isSystem2 = false;
+	public static bool isPhotodiode = false;
+#elif PHOTODIODE //photodiode version with "syncbox-like" pulses
+	public static bool isSyncbox = true;
+	public static bool isSystem2 = false;
+	public static bool isPhotodiode = true;
+#else //demo version -- vanilla versin
+	public static bool isSyncbox = false;
+	public static bool isSystem2 = false;
+	public static bool isPhotodiode = false;
+#endif
+
+#if EYETRACKER
+	public static bool hasEyetracker=true;
+#else
+	public static bool hasEyetracker = false;
 #endif
 
 	//#if MRIVERSION
-//	public static string HorizontalAxisName = "MRI Horizontal";
+	//	public static string HorizontalAxisName = "MRI Horizontal";
 	//public static string VerticalAxisName = "MRI Vertical";
 	//public static string ActionButtonName = "MRI Action Button";
 	//#else
@@ -143,11 +165,11 @@ public class Config_CoinTask : MonoBehaviour {
 	public static float minDefaultInstructionTime = 0.0f; //time each learning trial instruction should be displayed for
 
 	//tilt variables
-	#if ENABLE_VR
+#if ENABLE_VR
 	public static bool isAvatarTilting = false; //don't tilt in VR!
-	#else
+#else
 	public static bool isAvatarTilting = true;
-	#endif
+#endif
 	public static float turnAngleMult = 0.07f;
 
 	//drive variables
@@ -168,11 +190,11 @@ public class Config_CoinTask : MonoBehaviour {
 			return numTestTrials;
 		} 
 		else{
-		#if MRIVERSION
+#if MRIVERSION
 			return numTrialsPract;
-		#else
+#else
 			return numTestTrials + numTrialsPract;
-		#endif
+#endif
 		}
 	}
 

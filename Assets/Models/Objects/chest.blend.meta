@@ -1,63 +1,172 @@
 fileFormatVersion: 2
 guid: e7b00d8b23e7a48cd9ce9acccf2df40a
-timeCreated: 1467149168
-licenseType: Free
 ModelImporter:
-  serializedVersion: 19
-  fileIDToRecycleName:
-    100000: apri_cassa
-    100002: Armature
-    100004: //RootNode
-    100006: Cube_004
-    100008: Cube_005
-    100010: Cylinder
-    100012: Plane
-    100014: Torus
-    400000: apri_cassa
-    400002: Armature
-    400004: //RootNode
-    400006: Cube_004
-    400008: Cube_005
-    400010: Cylinder
-    400012: Plane
-    400014: Torus
-    2300000: Cube_004
-    2300002: Cube_005
-    2300004: Cylinder
-    2300006: Torus
-    3300000: Cube_004
-    3300002: Cube_005
-    3300004: Cylinder
-    3300006: Torus
-    4300000: Torus
-    4300002: Plane
-    4300004: Cylinder
-    4300006: Cube_005
-    4300008: Cube_004
-    7400000: Default Take
-    7400002: Action
-    9500000: //RootNode
-    13700000: Plane
+  serializedVersion: 19301
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: apri_cassa
+  - first:
+      1: 100002
+    second: Armature
+  - first:
+      1: 100004
+    second: //RootNode
+  - first:
+      1: 100006
+    second: Cube_004
+  - first:
+      1: 100008
+    second: Cube_005
+  - first:
+      1: 100010
+    second: Cylinder
+  - first:
+      1: 100012
+    second: Plane
+  - first:
+      1: 100014
+    second: Torus
+  - first:
+      4: 400000
+    second: apri_cassa
+  - first:
+      4: 400002
+    second: Armature
+  - first:
+      4: 400004
+    second: //RootNode
+  - first:
+      4: 400006
+    second: Cube_004
+  - first:
+      4: 400008
+    second: Cube_005
+  - first:
+      4: 400010
+    second: Cylinder
+  - first:
+      4: 400012
+    second: Plane
+  - first:
+      4: 400014
+    second: Torus
+  - first:
+      23: 2300000
+    second: Cube_004
+  - first:
+      23: 2300002
+    second: Cube_005
+  - first:
+      23: 2300004
+    second: Cylinder
+  - first:
+      23: 2300006
+    second: Torus
+  - first:
+      33: 3300000
+    second: Cube_004
+  - first:
+      33: 3300002
+    second: Cube_005
+  - first:
+      33: 3300004
+    second: Cylinder
+  - first:
+      33: 3300006
+    second: Torus
+  - first:
+      43: 4300000
+    second: Torus
+  - first:
+      43: 4300002
+    second: Plane
+  - first:
+      43: 4300004
+    second: Cylinder
+  - first:
+      43: 4300006
+    second: Cube_005
+  - first:
+      43: 4300008
+    second: Cube_004
+  - first:
+      74: 7400000
+    second: Default Take
+  - first:
+      74: 7400002
+    second: Action
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: Plane
+  - first:
+      74: -623603649343465320
+    second: Scene
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: No Name
+    second: {fileID: 2100000, guid: e37a68d83606649cf89540ab7899e31d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: aa
+    second: {fileID: 2100000, guid: e2d86511c6be644168b173d427482521, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: forziere angolo
+    second: {fileID: 2100000, guid: 18f72629a0081458c802ebe715de4535, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: forziere chiodi
+    second: {fileID: 2100000, guid: e560257bca6784fb69631f56467b7d19, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: forziere ferro
+    second: {fileID: 2100000, guid: d9bd50c1e2c99493caeb09f3e4405a70, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: forziere legno sopra
+    second: {fileID: 2100000, guid: ba69a3afcd3d8463fbb5d424afba5196, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: forziere sopra lato
+    second: {fileID: 2100000, guid: e4f89c82a987647d8a92468b81340fbb, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -65,13 +174,24 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -81,9 +201,14 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -93,11 +218,16 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

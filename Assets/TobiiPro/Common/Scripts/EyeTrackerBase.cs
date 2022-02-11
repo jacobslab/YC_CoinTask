@@ -202,8 +202,10 @@ namespace Tobii.Research.Unity
             {
                 return;
             }
-
-            EyeTrackingOperations.Terminate();
+            if (Config_CoinTask.hasEyetracker)
+            {
+                EyeTrackingOperations.Terminate();
+            }
         }
 
         #endregion Unity Methods
