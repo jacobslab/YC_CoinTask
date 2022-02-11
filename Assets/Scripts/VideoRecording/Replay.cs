@@ -663,8 +663,15 @@ public class Replay : MonoBehaviour {
 									particles.Stop();
 									
 								}
+<<<<<<< HEAD
 								/*
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 7abd3d0896c42e9260226c6391dc9f282e96eec3
 
+>>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
+								/*
 								//PARTICLE EMITTERS
 								else if (loggedProperty == "PARTICLE_EMITTER_PLAYING"){
 									string particleSystemName = splitLine [i+2];
@@ -674,7 +681,7 @@ public class Replay : MonoBehaviour {
 									}
 
 
-									particles.emit = true;
+									//particles.emit = true;
 									
 								}
 								else if (loggedProperty == "PARTICLE_EMITTER_STOPPED"){
@@ -684,11 +691,18 @@ public class Replay : MonoBehaviour {
 										particles = objInScene.transform.Find( particleSystemName ).GetComponent<ParticleEmitter>();
 									}
 									
-									particles.emit = false;
+									//particles.emit = false;
 									
 								}
 								*/
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 7abd3d0896c42e9260226c6391dc9f282e96eec3
 
+
+>>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
 								//AUDIO
 								else if (loggedProperty == "AUDIO_PLAYING"){
 									string audioSourceName = splitLine [i+2];

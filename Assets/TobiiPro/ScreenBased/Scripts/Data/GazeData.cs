@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// Copyright © 2018 Tobii AB. All rights reserved.
+// Copyright © 2019 Tobii Pro AB. All rights reserved.
 //-----------------------------------------------------------------------
 
 using UnityEngine;
@@ -18,8 +18,13 @@ namespace Tobii.Research.Unity
         {
             get
             {
-                var combinedPoint = (Left.GazePointOnDisplayArea + Right.GazePointOnDisplayArea) / 2f;
-                return Camera.main.ScreenPointToRay(new Vector3(Screen.width * combinedPoint.x, Screen.height * (1 - combinedPoint.y)));
+                if (Left.GazePointValid && Right.GazePointValid)
+                {
+                    var combinedPoint = (Left.GazePointOnDisplayArea + Right.GazePointOnDisplayArea) / 2f;
+                    return Camera.main.ScreenPointToRay(new Vector3(Screen.width * combinedPoint.x, Screen.height * (1 - combinedPoint.y)));
+                }
+
+                return default(Ray);
             }
         }
 
@@ -64,7 +69,12 @@ namespace Tobii.Research.Unity
         {
             get
             {
-                return Camera.main.ScreenPointToRay(new Vector3(Screen.width * GazePointOnDisplayArea.x, Screen.height * (1 - GazePointOnDisplayArea.y)));
+                if (GazePointValid)
+                {
+                    return Camera.main.ScreenPointToRay(new Vector3(Screen.width * GazePointOnDisplayArea.x, Screen.height * (1 - GazePointOnDisplayArea.y)));
+                }
+
+                return default(Ray);
             }
         }
 

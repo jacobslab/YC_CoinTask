@@ -27,6 +27,7 @@ public class Config_CoinTask : MonoBehaviour {
 	public static bool isSystem2 = false;
 #else
 	public static bool isSyncbox = false;
+<<<<<<< HEAD
 	public static bool isSystem2 = false;
 #endif
 
@@ -46,6 +47,8 @@ public class Config_CoinTask : MonoBehaviour {
 	public static bool isPhotodiode=false;
 #elif PHOTODIODE
 	public static bool isSyncbox = true;
+=======
+>>>>>>> 7abd3d0896c42e9260226c6391dc9f282e96eec3
 	public static bool isSystem2 = false;
 	public static bool isPhotodiode=true;
 #endif
@@ -80,14 +83,16 @@ public static bool isDemo =true;
 	public static float boxMoveTime = 0.5f;
 	public static Vector3 boxAcceleration = Physics.gravity * 3.0f;
 
-	//stimulation variables
-	/*public static bool shouldDoStim;	//TODO
+    public static float dotGameTime = 20f;
+
+    //stimulation variables
+    /*public static bool shouldDoStim;	//TODO
 	public static int stimFrequency;	//TODO
 	public static float stimDuration;	//TODO
 	public static bool shouldDoBreak;	//TODO*/
 
-	//SPECIFIC COIN TASK VARIABLES:
-	public static float randomJitterMin = 0.0f;
+    //SPECIFIC COIN TASK VARIABLES:
+    public static float randomJitterMin = 0.0f;
 	public static float randomJitterMax = 0.2f;
 
 	public static float randomPALJitterMin = 0.5f;
@@ -99,9 +104,10 @@ public static bool isDemo =true;
 	public static float micLoudThreshold = 0.1f;
 
 	//recall
-	public static int recallTime=6;
+	public static int recallTime=5;
+    public static int freeRecallTime = 10;
 
-	public static string audioPath = "";
+    public static string audioPath = "";
 #if MRIVERSION
 	public static int numTestTrials = 8; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
 	
@@ -120,7 +126,7 @@ public static bool isDemo =true;
 	public static float MRIFixationTime = 30.0f;
 
 #else
-	public static int numTestTrials = 40; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
+    public static int numTestTrials = 33; //IF 50% 2 OBJ, [1obj, counter1, 2a, counter2a, 2b, counter2b, 3, counter3] --> MULTIPLE OF EIGHT
 
 
 	//eyetracker settings
@@ -131,13 +137,13 @@ public static bool isDemo =true;
 	public static int numTrialsPract = 1;
 	public static bool isPractice = false;
 	public static int numSpecialObjectsPract = 2;
-	public static int numTwoItemTrials = 20;
-	public static int numThreeItemTrials = 20;
-	public static int numTrialsPerBlock = 8;
+	public static int numTwoItemTrials = 0;
+	public static int numThreeItemTrials = 15;
+	public static int numTrialsPerBlock = 11;
 
 
 	//FEEDBACK SETTINGS:
-	public static float feedbackTimeBetweenObjects = 0.5f;
+	public static float feedbackTimeBetweenObjects = 1f;
 
 #endif
 
@@ -150,6 +156,8 @@ public static bool isDemo =true;
 
 	//OBJECTS
 	public static int numDefaultObjects = 4;
+
+    public static int numChestsPerTrial = 6;
 
 	public static float selectionDiameter = 26.0f;
 

@@ -199,6 +199,29 @@ public class ScoreController : MonoBehaviour {
 
     }
 
+    public int CalculatePathIntegrationScore(float pathIntegrationError)
+    {
+        int pathIntegrationScore = 100;
+
+        //show path integration score
+        if (pathIntegrationError < 0.25f * exp.environmentController.envRadius)
+        {
+            pathIntegrationScore = 400;
+        }
+        else if (pathIntegrationError < 0.5f * exp.environmentController.envRadius)
+        {
+            pathIntegrationScore = 200;
+        }
+        else
+        {
+            pathIntegrationScore = 100;
+        }
+        AddToScore(pathIntegrationScore);
+        scoreLogger.LogTimeBonusAdded(pathIntegrationScore);
+
+        return pathIntegrationScore;
+    }
+
     public void CalculateSequenceBonus(int correctScore)
     {
         AddToScore(correctScore);

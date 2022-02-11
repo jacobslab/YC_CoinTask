@@ -23,11 +23,14 @@ public class ChosenIndicatorController : MonoBehaviour {
 	}
 
 	//TODO: attach these to a delegate method for when the score is calculated????
-	public void ChangeToRightColor(){
-		colorChanger.ChangeColor (RightColor);
+	public void ChangeToRightColor()
+    {
+        Debug.Log(colorChanger.enabled.ToString());
+        colorChanger.ChangeColor (RightColor);
 	}
 
 	public void ChangeToWrongColor(){
+        Debug.Log(colorChanger.enabled.ToString());
 		colorChanger.ChangeColor (WrongColor);
 	}
 }

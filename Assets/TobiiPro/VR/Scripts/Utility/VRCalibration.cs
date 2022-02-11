@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// Copyright © 2017 Tobii AB. All rights reserved.
+// Copyright © 2019 Tobii Pro AB. All rights reserved.
 //-----------------------------------------------------------------------
 
 using System.Collections;
@@ -64,7 +64,7 @@ namespace Tobii.Research.Unity
 
             // Set the point as a child to the eye tracker origin.
             _point.transform.parent = VRUtility.EyeTrackerOriginVive;
-            _point.transform.localRotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
+            _point.transform.localRotation = Quaternion.identity;
 
             _point.SetActive(false);
         }

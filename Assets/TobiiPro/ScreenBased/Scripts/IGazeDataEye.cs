@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// Copyright © 2018 Tobii AB. All rights reserved.
+// Copyright © 2019 Tobii Pro AB. All rights reserved.
 //-----------------------------------------------------------------------
 
 using UnityEngine;
@@ -44,6 +44,7 @@ namespace Tobii.Research.Unity
 
         /// <summary>
         /// Get the <see cref="Ray"/> from the screen point into the scene.
+        /// If the gaze point is invalid, default(Ray) will be returned.
         /// </summary>
         Ray GazeRayScreen { get; }
 

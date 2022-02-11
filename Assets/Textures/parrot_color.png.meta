@@ -3,7 +3,11 @@ guid: 68169f134e30948df93354757ff4b75b
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
+<<<<<<< HEAD
   serializedVersion: 11
+=======
+  serializedVersion: 10
+>>>>>>> 7abd3d0896c42e9260226c6391dc9f282e96eec3
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
@@ -33,7 +37,11 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 2
     aniso: 16
+<<<<<<< HEAD
     mipBias: 0
+=======
+    mipBias: -100
+>>>>>>> 7abd3d0896c42e9260226c6391dc9f282e96eec3
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -57,7 +65,10 @@ TextureImporter:
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+<<<<<<< HEAD
   applyGammaDecoding: 1
+=======
+>>>>>>> 7abd3d0896c42e9260226c6391dc9f282e96eec3
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform

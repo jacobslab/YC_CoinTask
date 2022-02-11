@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------------
- Copyright © 2018 Tobii AB. All rights reserved.
+ Copyright Â© 2019 Tobii Pro AB. All rights reserved.
 ------------------------------------------------------------------------------
 
 --- What is a "prefab"? ---
@@ -19,7 +19,7 @@ additional development and testing may be necessary for any given project or use
 case.
 
 There are in total ten prefabs divided into five different use cases for screen
-bases and VR eye trackers. With the exception of [TrackBoxGuide] and
+based and VR eye trackers. With the exception of [TrackBoxGuide] and
 [VRPositioningGuide] they are named the same with the VR version having the
 prefix "VR". The prefabs are designed as singletons, which means that there
 should be a maximum of one instance per scene. The MonoBehaviour script object

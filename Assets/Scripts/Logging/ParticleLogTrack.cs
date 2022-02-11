@@ -5,7 +5,15 @@ public class ParticleLogTrack : LogTrack {
 
 	//should be able to log either or both of these.
 	public ParticleSystem particleSystem;
+<<<<<<< HEAD
 //	public EllipsoidParticleEmitter particleEmitter;
+=======
+<<<<<<< HEAD
+//	public EllipsoidParticleEmitter particleEmitter;
+=======
+///	public EllipsoidParticleEmitter particleEmitter;
+>>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
+>>>>>>> 7abd3d0896c42e9260226c6391dc9f282e96eec3
 
 	SpawnableObject spawnableObject;
 
@@ -35,19 +43,46 @@ public class ParticleLogTrack : LogTrack {
 				isSystemPlaying = false;
 				LogParticleSystemOver (particleSystem.transform.position);
 			}
+			
 		}
+<<<<<<< HEAD
 		/*
+=======
+<<<<<<< HEAD
+		/*
+=======
+
+<<<<<<< HEAD
+		/*
+	if (particleEmitter != null) {
+		if (!isEmitterPlaying && particleEmitter.emit) {
+			isEmitterPlaying = true;
+			LogParticleEmitterPlaying (particleEmitter.transform.position);
+		} 
+		
+		else if (isEmitterPlaying && !particleEmitter.emit) {
+			isEmitterPlaying = false;
+			LogParticleEmitterOver (particleEmitter.transform.position);
+=======
+>>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
+>>>>>>> 7abd3d0896c42e9260226c6391dc9f282e96eec3
 		if (particleEmitter != null) {
-			if (!isEmitterPlaying && particleEmitter.emit) {
+			if (!isEmitterPlaying) {
 				isEmitterPlaying = true;
 				LogParticleEmitterPlaying (particleEmitter.transform.position);
 			} 
-			else if (isEmitterPlaying && !particleEmitter.emit) {
+			else if (isEmitterPlaying) {
 				isEmitterPlaying = false;
 				LogParticleEmitterOver (particleEmitter.transform.position);
 			}
+>>>>>>> 93dd41134ef73c9966b6b606b13edb9a4cc7edc0
 		}
 		*/
+<<<<<<< HEAD
+=======
+	}
+		*/
+>>>>>>> 7abd3d0896c42e9260226c6391dc9f282e96eec3
 	}
 
 	//for logging the particle system
@@ -58,6 +93,7 @@ public class ParticleLogTrack : LogTrack {
 	void LogParticleSystemOver(Vector3 systemLocation){
 		subjectLog.Log (GameClock.SystemTime_Milliseconds, subjectLog.GetFrameCount(), GetNameToLog() + separator + "PARTICLE_SYSTEM_STOPPED" + separator + particleSystem.name + separator + "IS_LOOPING" + separator + particleSystem.loop + separator + systemLocation.x + separator + systemLocation.y + separator + systemLocation.z);
 	}
+	/*
 
 	//for logging the particle emitter
 	//note: emitters do not have a looping property
@@ -71,6 +107,7 @@ public class ParticleLogTrack : LogTrack {
 	}
 	*/
 
+	*/
 	string GetNameToLog(){
 		string name = gameObject.name;
 		if (spawnableObject) {
@@ -101,9 +138,16 @@ public class ParticleLogTrack : LogTrack {
 		/*
 		if (isEmitterPlaying) {
 			isEmitterPlaying = false;
-			particleEmitter.emit = false;
+			//particleEmitter.emit = false;
 			LogParticleEmitterOver(particleEmitter.transform.position);
 		}
 		*/
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> b43d23f7df84570cacde99f655c2db00ab5af367
+>>>>>>> 7abd3d0896c42e9260226c6391dc9f282e96eec3
 	}
 }
