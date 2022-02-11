@@ -34,6 +34,11 @@ public class VideoPlay : MonoBehaviour {
 		movieAudio.enabled = false;
 	}
 
+	public bool CheckIfVideoIsValid()
+    {
+		return ((vid!=null)?true:false);
+    }
+
 	bool isMoviePaused = false;
 	void Update () {
 		if (vid.clip!= null) {

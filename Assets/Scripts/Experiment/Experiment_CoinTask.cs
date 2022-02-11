@@ -116,7 +116,12 @@ public class Experiment_CoinTask : MonoBehaviour {
 		else if(ExperimentSettings_CoinTask.isReplay) {
 			currInstructions.TurnOffInstructions();
 		}
+		if(Config_CoinTask.isDemo)
+        {
 
+			Debug.Log("running experiment");
+			StartCoroutine(BeginExperiment());
+		}
 
 	}
 
@@ -201,9 +206,13 @@ public class Experiment_CoinTask : MonoBehaviour {
 				StartCoroutine(RunInstructions());
 
 			}
-			else*/ if (currentState == ExperimentState.inExperiment && !isRunningExperiment && EyetrackerManager.finishedCalibration) {
-				Debug.Log("running experiment");
-				StartCoroutine(BeginExperiment());
+			else*/
+			if(!Config_CoinTask.isDemo)
+			{			if (currentState == ExperimentState.inExperiment && !isRunningExperiment && EyetrackerManager.finishedCalibration)
+				{
+					Debug.Log("running experiment");
+					StartCoroutine(BeginExperiment());
+				}
 			}
 
 		}

@@ -40,39 +40,44 @@ public class EyetrackerManager : MonoBehaviour {
     public string filepath = "";
     void Awake()
     {
-        //filepath = Application.dataPath;
-        filepath = @"C:\Users\" + Environment.UserName + @"\AppData\Local\TobiiProEyeTrackerManager\app-1.6.0";
-        Debug.Log("APP DATA path is: " + filepath);
-        var trackers = EyeTrackingOperations.FindAllEyeTrackers();
-        eyeLogTrack = GetComponent<EyetrackerLogTrack>();
-       
-      
-        foreach (IEyeTracker eyeTracker in trackers)
-        {
-            
-
-            Debug.Log(string.Format("{0}, {1}, {2}, {3}, {4}", eyeTracker.Address, eyeTracker.DeviceName, eyeTracker.Model, eyeTracker.SerialNumber, eyeTracker.FirmwareVersion));
-        }
-        _eyeTracker = trackers.FirstOrDefault(s => (s.DeviceCapabilities & Capabilities.HasGazeData) != 0);
-        
-        if (_eyeTracker==null)
-        {
-            finishedCalibration = true;
-            Debug.Log("No screen based eye tracker detected!");
-			reconnectionGroup.alpha = 0f;
-			//myCanvas.gameObject.GetComponent<CanvasGroup> ().alpha = 0f;
-        }
-        else
+        if (Config_CoinTask.hasEyetracker)
         {
 
-			//myCanvas.gameObject.GetComponent<CanvasGroup> ().alpha = 0f;
-            Debug.Log("Selected eye tracker with serial number {0}" + _eyeTracker.SerialNumber);
-        }
 
-        calibrationGroup.alpha = 0f;
-        reconnectionGroup.alpha = 0f;
-        calibration.gameObject.SetActive(false);
-        StartCoroutine(InitiateEyetracker());
+            //filepath = Application.dataPath;
+            filepath = @"C:\Users\" + Environment.UserName + @"\AppData\Local\TobiiProEyeTrackerManager\app-1.6.0";
+            Debug.Log("APP DATA path is: " + filepath);
+            var trackers = EyeTrackingOperations.FindAllEyeTrackers();
+            eyeLogTrack = GetComponent<EyetrackerLogTrack>();
+
+
+            foreach (IEyeTracker eyeTracker in trackers)
+            {
+
+
+                Debug.Log(string.Format("{0}, {1}, {2}, {3}, {4}", eyeTracker.Address, eyeTracker.DeviceName, eyeTracker.Model, eyeTracker.SerialNumber, eyeTracker.FirmwareVersion));
+            }
+            _eyeTracker = trackers.FirstOrDefault(s => (s.DeviceCapabilities & Capabilities.HasGazeData) != 0);
+
+            if (_eyeTracker == null)
+            {
+                finishedCalibration = true;
+                Debug.Log("No screen based eye tracker detected!");
+                reconnectionGroup.alpha = 0f;
+                //myCanvas.gameObject.GetComponent<CanvasGroup> ().alpha = 0f;
+            }
+            else
+            {
+
+                //myCanvas.gameObject.GetComponent<CanvasGroup> ().alpha = 0f;
+                Debug.Log("Selected eye tracker with serial number {0}" + _eyeTracker.SerialNumber);
+            }
+
+            calibrationGroup.alpha = 0f;
+            reconnectionGroup.alpha = 0f;
+            calibration.gameObject.SetActive(false);
+            StartCoroutine(InitiateEyetracker());
+        }
     }
     // Use this for initialization
     void Start () {
@@ -200,7 +205,10 @@ void OnDisable()
 
 void OnDestroy()
 {
-    EyeTrackingOperations.Terminate();
+        if (Config_CoinTask.hasEyetracker)
+        {
+            EyeTrackingOperations.Terminate();
+        }
 }
 
 // This method will be called on a thread belonging to the SDK, and can not safely change values
@@ -324,5 +332,6 @@ private void HandleGazeData(GazeDataEventArgs e)
         
       
     }
+
 
 }

@@ -663,6 +663,7 @@ public class Replay : MonoBehaviour {
 									particles.Stop();
 									
 								}
+								/*
 
 								//PARTICLE EMITTERS
 								else if (loggedProperty == "PARTICLE_EMITTER_PLAYING"){
@@ -686,6 +687,7 @@ public class Replay : MonoBehaviour {
 									particles.emit = false;
 									
 								}
+								*/
 
 								//AUDIO
 								else if (loggedProperty == "AUDIO_PLAYING"){
