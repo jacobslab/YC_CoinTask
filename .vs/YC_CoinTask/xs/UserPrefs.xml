@@ -1,28 +1,60 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Logging/TrialLogTrack.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Experiment/SceneController.cs">
     <Files>
-      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" Line="172" Column="32" IsPinned="True" />
-      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="21" Column="14" IsPinned="True" />
-      <File FileName="Assets/Scripts/Logging/Logger_Threading.cs" Line="73" Column="1" />
-      <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" Line="168" Column="35" />
-      <File FileName="Assets/Scripts/EEG Communication/TCP_Config.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" Line="354" Column="3" />
-      <File FileName="Assets/Scripts/EEG Communication/SyncboxControl.cs" Line="273" Column="44" />
-      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" Line="76" Column="65" />
-      <File FileName="Assets/TobiiPro/Common/Scripts/EyeTrackerBase.cs" Line="208" Column="14" />
-      <File FileName="Assets/Scripts/Logging/UIRawImageLogTrack.cs" Line="27" Column="21" />
+      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" Line="272" Column="99" IsPinned="True" />
+      <File FileName="Assets/Scripts/Experiment/TrialController.cs" IsPinned="True" />
+      <File FileName="Assets/Scripts/RotationButtons/LeftRotate.cs" />
+      <File FileName="Assets/Scripts/Logging/Logger_Threading.cs" />
+      <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" />
+      <File FileName="Assets/Scripts/EEG Communication/TCP_Config.cs" />
+      <File FileName="Assets/Scripts/Logging/TrialLogTrack.cs" />
+      <File FileName="Assets/Scripts/EEG Communication/SyncboxControl.cs" />
+      <File FileName="Assets/Scripts/Experiment/Config_CoinTask.cs" />
+      <File FileName="Assets/TobiiPro/Common/Scripts/EyeTrackerBase.cs" />
+      <File FileName="Assets/Scripts/Logging/UIRawImageLogTrack.cs" />
+      <File FileName="Assets/Scripts/Logging/LineRendererLogTrack.cs" />
+      <File FileName="Assets/Scripts/Debugging/ControllerInputTester.cs" />
+      <File FileName="Assets/TobiiPro/ScreenBased/Scripts/Utility/Calibration.cs" />
+      <File FileName="Assets/Scripts/GUI/AnswerSelector.cs" />
+      <File FileName="Assets/Scripts/Experiment/InstructionsController.cs" />
+      <File FileName="Assets/Scripts/touchScreen/TouchScreenInputWrapper.cs" />
+      <File FileName="Assets/Scripts/touchScreen/PlayerMotion.cs" />
+      <File FileName="Assets/Scripts/Experiment/SceneController.cs" Line="4" Column="14" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="YC_CoinTask" expanded="True" selected="True" />
+          <Node name="YC_CoinTask" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="Debugging" expanded="True" />
+                <Node name="Experiment" expanded="True">
+                  <Node name="SceneController.cs" selected="True" />
+                </Node>
+                <Node name="GUI" expanded="True" />
+                <Node name="touchScreen" expanded="True" />
+              </Node>
+              <Node name="TobiiPro" expanded="True">
+                <Node name="ScreenBased" expanded="True">
+                  <Node name="Scripts" expanded="True">
+                    <Node name="Utility" expanded="True" />
+                  </Node>
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.UnitTesting.TestPad">
+        <State name="__root__">
+          <Node name="Unity" expanded="True" selected="True" />
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="5261f8fc-e322-46a8-8ada-1ca3347f067d" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="7413afb8-ba35-4d49-a1c3-3f63010e051f" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

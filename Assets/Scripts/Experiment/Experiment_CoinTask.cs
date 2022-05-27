@@ -269,7 +269,8 @@ public class Experiment_CoinTask : MonoBehaviour {
 			yield return 0;
 		}
 		while(!hasPressedButton){
-			if(Input.GetAxis(Config_CoinTask.ActionButtonName) == 1.0f){
+			if((Input.GetAxis(Config_CoinTask.ActionButtonName) == 1.0f) || (PlayerMotion.touched == true))
+			{
 				hasPressedButton = true;
 			}
 			yield return 0;

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour { //there can be a separate scene controller in each scene
 
@@ -20,6 +21,7 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 //			return;
 //		}
 		_instance = this;
+		//Application.LoadLevel(3);
 	}
 
 
@@ -27,7 +29,7 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 	void Start () {
 
 		DontDestroyOnLoad (this.gameObject);
-
+		
 	}
 
 
@@ -35,6 +37,71 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 	void Update () {
 
 	}
+
+	public void LoadWorthlessValuable()
+	{
+		//SceneManager.LoadScene("WorthlessValQues", LoadSceneMode.Single);
+		Application.LoadLevel(8);
+	}
+
+	public void LoadPessOpt()
+	{
+		//SceneManager.LoadScene("WorthlessValQues", LoadSceneMode.Single);
+		Application.LoadLevel(4);
+	}
+
+	public void LoadApaMot()
+	{
+		//SceneManager.LoadScene("WorthlessValQues", LoadSceneMode.Single);
+		Application.LoadLevel(5);
+	}
+	public void LoadGuilProu()
+	{
+		//SceneManager.LoadScene("WorthlessValQues", LoadSceneMode.Single);
+		Application.LoadLevel(6);
+	}
+	public void LoadNumbInter()
+	{
+		//SceneManager.LoadScene("WorthlessValQues", LoadSceneMode.Single);
+		Application.LoadLevel(7);
+	}
+
+	public void LoadWithdrawnWelcoming()
+	{
+		//SceneManager.LoadScene("WorthlessValQues", LoadSceneMode.Single);
+		Application.LoadLevel(9);
+	}
+	public void LoadHopelessful()
+	{
+		//SceneManager.LoadScene("WorthlessValQues", LoadSceneMode.Single);
+		Application.LoadLevel(10);
+	}
+	public void LoadTenseRel()
+	{
+		//SceneManager.LoadScene("WorthlessValQues", LoadSceneMode.Single);
+		Application.LoadLevel(11);
+	}
+	public void LoadWorriedUnt()
+	{
+		//SceneManager.LoadScene("WorthlessValQues", LoadSceneMode.Single);
+		Application.LoadLevel(12);
+	}
+	public void LoadFearfulless()
+	{
+		//SceneManager.LoadScene("WorthlessValQues", LoadSceneMode.Single);
+		Application.LoadLevel(13);
+	}
+	public void LoadAnxiousPeaceful()
+	{
+		//SceneManager.LoadScene("WorthlessValQues", LoadSceneMode.Single);
+		Application.LoadLevel(14);
+	}
+	public void LoadRestlessCalm()
+	{
+		//SceneManager.LoadScene("WorthlessValQues", LoadSceneMode.Single);
+		Application.LoadLevel(15);
+	}
+
 
 	public void LoadMainMenu(){
 		if(Experiment_CoinTask.Instance != null){
