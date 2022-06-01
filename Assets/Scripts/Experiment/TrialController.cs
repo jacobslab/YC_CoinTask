@@ -56,6 +56,8 @@ public class TrialController : MonoBehaviour {
 	List<List<Trial>> ListOfTrialBlocks;
 	List<Trial> practiceTrials;
 
+	static public bool dontSkipTouch = false;
+	public GameObject Ring;
 	void Start(){
 		#if MRIVERSION
 		if(Config_CoinTask.isPractice){
@@ -768,6 +770,8 @@ public class TrialController : MonoBehaviour {
 		//RUN DISTRACTOR GAME
 		trialLogger.LogDistractorGame (true);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, true);
+		UnityEngine.Debug.Log("RUN GAME:   fijfowiioqrweffewfwenfiwefwieofiwefriwefiefiefoiwefoiwefoiweoiqrwqioiweoiqweoiqioqiqoiqoqoqwoqpqfgurefuiewfowef");
+
 		yield return StartCoroutine(exp.boxGameController.RunGame());
 		trialLogger.LogDistractorGame (false);
 		TCPServer.Instance.SetState (TCP_Config.DefineStates.DISTRACTOR, false);
@@ -814,7 +818,7 @@ public class TrialController : MonoBehaviour {
 
 			//set layer of object & children to PlayerUI
 			specialObjUICopy.GetComponent<SpawnableObject>().SetLayer ("PlayerUI");
-
+			UnityEngine.Debug.Log("fijfowiioqrweffewfwenfiwefwieofiwefriwefiefiefoiwefoiwefoiweoiqrwqioiweoiqweoiqioqiqoiqoqoqwoqpqfgurefuiewfowef");
 			trialLogger.LogInstructionEvent();
 			yield return StartCoroutine( exp.uiController.doYouRememberUI.Play(specialObjUICopy, specialItemDisplayName) );
 
@@ -832,6 +836,10 @@ public class TrialController : MonoBehaviour {
 			trialLogger.LogRememberResponse(rememberResponse);
 #else
 			yield return StartCoroutine (exp.WaitForActionButton());
+			Yes.isenabled = false;
+			Maybe.isenabled = false;
+			No.isenabled = false;
+			PlayerMotion.ControlPause = false;
 			Config_CoinTask.MemoryState rememberResponse = exp.uiController.doYouRememberUI.myAnswerSelector.GetMemoryState();
 			rememberResponses.Add(rememberResponse);
 			trialLogger.LogRememberResponse(rememberResponse);
@@ -885,10 +893,20 @@ public class TrialController : MonoBehaviour {
 			yield return StartCoroutine(WaitForMRITimeout(Config_CoinTask.maxLocationChooseTime));
 			exp.currInstructions.SetInstructionsBlank();
 #else
+			UnityEngine.Debug.Log("TRAIL1:  fijfowiioqrweffewfwenfiwefwieofiwefriwefiefiefoiwefoiwefoiweoiqrwqioiweoiqweoiqioqiqoiqoqoqwoqpqfgurefuiewfowef");
+			dontSkipTouch = true;
+			PlayerMotion.ControlPause = true;
+			OK.okenabled = true;
+			Ring.GetComponent<BoxCollider>().enabled = true;
 			yield return StartCoroutine (exp.ShowSingleInstruction (selectObjectText, false, true, false, Config_CoinTask.minDefaultInstructionTime));
+			Ring.GetComponent<BoxCollider>().enabled = false;
+			OK.okenabled = false;
+			PlayerMotion.ControlPause = false;
+			dontSkipTouch = false;
 #endif
 			//log the chosen position and correct position
 			exp.environmentController.myPositionSelector.logTrack.LogPositionChosen( exp.environmentController.myPositionSelector.GetSelectorPosition(), specialObj.transform.position, specialSpawnable );
+			UnityEngine.Debug.Log("TRAIL2:  fijfowiioqrweffewfwenfiwefwieofiwefriwefiefiefoiwefoiwefoiweoiqrwqioiweoiqweoiqioqiqoiqoqoqwoqpqfgurefuiewfowef");
 
 			//wait for the position selector to choose the position, runs color changing of the selector
 			yield return StartCoroutine (exp.environmentController.myPositionSelector.ChoosePosition());
@@ -900,8 +918,9 @@ public class TrialController : MonoBehaviour {
 			//disable position selection
 			exp.environmentController.myPositionSelector.EnableSelection (false);
 			trialLogger.LogRecallChoiceStarted(false);
+			UnityEngine.Debug.Log("TRAIL3:  fijfowiioqrweffewfwenfiwefwieofiwefriwefiefiefoiwefoiwefoiweoiqrwqioiweoiqweoiqioqiqoiqoqoqwoqpqfgurefuiewfowef");
 
-			switch(randomOrderIndex){
+			switch (randomOrderIndex){
 			case 0:
 				TCPServer.Instance.SetState (TCP_Config.DefineStates.RECALLCHOOSE_1, false);
 				break;
@@ -926,6 +945,7 @@ public class TrialController : MonoBehaviour {
 		trialLogger.LogRecallPhaseStarted(false);
 		
 		yield return StartCoroutine (ShowFeedback (randomSpecialObjectOrder, chosenPositions, rememberResponses));
+		UnityEngine.Debug.Log("TRAIL4:  fijfowiioqrweffewfwenfiwefwieofiwefriwefiefiefoiwefoiwefoiweoiqrwqioiweoiqweoiqioqiqoiqoqoqwoqpqfgurefuiewfowef");
 
 		//increment subject's trial count
 #if !UNITY_WEBPLAYER
@@ -1023,7 +1043,8 @@ public class TrialController : MonoBehaviour {
 			yield return new WaitForSeconds(Config_CoinTask.feedbackTimeBetweenObjects);
 #endif
 		}
-		
+		UnityEngine.Debug.Log("TRAIL555:  fijfowiioqrweffewfwenfiwefwieofiwefriwefiefiefoiwefoiwefoiweoiqrwqioiweoiqweoiqioqiqoiqoqoqwoqpqfgurefuiewfowef");
+
 		//disable original selector
 		exp.environmentController.myPositionSelector.EnableSelection(false);
 

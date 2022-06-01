@@ -19,6 +19,7 @@ public class AnswerSelector : MonoBehaviour {
 	public Color deselectedColor;
 
 	public AudioSource selectionSwitchAudio;
+	public bool touchSelected = false;
 
 	int currPositionIndex = 0;
 
@@ -112,6 +113,18 @@ public class AnswerSelector : MonoBehaviour {
 		} else {
 			return Config_CoinTask.MemoryState.no;
 		}
+	}
+
+	public void UpdateSelectQues(int index)
+	{
+		currPositionIndex = index;
+		AudioController.PlayAudio(selectionSwitchAudio);
+		SetExplanationColors();
+		selectorVisuals.transform.position = positionTransforms[currPositionIndex].position;
+		exp.trialController.LogAnswerSelectorPositionChanged(GetMemoryState());
+
+		touchSelected = true;
+
 	}
 
 	void Move(int indicesToMove){

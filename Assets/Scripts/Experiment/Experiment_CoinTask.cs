@@ -83,6 +83,8 @@ public class Experiment_CoinTask : MonoBehaviour {
 		}
 	}
 
+	public AnswerSelector answerSelect;
+
 	void Awake(){
 		if (_instance != null) {
 			Debug.Log("Instance already exists!");
@@ -250,7 +252,7 @@ public class Experiment_CoinTask : MonoBehaviour {
 		currInstructions.DisplayText(line);
 
 		yield return new WaitForSeconds (minDisplayTimeSeconds);
-
+		
 		if (waitForButton) {
 			yield return StartCoroutine (WaitForActionButton ());
 		}
@@ -269,9 +271,20 @@ public class Experiment_CoinTask : MonoBehaviour {
 			yield return 0;
 		}
 		while(!hasPressedButton){
-			if((Input.GetAxis(Config_CoinTask.ActionButtonName) == 1.0f) || (PlayerMotion.touched == true))
+			if ((Input.GetAxis(Config_CoinTask.ActionButtonName) == 1.0f) ||
+				((PlayerMotion.touched == true) && (TrialController.dontSkipTouch == false)))
 			{
 				hasPressedButton = true;
+
+			}
+			else if (answerSelect.touchSelected == true)
+			{
+				hasPressedButton = true;
+				answerSelect.touchSelected = false;
+			}
+			else if (PlayerMotion.okTouch) {
+				hasPressedButton = true;
+				PlayerMotion.okTouch = false;
 			}
 			yield return 0;
 		}

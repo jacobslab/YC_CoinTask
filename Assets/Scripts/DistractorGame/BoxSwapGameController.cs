@@ -19,6 +19,8 @@ public class BoxSwapGameController : MonoBehaviour {
 	}
 	
 	public IEnumerator RunGame(){
+		PlayerMotion.ControlPause = true;
+
 		Enable (true);
 
 		boxSwapper.Init();
@@ -28,7 +30,9 @@ public class BoxSwapGameController : MonoBehaviour {
 		ColorChanger backgroundColorChanger = GameBackground.GetComponent<ColorChanger> ();
 		backgroundColorChanger.ChangeColor (gameBackgroundColorTransparent);
 		StartCoroutine(backgroundColorChanger.LerpChangeColor (gameBackgroundColor, 0.4f));
-
+		Box1.isenabled = true;
+		Box2.isenabled = true;
+		Box3.isenabled = true;
 		yield return new WaitForSeconds(timeBeforeLoweringBoxes);
 
 		yield return StartCoroutine(boxSwapper.RaiseOrLowerBoxes(-1, false));
@@ -40,8 +44,11 @@ public class BoxSwapGameController : MonoBehaviour {
 
 		float raisePause = 0.75f;
 		yield return new WaitForSeconds (raisePause);
-
+		Box1.isenabled = false;
+		Box2.isenabled = false;
+		Box3.isenabled = false;
 		Enable (false);
+		PlayerMotion.ControlPause = false;
 	}
 
 	void Enable(bool shouldEnable){

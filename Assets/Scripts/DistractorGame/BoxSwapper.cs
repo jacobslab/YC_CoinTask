@@ -18,6 +18,7 @@ public class BoxSwapper : MonoBehaviour {
 
 	Quaternion boxSelectorVisualsOrigRot;
 	int selectedBoxIndex = 0;
+	bool touchSelected = false;
 	bool shouldSelect = false;
 	bool showingFeedback = false;
 
@@ -149,6 +150,14 @@ public class BoxSwapper : MonoBehaviour {
 
 	}
 
+	public void UpdateSelectBox(int index) {
+		selectedBoxIndex = index;
+		AudioController.PlayAudio(selectorSwitchSound);
+		boxSelector.transform.position = boxStartPositions[selectedBoxIndex].transform.position;
+		touchSelected = true;
+
+	}
+
 	public IEnumerator WaitForBoxSelection(){
 		bool actionButtonPressed = false;
 		shouldSelect = true;
@@ -163,9 +172,12 @@ public class BoxSwapper : MonoBehaviour {
 #else
 		while(!actionButtonPressed){
 			
-			if(Input.GetAxis(Config_CoinTask.ActionButtonName) != 0f){
+			if((Input.GetAxis(Config_CoinTask.ActionButtonName) != 0f) ||
+				(touchSelected == true))
+			{
 				actionButtonPressed = true;
 				shouldSelect = false;
+				touchSelected = false;
 			}
 			
 			yield return 0;

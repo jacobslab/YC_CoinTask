@@ -31,6 +31,7 @@ public class QuestionUI : MonoBehaviour {
 		isPlaying = true;
 
 		Enable (true);
+
 		Answers.gameObject.SetActive (false);
 		myAnswerSelector.SetShouldCheckForInput(false);
 
@@ -43,12 +44,19 @@ public class QuestionUI : MonoBehaviour {
 	//show an object
 	public IEnumerator Play(GameObject objectToSelect, string objectName){
 		isPlaying = true;
+		UnityEngine.Debug.Log("PLAY:   fijfowiioqrweffewfwenfiwefwieofiwefriwefiefiefoiwefoiwefoiweoiqrwqioiweoiqweoiqioqiqoiqoqoqwoqpqfgurefuiewfowef");
 
-		Enable (true);
+		Enable(true);
+		PlayerMotion.ControlPause = true;
+		Yes.isenabled = true;
+		Maybe.isenabled = true;
+		No.isenabled = true;
 		Answers.gameObject.SetActive (false);
 		myAnswerSelector.SetShouldCheckForInput (false);
+		UnityEngine.Debug.Log("AFTER PLAY:   fijfowiioqrweffewfwenfiwefwieofiwefriwefiefiefoiwefoiwefoiweoiqrwqioiweoiqweoiqioqiqoiqoqoqwoqpqfgurefuiewfowef");
 
-		PlayObjectJuice ();
+		PlayObjectJuice();
+		UnityEngine.Debug.Log("AFTER PLAY 2:   fijfowiioqrweffewfwenfiwefwieofiwefriwefiefiefoiwefoiwefoiweoiqrwqioiweoiqweoiqioqiqoiqoqoqwoqpqfgurefuiewfowef");
 
 		selectedObject = objectToSelect;
 		selectedObject.transform.position = ObjectPositionTransform.position;
@@ -56,13 +64,16 @@ public class QuestionUI : MonoBehaviour {
 		selectedObjectSpawnable.TurnVisible (true);
 		selectedObjectSpawnable.SetShadowCasting (false); //turn off shadows, they look weird in this case.
 		selectedObjectSpawnable.Scale (objectScaleMult);
+		UnityEngine.Debug.Log("AFTER PLAY 3:   fijfowiioqrweffewfwenfiwefwieofiwefriwefiefiefoiwefoiwefoiweoiqrwqioiweoiqweoiqioqiqoiqoqoqwoqpqfgurefuiewfowef");
 
 		SetObjectNameText(objectName);
 
 		UsefulFunctions.FaceObject (objectToSelect, exp.player.gameObject, false); //make UI copy face the player
+		UnityEngine.Debug.Log("AFTER PLAY 4:   fijfowiioqrweffewfwenfiwefwieofiwefriwefiefiefoiwefoiwefoiweoiqrwqioiweoiqweoiqioqiqoiqoqoqwoqpqfgurefuiewfowef");
 
 		Answers.gameObject.SetActive (true);
 		myAnswerSelector.SetShouldCheckForInput (true);
+		UnityEngine.Debug.Log("AFTER PLAY 5:   fijfowiioqrweffewfwenfiwefwieofiwefriwefiefiefoiwefoiwefoiweoiqrwqioiweoiqweoiqioqiqoiqoqoqwoqpqfgurefuiewfowef");
 
 		yield return 0;
 	}

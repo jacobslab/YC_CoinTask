@@ -37,7 +37,14 @@ public class SceneController : MonoBehaviour { //there can be a separate scene c
 	void Update () {
 
 	}
-
+	public void FirstQues()
+	{
+		Application.LoadLevel(17);
+	}
+	public void PainQues()
+	{
+		Application.LoadLevel(3);
+	}
 	public void LoadWorthlessValuable()
 	{
 		//SceneManager.LoadScene("WorthlessValQues", LoadSceneMode.Single);

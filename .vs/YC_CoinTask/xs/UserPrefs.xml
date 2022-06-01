@@ -1,8 +1,7 @@
 ﻿<Properties StartupConfiguration="{06A82C5C-AA5B-D594-3207-C0979DA18000}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Experiment/SceneController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Logging/LogTrack.cs">
     <Files>
-      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" Line="272" Column="99" IsPinned="True" />
-      <File FileName="Assets/Scripts/Experiment/TrialController.cs" IsPinned="True" />
+      <File FileName="Assets/Scripts/Experiment/Experiment_CoinTask.cs" Line="286" Column="29" IsPinned="True" />
       <File FileName="Assets/Scripts/RotationButtons/LeftRotate.cs" />
       <File FileName="Assets/Scripts/Logging/Logger_Threading.cs" />
       <File FileName="Assets/Scripts/Experiment/ExperimentSettings_CoinTask.cs" />
@@ -18,8 +17,31 @@
       <File FileName="Assets/Scripts/GUI/AnswerSelector.cs" />
       <File FileName="Assets/Scripts/Experiment/InstructionsController.cs" />
       <File FileName="Assets/Scripts/touchScreen/TouchScreenInputWrapper.cs" />
-      <File FileName="Assets/Scripts/touchScreen/PlayerMotion.cs" />
-      <File FileName="Assets/Scripts/Experiment/SceneController.cs" Line="4" Column="14" />
+      <File FileName="Assets/Scripts/touchScreen/PlayerMotion.cs" Line="94" Column="18" />
+      <File FileName="Assets/Scripts/Experiment/SceneController.cs" />
+      <File FileName="Assets/Scripts/GUI/GUITest.cs" />
+      <File FileName="Assets/Scripts/GUI/StartReset.cs" />
+      <File FileName="Assets/Scripts/StartwithSurvey.cs" />
+      <File FileName="Assets/Scripts/DistractorGame/BoxSwapGameController.cs" />
+      <File FileName="Assets/Scripts/DistractorGame/BoxSwapper.cs" />
+      <File FileName="Assets/Scripts/Box1.cs" />
+      <File FileName="Assets/Scripts/Box2.cs" />
+      <File FileName="Assets/Scripts/Box3.cs" />
+      <File FileName="Assets/Scripts/GUI/QuestionUI.cs" Line="45" Column="23" />
+      <File FileName="Assets/Scripts/Yes.cs" />
+      <File FileName="Assets/Scripts/Maybe.cs" />
+      <File FileName="Assets/Scripts/No.cs" />
+      <File FileName="Assets/Scripts/Environment/SpawnableObject.cs" />
+      <File FileName="Assets/Scripts/GUI/PirateUI.cs" />
+      <File FileName="Assets/Scripts/Experiment/UsefulFunctions.cs" />
+      <File FileName="Assets/Scripts/Experiment/JuiceController.cs" />
+      <File FileName="Assets/Scripts/Environment/EnvironmentPositionSelector.cs" />
+      <File FileName="Assets/Scripts/Logging/PositionSelectorLogTrack.cs" />
+      <File FileName="Assets/Scripts/Experiment/TrialController.cs" Line="886" Column="20" />
+      <File FileName="Assets/Scripts/OK.cs" />
+      <File FileName="Assets/Scripts/Ring.cs" Line="7" Column="11" />
+      <File FileName="Assets/Scripts/Logging/AudioLogTrack.cs" Line="37" Column="9" />
+      <File FileName="Assets/Scripts/Logging/LogTrack.cs" Line="7" Column="26" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -27,11 +49,17 @@
           <Node name="YC_CoinTask" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
+                <Node name="Anim. &amp; Visuals" expanded="True" />
+                <Node name="Audio" expanded="True" />
                 <Node name="Debugging" expanded="True" />
-                <Node name="Experiment" expanded="True">
-                  <Node name="SceneController.cs" selected="True" />
-                </Node>
+                <Node name="DistractorGame" expanded="True" />
+                <Node name="EEG Communication" expanded="True" />
+                <Node name="Environment" expanded="True" />
+                <Node name="Experiment" expanded="True" />
                 <Node name="GUI" expanded="True" />
+                <Node name="Logging" expanded="True">
+                  <Node name="LogTrack.cs" selected="True" />
+                </Node>
                 <Node name="touchScreen" expanded="True" />
               </Node>
               <Node name="TobiiPro" expanded="True">
@@ -54,7 +82,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="7413afb8-ba35-4d49-a1c3-3f63010e051f" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="8c3b5759-321c-4f1f-9ba4-0153ad7050ee" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
